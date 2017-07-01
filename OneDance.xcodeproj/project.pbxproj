@@ -1,0 +1,518 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6503EC301F075CA900D56AB5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6503EC2F1F075CA900D56AB5 /* AppDelegate.swift */; };
+		6503EC321F075CA900D56AB5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6503EC311F075CA900D56AB5 /* ViewController.swift */; };
+		6503EC381F075CA900D56AB5 /* OneDance.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6503EC361F075CA900D56AB5 /* OneDance.xcdatamodeld */; };
+		6503EC3A1F075CA900D56AB5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6503EC391F075CA900D56AB5 /* Assets.xcassets */; };
+		6503EC481F075CA900D56AB5 /* OneDanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6503EC471F075CA900D56AB5 /* OneDanceTests.swift */; };
+		6503EC531F075CA900D56AB5 /* OneDanceUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6503EC521F075CA900D56AB5 /* OneDanceUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6503EC441F075CA900D56AB5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6503EC241F075CA800D56AB5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6503EC2B1F075CA800D56AB5;
+			remoteInfo = OneDance;
+		};
+		6503EC4F1F075CA900D56AB5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6503EC241F075CA800D56AB5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6503EC2B1F075CA800D56AB5;
+			remoteInfo = OneDance;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		6503EC2C1F075CA800D56AB5 /* OneDance.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OneDance.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6503EC2F1F075CA900D56AB5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		6503EC311F075CA900D56AB5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		6503EC371F075CA900D56AB5 /* OneDance.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = OneDance.xcdatamodel; sourceTree = "<group>"; };
+		6503EC391F075CA900D56AB5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6503EC3E1F075CA900D56AB5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6503EC431F075CA900D56AB5 /* OneDanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OneDanceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6503EC471F075CA900D56AB5 /* OneDanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDanceTests.swift; sourceTree = "<group>"; };
+		6503EC491F075CA900D56AB5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6503EC4E1F075CA900D56AB5 /* OneDanceUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OneDanceUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6503EC521F075CA900D56AB5 /* OneDanceUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneDanceUITests.swift; sourceTree = "<group>"; };
+		6503EC541F075CA900D56AB5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6503EC291F075CA800D56AB5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6503EC401F075CA900D56AB5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6503EC4B1F075CA900D56AB5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6503EC231F075CA800D56AB5 = {
+			isa = PBXGroup;
+			children = (
+				6503EC2E1F075CA800D56AB5 /* OneDance */,
+				6503EC461F075CA900D56AB5 /* OneDanceTests */,
+				6503EC511F075CA900D56AB5 /* OneDanceUITests */,
+				6503EC2D1F075CA800D56AB5 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6503EC2D1F075CA800D56AB5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6503EC2C1F075CA800D56AB5 /* OneDance.app */,
+				6503EC431F075CA900D56AB5 /* OneDanceTests.xctest */,
+				6503EC4E1F075CA900D56AB5 /* OneDanceUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6503EC2E1F075CA800D56AB5 /* OneDance */ = {
+			isa = PBXGroup;
+			children = (
+				6503EC2F1F075CA900D56AB5 /* AppDelegate.swift */,
+				6503EC311F075CA900D56AB5 /* ViewController.swift */,
+				6503EC391F075CA900D56AB5 /* Assets.xcassets */,
+				6503EC3E1F075CA900D56AB5 /* Info.plist */,
+				6503EC361F075CA900D56AB5 /* OneDance.xcdatamodeld */,
+			);
+			path = OneDance;
+			sourceTree = "<group>";
+		};
+		6503EC461F075CA900D56AB5 /* OneDanceTests */ = {
+			isa = PBXGroup;
+			children = (
+				6503EC471F075CA900D56AB5 /* OneDanceTests.swift */,
+				6503EC491F075CA900D56AB5 /* Info.plist */,
+			);
+			path = OneDanceTests;
+			sourceTree = "<group>";
+		};
+		6503EC511F075CA900D56AB5 /* OneDanceUITests */ = {
+			isa = PBXGroup;
+			children = (
+				6503EC521F075CA900D56AB5 /* OneDanceUITests.swift */,
+				6503EC541F075CA900D56AB5 /* Info.plist */,
+			);
+			path = OneDanceUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6503EC2B1F075CA800D56AB5 /* OneDance */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6503EC571F075CA900D56AB5 /* Build configuration list for PBXNativeTarget "OneDance" */;
+			buildPhases = (
+				6503EC281F075CA800D56AB5 /* Sources */,
+				6503EC291F075CA800D56AB5 /* Frameworks */,
+				6503EC2A1F075CA800D56AB5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OneDance;
+			productName = OneDance;
+			productReference = 6503EC2C1F075CA800D56AB5 /* OneDance.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6503EC421F075CA900D56AB5 /* OneDanceTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6503EC5A1F075CA900D56AB5 /* Build configuration list for PBXNativeTarget "OneDanceTests" */;
+			buildPhases = (
+				6503EC3F1F075CA900D56AB5 /* Sources */,
+				6503EC401F075CA900D56AB5 /* Frameworks */,
+				6503EC411F075CA900D56AB5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6503EC451F075CA900D56AB5 /* PBXTargetDependency */,
+			);
+			name = OneDanceTests;
+			productName = OneDanceTests;
+			productReference = 6503EC431F075CA900D56AB5 /* OneDanceTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		6503EC4D1F075CA900D56AB5 /* OneDanceUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6503EC5D1F075CA900D56AB5 /* Build configuration list for PBXNativeTarget "OneDanceUITests" */;
+			buildPhases = (
+				6503EC4A1F075CA900D56AB5 /* Sources */,
+				6503EC4B1F075CA900D56AB5 /* Frameworks */,
+				6503EC4C1F075CA900D56AB5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6503EC501F075CA900D56AB5 /* PBXTargetDependency */,
+			);
+			name = OneDanceUITests;
+			productName = OneDanceUITests;
+			productReference = 6503EC4E1F075CA900D56AB5 /* OneDanceUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6503EC241F075CA800D56AB5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0830;
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = "Burak Can";
+				TargetAttributes = {
+					6503EC2B1F075CA800D56AB5 = {
+						CreatedOnToolsVersion = 8.3.3;
+						ProvisioningStyle = Automatic;
+					};
+					6503EC421F075CA900D56AB5 = {
+						CreatedOnToolsVersion = 8.3.3;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 6503EC2B1F075CA800D56AB5;
+					};
+					6503EC4D1F075CA900D56AB5 = {
+						CreatedOnToolsVersion = 8.3.3;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 6503EC2B1F075CA800D56AB5;
+					};
+				};
+			};
+			buildConfigurationList = 6503EC271F075CA800D56AB5 /* Build configuration list for PBXProject "OneDance" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6503EC231F075CA800D56AB5;
+			productRefGroup = 6503EC2D1F075CA800D56AB5 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6503EC2B1F075CA800D56AB5 /* OneDance */,
+				6503EC421F075CA900D56AB5 /* OneDanceTests */,
+				6503EC4D1F075CA900D56AB5 /* OneDanceUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6503EC2A1F075CA800D56AB5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6503EC3A1F075CA900D56AB5 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6503EC411F075CA900D56AB5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6503EC4C1F075CA900D56AB5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6503EC281F075CA800D56AB5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6503EC381F075CA900D56AB5 /* OneDance.xcdatamodeld in Sources */,
+				6503EC321F075CA900D56AB5 /* ViewController.swift in Sources */,
+				6503EC301F075CA900D56AB5 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6503EC3F1F075CA900D56AB5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6503EC481F075CA900D56AB5 /* OneDanceTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6503EC4A1F075CA900D56AB5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6503EC531F075CA900D56AB5 /* OneDanceUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6503EC451F075CA900D56AB5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6503EC2B1F075CA800D56AB5 /* OneDance */;
+			targetProxy = 6503EC441F075CA900D56AB5 /* PBXContainerItemProxy */;
+		};
+		6503EC501F075CA900D56AB5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6503EC2B1F075CA800D56AB5 /* OneDance */;
+			targetProxy = 6503EC4F1F075CA900D56AB5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		6503EC551F075CA900D56AB5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		6503EC561F075CA900D56AB5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6503EC581F075CA900D56AB5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = OneDance/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.cheersworks.OneDance;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		6503EC591F075CA900D56AB5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = OneDance/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.cheersworks.OneDance;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		6503EC5B1F075CA900D56AB5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = OneDanceTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.cheersworks.OneDanceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OneDance.app/OneDance";
+			};
+			name = Debug;
+		};
+		6503EC5C1F075CA900D56AB5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = OneDanceTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.cheersworks.OneDanceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OneDance.app/OneDance";
+			};
+			name = Release;
+		};
+		6503EC5E1F075CA900D56AB5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				INFOPLIST_FILE = OneDanceUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.cheersworks.OneDanceUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = OneDance;
+			};
+			name = Debug;
+		};
+		6503EC5F1F075CA900D56AB5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				INFOPLIST_FILE = OneDanceUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.cheersworks.OneDanceUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = OneDance;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6503EC271F075CA800D56AB5 /* Build configuration list for PBXProject "OneDance" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6503EC551F075CA900D56AB5 /* Debug */,
+				6503EC561F075CA900D56AB5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6503EC571F075CA900D56AB5 /* Build configuration list for PBXNativeTarget "OneDance" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6503EC581F075CA900D56AB5 /* Debug */,
+				6503EC591F075CA900D56AB5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		6503EC5A1F075CA900D56AB5 /* Build configuration list for PBXNativeTarget "OneDanceTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6503EC5B1F075CA900D56AB5 /* Debug */,
+				6503EC5C1F075CA900D56AB5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		6503EC5D1F075CA900D56AB5 /* Build configuration list for PBXNativeTarget "OneDanceUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6503EC5E1F075CA900D56AB5 /* Debug */,
+				6503EC5F1F075CA900D56AB5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		6503EC361F075CA900D56AB5 /* OneDance.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				6503EC371F075CA900D56AB5 /* OneDance.xcdatamodel */,
+			);
+			currentVersion = 6503EC371F075CA900D56AB5 /* OneDance.xcdatamodel */;
+			path = OneDance.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 6503EC241F075CA800D56AB5 /* Project object */;
+}
