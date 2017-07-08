@@ -14,7 +14,7 @@ protocol UserProfile {
     
     var info : String { get set } // slogan 
     var photoUrl : String { get set }
-    var link : String { get set }
+    var webUrl : String { get set }
     
     var eMailAccount : String { get set }
     var phoneNumber : String { get set }

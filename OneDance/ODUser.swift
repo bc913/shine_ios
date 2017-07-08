@@ -9,19 +9,24 @@
 import Foundation
 
 class ODUser: UserProfile {
-    var name: String = ""
-    var surName: String = ""
+    var name: String
+    var surName: String
     
-    var info: String = ""
-    var photoUrl: String = ""
-    var link: String = ""
+    var info: String
+    var photoUrl: String
+    var webUrl: String
     
-    var eMailAccount: String = ""
-    var phoneNumber: String = ""
+    var eMailAccount: String
+    var phoneNumber: String
     
     // Ctors
+    convenience init()
+    {
+        self.init(name: "", surName: "", userInfo: "", photoUrl: "", webUrl: "", userEmail: "", userPhone: "")
+    }
+    
     init(name:String, surName:String,
-         userInfo:String, photoUrl: String, link: String,
+         userInfo:String, photoUrl: String, webUrl: String,
          userEmail:String, userPhone: String)
     {
         self.name = name
@@ -29,7 +34,7 @@ class ODUser: UserProfile {
         
         self.info = userInfo
         self.photoUrl = photoUrl
-        self.link = link
+        self.webUrl = webUrl
         
         self.eMailAccount = userEmail
         self.phoneNumber = userInfo
@@ -38,35 +43,50 @@ class ODUser: UserProfile {
 }
 
 class ODDancer: ODUser, DancerProfile {
-    var nickName: String = ""
+    var nickName: String
     
     // ctors
+    
+    convenience init()
+    {
+        self.init(name:"", surName:"",
+                      userInfo:"", photoUrl: "", webUrl: "",
+                      userEmail:"", userPhone: "",
+                      nick:"")
+    }
+    
     init(name:String, surName:String,
-         userInfo:String, photoUrl: String, link: String,
+         userInfo:String, photoUrl: String, webUrl: String,
          userEmail:String, userPhone: String,
          nick:String)
     {
         self.nickName = nick
         super.init(name: name, surName: surName,
-                   userInfo: userInfo, photoUrl: photoUrl, link: link,
+                   userInfo: userInfo, photoUrl: photoUrl, webUrl: webUrl,
                    userEmail: userEmail, userPhone: userPhone)
         
     }
 }
 
 class ODOrganization: OrganizationProfile {
-    var name: String = ""
-    var type: String = ""
+    var name: String
+    var type: String
     
     var registeredLocation: String
     var phoneNumber: String?
     var eMailAddress: String
     var link: String?
     
-    var averageStar: Int = 0
+    var averageStar: Int = 5
     var reviews = Array<String>()
     
     // Ctors
+    convenience init()
+    {
+        
+        self.init(orgName: "", orgType: "", orgLocation: "", orgPhoneNumber: "", orgEmail: "", orgWebUrl: "")
+    }
+    
     init(orgName: String, orgType: String,
          orgLocation:String, orgPhoneNumber:String?, orgEmail:String, orgWebUrl:String?
          )
@@ -107,6 +127,7 @@ class ODDanceAcademyOrganization: ODOrganization, DanceAcademyOrganizationProfil
 }
 
 class ODInstructor: ODDancer, InstructorProfile {
+    
     var organization: OrganizationProfile?
     
     var yearsOfExperience: Int = 0
@@ -117,6 +138,30 @@ class ODInstructor: ODDancer, InstructorProfile {
     var previouslyTaughtClasses: Array<ClassEvent> = []
     var prospectiveClasses: Array<ClassEvent> = []
     
+    //Ctors
+    
+    convenience init()
+    {
+        self.init(name:"", surName:"",
+                  userInfo:"", photoUrl: "", webUrl: "",
+                  userEmail:"", userPhone: "",
+                  nick:"",
+                  organization: nil, experience: 0)
+    }
+    
+    init(name:String, surName:String,
+         userInfo:String, photoUrl: String, webUrl: String,
+         userEmail:String, userPhone: String,
+         nick:String,
+         organization: OrganizationProfile?, experience: Int)
+    {
+        
+        self.organization = organization
+        self.yearsOfExperience = experience
+        super.init(name: name, surName: surName,
+                   userInfo: userInfo, photoUrl: photoUrl, webUrl: webUrl,
+                   userEmail: userEmail, userPhone: userPhone, nick: nick)
+    }
 }
 
 class ODDeeJay: ODDancer, DJProfile {
@@ -132,6 +177,31 @@ class ODDeeJay: ODDancer, DJProfile {
     
     // Locations
     var locations: Array<String> = []
+    
+    //Ctors
+    convenience init()
+    {
+        self.init(name:"", surName:"",
+                  userInfo:"", photoUrl: "", webUrl: "",
+                  userEmail:"", userPhone: "",
+                  nick:"",
+                  danceTypes: Array<String>(), organization:nil)
+    }
+    
+    init(name:String, surName:String,
+         userInfo:String, photoUrl: String, webUrl: String,
+         userEmail:String, userPhone: String,
+         nick:String,
+         danceTypes: Array<String>, organization:OrganizationProfile?)
+    {
+        self.danceTypes = danceTypes
+        self.organization = organization
+        
+        super.init(name: name, surName: surName,
+                   userInfo: userInfo, photoUrl: photoUrl, webUrl: webUrl,
+                   userEmail: userEmail, userPhone: userPhone, nick: nick)
+    }
+    
 }
 
 
