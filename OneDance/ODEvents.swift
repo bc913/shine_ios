@@ -26,6 +26,15 @@ class ODEvent: Event {
     var videoUrls: Array<String> = []
     
     //ctors
+    
+    convenience init()
+    {
+        self.init(eventName:"", eventDescription:"",
+                  eventWebUrl:"", eventLocation:"",
+                  eventSchedule:"",
+                  eventOrganizer:nil )
+    }
+    
     init(eventName:String, eventDescription:String, eventWebUrl:String,
          eventLocation:String, eventSchedule:String,
          eventOrganizer:OrganizationProfile? )
@@ -54,6 +63,14 @@ class ODSocialNightEvent: ODEvent, SocialNightEvent {
     var averageStar: Int = 0
     
     //ctors
+    
+    convenience init()
+    {
+        self.init(eventName:"", eventDescription:"", eventWebUrl:"",
+        eventLocation:"", eventSchedule:"",
+        eventOrganizer:nil)
+    }
+    
     init(eventName:String, eventDescription:String, eventWebUrl:String,
          eventLocation:String, eventSchedule:String,
          eventOrganizer:OrganizationProfile?,
@@ -83,6 +100,16 @@ class ODClassEvent: ODEvent, ClassEvent {
     var students: Array<DancerProfile> = []
     
     //ctors
+    
+    convenience init()
+    {
+        self.init(eventName:"", eventDescription:"", eventWebUrl:"",
+                  eventLocation:"", eventSchedule:"",
+                  eventOrganizer:nil,
+                  classDanceType : "", classFee:0.0, classDressCode:false,
+                  instructors:Array<InstructorProfile>())
+    }
+    
     init(eventName:String, eventDescription:String, eventWebUrl:String,
          eventLocation:String, eventSchedule:String,
          eventOrganizer:OrganizationProfile?,
