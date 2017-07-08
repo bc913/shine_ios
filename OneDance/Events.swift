@@ -12,7 +12,7 @@ protocol Event {
     
     var name : String { get set }
     var description : String { get set }
-    var webSource : String { get set } // Link
+    var webUrl : String { get set } // Link
     var discussion : Array<String> { get set }
     
     var location : String { get set }

@@ -11,7 +11,7 @@ import Foundation
 class ODEvent: Event {
     var name: String = ""
     var description: String = ""
-    var webSource: String = ""
+    var webUrl: String = ""
     var discussion = Array<String>()
     
     var location: String = ""
