@@ -24,6 +24,22 @@ class ODEvent: Event {
     
     var imageUrls: Array<String> = []
     var videoUrls: Array<String> = []
+    
+    //ctors
+    init(eventName:String, eventDescription:String, eventWebUrl:String,
+         eventLocation:String, eventSchedule:String,
+         eventOrganizer:OrganizationProfile? )
+    {
+        self.name = eventName
+        self.description = eventDescription
+        self.webUrl = eventWebUrl
+        
+        self.location = eventLocation
+        self.schedule = eventSchedule
+        
+        self.organizer = eventOrganizer
+    }
+    
 }
 
 class ODSocialNightEvent: ODEvent, SocialNightEvent {
@@ -36,16 +52,53 @@ class ODSocialNightEvent: ODEvent, SocialNightEvent {
     var deejay: DJProfile?
     
     var averageStar: Int = 0
+    
+    //ctors
+    init(eventName:String, eventDescription:String, eventWebUrl:String,
+         eventLocation:String, eventSchedule:String,
+         eventOrganizer:OrganizationProfile?,
+         eventCover:Double? = 0.0, eventDressCode:String? = "No dress code!",
+         eventDJ:DJProfile? = nil)
+    {
+        self.coverFee = eventCover
+        self.dressCode = eventDressCode
+        self.deejay = eventDJ
+        
+        super.init(eventName: eventName, eventDescription: eventDescription,
+                   eventWebUrl: eventWebUrl,
+                   eventLocation: eventLocation, eventSchedule: eventSchedule,
+                   eventOrganizer: eventOrganizer)
+    }
+    
 }
 
 class ODClassEvent: ODEvent, ClassEvent {
     
-    var danceType: String = ""
+    var danceType: String
     
     var fee: Double = 0.0
     var dressCode: Bool = false
     
     var instructors: Array<InstructorProfile> = []
     var students: Array<DancerProfile> = []
+    
+    //ctors
+    init(eventName:String, eventDescription:String, eventWebUrl:String,
+         eventLocation:String, eventSchedule:String,
+         eventOrganizer:OrganizationProfile?,
+         classDanceType : String, classFee: Double = 0.0, classDressCode:Bool,
+         instructors:Array<InstructorProfile>)
+    {
+        self.danceType = classDanceType
+        self.fee = classFee
+        self.dressCode = classDressCode
+        
+        self.instructors = instructors
+        super.init(eventName: eventName, eventDescription: eventDescription,
+                   eventWebUrl: eventWebUrl,
+                   eventLocation: eventLocation, eventSchedule: eventSchedule,
+                   eventOrganizer: eventOrganizer)
+        
+    }
 }
 
