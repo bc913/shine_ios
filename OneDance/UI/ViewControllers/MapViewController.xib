@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MapViewController" customModule="OneDance" customModuleProvider="target">
+            <connections>
+                <outlet property="mapView" destination="N5h-wD-vLX" id="eYi-Ob-iZn"/>
+                <outlet property="showUserLocationButton" destination="bAG-No-erM" id="PI7-1c-jhO"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="N5h-wD-vLX">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                </mapView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bAG-No-erM">
+                    <rect key="frame" x="295" y="100" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="X90-j4-eYf"/>
+                        <constraint firstAttribute="width" constant="50" id="vdE-QR-Bc5"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="bAG-No-erM" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="100" id="Kbd-rD-L4C"/>
+                <constraint firstItem="N5h-wD-vLX" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="aav-G6-Lg8"/>
+                <constraint firstAttribute="trailing" secondItem="bAG-No-erM" secondAttribute="trailing" constant="30" id="hyN-mQ-lw1"/>
+                <constraint firstItem="N5h-wD-vLX" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="qg7-Em-qco"/>
+                <constraint firstItem="N5h-wD-vLX" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" id="uV8-Rr-5Mf"/>
+                <constraint firstItem="N5h-wD-vLX" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="wI8-eL-G2g"/>
+            </constraints>
+            <point key="canvasLocation" x="35.5" y="53.5"/>
+        </view>
+    </objects>
+</document>
