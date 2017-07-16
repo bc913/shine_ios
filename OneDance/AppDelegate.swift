@@ -18,12 +18,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
-        let homeViewController = UIViewController()
-        homeViewController.view.backgroundColor = UIColor.red
+        
+        
+        let homeViewController = UITabBarController()
+        
+        // Create the corresponding controllers
+        
+        // Timeline
+        let timeLineVC = UIViewController()
+        let timelineNavigationVC = UINavigationController(rootViewController: timeLineVC)
+        let timelineTabrBarItem = UITabBarItem(title: "Feed", image: UIImage(named: "converter-tabbar.png"), tag: 2)
+        timelineNavigationVC.tabBarItem = timelineTabrBarItem
+        
+        // Map - Search
+        let mapSearchViewController = MapViewController(nibName: "MapViewController", bundle: nil)
+        let mapSearchNavigationController = UINavigationController(rootViewController: mapSearchViewController)
+        let mapSearchTabBarItem = UITabBarItem(title: "Map", image: UIImage(named: "converter-tabbar.png"), tag: 2)
+        mapSearchNavigationController.tabBarItem = mapSearchTabBarItem
+        
+        // Profile
+        let profileVC = UIViewController()
+        let profileNavigationVC = UINavigationController(rootViewController: profileVC)
+        let profileTabrBarItem = UITabBarItem(title: "Profile", image: UIImage(named: "converter-tabbar.png"), tag: 3)
+        profileNavigationVC.tabBarItem = profileTabrBarItem
+        
+        homeViewController.viewControllers = [timelineNavigationVC, mapSearchNavigationController, profileNavigationVC]
         window!.rootViewController = homeViewController
         window!.makeKeyAndVisible()
-        
+        testClasses()
         return true
+    }
+    
+    func testClasses() {
+        var anEvent = ODEvent(eventName: "LAtin night", eventDescription: "Olm harika", eventWebUrl: "www.nba.com", eventLocation: "Izmir", eventSchedule: "Her gun", eventOrganizer: nil)
+        
+        print(anEvent.name)
+        
+        var anOrg = ODOrganization(orgName: "osman", orgType: "Freelance", orgLocation: "Tuzla", orgPhoneNumber: "5555", orgEmail: "osman@gmail.com", orgWebUrl: "www.osman.com")
+        
+        print(anOrg.averageStar)
+        print(anOrg.reviews.count)
+        
+        
+        
+    
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
