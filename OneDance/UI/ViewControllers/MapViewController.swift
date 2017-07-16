@@ -41,9 +41,6 @@ class MapViewController: UIViewController {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
         
-        
-        
-        
         // Start to get current location
         // TODO: Check startupdatingLocations() efficieny from IOS Apprentice Ray Wanderlich
         if (CLLocationManager.locationServicesEnabled()) {
@@ -78,6 +75,38 @@ class MapViewController: UIViewController {
         showUserLocationButton.backgroundColor = UIColor.blue
         showUserLocationButton.setTitle("", for: .normal)
         
+    }
+    // MARK: - Action Methods
+    
+    @IBAction func showUserLocationButtonTapped(_ sender: Any) {
+        if (!CLLocationManager.locationServicesEnabled()) {
+            print("Location services are not enabled !!!")
+            return
+        }
+        
+        if (CLLocationManager.authorizationStatus() == .notDetermined || CLLocationManager.authorizationStatus() == .denied) {
+            print("Go to app's settings to change location services")
+            
+            return
+        }
+        
+        let userLocation = mapView.userLocation
+        
+        let region = MKCoordinateRegionMakeWithDistance(
+            userLocation.location!.coordinate, 2000, 2000)
+        
+        mapView.setRegion(region, animated: true)
+        
+        // another way
+        /*
+         let span = MKCoordinateSpan.init(latitudeDelta: 0.0075, longitudeDelta: 0.0075)
+         let region = MKCoordinateRegion.init(center: (locationManager.location?.coordinate)!, span: span)
+         
+         */
+        
+        // Another way
+        // Bunda Zoom yok
+        // mapView.setCenter(userLocation.coordinate, animated: true)
     }
     
     // MARK: - UIViewController
