@@ -81,11 +81,30 @@ class MapViewController: UIViewController {
     @IBAction func showUserLocationButtonTapped(_ sender: Any) {
         if (!CLLocationManager.locationServicesEnabled()) {
             print("Location services are not enabled !!!")
+            // create the alert
+            let alert = UIAlertController(title: "Location services are not enabled", message: "You can enable locations services through Settings.", preferredStyle: UIAlertControllerStyle.alert)
+            
+            // add the actions (buttons)
+            alert.addAction(UIAlertAction(title: "Settings", style: UIAlertActionStyle.default, handler: nil))
+            alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
+            
+            // show the alert
+            self.present(alert, animated: true, completion: nil)
             return
         }
         
         if (CLLocationManager.authorizationStatus() == .notDetermined || CLLocationManager.authorizationStatus() == .denied) {
             print("Go to app's settings to change location services")
+            
+            // create the alert
+            let alert = UIAlertController(title: "Authorization is not defined.", message: "You can enable permission to use location services.", preferredStyle: UIAlertControllerStyle.alert)
+            
+            // add the actions (buttons)
+            alert.addAction(UIAlertAction(title: "Settings", style: UIAlertActionStyle.default, handler: nil))
+            alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
+            
+            // show the alert
+            self.present(alert, animated: true, completion: nil)
             
             return
         }
