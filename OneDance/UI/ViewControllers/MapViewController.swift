@@ -10,12 +10,19 @@ import UIKit
 import MapKit
 import CoreLocation
 
+protocol HandleMapSearch: class {
+    func dropPinZoomIn(_ placemark:MKPlacemark)
+}
+
 class MapViewController: UIViewController {
     
     // MARK: - Properties
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var showUserLocationButton: UIButton!
     var locationManager = CLLocationManager()
+    
+    var selectedPin: MKPlacemark?
+    var resultSearchController: UISearchController!
 
     // MARK: - Internal Methods
     /*
@@ -76,6 +83,35 @@ class MapViewController: UIViewController {
         showUserLocationButton.setTitle("", for: .normal)
         
     }
+    
+    private func configureLocationSearchController(){
+        let locationSearchTableVC = LocationSearchTableViewController()
+        resultSearchController = UISearchController(searchResultsController: locationSearchTableVC)
+        resultSearchController.searchResultsUpdater = locationSearchTableVC
+        
+        // Search Bar
+        let searchBar = resultSearchController!.searchBar
+        searchBar.sizeToFit()
+        searchBar.placeholder = "Search for places"
+        navigationItem.titleView = resultSearchController?.searchBar
+        
+        resultSearchController.hidesNavigationBarDuringPresentation = false
+        resultSearchController.dimsBackgroundDuringPresentation = true
+        definesPresentationContext = true
+        
+        locationSearchTableVC.mapView = mapView
+        locationSearchTableVC.handleMapSearchDelegate = self
+        
+        
+    }
+    
+    func getDirections(){
+        guard let selectedPin = selectedPin else { return }
+        let mapItem = MKMapItem(placemark: selectedPin)
+        let launchOptions = [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving]
+        mapItem.openInMaps(launchOptions: launchOptions)
+    }
+    
     // MARK: - Action Methods
     
     @IBAction func showUserLocationButtonTapped(_ sender: Any) {
@@ -135,6 +171,7 @@ class MapViewController: UIViewController {
         self.configureMapView()
         self.configureLocationManager()
         self.configureUserTrackingButton()
+        self.configureLocationSearchController()
     }
     
     override func didReceiveMemoryWarning() {
@@ -205,4 +242,48 @@ extension MapViewController : MKMapViewDelegate{
      mapView.setCenter(userLocation.coordinate, animated: true)
      }
      */
+    
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        guard !(annotation is MKUserLocation) else { return nil }
+        let reuseId = "pin"
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
+        if pinView == nil {
+            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+        }
+        pinView?.pinTintColor = UIColor.orange
+        pinView?.canShowCallout = true
+        let smallSquare = CGSize(width: 30, height: 30)
+        let button = UIButton(frame: CGRect(origin: CGPoint.zero, size: smallSquare))
+        button.setBackgroundImage(UIImage(named: "car"), for: UIControlState())
+        button.addTarget(self, action: #selector(MapViewController.getDirections), for: .touchUpInside)
+        pinView?.leftCalloutAccessoryView = button
+        
+        return pinView
+    }
+}
+
+// MARK: - HandleMapSearch
+extension MapViewController: HandleMapSearch {
+    
+    func dropPinZoomIn(_ placemark: MKPlacemark){
+        // cache the pin
+        selectedPin = placemark
+        // clear existing pins
+        mapView.removeAnnotations(mapView.annotations)
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = placemark.coordinate
+        annotation.title = placemark.name
+        
+        if let city = placemark.locality,
+            let state = placemark.administrativeArea {
+            annotation.subtitle = "\(city) \(state)"
+        }
+        
+        mapView.addAnnotation(annotation)
+        let span = MKCoordinateSpanMake(0.05, 0.05)
+        let region = MKCoordinateRegionMake(placemark.coordinate, span)
+        mapView.setRegion(region, animated: true)
+    }
+    
 }
