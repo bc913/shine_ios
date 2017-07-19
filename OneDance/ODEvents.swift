@@ -52,7 +52,7 @@ class ODEvent: Event {
 }
 
 class ODSocialNightEvent: ODEvent, SocialNightEvent {
-    
+    var danceType : Array<String> = []
     var dependentEvent: Event?
     
     var coverFee: Double?
@@ -91,7 +91,7 @@ class ODSocialNightEvent: ODEvent, SocialNightEvent {
 
 class ODClassEvent: ODEvent, ClassEvent {
     
-    var danceType: String
+    var danceType: Array <String> = []
     
     var fee: Double = 0.0
     var dressCode: Bool = false
@@ -106,14 +106,14 @@ class ODClassEvent: ODEvent, ClassEvent {
         self.init(eventName:"", eventDescription:"", eventWebUrl:"",
                   eventLocation:nil, eventSchedule:"",
                   eventOrganizer:nil,
-                  classDanceType : "", classFee:0.0, classDressCode:false,
+                  classDanceType : [], classFee:0.0, classDressCode:false,
                   instructors:Array<InstructorProfile>())
     }
     
     init(eventName:String, eventDescription:String, eventWebUrl:String,
          eventLocation:Location?, eventSchedule:String,
          eventOrganizer:OrganizationProfile?,
-         classDanceType : String, classFee: Double = 0.0, classDressCode:Bool,
+         classDanceType : Array <String>, classFee: Double = 0.0, classDressCode:Bool,
          instructors:Array<InstructorProfile>)
     {
         self.danceType = classDanceType

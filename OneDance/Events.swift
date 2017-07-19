@@ -32,7 +32,7 @@ protocol Event {
 }
 
 protocol SocialNightEvent {
-    
+    var danceType : Array <String> { get set }
     var dependentEvent : Event? { get set }
     
     var coverFee : Double? { get set }
@@ -49,7 +49,7 @@ protocol SocialNightEvent {
 }
 
 protocol ClassEvent { // Scheduled class and workshop
-    var danceType : String { get set }
+    var danceType : Array <String> { get set }
     
     var fee : Double { get set }
     var dressCode : Bool { get set }
