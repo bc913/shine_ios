@@ -65,7 +65,7 @@ protocol OrganizationProfile {
     var reviews : Array <String> { get set }
 }
 
-protocol EventOrganizationProfile : OrganizationProfile {
+protocol EventOrganizationProfile {
     
     associatedtype EventItem
     
@@ -77,7 +77,7 @@ protocol EventOrganizationProfile : OrganizationProfile {
     var scheduledEvents : Array <EventItem> { get set } // Array of events
 }
 
-protocol DanceAcademyOrganizationProfile : OrganizationProfile {
+protocol DanceAcademyOrganizationProfile {
     
     // Registered instructors, DJs and Dancers
     var registeredInstructors : Array <InstructorProfile> { get set } // Check for the protocl arrays
@@ -95,7 +95,7 @@ protocol DanceAcademyOrganizationProfile : OrganizationProfile {
 }
 
 // Bir instructor ayni zamanda DJ olabilir
-protocol InstructorProfile : DancerProfile {
+protocol InstructorProfile {
     
     var organization : OrganizationProfile? { get set }
     
@@ -111,7 +111,7 @@ protocol InstructorProfile : DancerProfile {
     var prospectiveClasses : Array <ClassEvent> { get set }
 }
 
-protocol DJProfile : DancerProfile {
+protocol DJProfile {
     
     // Dance types for which (s)he played
     var danceTypes : Array <String> { get set }
