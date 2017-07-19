@@ -31,7 +31,7 @@ protocol Event {
     
 }
 
-protocol SocialNightEvent : Event {
+protocol SocialNightEvent {
     
     var dependentEvent : Event? { get set }
     
@@ -48,7 +48,7 @@ protocol SocialNightEvent : Event {
     
 }
 
-protocol ClassEvent : Event { // Scheduled class and workshop
+protocol ClassEvent { // Scheduled class and workshop
     var danceType : String { get set }
     
     var fee : Double { get set }
