@@ -14,7 +14,7 @@ class ODEvent: Event {
     var webUrl: String = ""
     var discussion = Array<String>()
     
-    var location: String = ""
+    var location: Location?
     var schedule: String = ""
     
     var organizer: OrganizationProfile? = nil
@@ -30,13 +30,13 @@ class ODEvent: Event {
     convenience init()
     {
         self.init(eventName:"", eventDescription:"",
-                  eventWebUrl:"", eventLocation:"",
+                  eventWebUrl:"", eventLocation:nil,
                   eventSchedule:"",
                   eventOrganizer:nil )
     }
     
     init(eventName:String, eventDescription:String, eventWebUrl:String,
-         eventLocation:String, eventSchedule:String,
+         eventLocation:Location?, eventSchedule:String,
          eventOrganizer:OrganizationProfile? )
     {
         self.name = eventName
@@ -67,12 +67,12 @@ class ODSocialNightEvent: ODEvent, SocialNightEvent {
     convenience init()
     {
         self.init(eventName:"", eventDescription:"", eventWebUrl:"",
-        eventLocation:"", eventSchedule:"",
+        eventLocation:nil, eventSchedule:"",
         eventOrganizer:nil)
     }
     
     init(eventName:String, eventDescription:String, eventWebUrl:String,
-         eventLocation:String, eventSchedule:String,
+         eventLocation:Location?, eventSchedule:String,
          eventOrganizer:OrganizationProfile?,
          eventCover:Double? = 0.0, eventDressCode:String? = "No dress code!",
          eventDJ:DJProfile? = nil)
@@ -104,14 +104,14 @@ class ODClassEvent: ODEvent, ClassEvent {
     convenience init()
     {
         self.init(eventName:"", eventDescription:"", eventWebUrl:"",
-                  eventLocation:"", eventSchedule:"",
+                  eventLocation:nil, eventSchedule:"",
                   eventOrganizer:nil,
                   classDanceType : "", classFee:0.0, classDressCode:false,
                   instructors:Array<InstructorProfile>())
     }
     
     init(eventName:String, eventDescription:String, eventWebUrl:String,
-         eventLocation:String, eventSchedule:String,
+         eventLocation:Location?, eventSchedule:String,
          eventOrganizer:OrganizationProfile?,
          classDanceType : String, classFee: Double = 0.0, classDressCode:Bool,
          instructors:Array<InstructorProfile>)

@@ -15,7 +15,7 @@ protocol Event {
     var webUrl : String { get set } // Link
     var discussion : Array<String> { get set }
     
-    var location : String { get set }
+    var location : Location? { get set }
     var schedule : String { get set } // TODO:Schedule class
     
     var organizer : OrganizationProfile? { get set }
