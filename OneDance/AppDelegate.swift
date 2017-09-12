@@ -45,20 +45,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         homeViewController.viewControllers = [timelineNavigationVC, mapSearchNavigationController, profileNavigationVC]
         window!.rootViewController = homeViewController
         window!.makeKeyAndVisible()
-        testClasses()
+        //testClasses()
         return true
     }
     
     func testClasses() {
-        var anEvent = ODEvent(eventName: "LAtin night", eventDescription: "Olm harika", eventWebUrl: "www.nba.com", eventLocation: "Izmir", eventSchedule: "Her gun", eventOrganizer: nil)
-        
-        print(anEvent.name)
-        
-        var anOrg = ODOrganization(orgName: "osman", orgType: "Freelance", orgLocation: "Tuzla", orgPhoneNumber: "5555", orgEmail: "osman@gmail.com", orgWebUrl: "www.osman.com")
-        
-        print(anOrg.averageStar)
-        print(anOrg.reviews.count)
-        
+                
         
         
     
