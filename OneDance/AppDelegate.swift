@@ -13,13 +13,25 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var appCoordinator : AppCoordinator!
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
         
+        // Configure app coordinator
+        appCoordinator = AppCoordinator(window: window!)
+        appCoordinator.start()
         
+        configureViews()
+        window!.makeKeyAndVisible()
+        
+        return true
+    }
+    
+    func configureViews() {
+                
         let homeViewController = UITabBarController()
         
         // Create the corresponding controllers
@@ -44,14 +56,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         homeViewController.viewControllers = [timelineNavigationVC, mapSearchNavigationController, profileNavigationVC]
         window!.rootViewController = homeViewController
-        window!.makeKeyAndVisible()
-        //testClasses()
-        return true
-    }
-    
-    func testClasses() {
-                
-        
         
     
     }

@@ -20,6 +20,8 @@
 		65134F1A1F1B18CC0017C930 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65134F191F1B18CC0017C930 /* MapKit.framework */; };
 		65134F1D1F1B19C40017C930 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65134F1B1F1B19C40017C930 /* MapViewController.swift */; };
 		65134F1E1F1B19C40017C930 /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65134F1C1F1B19C40017C930 /* MapViewController.xib */; };
+		65FC55E11F67921C00E02503 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FC55E01F67921C00E02503 /* Coordinator.swift */; };
+		65FC55E31F67933000E02503 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FC55E21F67933000E02503 /* AppCoordinator.swift */; };
 		65FC6D411F132BBD00B33C09 /* ODUserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FC6D401F132BBD00B33C09 /* ODUserManager.swift */; };
 		65FC6D421F132BBD00B33C09 /* ODUserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FC6D401F132BBD00B33C09 /* ODUserManager.swift */; };
 		65FD06F11F1D719F00932E5F /* LocationSearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FD06F01F1D719F00932E5F /* LocationSearchTableViewController.swift */; };
@@ -65,6 +67,8 @@
 		65134F191F1B18CC0017C930 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		65134F1B1F1B19C40017C930 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = UI/ViewControllers/MapViewController.swift; sourceTree = "<group>"; };
 		65134F1C1F1B19C40017C930 /* MapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MapViewController.xib; path = UI/ViewControllers/MapViewController.xib; sourceTree = "<group>"; };
+		65FC55E01F67921C00E02503 /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Coordinator.swift; path = Coordinators/Coordinator.swift; sourceTree = "<group>"; };
+		65FC55E21F67933000E02503 /* AppCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppCoordinator.swift; path = Coordinators/AppCoordinator.swift; sourceTree = "<group>"; };
 		65FC6D401F132BBD00B33C09 /* ODUserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ODUserManager.swift; sourceTree = "<group>"; };
 		65FD06F01F1D719F00932E5F /* LocationSearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationSearchTableViewController.swift; path = UI/ViewControllers/LocationSearchTableViewController.swift; sourceTree = "<group>"; };
 		65FD06F21F1D726C00932E5F /* LocationSearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationSearchTableViewCell.swift; path = UI/ViewControllers/LocationSearchTableViewCell.swift; sourceTree = "<group>"; };
@@ -143,7 +147,10 @@
 		6503EC2E1F075CA800D56AB5 /* OneDance */ = {
 			isa = PBXGroup;
 			children = (
-				65134F161F1B17DF0017C930 /* UI */,
+				65FC55E41F6794B600E02503 /* Models */,
+				65FC55DF1F6791E100E02503 /* Coordinators */,
+				65FC55DE1F6791CD00E02503 /* ViewModel */,
+				65134F171F1B17EB0017C930 /* ViewControllers */,
 				650049381F082D1B00F2FEB1 /* Core */,
 				6503EC2F1F075CA900D56AB5 /* AppDelegate.swift */,
 				6503EC311F075CA900D56AB5 /* ViewController.swift */,
@@ -172,14 +179,6 @@
 			path = OneDanceUITests;
 			sourceTree = "<group>";
 		};
-		65134F161F1B17DF0017C930 /* UI */ = {
-			isa = PBXGroup;
-			children = (
-				65134F171F1B17EB0017C930 /* ViewControllers */,
-			);
-			name = UI;
-			sourceTree = "<group>";
-		};
 		65134F171F1B17EB0017C930 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -198,6 +197,29 @@
 				65134F191F1B18CC0017C930 /* MapKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		65FC55DE1F6791CD00E02503 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = ViewModel;
+			sourceTree = "<group>";
+		};
+		65FC55DF1F6791E100E02503 /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				65FC55E01F67921C00E02503 /* Coordinator.swift */,
+				65FC55E21F67933000E02503 /* AppCoordinator.swift */,
+			);
+			name = Coordinators;
+			sourceTree = "<group>";
+		};
+		65FC55E41F6794B600E02503 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -342,9 +364,11 @@
 			files = (
 				65FD06F41F1D726C00932E5F /* LocationSearchTableViewCell.swift in Sources */,
 				6500493F1F082ED200F2FEB1 /* Events.swift in Sources */,
+				65FC55E11F67921C00E02503 /* Coordinator.swift in Sources */,
 				650D47631F0BEC61000BB619 /* ODUser.swift in Sources */,
 				65FD06F11F1D719F00932E5F /* LocationSearchTableViewController.swift in Sources */,
 				6503EC381F075CA900D56AB5 /* OneDance.xcdatamodeld in Sources */,
+				65FC55E31F67933000E02503 /* AppCoordinator.swift in Sources */,
 				65FC6D411F132BBD00B33C09 /* ODUserManager.swift in Sources */,
 				65134F1D1F1B19C40017C930 /* MapViewController.swift in Sources */,
 				650049411F082EE300F2FEB1 /* Users.swift in Sources */,
