@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         appCoordinator = AppCoordinator(window: window!)
         appCoordinator.start()
         
-        configureViews()
+        //configureViews()
         window!.makeKeyAndVisible()
         
         return true
