@@ -24,11 +24,6 @@ class AppCoordinator : Coordinator {
         self.window = window
     }
     
-    
-    func showAuthentication(){
-        print("AppCoordinator :: showAuth()")
-    }
-    
     var isLoggedIn : Bool = false
     
     // Coordinator
@@ -42,3 +37,23 @@ class AppCoordinator : Coordinator {
     
     
 }
+
+extension AppCoordinator : MainAuthCoordinatorDelegate {
+    
+    
+    func showAuthentication(){
+        
+        let authenticationCoordinator = MainAuthenticationCoordinator(window: window)
+        childCoordinators[AUTHENTICATION_KEY] = authenticationCoordinator
+        authenticationCoordinator.delegate = self
+        authenticationCoordinator.start()
+        
+    }
+    
+    func mainAuthCoordinatorDidFinish(authenticationCoordinator: MainAuthenticationCoordinator) {
+        print("AppCoordinator :: mainAuthCoordinatorDidFinish")
+    }
+    
+}
+
+
