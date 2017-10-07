@@ -42,8 +42,21 @@ extension MainAuthenticationCoordinator : MainAuthViewModelCoordinatorDelegate {
         
         // Implement child cooridnators
         
+        let signUpCoordinator = SignUpCoordinator(window: self.window, type: authType)
+        childCoordinators[authType.rawValue] = signUpCoordinator
+        signUpCoordinator.delegate = self
+        signUpCoordinator.start()
         
     }
     //func mainAuthViewModelDidSelectLogin(viewModel: MainAuthViewModelType)
     //func mainAuthViewModelDidSelectSkip(viewModel: MainAuthViewModelType)
+}
+
+extension MainAuthenticationCoordinator : SignUpCoordinatorDelegate{
+    func signUpCoordinatorDidFinishSignUp(signUpCoordinator:SignUpCoordinator){
+        print("signUpCoordinatorDidFinishSignUp()")
+//        self.childCoordinators[AuthType.Email.rawValue] = nil
+    
+    }
+    
 }
