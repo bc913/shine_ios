@@ -32,7 +32,9 @@ class MainAuthenticationCoordinator: Coordinator {
         let viewModel = MainAuthViewModel()
         viewModel.coordinatorDelegate = self
         vc.viewModel = viewModel
-        window.rootViewController = vc
+        
+        let containerViewController = UINavigationController(rootViewController: vc);
+        window.rootViewController = containerViewController
     }
 }
 
@@ -48,6 +50,8 @@ extension MainAuthenticationCoordinator : MainAuthViewModelCoordinatorDelegate {
         signUpCoordinator.start()
         
     }
+    
+    
     //func mainAuthViewModelDidSelectLogin(viewModel: MainAuthViewModelType)
     //func mainAuthViewModelDidSelectSkip(viewModel: MainAuthViewModelType)
 }

@@ -28,8 +28,19 @@ class MainAuthViewController: UIViewController {
         
         self.view.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
         self.configureAllButtons()
+        self.configureNavigationBar()
 
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+        super.viewWillDisappear(animated)
     }
 
     override func didReceiveMemoryWarning() {
@@ -86,6 +97,13 @@ class MainAuthViewController: UIViewController {
         configureFacebookSignupButton()
         configureEmailSignupButton()
         configureLoginButton()
+    }
+    
+    private func configureNavigationBar(){
+        // Kendisinden sonra stack a push edilen view controllerin navigation bar back buttonu nu kontrol eder
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+    
+    
     }
 
 }
