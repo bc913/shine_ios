@@ -25,8 +25,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         appCoordinator.start()
         
         //configureViews()
-        window!.makeKeyAndVisible()
         
+        /*
+        let vc = LoginViewController(nibName: "LoginViewController", bundle: nil);
+        window!.rootViewController = vc
+        */
+        window!.makeKeyAndVisible()
         return true
     }
     

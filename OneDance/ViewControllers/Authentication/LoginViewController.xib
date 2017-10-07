@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController" customModule="OneDance" customModuleProvider="target">
+            <connections>
+                <outlet property="contentView" destination="JAb-q4-ctn" id="ohU-te-ELp"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="anU-zR-cuB">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JAb-q4-ctn">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="1000.5"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WlZ-Gu-B82">
+                                    <rect key="frame" x="62" y="485" width="250" height="30"/>
+                                    <color key="backgroundColor" red="1" green="0.17958344664074466" blue="0.11045973917037211" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="250" id="KDU-4G-cWP"/>
+                                        <constraint firstAttribute="height" constant="30" id="oDP-zU-Xcj"/>
+                                    </constraints>
+                                    <state key="normal" title="Button"/>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="WlZ-Gu-B82" firstAttribute="centerX" secondItem="JAb-q4-ctn" secondAttribute="centerX" id="IzD-16-yel"/>
+                                <constraint firstItem="WlZ-Gu-B82" firstAttribute="centerY" secondItem="JAb-q4-ctn" secondAttribute="centerY" id="j7j-bX-zRO"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="JAb-q4-ctn" firstAttribute="width" secondItem="anU-zR-cuB" secondAttribute="width" id="BDo-4e-2hv"/>
+                        <constraint firstAttribute="trailing" secondItem="JAb-q4-ctn" secondAttribute="trailing" id="Jd7-zx-gGl"/>
+                        <constraint firstItem="JAb-q4-ctn" firstAttribute="leading" secondItem="anU-zR-cuB" secondAttribute="leading" id="VMk-Ix-tGB"/>
+                        <constraint firstItem="JAb-q4-ctn" firstAttribute="top" secondItem="anU-zR-cuB" secondAttribute="top" id="bsl-6W-tkr"/>
+                        <constraint firstAttribute="bottom" secondItem="JAb-q4-ctn" secondAttribute="bottom" id="gQu-JB-T0C"/>
+                    </constraints>
+                </scrollView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="JAb-q4-ctn" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="1.5" id="3DZ-Xg-fiT"/>
+                <constraint firstItem="anU-zR-cuB" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="40R-4r-vHT"/>
+                <constraint firstAttribute="bottom" secondItem="anU-zR-cuB" secondAttribute="bottom" id="6Ud-Iv-VgU"/>
+                <constraint firstItem="anU-zR-cuB" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="gUt-gA-Ka2"/>
+                <constraint firstAttribute="trailing" secondItem="anU-zR-cuB" secondAttribute="trailing" id="uro-Zj-sUa"/>
+            </constraints>
+        </view>
+    </objects>
+</document>
