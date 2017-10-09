@@ -1,0 +1,60 @@
+{
+    "danceTypes": [
+                   {
+                   "name": "Salsa on1" ,
+                   "category": 0,
+                   }, {
+                   "name": "Salsa on2" ,
+                   "category": 0,
+                   },{
+                   "name": "Bachata" ,
+                   "category": 0,
+                   },{
+                   "name": "Cha Cha Cha" ,
+                   "category": 0,
+                   },{
+                   "name": "Merengue" ,
+                   "category": 0,
+                   },{
+                   "name": "Kizomba" ,
+                   "category": 0,
+                   },{
+                   "name": "Tango" ,
+                   "category": 0,
+                   },{
+                   "name": "Reggaeton" ,
+                   "category": 0,
+                   },{
+                   "name": "Zouk" ,
+                   "category": 0,
+                   },{
+                   "name": "Afro" ,
+                   "category": 0,
+                   },{
+                   "name": "Belly Dance" ,
+                   "category": 0,
+                   },{
+                   "name": "Freestyle" ,
+                   "category": 0,
+                   },{
+                   "name": "Swing" ,
+                   "category": 0,
+                   },{
+                   "name": "Lindy Hop" ,
+                   "category": 0,
+                   },{
+                   "name": "Ballroom" ,
+                   "category": 0,
+                   },{
+                   "name": "Zumba" ,
+                   "category": 0,
+                   },{
+                   "name": "Sirtaki" ,
+                   "category": 0,
+                   },{
+                   "name": "Hip Hop" ,
+                   "category": 0,
+                   }
+    
+    ]
+}

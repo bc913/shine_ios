@@ -26,6 +26,7 @@
 		65134F1D1F1B19C40017C930 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65134F1B1F1B19C40017C930 /* MapViewController.swift */; };
 		65134F1E1F1B19C40017C930 /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65134F1C1F1B19C40017C930 /* MapViewController.xib */; };
 		652F007D1F6B83F80085C5F5 /* MainAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652F007C1F6B83F80085C5F5 /* MainAuthViewModel.swift */; };
+		6549E7841F8B2DF7000C475E /* danceTypes.json in Resources */ = {isa = PBXBuildFile; fileRef = 6549E7831F8B2DF7000C475E /* danceTypes.json */; };
 		6564BE2E1F85D3F4005AF655 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6564BE2C1F85D3F4005AF655 /* LoginViewController.swift */; };
 		6564BE2F1F85D3F4005AF655 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6564BE2D1F85D3F4005AF655 /* LoginViewController.xib */; };
 		65BC8BEF1F8166D700F5AF94 /* EmailSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BC8BED1F8166D700F5AF94 /* EmailSignUpViewController.swift */; };
@@ -88,6 +89,7 @@
 		65134F1B1F1B19C40017C930 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = UI/ViewControllers/MapViewController.swift; sourceTree = "<group>"; };
 		65134F1C1F1B19C40017C930 /* MapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MapViewController.xib; path = UI/ViewControllers/MapViewController.xib; sourceTree = "<group>"; };
 		652F007C1F6B83F80085C5F5 /* MainAuthViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainAuthViewModel.swift; path = ViewModels/MainAuthViewModel.swift; sourceTree = "<group>"; };
+		6549E7831F8B2DF7000C475E /* danceTypes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = danceTypes.json; path = Resources/danceTypes.json; sourceTree = "<group>"; };
 		6564BE2C1F85D3F4005AF655 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = ViewControllers/Authentication/LoginViewController.swift; sourceTree = "<group>"; };
 		6564BE2D1F85D3F4005AF655 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginViewController.xib; path = ViewControllers/Authentication/LoginViewController.xib; sourceTree = "<group>"; };
 		65BC8BED1F8166D700F5AF94 /* EmailSignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EmailSignUpViewController.swift; path = ViewControllers/Authentication/EmailSignUpViewController.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 		6503EC2E1F075CA800D56AB5 /* OneDance */ = {
 			isa = PBXGroup;
 			children = (
+				6549E7821F8B2CD6000C475E /* Resources */,
 				650AF5A51F8983BB00DE46E1 /* Commands */,
 				650AF5A11F89818000DE46E1 /* Utilities */,
 				65FC55E41F6794B600E02503 /* Models */,
@@ -278,6 +281,14 @@
 				345ED0A6396B3EDAB646CA05 /* Pods_OneDance.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6549E7821F8B2CD6000C475E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6549E7831F8B2DF7000C475E /* danceTypes.json */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		65FC55DE1F6791CD00E02503 /* ViewModel */ = {
@@ -438,6 +449,7 @@
 				6564BE2F1F85D3F4005AF655 /* LoginViewController.xib in Resources */,
 				65BC8BF01F8166D700F5AF94 /* EmailSignUpViewController.xib in Resources */,
 				6503EC3A1F075CA900D56AB5 /* Assets.xcassets in Resources */,
+				6549E7841F8B2DF7000C475E /* danceTypes.json in Resources */,
 				65134F1E1F1B19C40017C930 /* MapViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
