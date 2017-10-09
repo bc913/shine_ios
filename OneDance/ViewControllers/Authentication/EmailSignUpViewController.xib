@@ -121,7 +121,7 @@
                 <constraint firstItem="gc9-O2-zbV" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="1.5" id="WS5-Pe-W2S"/>
                 <constraint firstItem="DUU-xj-LPV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="k5Q-sP-JLH"/>
             </constraints>
-            <point key="canvasLocation" x="35.5" y="53.5"/>
+            <point key="canvasLocation" x="501" y="56"/>
         </view>
     </objects>
 </document>

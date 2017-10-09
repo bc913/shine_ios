@@ -46,8 +46,12 @@ class EmailSignUpViewController: UIViewController {
         self.configureCreateAccountButton()
         
         // Signal slots
+        self.nameTextField.addTarget(self, action: #selector(nameFieldDidChange(_:)), for: UIControlEvents.editingChanged)
+        self.surNameTextField.addTarget(self, action: #selector(surNameFieldDidChange(_:)), for: UIControlEvents.editingChanged)
         self.emailTextField.addTarget(self, action: #selector(emailFieldDidChange(_:)), for: UIControlEvents.editingChanged)
         self.passwordTextField.addTarget(self, action: #selector(passwordFieldDidChange(_:)), for: UIControlEvents.editingChanged)
+        
+        refreshDisplay()
         
     }
     
@@ -79,6 +83,21 @@ class EmailSignUpViewController: UIViewController {
             viewModel?.password = text
         }
     }
+    
+    func nameFieldDidChange(_ textField: UITextField)
+    {
+        if let text = textField.text {
+            viewModel?.userName = text
+        }
+    }
+    
+    func surNameFieldDidChange(_ textField: UITextField)
+    {
+        if let text = textField.text {
+            viewModel?.userSurname = text
+        }
+    }
+    
     @IBAction func createAccountButtonTapped(_ sender: Any) {
         viewModel?.submit()
     }   
@@ -96,11 +115,13 @@ class EmailSignUpViewController: UIViewController {
             self.surNameTextField.text = viewModel.userSurname
             self.emailTextField.text = viewModel.email
             self.passwordTextField.text = viewModel.password
+            self.createAccountButton.isEnabled = viewModel.canSubmit
         } else{
             self.nameTextField.text = ""
             self.surNameTextField.text = ""
             self.emailTextField.text = ""
             self.passwordTextField.text = ""
+            self.createAccountButton.isEnabled = false
         }
     }
     
@@ -163,9 +184,14 @@ extension EmailSignUpViewController: EmailSignUpViewModelViewDelegate
         self.createAccountButton.isEnabled = status
     }
     
-    
-//    func errorMessageDidChange(_ viewModel: EmailSignUpViewModelType, message: String)
-//    {
-//        errorMessageLabel.text = message
-//    }
+    func notifyUser(_ viewModel: EmailSignUpViewModelType, _ title: String, _ message: String) {
+        // create the alert
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        // add the actions (buttons)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
+        return
+    }
 }

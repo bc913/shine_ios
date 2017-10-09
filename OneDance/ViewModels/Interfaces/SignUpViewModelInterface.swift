@@ -16,6 +16,7 @@ protocol EmailSignUpViewModelCoordinatorDelegate : class {
 
 protocol EmailSignUpViewModelViewDelegate : class {
     func canSubmitStatusDidChange(_ viewModel: EmailSignUpViewModelType, status: Bool)
+    func notifyUser(_ viewModel: EmailSignUpViewModelType, _ title: String, _ message: String)
 }
 
 protocol EmailSignUpViewModelType : class {
@@ -29,6 +30,10 @@ protocol EmailSignUpViewModelType : class {
     var email: String { get set }
     var password: String { get set }
     
+    var canSubmit : Bool { get }
+    
+    // Errors
+    var errorMessage: String { get }
     
     func submit()
     

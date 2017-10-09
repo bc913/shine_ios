@@ -71,6 +71,7 @@ class MainAuthViewController: UIViewController {
         self.signUpWithEmailButton.layer.borderWidth = 1
         self.signUpWithEmailButton.layer.borderColor = UIColor.white.cgColor
         
+        
     }
     
     private func configureLoginButton(){
