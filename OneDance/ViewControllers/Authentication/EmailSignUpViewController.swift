@@ -155,6 +155,9 @@ class EmailSignUpViewController: UIViewController {
         textField.layer.addSublayer(border)
         textField.layer.masksToBounds = true
         
+        // Text color
+        textField.textColor = UIColor.white
+        
     }
     
     private func configureAllTextFields(){

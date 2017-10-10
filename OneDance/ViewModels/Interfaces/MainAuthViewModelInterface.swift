@@ -14,8 +14,8 @@ enum AuthType : String {
 }
 
 protocol MainAuthViewModelCoordinatorDelegate : class {
-    func mainAuthViewModelDidSelect(authType: AuthType)
-    //func mainAuthViewModelDidSelectLogin(viewModel: MainAuthViewModelType)
+    func mainAuthViewModelDidSelectRegister(authType: AuthType)
+    func mainAuthViewModelDidSelectLogin(viewModel: MainAuthViewModelType)
     //func mainAuthViewModelDidSelectSkip(viewModel: MainAuthViewModelType)
 }
 

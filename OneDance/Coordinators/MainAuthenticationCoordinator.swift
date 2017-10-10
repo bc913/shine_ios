@@ -39,7 +39,7 @@ class MainAuthenticationCoordinator: Coordinator {
 }
 
 extension MainAuthenticationCoordinator : MainAuthViewModelCoordinatorDelegate {
-    func mainAuthViewModelDidSelect(authType: AuthType){
+    func mainAuthViewModelDidSelectRegister(authType: AuthType){
         print("\(authType) is selected...")
         
         // Implement child cooridnators
@@ -52,7 +52,14 @@ extension MainAuthenticationCoordinator : MainAuthViewModelCoordinatorDelegate {
     }
     
     
-    //func mainAuthViewModelDidSelectLogin(viewModel: MainAuthViewModelType)
+    func mainAuthViewModelDidSelectLogin(viewModel: MainAuthViewModelType){
+        
+        let emailLoginCoordinator = EmailLoginCoordinator(window: self.window)
+        childCoordinators["EMAIL_LOGIN"] = emailLoginCoordinator
+        emailLoginCoordinator.delegate = self
+        emailLoginCoordinator.start()
+        
+    }
     //func mainAuthViewModelDidSelectSkip(viewModel: MainAuthViewModelType)
 }
 
@@ -63,4 +70,10 @@ extension MainAuthenticationCoordinator : SignUpCoordinatorDelegate{
     
     }
     
+}
+
+extension MainAuthenticationCoordinator : EmailLoginCoordinatorDelegate{
+    func emailLoginCoordinatorDidFinishLogin(emailLoginCoordinator: EmailLoginCoordinator) {
+        print("emailLoginCoordinatorDidFinishLogin")
+    }
 }

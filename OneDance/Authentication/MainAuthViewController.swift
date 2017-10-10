@@ -23,6 +23,9 @@ class MainAuthViewController: UIViewController {
         viewModel?.presentEmailSignupScreen()
     }
     
+    @IBAction func loginButtonTapped(_ sender: Any) {
+        viewModel?.presentLoginScreen()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
