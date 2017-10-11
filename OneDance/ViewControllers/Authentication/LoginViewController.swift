@@ -107,33 +107,10 @@ class LoginViewController: UIViewController {
         self.submitLoginButton.layer.borderColor = UIColor.white.cgColor
         
     }
-    
-    private func configureTextField(textField:UITextField, placeholder: String){
         
-        textField.backgroundColor = UIColor.clear
-        textField.borderStyle = UITextBorderStyle.none
-        textField.attributedPlaceholder = NSAttributedString(string: placeholder,
-                                                             attributes: [NSForegroundColorAttributeName: UIColor.white])
-        // Replace NSForegroundColorAttributeName with NSAttributedStringKey.foregroundColor for IOS 11
-        
-        // Apply bottom border
-        let border = CALayer()
-        let width = CGFloat(2.0)
-        border.borderColor = UIColor.darkGray.cgColor
-        border.frame = CGRect(x: 0, y: textField.frame.size.height - width, width:  textField.frame.size.width, height: textField.frame.size.height)
-        
-        border.borderWidth = width
-        textField.layer.addSublayer(border)
-        textField.layer.masksToBounds = true
-        
-        // Text color
-        textField.textColor = UIColor.white
-        
-    }
-    
     private func configureAllTextFields(){
-        self.configureTextField(textField: self.emailTextField, placeholder: "Email")
-        self.configureTextField(textField: self.passwordTextField, placeholder: "Password")
+        self.emailTextField.configure(placeholder: "Email")
+        self.passwordTextField.configure(placeholder: "Password")
     }
     
     private func configureNavigationBar(){
