@@ -98,16 +98,10 @@ class LoginViewController: UIViewController {
     
     private func configureSubmitLoginButton(){
         
-        self.submitLoginButton.titleLabel!.font = UIFont(name: "Avenir Next Demi Bold", size: 20)
-        self.submitLoginButton.setTitleColor(UIColor.white, for: .normal)
-        self.submitLoginButton.setTitle("Login", for: .normal)
-        
-        self.submitLoginButton.layer.cornerRadius = 25
-        self.submitLoginButton.layer.borderWidth = 1
-        self.submitLoginButton.layer.borderColor = UIColor.white.cgColor
+        self.submitLoginButton.configure(title: "Login")
         
     }
-        
+    
     private func configureAllTextFields(){
         self.emailTextField.configure(placeholder: "Email")
         self.passwordTextField.configure(placeholder: "Password")

@@ -52,43 +52,6 @@ class MainAuthViewController: UIViewController {
     }
     
     // Configure view elements
-    private func configureFacebookSignupButton(){
-        self.signUpWithFacebookButton.backgroundColor = UIColor(red:0.23, green:0.35, blue:0.60, alpha:1.0)
-        self.signUpWithFacebookButton.titleLabel!.font = UIFont(name: "Avenir Next Demi Bold", size: 20)
-        self.signUpWithFacebookButton.setTitleColor(UIColor.white, for: .normal)
-        self.signUpWithFacebookButton.setTitle(self.viewModel?.facebookAuthLabel, for: .normal)
-        
-        self.signUpWithFacebookButton.layer.cornerRadius = 25
-        self.signUpWithFacebookButton.layer.borderWidth = 1
-        self.signUpWithFacebookButton.layer.borderColor = UIColor.black.cgColor
-        
-    }
-    
-    private func configureEmailSignupButton(){
-        
-        self.signUpWithEmailButton.titleLabel!.font = UIFont(name: "Avenir Next Demi Bold", size: 20)
-        self.signUpWithEmailButton.setTitleColor(UIColor.white, for: .normal)
-        self.signUpWithEmailButton.setTitle(self.viewModel?.emailAuthLabel, for: .normal)
-        
-        self.signUpWithEmailButton.layer.cornerRadius = 25
-        self.signUpWithEmailButton.layer.borderWidth = 1
-        self.signUpWithEmailButton.layer.borderColor = UIColor.white.cgColor
-        
-        
-    }
-    
-    private func configureLoginButton(){
-        
-        self.loginButton.titleLabel!.font = UIFont(name: "Avenir Next Demi Bold", size: 20)
-        self.loginButton.setTitleColor(UIColor.white, for: .normal)
-        self.loginButton.setTitle(self.viewModel?.loginLabel, for: .normal)
-        
-        self.loginButton.layer.cornerRadius = 25
-        self.loginButton.layer.borderWidth = 1
-        self.loginButton.layer.borderColor = UIColor.white.cgColor
-        
-    }
-    
     private func configureAllButtons(){
         self.skipAuthButton.setTitle("Skip", for: .normal)
         
@@ -98,9 +61,11 @@ class MainAuthViewController: UIViewController {
         self.appLogoLabel.font = UIFont(name: "Zapfino", size: 46)
         self.appLogoLabel.textColor = UIColor.white
         
-        configureFacebookSignupButton()
-        configureEmailSignupButton()
-        configureLoginButton()
+        self.signUpWithFacebookButton.configure(title: self.viewModel?.facebookAuthLabel, backgroundColor: UIColor(red:0.23, green:0.35, blue:0.60, alpha:1.0))
+        self.signUpWithEmailButton.configure(title: self.viewModel?.emailAuthLabel)
+        self.loginButton.configure(title: self.viewModel?.loginLabel)
+        
+        
     }
     
     private func configureNavigationBar(){

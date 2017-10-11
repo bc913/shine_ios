@@ -28,6 +28,7 @@
 		652F007D1F6B83F80085C5F5 /* MainAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652F007C1F6B83F80085C5F5 /* MainAuthViewModel.swift */; };
 		6549E7841F8B2DF7000C475E /* danceTypes.json in Resources */ = {isa = PBXBuildFile; fileRef = 6549E7831F8B2DF7000C475E /* danceTypes.json */; };
 		654BB8CD1F8DA8950044A555 /* UITextField+Configure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654BB8CC1F8DA8950044A555 /* UITextField+Configure.swift */; };
+		654BB8CF1F8DB0CC0044A555 /* UIButton+Configure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654BB8CE1F8DB0CC0044A555 /* UIButton+Configure.swift */; };
 		6564BE2E1F85D3F4005AF655 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6564BE2C1F85D3F4005AF655 /* LoginViewController.swift */; };
 		6564BE2F1F85D3F4005AF655 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6564BE2D1F85D3F4005AF655 /* LoginViewController.xib */; };
 		656834D11F8C6B5F00ADCBA2 /* EmailLoginViewModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656834D01F8C6B5F00ADCBA2 /* EmailLoginViewModelInterface.swift */; };
@@ -95,6 +96,7 @@
 		652F007C1F6B83F80085C5F5 /* MainAuthViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainAuthViewModel.swift; path = ViewModels/MainAuthViewModel.swift; sourceTree = "<group>"; };
 		6549E7831F8B2DF7000C475E /* danceTypes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = danceTypes.json; path = Resources/danceTypes.json; sourceTree = "<group>"; };
 		654BB8CC1F8DA8950044A555 /* UITextField+Configure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UITextField+Configure.swift"; path = "Utilities/UI/UITextField+Configure.swift"; sourceTree = "<group>"; };
+		654BB8CE1F8DB0CC0044A555 /* UIButton+Configure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIButton+Configure.swift"; path = "Utilities/UI/UIButton+Configure.swift"; sourceTree = "<group>"; };
 		6564BE2C1F85D3F4005AF655 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = ViewControllers/Authentication/LoginViewController.swift; sourceTree = "<group>"; };
 		6564BE2D1F85D3F4005AF655 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginViewController.xib; path = ViewControllers/Authentication/LoginViewController.xib; sourceTree = "<group>"; };
 		656834D01F8C6B5F00ADCBA2 /* EmailLoginViewModelInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EmailLoginViewModelInterface.swift; path = ViewModels/Interfaces/EmailLoginViewModelInterface.swift; sourceTree = "<group>"; };
@@ -305,6 +307,7 @@
 			isa = PBXGroup;
 			children = (
 				654BB8CC1F8DA8950044A555 /* UITextField+Configure.swift */,
+				654BB8CE1F8DB0CC0044A555 /* UIButton+Configure.swift */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -549,6 +552,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				654BB8CF1F8DB0CC0044A555 /* UIButton+Configure.swift in Sources */,
 				65FD06F41F1D726C00932E5F /* LocationSearchTableViewCell.swift in Sources */,
 				6500493F1F082ED200F2FEB1 /* Events.swift in Sources */,
 				656834D51F8C8A7600ADCBA2 /* EmailLoginCoordinator.swift in Sources */,

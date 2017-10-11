@@ -127,17 +127,10 @@ class EmailSignUpViewController: UIViewController {
     
     private func configureCreateAccountButton(){
         
-        self.createAccountButton.titleLabel!.font = UIFont(name: "Avenir Next Demi Bold", size: 20)
-        self.createAccountButton.setTitleColor(UIColor.white, for: .normal)
-        self.createAccountButton.setTitle("Create Account", for: .normal)
-        
-        self.createAccountButton.layer.cornerRadius = 25
-        self.createAccountButton.layer.borderWidth = 1
-        self.createAccountButton.layer.borderColor = UIColor.white.cgColor
-        
+        self.createAccountButton.configure(title: "Create Account")
     }
     
-       
+    
     private func configureAllTextFields(){
         
         self.nameTextField.configure(placeholder: "Name")
