@@ -26,9 +26,19 @@
 		65134F1D1F1B19C40017C930 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65134F1B1F1B19C40017C930 /* MapViewController.swift */; };
 		65134F1E1F1B19C40017C930 /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65134F1C1F1B19C40017C930 /* MapViewController.xib */; };
 		652F007D1F6B83F80085C5F5 /* MainAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652F007C1F6B83F80085C5F5 /* MainAuthViewModel.swift */; };
+		65427D241F90496700407C5D /* DanceTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65427D231F90496700407C5D /* DanceTypesViewController.swift */; };
+		65427D281F90508300407C5D /* DanceTypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65427D261F90508300407C5D /* DanceTypeTableViewCell.swift */; };
+		65427D291F90508300407C5D /* DanceTypeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65427D271F90508300407C5D /* DanceTypeTableViewCell.xib */; };
+		65427D2B1F905BA100407C5D /* InitialProfileSetupCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65427D2A1F905BA100407C5D /* InitialProfileSetupCoordinator.swift */; };
+		654987151F8F03D3002DFB0C /* DanceTypeInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654987141F8F03D3002DFB0C /* DanceTypeInterface.swift */; };
+		654987171F8F04D7002DFB0C /* DanceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654987161F8F04D7002DFB0C /* DanceType.swift */; };
+		654987191F8F0EE3002DFB0C /* DanceTypesModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654987181F8F0EE3002DFB0C /* DanceTypesModelInterface.swift */; };
+		6549871B1F8F0F31002DFB0C /* DanceTypesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6549871A1F8F0F31002DFB0C /* DanceTypesModel.swift */; };
+		6549871D1F8F1747002DFB0C /* DanceTypesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6549871C1F8F1747002DFB0C /* DanceTypesViewModel.swift */; };
 		6549E7841F8B2DF7000C475E /* danceTypes.json in Resources */ = {isa = PBXBuildFile; fileRef = 6549E7831F8B2DF7000C475E /* danceTypes.json */; };
 		654BB8CD1F8DA8950044A555 /* UITextField+Configure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654BB8CC1F8DA8950044A555 /* UITextField+Configure.swift */; };
 		654BB8CF1F8DB0CC0044A555 /* UIButton+Configure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654BB8CE1F8DB0CC0044A555 /* UIButton+Configure.swift */; };
+		654BB8D11F8DCBE80044A555 /* DanceTypesViewModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654BB8D01F8DCBE80044A555 /* DanceTypesViewModelInterface.swift */; };
 		6564BE2E1F85D3F4005AF655 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6564BE2C1F85D3F4005AF655 /* LoginViewController.swift */; };
 		6564BE2F1F85D3F4005AF655 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6564BE2D1F85D3F4005AF655 /* LoginViewController.xib */; };
 		656834D11F8C6B5F00ADCBA2 /* EmailLoginViewModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656834D01F8C6B5F00ADCBA2 /* EmailLoginViewModelInterface.swift */; };
@@ -94,9 +104,19 @@
 		65134F1B1F1B19C40017C930 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = UI/ViewControllers/MapViewController.swift; sourceTree = "<group>"; };
 		65134F1C1F1B19C40017C930 /* MapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MapViewController.xib; path = UI/ViewControllers/MapViewController.xib; sourceTree = "<group>"; };
 		652F007C1F6B83F80085C5F5 /* MainAuthViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainAuthViewModel.swift; path = ViewModels/MainAuthViewModel.swift; sourceTree = "<group>"; };
+		65427D231F90496700407C5D /* DanceTypesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceTypesViewController.swift; path = ViewControllers/DanceTypesViewController.swift; sourceTree = "<group>"; };
+		65427D261F90508300407C5D /* DanceTypeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceTypeTableViewCell.swift; path = ViewControllers/TableCells/DanceTypeTableViewCell.swift; sourceTree = "<group>"; };
+		65427D271F90508300407C5D /* DanceTypeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DanceTypeTableViewCell.xib; path = ViewControllers/TableCells/DanceTypeTableViewCell.xib; sourceTree = "<group>"; };
+		65427D2A1F905BA100407C5D /* InitialProfileSetupCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InitialProfileSetupCoordinator.swift; path = Coordinators/InitialProfileSetupCoordinator.swift; sourceTree = "<group>"; };
+		654987141F8F03D3002DFB0C /* DanceTypeInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceTypeInterface.swift; path = Models/Data/Interfaces/DanceTypeInterface.swift; sourceTree = "<group>"; };
+		654987161F8F04D7002DFB0C /* DanceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceType.swift; path = Models/Data/DanceType.swift; sourceTree = "<group>"; };
+		654987181F8F0EE3002DFB0C /* DanceTypesModelInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceTypesModelInterface.swift; path = Models/Protocols/DanceTypesModelInterface.swift; sourceTree = "<group>"; };
+		6549871A1F8F0F31002DFB0C /* DanceTypesModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceTypesModel.swift; path = Models/DanceTypesModel.swift; sourceTree = "<group>"; };
+		6549871C1F8F1747002DFB0C /* DanceTypesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceTypesViewModel.swift; path = ViewModels/DanceTypesViewModel.swift; sourceTree = "<group>"; };
 		6549E7831F8B2DF7000C475E /* danceTypes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = danceTypes.json; path = Resources/danceTypes.json; sourceTree = "<group>"; };
 		654BB8CC1F8DA8950044A555 /* UITextField+Configure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UITextField+Configure.swift"; path = "Utilities/UI/UITextField+Configure.swift"; sourceTree = "<group>"; };
 		654BB8CE1F8DB0CC0044A555 /* UIButton+Configure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIButton+Configure.swift"; path = "Utilities/UI/UIButton+Configure.swift"; sourceTree = "<group>"; };
+		654BB8D01F8DCBE80044A555 /* DanceTypesViewModelInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceTypesViewModelInterface.swift; path = ViewModels/Interfaces/DanceTypesViewModelInterface.swift; sourceTree = "<group>"; };
 		6564BE2C1F85D3F4005AF655 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = ViewControllers/Authentication/LoginViewController.swift; sourceTree = "<group>"; };
 		6564BE2D1F85D3F4005AF655 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginViewController.xib; path = ViewControllers/Authentication/LoginViewController.xib; sourceTree = "<group>"; };
 		656834D01F8C6B5F00ADCBA2 /* EmailLoginViewModelInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EmailLoginViewModelInterface.swift; path = ViewModels/Interfaces/EmailLoginViewModelInterface.swift; sourceTree = "<group>"; };
@@ -269,6 +289,7 @@
 				650CB2811F68EBF20093F2FC /* MainAuthViewModelInterface.swift */,
 				65BC8BF71F819F6800F5AF94 /* SignUpViewModelInterface.swift */,
 				656834D01F8C6B5F00ADCBA2 /* EmailLoginViewModelInterface.swift */,
+				654BB8D01F8DCBE80044A555 /* DanceTypesViewModelInterface.swift */,
 			);
 			name = Interfaces;
 			sourceTree = "<group>";
@@ -276,12 +297,14 @@
 		65134F171F1B17EB0017C930 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				65427D251F90502600407C5D /* TableCells */,
 				650CB2791F68DE5A0093F2FC /* Authentication */,
 				65134F1B1F1B19C40017C930 /* MapViewController.swift */,
 				65134F1C1F1B19C40017C930 /* MapViewController.xib */,
 				65FD06F01F1D719F00932E5F /* LocationSearchTableViewController.swift */,
 				65FD06F21F1D726C00932E5F /* LocationSearchTableViewCell.swift */,
 				65FD06F31F1D726C00932E5F /* LocationSearchTableViewCell.xib */,
+				65427D231F90496700407C5D /* DanceTypesViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -293,6 +316,32 @@
 				345ED0A6396B3EDAB646CA05 /* Pods_OneDance.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		65427D251F90502600407C5D /* TableCells */ = {
+			isa = PBXGroup;
+			children = (
+				65427D261F90508300407C5D /* DanceTypeTableViewCell.swift */,
+				65427D271F90508300407C5D /* DanceTypeTableViewCell.xib */,
+			);
+			name = TableCells;
+			sourceTree = "<group>";
+		};
+		6549870B1F8EFFD5002DFB0C /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				6549870C1F8EFFE5002DFB0C /* Interfaces */,
+				654987161F8F04D7002DFB0C /* DanceType.swift */,
+			);
+			name = Data;
+			sourceTree = "<group>";
+		};
+		6549870C1F8EFFE5002DFB0C /* Interfaces */ = {
+			isa = PBXGroup;
+			children = (
+				654987141F8F03D3002DFB0C /* DanceTypeInterface.swift */,
+			);
+			name = Interfaces;
 			sourceTree = "<group>";
 		};
 		6549E7821F8B2CD6000C475E /* Resources */ = {
@@ -312,6 +361,14 @@
 			name = UI;
 			sourceTree = "<group>";
 		};
+		654BB8D21F8DCCE00044A555 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				654987181F8F0EE3002DFB0C /* DanceTypesModelInterface.swift */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
 		65FC55DE1F6791CD00E02503 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -319,6 +376,7 @@
 				652F007C1F6B83F80085C5F5 /* MainAuthViewModel.swift */,
 				65BC8BF91F81D74600F5AF94 /* SignUpViewModel.swift */,
 				656834D21F8C7F8300ADCBA2 /* EmailLoginViewModel.swift */,
+				6549871C1F8F1747002DFB0C /* DanceTypesViewModel.swift */,
 			);
 			name = ViewModel;
 			sourceTree = "<group>";
@@ -331,6 +389,7 @@
 				65C045281F6E37B9003824E0 /* MainAuthenticationCoordinator.swift */,
 				65BC8BFB1F81D87400F5AF94 /* SignUpCoordinator.swift */,
 				656834D41F8C8A7600ADCBA2 /* EmailLoginCoordinator.swift */,
+				65427D2A1F905BA100407C5D /* InitialProfileSetupCoordinator.swift */,
 			);
 			name = Coordinators;
 			sourceTree = "<group>";
@@ -338,6 +397,9 @@
 		65FC55E41F6794B600E02503 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				6549870B1F8EFFD5002DFB0C /* Data */,
+				654BB8D21F8DCCE00044A555 /* Protocols */,
+				6549871A1F8F0F31002DFB0C /* DanceTypesModel.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -470,6 +532,7 @@
 				65FD06F51F1D726C00932E5F /* LocationSearchTableViewCell.xib in Resources */,
 				650CB27D1F68DF020093F2FC /* MainAuthViewController.xib in Resources */,
 				6564BE2F1F85D3F4005AF655 /* LoginViewController.xib in Resources */,
+				65427D291F90508300407C5D /* DanceTypeTableViewCell.xib in Resources */,
 				65BC8BF01F8166D700F5AF94 /* EmailSignUpViewController.xib in Resources */,
 				6503EC3A1F075CA900D56AB5 /* Assets.xcassets in Resources */,
 				6549E7841F8B2DF7000C475E /* danceTypes.json in Resources */,
@@ -554,22 +617,30 @@
 			files = (
 				654BB8CF1F8DB0CC0044A555 /* UIButton+Configure.swift in Sources */,
 				65FD06F41F1D726C00932E5F /* LocationSearchTableViewCell.swift in Sources */,
+				654987151F8F03D3002DFB0C /* DanceTypeInterface.swift in Sources */,
 				6500493F1F082ED200F2FEB1 /* Events.swift in Sources */,
+				65427D241F90496700407C5D /* DanceTypesViewController.swift in Sources */,
 				656834D51F8C8A7600ADCBA2 /* EmailLoginCoordinator.swift in Sources */,
 				65FC55E11F67921C00E02503 /* Coordinator.swift in Sources */,
 				6564BE2E1F85D3F4005AF655 /* LoginViewController.swift in Sources */,
+				654987171F8F04D7002DFB0C /* DanceType.swift in Sources */,
+				654BB8D11F8DCBE80044A555 /* DanceTypesViewModelInterface.swift in Sources */,
 				650D47631F0BEC61000BB619 /* ODUser.swift in Sources */,
 				652F007D1F6B83F80085C5F5 /* MainAuthViewModel.swift in Sources */,
 				65FD06F11F1D719F00932E5F /* LocationSearchTableViewController.swift in Sources */,
+				65427D2B1F905BA100407C5D /* InitialProfileSetupCoordinator.swift in Sources */,
 				656834D31F8C7F8300ADCBA2 /* EmailLoginViewModel.swift in Sources */,
 				6503EC381F075CA900D56AB5 /* OneDance.xcdatamodeld in Sources */,
 				65FC55E31F67933000E02503 /* AppCoordinator.swift in Sources */,
 				650AF5A71F89846B00DE46E1 /* CommandInterface.swift in Sources */,
 				650CB27C1F68DF020093F2FC /* MainAuthViewController.swift in Sources */,
 				65FC6D411F132BBD00B33C09 /* ODUserManager.swift in Sources */,
+				65427D281F90508300407C5D /* DanceTypeTableViewCell.swift in Sources */,
 				650AF5A41F89836200DE46E1 /* ShineNetworkService.swift in Sources */,
 				65134F1D1F1B19C40017C930 /* MapViewController.swift in Sources */,
 				650049411F082EE300F2FEB1 /* Users.swift in Sources */,
+				6549871B1F8F0F31002DFB0C /* DanceTypesModel.swift in Sources */,
+				654987191F8F0EE3002DFB0C /* DanceTypesModelInterface.swift in Sources */,
 				65BC8BEF1F8166D700F5AF94 /* EmailSignUpViewController.swift in Sources */,
 				654BB8CD1F8DA8950044A555 /* UITextField+Configure.swift in Sources */,
 				65BC8BFA1F81D74600F5AF94 /* SignUpViewModel.swift in Sources */,
@@ -580,6 +651,7 @@
 				65BC8BFC1F81D87400F5AF94 /* SignUpCoordinator.swift in Sources */,
 				65C045291F6E37B9003824E0 /* MainAuthenticationCoordinator.swift in Sources */,
 				650CB2821F68EBF20093F2FC /* MainAuthViewModelInterface.swift in Sources */,
+				6549871D1F8F1747002DFB0C /* DanceTypesViewModel.swift in Sources */,
 				650D47651F0C44B3000BB619 /* ODEvents.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

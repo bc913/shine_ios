@@ -36,6 +36,20 @@ class MainAuthenticationCoordinator: Coordinator {
         let containerViewController = UINavigationController(rootViewController: vc);
         window.rootViewController = containerViewController
     }
+    
+}
+
+extension MainAuthenticationCoordinator : InitialProfileSetupCoordinatorDelegate {
+    func presentInitialProfileSetup(){
+        let initialProfileSetupCoordinator = InitialProfileSetupCoordinator(window: self.window)
+        self.childCoordinators["INITIAL_SETUP"] = initialProfileSetupCoordinator
+        initialProfileSetupCoordinator.delegate = self
+        initialProfileSetupCoordinator.start()
+    }
+    
+    func initialProfileSetupDidFinish(initialProfileSetupCoordinator: InitialProfileSetupCoordinator) {
+        print("MainAuthCoordinator :: initialProfileSetupDidFinish()")
+    }
 }
 
 extension MainAuthenticationCoordinator : MainAuthViewModelCoordinatorDelegate {
@@ -45,7 +59,7 @@ extension MainAuthenticationCoordinator : MainAuthViewModelCoordinatorDelegate {
         // Implement child cooridnators
         
         let signUpCoordinator = SignUpCoordinator(window: self.window, type: authType)
-        childCoordinators[authType.rawValue] = signUpCoordinator
+        self.childCoordinators[authType.rawValue] = signUpCoordinator
         signUpCoordinator.delegate = self
         signUpCoordinator.start()
         
@@ -55,7 +69,7 @@ extension MainAuthenticationCoordinator : MainAuthViewModelCoordinatorDelegate {
     func mainAuthViewModelDidSelectLogin(viewModel: MainAuthViewModelType){
         
         let emailLoginCoordinator = EmailLoginCoordinator(window: self.window)
-        childCoordinators["EMAIL_LOGIN"] = emailLoginCoordinator
+        self.childCoordinators["EMAIL_LOGIN"] = emailLoginCoordinator
         emailLoginCoordinator.delegate = self
         emailLoginCoordinator.start()
         
@@ -66,8 +80,10 @@ extension MainAuthenticationCoordinator : MainAuthViewModelCoordinatorDelegate {
 extension MainAuthenticationCoordinator : SignUpCoordinatorDelegate{
     func signUpCoordinatorDidFinishSignUp(signUpCoordinator:SignUpCoordinator){
         print("signUpCoordinatorDidFinishSignUp()")
-//        self.childCoordinators[AuthType.Email.rawValue] = nil
-    
+        self.childCoordinators[signUpCoordinator.authType.rawValue] = nil
+        
+        // Onboarding and initial setup
+        self.presentInitialProfileSetup()
     }
     
 }
@@ -75,5 +91,9 @@ extension MainAuthenticationCoordinator : SignUpCoordinatorDelegate{
 extension MainAuthenticationCoordinator : EmailLoginCoordinatorDelegate{
     func emailLoginCoordinatorDidFinishLogin(emailLoginCoordinator: EmailLoginCoordinator) {
         print("emailLoginCoordinatorDidFinishLogin")
+        self.childCoordinators["EMAIL_LOGIN"] = nil
+        
+        // Onboarding and initial setup
+        self.presentInitialProfileSetup()
     }
 }

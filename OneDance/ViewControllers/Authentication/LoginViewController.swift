@@ -126,14 +126,17 @@ extension LoginViewController : EmailLoginViewModelViewDelegate {
     }
     
     
-    func notifyUser(_ viewModel: EmailLoginViewModelType, _ title: String, _ message: String) {
+    func notifyUser(_ viewModel: EmailLoginViewModelType, _ title: String, _ message: String, completion: ((EmailLoginViewModelType) -> ())?) {
         // create the alert
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         
         // add the actions (buttons)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: {(action:UIAlertAction!) -> Void in
+            print(action)
+            completion?(viewModel)
+        })
+        alert.addAction(okAction)
         
         self.present(alert, animated: true, completion: nil)
-        return
     }
 }

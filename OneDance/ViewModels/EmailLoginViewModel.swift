@@ -51,7 +51,7 @@ class EmailLoginViewModel : EmailLoginViewModelType {
     fileprivate(set) var errorMessage: String = "" {
         didSet {
             if oldValue != errorMessage {
-                viewDelegate?.notifyUser(self, "Error", errorMessage)
+                viewDelegate?.notifyUser(self, "Error", errorMessage, completion: nil)
             }
         }
     }
@@ -74,13 +74,15 @@ class EmailLoginViewModel : EmailLoginViewModelType {
     func submit() {
         print("EmailLogin :: submit()")
         
+        
+        let completion : ((EmailLoginViewModelType) -> ())? = self.coordinatorDelegate?.userDidLogin
         let modelCompletionHandler = { (error: NSError?) in
             //Make sure we are on the main thread
             DispatchQueue.main.async {
                 print("Am I back on the main thread: \(Thread.isMainThread)")
                 guard let error = error else {
-                    self.viewDelegate?.notifyUser(self, "Success", "You are logged in.")
-                    self.coordinatorDelegate?.userDidLogin(viewModel: self)
+                    self.viewDelegate?.notifyUser(self, "Success", "You are logged in.", completion: completion)
+                    //self.coordinatorDelegate?.userDidLogin(viewModel: self)
                     return
                 }
                 self.errorMessage = error.localizedDescription

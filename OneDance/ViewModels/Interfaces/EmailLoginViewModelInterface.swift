@@ -14,7 +14,7 @@ protocol EmailLoginViewModelCoordinatorDelegate : class {
 
 protocol EmailLoginViewModelViewDelegate : class {
     func canSubmitStatusDidChange(_ viewModel: EmailLoginViewModelType, status: Bool)
-    func notifyUser(_ viewModel: EmailLoginViewModelType, _ title: String, _ message: String)
+    func notifyUser(_ viewModel: EmailLoginViewModelType, _ title: String, _ message: String, completion: ((EmailLoginViewModelType) -> ())?)
 }
 
 
