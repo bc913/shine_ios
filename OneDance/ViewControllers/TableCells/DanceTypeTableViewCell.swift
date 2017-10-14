@@ -25,6 +25,8 @@ class DanceTypeTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        self.contentView.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
+        self.danceTypeLabel.textColor = UIColor.white
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

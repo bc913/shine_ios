@@ -42,6 +42,9 @@ class DanceTypesViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
+        // Hide empty unused cells
+        self.tableView.tableFooterView = UIView()
+        
         // Register custom view cell
         tableView.register(UINib(nibName:"DanceTypeTableViewCell", bundle:nil), forCellReuseIdentifier: "DanceTypeCell")
         
