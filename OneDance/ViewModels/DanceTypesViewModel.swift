@@ -55,7 +55,8 @@ class DanceTypesViewModel: DanceTypesViewModelType {
         }
         
         
-        ShineNetworkService().getDanceTypes(mainThreadCompletionHandler: modelCompletionHandler)
+        ShineNetworkService.API.getDanceTypes(mainThreadCompletionHandler: modelCompletionHandler)
+        print("DanceTypeViewModel.init() after network request")
     }
     
     var numberOfItems: Int {

@@ -20,6 +20,7 @@ class DanceTypesViewController: UIViewController {
         }
         didSet{
             viewModel?.viewDelegate = self
+            print("DanceTypesVC.viewmodel.didSet()")
             refreshDisplay()
         }
     }
@@ -70,6 +71,8 @@ class DanceTypesViewController: UIViewController {
         
         self.isLoaded = true
         refreshDisplay()
+        
+        print("DanceTypesVC :: viewDidLoad()")
     }
 
     
