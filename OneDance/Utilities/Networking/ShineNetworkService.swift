@@ -12,7 +12,7 @@ import Alamofire
 
 struct ShineNetworkService {
     
-    struct Constants {
+    private struct Constants {
         static let baseUrl : String = "https://n48v6ca143.execute-api.us-east-1.amazonaws.com/test/"
         static let registerUserUrl : String = baseUrl + "users"
         static let emailLoginUrl : String = baseUrl + "login"
@@ -131,11 +131,10 @@ struct ShineNetworkService {
                             
                             // TODO: Update this portion of the code based on the Login API change
                             if let jsonDict = jsonData as? [String:AnyObject] {
-                                if let userId = jsonDict["userId"] as? String{
+                                if let userId = jsonDict["userId"] as? String, let secret = jsonDict["secret"] as? String{
                                     print("userId: \(userId)")
-                                }
-                                if let secret = jsonDict["secret"] as? String{
                                     print("secret: \(secret)")
+                                    PersistanceManager.User.saveLoginCredentials(userId: userId, secretID: secret)
                                 }
                             }
                             

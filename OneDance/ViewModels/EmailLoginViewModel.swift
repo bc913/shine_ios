@@ -79,6 +79,8 @@ class EmailLoginViewModel : EmailLoginViewModelType {
             DispatchQueue.main.async {
                 print("Am I back on the main thread: \(Thread.isMainThread)")
                 guard let error = error else {
+                    print("Persistance userId: \(String(describing: PersistanceManager.User.userId))")
+                    print("Persistance secretId: \(String(describing: PersistanceManager.User.secretId))")
                     self.coordinatorDelegate?.userDidLogin(viewModel: self)
                     return
                 }

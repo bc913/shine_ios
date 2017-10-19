@@ -29,6 +29,7 @@
 		65427D281F90508300407C5D /* DanceTypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65427D261F90508300407C5D /* DanceTypeTableViewCell.swift */; };
 		65427D291F90508300407C5D /* DanceTypeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65427D271F90508300407C5D /* DanceTypeTableViewCell.xib */; };
 		65427D2B1F905BA100407C5D /* InitialProfileSetupCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65427D2A1F905BA100407C5D /* InitialProfileSetupCoordinator.swift */; };
+		654938B61F98578D00B6D60C /* PersistanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654938B51F98578D00B6D60C /* PersistanceManager.swift */; };
 		654987151F8F03D3002DFB0C /* DanceTypeInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654987141F8F03D3002DFB0C /* DanceTypeInterface.swift */; };
 		654987171F8F04D7002DFB0C /* DanceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654987161F8F04D7002DFB0C /* DanceType.swift */; };
 		654987191F8F0EE3002DFB0C /* DanceTypesModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654987181F8F0EE3002DFB0C /* DanceTypesModelInterface.swift */; };
@@ -108,6 +109,7 @@
 		65427D261F90508300407C5D /* DanceTypeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceTypeTableViewCell.swift; path = ViewControllers/TableCells/DanceTypeTableViewCell.swift; sourceTree = "<group>"; };
 		65427D271F90508300407C5D /* DanceTypeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DanceTypeTableViewCell.xib; path = ViewControllers/TableCells/DanceTypeTableViewCell.xib; sourceTree = "<group>"; };
 		65427D2A1F905BA100407C5D /* InitialProfileSetupCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InitialProfileSetupCoordinator.swift; path = Coordinators/InitialProfileSetupCoordinator.swift; sourceTree = "<group>"; };
+		654938B51F98578D00B6D60C /* PersistanceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PersistanceManager.swift; path = Persistance/PersistanceManager.swift; sourceTree = "<group>"; };
 		654987141F8F03D3002DFB0C /* DanceTypeInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceTypeInterface.swift; path = Models/Data/Interfaces/DanceTypeInterface.swift; sourceTree = "<group>"; };
 		654987161F8F04D7002DFB0C /* DanceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceType.swift; path = Models/Data/DanceType.swift; sourceTree = "<group>"; };
 		654987181F8F0EE3002DFB0C /* DanceTypesModelInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceTypesModelInterface.swift; path = Models/Protocols/DanceTypesModelInterface.swift; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 		6503EC2E1F075CA800D56AB5 /* OneDance */ = {
 			isa = PBXGroup;
 			children = (
+				654938B41F98574C00B6D60C /* Persistance */,
 				6549E7821F8B2CD6000C475E /* Resources */,
 				650AF5A51F8983BB00DE46E1 /* Commands */,
 				650AF5A11F89818000DE46E1 /* Utilities */,
@@ -327,6 +330,14 @@
 				65427D271F90508300407C5D /* DanceTypeTableViewCell.xib */,
 			);
 			name = TableCells;
+			sourceTree = "<group>";
+		};
+		654938B41F98574C00B6D60C /* Persistance */ = {
+			isa = PBXGroup;
+			children = (
+				654938B51F98578D00B6D60C /* PersistanceManager.swift */,
+			);
+			name = Persistance;
 			sourceTree = "<group>";
 		};
 		6549870B1F8EFFD5002DFB0C /* Data */ = {
@@ -645,6 +656,7 @@
 				6503EC381F075CA900D56AB5 /* OneDance.xcdatamodeld in Sources */,
 				65FC55E31F67933000E02503 /* AppCoordinator.swift in Sources */,
 				650AF5A71F89846B00DE46E1 /* CommandInterface.swift in Sources */,
+				654938B61F98578D00B6D60C /* PersistanceManager.swift in Sources */,
 				650CB27C1F68DF020093F2FC /* MainAuthViewController.swift in Sources */,
 				65FC6D411F132BBD00B33C09 /* ODUserManager.swift in Sources */,
 				65427D281F90508300407C5D /* DanceTypeTableViewCell.swift in Sources */,
