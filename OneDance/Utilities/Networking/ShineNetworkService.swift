@@ -227,6 +227,10 @@ struct ShineNetworkService {
                 }
             )
         }
+        
+        static func update(danceTypes: [IDanceType], forUser userID: String, mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()){
+            
+        }
     }
     
 }

@@ -11,8 +11,22 @@ import UIKit
 class DanceTypesViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
-    
     @IBOutlet weak var doneButton: UIButton!
+    
+    @IBAction func doneButtonTapped(_ sender: Any) {
+        
+        if self.viewModel?.selectedItems != nil || (self.viewModel?.selectedItems?.count)! > 0 {
+            self.viewModel?.selectedItems?.removeAll()
+        }
+        
+        self.tableView.indexPathsForSelectedRows?.forEach({indexPath in
+            self.viewModel?.selectedItems?.append((self.viewModel?.itemAtIndex(indexPath.row))!)
+        })
+        
+        self.viewModel?.submit()
+        
+    }
+    
     
     var viewModel : DanceTypesViewModel?{
         willSet{
@@ -43,9 +57,12 @@ class DanceTypesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.configureNavigationBar()
+        
         // Configure button
         self.doneButton.configure(title: "Done", backgroundColor: UIColor(red:0.23, green:0.35, blue:0.60, alpha:1.0))
-
+        self.doneButton.isHidden = true
+        
         // Configure navigation bar
         // TODO: Update this code
         let navigationTitleFont = UIFont(name: "Avenir", size: 20)!
@@ -72,7 +89,25 @@ class DanceTypesViewController: UIViewController {
         self.isLoaded = true
         refreshDisplay()
         
+        
+        
         print("DanceTypesVC :: viewDidLoad()")
+    }
+    
+    fileprivate func checkForSelection(){
+        if self.tableView.indexPathsForSelectedRows != nil {
+            self.doneButton.isHidden = false
+        } else {
+            self.doneButton.isHidden = true
+        }
+        
+    }
+    
+    private func configureNavigationBar(){
+        // Kendisinden sonra stack a push edilen view controllerin navigation bar back buttonu nu kontrol eder
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        
+        
     }
 
     
@@ -110,7 +145,7 @@ extension DanceTypesViewController : UITableViewDelegate{
             selectedCell.layer.borderColor = UIColor.blue.cgColor
             selectedCell.accessoryType = .checkmark
             print("osman selected")
-            
+            self.checkForSelection()
         }
     }
     
@@ -118,6 +153,7 @@ extension DanceTypesViewController : UITableViewDelegate{
         if let selectedCell = self.tableView.cellForRow(at: indexPath) as? DanceTypeTableViewCell {
             selectedCell.layer.borderColor = selectedCell.defaultBorderColor
             selectedCell.accessoryType = .none
+            self.checkForSelection()
         }
         
     }

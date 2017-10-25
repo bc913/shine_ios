@@ -11,6 +11,7 @@ import Foundation
 
 protocol DanceTypesViewModelCoordinatorDelegate : class {
     func danceTypesViewModelDidSelect(data: IDanceType, _ viewModel:DanceTypesViewModelType)
+    func userDidFinishDanceTypesSelection(viewModel: DanceTypesViewModelType)
 }
 
 protocol DanceTypesViewModelViewDelegate : class {
@@ -29,4 +30,7 @@ protocol DanceTypesViewModelType : class {
     func useItemAtIndex(_ index: Int)
     
     var errorMessage : String { get }
+    
+    var selectedItems : [IDanceType]? { get set }
+    func submit()
 }

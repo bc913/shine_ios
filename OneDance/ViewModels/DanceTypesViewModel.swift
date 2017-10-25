@@ -12,6 +12,8 @@ class DanceTypesViewModel: DanceTypesViewModelType {
     
     weak var coordinatorDelegate: DanceTypesViewModelCoordinatorDelegate?
     weak var viewDelegate: DanceTypesViewModelViewDelegate?
+    var selectedItems: [IDanceType]?
+    
     
     private var items : [IDanceType]? {
         didSet{
@@ -39,6 +41,7 @@ class DanceTypesViewModel: DanceTypesViewModelType {
     }
     
     init() {
+        
         let modelCompletionHandler = { (error: NSError?, data:[IDanceType]?) in
             //Make sure we are on the main thread
             DispatchQueue.main.async {
@@ -54,9 +57,10 @@ class DanceTypesViewModel: DanceTypesViewModelType {
             
         }
         
-        
         ShineNetworkService.API.getDanceTypes(mainThreadCompletionHandler: modelCompletionHandler)
         print("DanceTypeViewModel.init() after network request")
+        
+        self.selectedItems = [IDanceType]()
     }
     
     var numberOfItems: Int {
@@ -79,5 +83,15 @@ class DanceTypesViewModel: DanceTypesViewModelType {
         if let items = self.items, let coordinatorDelegate = self.coordinatorDelegate, index < items.count {
             coordinatorDelegate.danceTypesViewModelDidSelect(data: items[index], self)
         }
+    }
+    
+    
+    func submit(){
+        print("DanceTypesVM :: Submit")
+        print("self.selectedItems : \(String(describing: self.selectedItems))")
+        if self.selectedItems != nil {
+            self.coordinatorDelegate?.userDidFinishDanceTypesSelection(viewModel: self)
+        }
+
     }
 }
