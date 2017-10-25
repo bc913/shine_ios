@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProfileImageSelectionViewController" customModule="OneDance" customModuleProvider="target">
+            <connections>
+                <outlet property="contentView" destination="fqt-tB-b6F" id="Eqi-tQ-OV9"/>
+                <outlet property="doneButton" destination="iSS-wl-9Mv" id="L5r-Jc-vs8"/>
+                <outlet property="profileImageView" destination="DAt-eg-R2a" id="fLu-Bl-060"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fqt-tB-b6F">
+                    <rect key="frame" x="-0.5" y="0.0" width="375" height="667"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DAt-eg-R2a">
+                            <rect key="frame" x="60" y="172" width="256" height="256"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="256" id="LBW-q5-IVq"/>
+                                <constraint firstAttribute="width" constant="256" id="NaE-Gm-7av"/>
+                            </constraints>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iSS-wl-9Mv">
+                            <rect key="frame" x="62.5" y="597" width="250" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="250" id="QMa-2m-Pa8"/>
+                                <constraint firstAttribute="height" constant="50" id="eDy-cD-WR3"/>
+                            </constraints>
+                            <state key="normal" title="Button"/>
+                            <connections>
+                                <action selector="doneButtonTapped:" destination="-1" eventType="touchUpInside" id="4LN-dL-gT3"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="iSS-wl-9Mv" firstAttribute="centerX" secondItem="fqt-tB-b6F" secondAttribute="centerX" id="Jgq-9b-qjS"/>
+                        <constraint firstItem="DAt-eg-R2a" firstAttribute="centerY" secondItem="fqt-tB-b6F" secondAttribute="centerY" multiplier="0.9" id="Rv4-pC-ywz"/>
+                        <constraint firstItem="DAt-eg-R2a" firstAttribute="centerX" secondItem="fqt-tB-b6F" secondAttribute="centerX" id="Ti1-gG-VzL"/>
+                        <constraint firstAttribute="bottom" secondItem="iSS-wl-9Mv" secondAttribute="bottom" constant="20" id="o5z-a6-171"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="fqt-tB-b6F" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="Ryk-zj-Fdw"/>
+                <constraint firstItem="fqt-tB-b6F" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="Xiu-QT-SWd"/>
+                <constraint firstItem="fqt-tB-b6F" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" id="Yug-0x-y7f"/>
+                <constraint firstItem="fqt-tB-b6F" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="zQ6-Pz-4CV"/>
+            </constraints>
+        </view>
+    </objects>
+</document>

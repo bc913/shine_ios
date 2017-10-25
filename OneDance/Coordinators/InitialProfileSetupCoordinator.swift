@@ -25,7 +25,7 @@ class InitialProfileSetupCoordinator: Coordinator {
     }
     
     func start() {
-        let vc = DanceTypesViewController()
+        let vc = DanceTypesViewController(nibName: "DanceTypesViewController", bundle: nil)
         let viewModel = DanceTypesViewModel()
         viewModel.coordinatorDelegate = self
         vc.viewModel = viewModel
@@ -33,9 +33,9 @@ class InitialProfileSetupCoordinator: Coordinator {
         if let navigationController = window.rootViewController as? UINavigationController {
             navigationController.setViewControllers([vc], animated: true)
         }
-        
-        
     }
+    
+    
     
 }
 
@@ -43,6 +43,33 @@ class InitialProfileSetupCoordinator: Coordinator {
 extension InitialProfileSetupCoordinator : DanceTypesViewModelCoordinatorDelegate {
     func danceTypesViewModelDidSelect(data: IDanceType, _ viewModel: DanceTypesViewModelType) {
         print("\(data.name) is selected...")
-        self.delegate?.initialProfileSetupDidFinish(initialProfileSetupCoordinator: self) //Update
+        //self.delegate?.initialProfileSetupDidFinish(initialProfileSetupCoordinator: self) //Update
+    }
+    
+    func userDidFinishDanceTypesSelection(viewModel: DanceTypesViewModelType) {
+        self.showProfileImageSelector()
+    }
+}
+
+extension InitialProfileSetupCoordinator : ProfileImageSelectionVMCoordinatorDelegate {
+    
+    func showProfileImageSelector(){
+        let vc = ProfileImageSelectionViewController(nibName: "ProfileImageSelectionViewController", bundle: nil)
+        let viewModel = ProfileImageSelectionViewModel()
+        viewModel.coordinatorDelegate = self
+        vc.viewModel = viewModel
+        
+        if let navigationController = window.rootViewController as? UINavigationController {
+            navigationController.pushViewController(vc, animated: true)
+        }
+    }
+    
+    func userDidFinishImageSelection(viewModel: ProfileImageSelectionViewModelType) {
+        // notify server
+        print("User did finish profile image selection")
+    }
+    
+    func userDidSkipImageSelection(viewModel: ProfileImageSelectionViewModelType) {
+        // notify server
     }
 }
