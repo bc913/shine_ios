@@ -232,6 +232,71 @@ struct ShineNetworkService {
             )
         }
         
+        static func update(danceTypes: [IDanceType], mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()){
+            
+            var dances = [[String:String]]()
+            for dance in danceTypes {
+                var dict = Dictionary<String,String>()
+                dict["id"] = String(dance.id)
+                dict["name"] = dance.name
+                dances.append(dict)
+            }
+            
+            let parameters : Parameters = [
+                "danceTypes" : dances
+            ]
+            
+//            let parameters : Parameters = [
+//                "danceTypes" : [dances]
+//            ]
+            
+            print(parameters)
+            
+            let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
+            Alamofire.request(Constants.updateDanceTypesUrl, method: .put, parameters: parameters, encoding: JSONEncoding.default)
+                .responseJSON(
+                    queue: queue,
+                    completionHandler: { response in
+                        // You are now running on the concurrent `queue` you created earlier.
+                        print("##########  UPDATE DANCE TYPES ########")
+                        print("Parsing JSON on thread: \(Thread.current) is main thread: \(Thread.isMainThread)")
+                        debugPrint(response)
+                        print("============")
+                        print("Request: \(String(describing: response.request))")   // original url request
+                        print("Request body: \(String(describing: response.request?.httpBody))")
+                        print("Response: \(String(describing: response.response))") // http url response
+                        print("Result: \(response.result)")                         // response serialization result
+                        
+                        
+                        // Server error
+                        var error : NSError? = nil
+                        
+                        switch response.result {
+                        case .success(let value):
+                                print("BCSuccess:: \(value)")
+                        case .failure(let error):
+                                print("BCFAilure: \(error)")
+                            
+                        }
+                        
+//                        guard response.result.isSuccess else {
+//                            let errorDescription = "Server error: " + "Status code: \(String(describing: response.response?.statusCode))"
+//                            error = NSError(domain: "com.cheers.Shine.networkDomain",
+//                                            code: Int(EPERM),
+//                                            userInfo: [NSLocalizedDescriptionKey: errorDescription])
+//                            
+//                            mainThreadCompletionHandler(error)
+//                            return
+//                        }
+                        print("updateDanceType status Code: \(String(describing: response.response?.statusCode))")
+                        print("###############################")
+                        // To update anything on the main thread, just jump back on like so.
+                        mainThreadCompletionHandler(error)
+                        
+                }
+            )
+            
+        }
         
         static func updateProfileWith(userName: String, slogan: String, link: String, mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()){
             
