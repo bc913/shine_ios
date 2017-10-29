@@ -18,6 +18,9 @@ struct ShineNetworkService {
         static let emailLoginUrl : String = baseUrl + "login"
         static let getDanceTypesUrl : String = baseUrl + "dancetypes"
         
+        // USer
+        static let userUrl : String = baseUrl + "users/"
+        static let updateDanceTypesUrl : String = userUrl + PersistanceManager.User.userId! + "/dancetypes"
         static let updateProfileUrl : String = userUrl + PersistanceManager.User.userId! + "/profile"
     }
     
@@ -229,7 +232,6 @@ struct ShineNetworkService {
             )
         }
         
-        static func update(danceTypes: [IDanceType], forUser userID: String, mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()){
         
         static func updateProfileWith(userName: String, slogan: String, link: String, mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()){
             
