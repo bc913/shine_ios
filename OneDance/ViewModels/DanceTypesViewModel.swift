@@ -89,9 +89,21 @@ class DanceTypesViewModel: DanceTypesViewModelType {
     func submit(){
         print("DanceTypesVM :: Submit")
         print("self.selectedItems : \(String(describing: self.selectedItems))")
-        if self.selectedItems != nil {
-            self.coordinatorDelegate?.userDidFinishDanceTypesSelection(viewModel: self)
+        print("EmailLogin :: submit()")
+        
+        let modelCompletionHandler = { (error: NSError?) in
+            //Make sure we are on the main thread
+            DispatchQueue.main.async {
+                print("Am I back on the main thread: \(Thread.isMainThread)")
+                guard let error = error else {
+                    self.coordinatorDelegate?.userDidFinishDanceTypesSelection(viewModel: self)
+                    return
+                }
+                self.errorMessage = error.localizedDescription
+            }
         }
-
+        
+        ShineNetworkService.API.update(danceTypes: self.selectedItems!, mainThreadCompletionHandler: modelCompletionHandler)
+        
     }
 }

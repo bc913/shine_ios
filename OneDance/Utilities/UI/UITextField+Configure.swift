@@ -17,6 +17,7 @@ extension UITextField{
                                                              attributes: [NSForegroundColorAttributeName: UIColor.white])
         // Replace NSForegroundColorAttributeName with NSAttributedStringKey.foregroundColor for IOS 11
         
+       
         // Apply bottom border
         let border = CALayer()
         let width = CGFloat(2.0)

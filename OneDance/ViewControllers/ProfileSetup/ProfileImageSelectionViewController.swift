@@ -77,11 +77,17 @@ class ProfileImageSelectionViewController: UIViewController, UINavigationControl
         
         // Add skip
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Skip", style: .plain, target: self, action: #selector(skipTapped))
+        
+        //
+        // Kendisinden sonra stack a push edilen view controllerin navigation bar back buttonu nu kontrol eder
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+
     }
     
     func skipTapped(){
         
         print("skip tapped")
+        viewModel?.skip()
         
     }
     
