@@ -66,7 +66,7 @@ struct ShineNetworkService {
                         if let json = response.result.value {
                             print("JSON: \(json)") // serialized json response                  
                             
-                            if let jsonDict = json as? [String:AnyObject],
+                            if let jsonDict = json as? [String:Any],
                                 let errorMessage = jsonDict["errorMessage"] as? String{
                                 error = NSError(domain: "com.cheers.Shine.userError",
                                                 code: Int(EPERM),
@@ -126,7 +126,7 @@ struct ShineNetworkService {
                         if let jsonData = response.result.value {
                             print("JSON: \(jsonData)") // serialized json response
                             
-                            if let jsonDict = jsonData as? [String:AnyObject],
+                            if let jsonDict = jsonData as? [String:Any],
                                 let errorMessage = jsonDict["errorMessage"] as? String{
                                 error = NSError(domain: "com.cheers.Shine.userError",
                                                 code: Int(EPERM),
@@ -134,7 +134,7 @@ struct ShineNetworkService {
                             }
                             
                             // TODO: Update this portion of the code based on the Login API change
-                            if let jsonDict = jsonData as? [String:AnyObject] {
+                            if let jsonDict = jsonData as? [String:Any] {
                                 if let userId = jsonDict["userId"] as? String, let secret = jsonDict["secret"] as? String{
                                     print("userId: \(userId)")
                                     print("secret: \(secret)")
@@ -191,7 +191,7 @@ struct ShineNetworkService {
                         if let jsonData = response.result.value {
                             print("JSON: \(jsonData)") // serialized json response
                             
-                            if let jsonDict = jsonData as? [String:AnyObject],
+                            if let jsonDict = jsonData as? [String:Any],
                                 let errorMessage = jsonDict["errorMessage"] as? String{
                                 error = NSError(domain: "com.cheers.Shine.userError",
                                                 code: Int(EPERM),
@@ -199,23 +199,17 @@ struct ShineNetworkService {
                             }
                             
                             // TODO: Update this portion of the code based on the Login API change
-                            if let jsonDict = jsonData as? [String:AnyObject] {
-                                if let danceTypes = jsonDict["danceTypes"] as? [[String:AnyObject]]{
-                                    
-                                    
+                            if let jsonDict = jsonData as? [String:Any] {
+                                if let danceTypes = jsonDict["danceTypes"] as? [[String:Any]]{
                                     for danceObj in danceTypes {
-                                        if let danceId = danceObj["id"] as? String, let danceName = danceObj["name"] as? String{
-                                            danceTypeItems.append(DanceType(name: danceName, id: Int(danceId)!))
-                                        }
-                                        else{
-                                            error = NSError(domain: "com.cheers.Shine.userError",
-                                                            code: Int(EPERM),
-                                                            userInfo: [NSLocalizedDescriptionKey: "Data is not parsed successfully."])
-                                            break
-                                        }
+                                        danceTypeItems.append(DanceType(json: danceObj)!)
                                     }
                                 }
                                 
+                            } else{
+                                error = NSError(domain: "com.cheers.Shine.userError",
+                                                code: Int(EPERM),
+                                                userInfo: [NSLocalizedDescriptionKey: "Data is not parsed successfully."])
                             }
                             
                         }

@@ -8,6 +8,11 @@
 
 import Foundation
 
+enum SerializationError: Error {
+    case missing(String)
+    case invalid(String, Any)
+}
+
 struct DanceType : IDanceType {
     var name: String
     var id: Int
@@ -15,5 +20,20 @@ struct DanceType : IDanceType {
     init(name: String, id: Int) {
         self.name = name
         self.id = id
+    }
+    
+}
+
+extension DanceType {
+    
+    init?(json:[String:Any]){
+        if let danceId = json["id"] as? String, let danceName = json["name"] as? String{
+            
+            self.id = Int(danceId)!
+            self.name = danceName
+            
+        } else {
+            return nil
+        }
     }
 }
