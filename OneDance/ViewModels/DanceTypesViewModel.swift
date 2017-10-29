@@ -89,7 +89,6 @@ class DanceTypesViewModel: DanceTypesViewModelType {
     func submit(){
         print("DanceTypesVM :: Submit")
         print("self.selectedItems : \(String(describing: self.selectedItems))")
-        print("EmailLogin :: submit()")
         
         let modelCompletionHandler = { (error: NSError?) in
             //Make sure we are on the main thread

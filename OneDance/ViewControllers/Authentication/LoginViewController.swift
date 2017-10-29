@@ -48,11 +48,6 @@ class LoginViewController: UIViewController {
 
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     override func viewDidLayoutSubviews() {
         // This method is being called after all the layout is loaded
         // The default implementation does nothing.

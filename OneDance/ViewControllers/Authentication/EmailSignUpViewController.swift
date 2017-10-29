@@ -61,14 +61,7 @@ class EmailSignUpViewController: UIViewController {
         self.configureAllTextFields()
         self.configureNavigationBar()
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-        
-    }
-    
-    
+
     // Actions
     func emailFieldDidChange(_ textField: UITextField)
     {

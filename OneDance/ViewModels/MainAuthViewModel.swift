@@ -20,17 +20,14 @@ class MainAuthViewModel : MainAuthViewModelType {
     }
     
     public func presentEmailSignupScreen() {
-        print("presentEmailAuth")
         coordinatorDelegate?.mainAuthViewModelDidSelectRegister(authType: AuthType.Email)
     }
     
     public func presentLoginScreen() {
-        print("presentLogin")
         coordinatorDelegate?.mainAuthViewModelDidSelectLogin(viewModel: self)
     }
     
     public func presentFacebookSignupScreen() {
-        print("presentFacebook")
         coordinatorDelegate?.mainAuthViewModelDidSelectRegister(authType: AuthType.Facebook)
     }
     

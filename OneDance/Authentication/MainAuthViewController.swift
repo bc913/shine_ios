@@ -12,7 +12,6 @@ class MainAuthViewController: UIViewController {
 
     var viewModel : MainAuthViewModelType?
     
-    @IBOutlet weak var skipAuthButton: UIButton!
     @IBOutlet weak var signUpWithFacebookButton: UIButton!
     @IBOutlet weak var signUpWithEmailButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
@@ -26,6 +25,11 @@ class MainAuthViewController: UIViewController {
     @IBAction func loginButtonTapped(_ sender: Any) {
         viewModel?.presentLoginScreen()
     }
+    
+    func skipTapped() {
+        viewModel?.presentMainScreen()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -36,24 +40,18 @@ class MainAuthViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.setNavigationBarHidden(true, animated: animated)
-        super.viewWillAppear(animated)
+    override func viewDidLayoutSubviews() {
+        // Make navigation bar transparent
+        if let navigationBar = self.navigationController?.navigationBar {
+            navigationBar.setBackgroundImage(UIImage(), for: .default)
+            navigationBar.shadowImage = UIImage()
+            navigationBar.isTranslucent = true
+        }
+        
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        self.navigationController?.setNavigationBarHidden(false, animated: animated)
-        super.viewWillDisappear(animated)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
+  
     // Configure view elements
     private func configureAllButtons(){
-        self.skipAuthButton.setTitle("Skip", for: .normal)
         
         self.appLogoLabel.text = "Shine"
         self.appLogoLabel.textAlignment = NSTextAlignment.center
@@ -71,8 +69,12 @@ class MainAuthViewController: UIViewController {
     private func configureNavigationBar(){
         // Kendisinden sonra stack a push edilen view controllerin navigation bar back buttonu nu kontrol eder
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        
+        // Add skip
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Skip", style: .plain, target: self, action: #selector(skipTapped))
     
     
     }
+    
 
 }

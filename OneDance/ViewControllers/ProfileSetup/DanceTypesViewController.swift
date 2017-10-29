@@ -58,15 +58,39 @@ class DanceTypesViewController: UIViewController {
         super.viewDidLoad()
         
         self.configureNavigationBar()
+        self.configureTableView()
         
         // Configure button
         self.doneButton.configure(title: "Done", backgroundColor: UIColor(red:0.23, green:0.35, blue:0.60, alpha:1.0))
         self.doneButton.isHidden = true
         
+        self.isLoaded = true
+        refreshDisplay()
+        
+        print("DanceTypesVC :: viewDidLoad()")
+    }
+    
+    fileprivate func checkForSelection(){
+        
+        if self.tableView.indexPathsForSelectedRows != nil {
+            self.doneButton.isHidden = false
+        } else {
+            self.doneButton.isHidden = true
+        }
+        
+    }
+    
+    private func configureNavigationBar(){
+        // Kendisinden sonra stack a push edilen view controllerin navigation bar back buttonu nu kontrol eder
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        
         // Configure navigation bar
         // TODO: Update this code
         let navigationTitleFont = UIFont(name: "Avenir", size: 20)!
         self.navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName: navigationTitleFont, NSForegroundColorAttributeName : UIColor.white]
+    }
+    
+    private func configureTableView(){
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
@@ -85,29 +109,6 @@ class DanceTypesViewController: UIViewController {
         
         // Multiple selection
         self.tableView.allowsMultipleSelection = true
-        
-        self.isLoaded = true
-        refreshDisplay()
-        
-        
-        
-        print("DanceTypesVC :: viewDidLoad()")
-    }
-    
-    fileprivate func checkForSelection(){
-        if self.tableView.indexPathsForSelectedRows != nil {
-            self.doneButton.isHidden = false
-        } else {
-            self.doneButton.isHidden = true
-        }
-        
-    }
-    
-    private func configureNavigationBar(){
-        // Kendisinden sonra stack a push edilen view controllerin navigation bar back buttonu nu kontrol eder
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        
-        
     }
 
     
@@ -144,7 +145,6 @@ extension DanceTypesViewController : UITableViewDelegate{
         if let selectedCell = self.tableView.cellForRow(at: indexPath) as? DanceTypeTableViewCell{
             selectedCell.layer.borderColor = UIColor.blue.cgColor
             selectedCell.accessoryType = .checkmark
-            print("osman selected")
             self.checkForSelection()
         }
     }

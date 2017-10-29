@@ -15,6 +15,11 @@ class ProfileImageSelectionViewController: UIViewController, UINavigationControl
     @IBOutlet weak var doneButton: UIButton!
     private var imagePickerController = UIImagePickerController()
     
+    fileprivate var isProfileImageSelected = false {
+        didSet{
+            self.doneButton.isHidden = !isProfileImageSelected
+        }
+    }
     
     var viewModel : ProfileImageSelectionViewModelType?
     
@@ -27,20 +32,17 @@ class ProfileImageSelectionViewController: UIViewController, UINavigationControl
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
+        self.contentView.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
+        
+        self.configureProfileImage()
+        self.configureImagePickerController()
+        self.configureNavigationBar()
         
         // Configure button
         self.doneButton.configure(title: "Done", backgroundColor: UIColor(red:0.23, green:0.35, blue:0.60, alpha:1.0))
+        self.doneButton.isHidden = !isProfileImageSelected
         
-        //
-        self.configureNavigationBar()
-        
-        
-        self.view.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
-        self.contentView.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
-        self.configureProfileImage()
-        self.configureImagePickerController()
-
-        // Do any additional setup after loading the view.
     }
     
     private func configureImagePickerController(){
@@ -135,11 +137,10 @@ extension ProfileImageSelectionViewController : UIImagePickerControllerDelegate 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             self.profileImageView.image = selectedImage
+            self.isProfileImageSelected = true
             print("image picked")
         } else {
             print("Exception")
-            
-            
         }
         
         //self.dismiss(animated: true, completion: nil)

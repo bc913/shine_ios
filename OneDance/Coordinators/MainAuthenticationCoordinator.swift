@@ -39,20 +39,8 @@ class MainAuthenticationCoordinator: Coordinator {
     
 }
 
-extension MainAuthenticationCoordinator : InitialProfileSetupCoordinatorDelegate {
-    func presentInitialProfileSetup(){
-        let initialProfileSetupCoordinator = InitialProfileSetupCoordinator(window: self.window)
-        self.childCoordinators["INITIAL_SETUP"] = initialProfileSetupCoordinator
-        initialProfileSetupCoordinator.delegate = self
-        initialProfileSetupCoordinator.start()
-    }
-    
-    func initialProfileSetupDidFinish(initialProfileSetupCoordinator: InitialProfileSetupCoordinator) {
-        print("MainAuthCoordinator :: initialProfileSetupDidFinish()")
-    }
-}
-
 extension MainAuthenticationCoordinator : MainAuthViewModelCoordinatorDelegate {
+    
     func mainAuthViewModelDidSelectRegister(authType: AuthType){
         print("\(authType) is selected...")
         
@@ -95,5 +83,18 @@ extension MainAuthenticationCoordinator : EmailLoginCoordinatorDelegate{
         
         // Onboarding and initial setup
         self.presentInitialProfileSetup()
+    }
+}
+
+extension MainAuthenticationCoordinator : InitialProfileSetupCoordinatorDelegate {
+    func presentInitialProfileSetup(){
+        let initialProfileSetupCoordinator = InitialProfileSetupCoordinator(window: self.window)
+        self.childCoordinators["INITIAL_SETUP"] = initialProfileSetupCoordinator
+        initialProfileSetupCoordinator.delegate = self
+        initialProfileSetupCoordinator.start()
+    }
+    
+    func initialProfileSetupDidFinish(initialProfileSetupCoordinator: InitialProfileSetupCoordinator) {
+        print("MainAuthCoordinator :: initialProfileSetupDidFinish()")
     }
 }
