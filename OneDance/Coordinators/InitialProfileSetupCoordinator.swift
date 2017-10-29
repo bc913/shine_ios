@@ -43,7 +43,7 @@ class InitialProfileSetupCoordinator: Coordinator {
 extension InitialProfileSetupCoordinator : DanceTypesViewModelCoordinatorDelegate {
     func danceTypesViewModelDidSelect(data: IDanceType, _ viewModel: DanceTypesViewModelType) {
         print("\(data.name) is selected...")
-        //self.delegate?.initialProfileSetupDidFinish(initialProfileSetupCoordinator: self) //Update
+
     }
     
     func userDidFinishDanceTypesSelection(viewModel: DanceTypesViewModelType) {
@@ -67,9 +67,29 @@ extension InitialProfileSetupCoordinator : ProfileImageSelectionVMCoordinatorDel
     func userDidFinishImageSelection(viewModel: ProfileImageSelectionViewModelType) {
         // notify server
         print("User did finish profile image selection")
+        self.presentProfileInfoSetup()
     }
     
     func userDidSkipImageSelection(viewModel: ProfileImageSelectionViewModelType) {
         // notify server
+        self.presentProfileInfoSetup()
+    }
+}
+
+extension InitialProfileSetupCoordinator : ProfileInfoSetupViewModelCoordinatorDelegate {
+    
+    func presentProfileInfoSetup() {
+        let vc = ProfileInfoSetupViewController(nibName: "ProfileInfoSetupViewController", bundle: nil)
+        let viewModel = ProfileInfoSetupViewModel()
+        viewModel.coordinatorDelegate = self
+        vc.viewModel = viewModel
+        
+        if let navigationController = window.rootViewController as? UINavigationController {
+            navigationController.pushViewController(vc, animated: true)
+        }
+    }
+    
+    func userDidFinishProfileSetup(viewModel: ProfileInfoSetupViewModelType) {
+        self.delegate?.initialProfileSetupDidFinish(initialProfileSetupCoordinator: self)
     }
 }
