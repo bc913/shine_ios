@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		384EF35702B5A30A4E22515E /* Pods_OneDance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345ED0A6396B3EDAB646CA05 /* Pods_OneDance.framework */; };
-		6500493F1F082ED200F2FEB1 /* Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6500493E1F082ED200F2FEB1 /* Events.swift */; };
-		650049411F082EE300F2FEB1 /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650049401F082EE300F2FEB1 /* Users.swift */; };
 		6503EC301F075CA900D56AB5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6503EC2F1F075CA900D56AB5 /* AppDelegate.swift */; };
 		6503EC381F075CA900D56AB5 /* OneDance.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6503EC361F075CA900D56AB5 /* OneDance.xcdatamodeld */; };
 		6503EC3A1F075CA900D56AB5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6503EC391F075CA900D56AB5 /* Assets.xcassets */; };
@@ -20,8 +18,6 @@
 		650CB27C1F68DF020093F2FC /* MainAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650CB27A1F68DF020093F2FC /* MainAuthViewController.swift */; };
 		650CB27D1F68DF020093F2FC /* MainAuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 650CB27B1F68DF020093F2FC /* MainAuthViewController.xib */; };
 		650CB2821F68EBF20093F2FC /* MainAuthViewModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650CB2811F68EBF20093F2FC /* MainAuthViewModelInterface.swift */; };
-		650D47631F0BEC61000BB619 /* ODUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650D47621F0BEC61000BB619 /* ODUser.swift */; };
-		650D47651F0C44B3000BB619 /* ODEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650D47641F0C44B3000BB619 /* ODEvents.swift */; };
 		65134F1A1F1B18CC0017C930 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65134F191F1B18CC0017C930 /* MapKit.framework */; };
 		65134F1D1F1B19C40017C930 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65134F1B1F1B19C40017C930 /* MapViewController.swift */; };
 		65134F1E1F1B19C40017C930 /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65134F1C1F1B19C40017C930 /* MapViewController.xib */; };
@@ -98,8 +94,6 @@
 /* Begin PBXFileReference section */
 		0DA616EC3EE906D67D64372F /* Pods-OneDance.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneDance.release.xcconfig"; path = "Pods/Target Support Files/Pods-OneDance/Pods-OneDance.release.xcconfig"; sourceTree = "<group>"; };
 		345ED0A6396B3EDAB646CA05 /* Pods_OneDance.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OneDance.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6500493E1F082ED200F2FEB1 /* Events.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Events.swift; sourceTree = "<group>"; };
-		650049401F082EE300F2FEB1 /* Users.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
 		6503EC2C1F075CA800D56AB5 /* OneDance.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OneDance.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6503EC2F1F075CA900D56AB5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6503EC371F075CA900D56AB5 /* OneDance.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = OneDance.xcdatamodel; sourceTree = "<group>"; };
@@ -116,8 +110,6 @@
 		650CB27A1F68DF020093F2FC /* MainAuthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainAuthViewController.swift; path = Authentication/MainAuthViewController.swift; sourceTree = "<group>"; };
 		650CB27B1F68DF020093F2FC /* MainAuthViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainAuthViewController.xib; path = Authentication/MainAuthViewController.xib; sourceTree = "<group>"; };
 		650CB2811F68EBF20093F2FC /* MainAuthViewModelInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainAuthViewModelInterface.swift; path = ViewModels/Interfaces/MainAuthViewModelInterface.swift; sourceTree = "<group>"; };
-		650D47621F0BEC61000BB619 /* ODUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ODUser.swift; sourceTree = "<group>"; };
-		650D47641F0C44B3000BB619 /* ODEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ODEvents.swift; sourceTree = "<group>"; };
 		65134F191F1B18CC0017C930 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		65134F1B1F1B19C40017C930 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = UI/ViewControllers/MapViewController.swift; sourceTree = "<group>"; };
 		65134F1C1F1B19C40017C930 /* MapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MapViewController.xib; path = UI/ViewControllers/MapViewController.xib; sourceTree = "<group>"; };
@@ -205,8 +197,6 @@
 			isa = PBXGroup;
 			children = (
 				6500493D1F082EBB00F2FEB1 /* Interface */,
-				650D47621F0BEC61000BB619 /* ODUser.swift */,
-				650D47641F0C44B3000BB619 /* ODEvents.swift */,
 				65FC6D401F132BBD00B33C09 /* ODUserManager.swift */,
 			);
 			name = Core;
@@ -215,8 +205,6 @@
 		6500493D1F082EBB00F2FEB1 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
-				6500493E1F082ED200F2FEB1 /* Events.swift */,
-				650049401F082EE300F2FEB1 /* Users.swift */,
 				65FD06F61F1DBCC400932E5F /* Location.swift */,
 			);
 			name = Interface;
@@ -756,13 +744,11 @@
 				654BB8CF1F8DB0CC0044A555 /* UIButton+Configure.swift in Sources */,
 				65FD06F41F1D726C00932E5F /* LocationSearchTableViewCell.swift in Sources */,
 				654987151F8F03D3002DFB0C /* DanceTypeInterface.swift in Sources */,
-				6500493F1F082ED200F2FEB1 /* Events.swift in Sources */,
 				656834D51F8C8A7600ADCBA2 /* EmailLoginCoordinator.swift in Sources */,
 				65FC55E11F67921C00E02503 /* Coordinator.swift in Sources */,
 				6564BE2E1F85D3F4005AF655 /* LoginViewController.swift in Sources */,
 				654987171F8F04D7002DFB0C /* DanceType.swift in Sources */,
 				654BB8D11F8DCBE80044A555 /* DanceTypesViewModelInterface.swift in Sources */,
-				650D47631F0BEC61000BB619 /* ODUser.swift in Sources */,
 				656296E71FABF6FF00511E25 /* UserProfileViewModel.swift in Sources */,
 				654B63CC1FAD3182005C16C3 /* InstructorProfileModel.swift in Sources */,
 				652F007D1F6B83F80085C5F5 /* MainAuthViewModel.swift in Sources */,
@@ -782,7 +768,6 @@
 				650AF5A41F89836200DE46E1 /* ShineNetworkService.swift in Sources */,
 				65640E021F9C423E006C2E21 /* ProfileImageSelectionVMInterface.swift in Sources */,
 				65134F1D1F1B19C40017C930 /* MapViewController.swift in Sources */,
-				650049411F082EE300F2FEB1 /* Users.swift in Sources */,
 				654424371FA6C24800CC850D /* HomeScreenCoordinator.swift in Sources */,
 				6549871B1F8F0F31002DFB0C /* DanceTypesModel.swift in Sources */,
 				654987191F8F0EE3002DFB0C /* DanceTypesModelInterface.swift in Sources */,
@@ -803,7 +788,6 @@
 				654672741FA030A1002DDC40 /* ProfileInfoSetupViewController.swift in Sources */,
 				6549871D1F8F1747002DFB0C /* DanceTypesViewModel.swift in Sources */,
 				654672711FA02A7A002DDC40 /* ProfileInfoSetupViewModelInterface.swift in Sources */,
-				650D47651F0C44B3000BB619 /* ODEvents.swift in Sources */,
 				65F538D51FA811B20034DAFA /* UserProfileViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
