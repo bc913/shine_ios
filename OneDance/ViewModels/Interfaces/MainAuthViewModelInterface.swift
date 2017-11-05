@@ -16,7 +16,7 @@ enum AuthType : String {
 protocol MainAuthViewModelCoordinatorDelegate : class {
     func mainAuthViewModelDidSelectRegister(authType: AuthType)
     func mainAuthViewModelDidSelectLogin(viewModel: MainAuthViewModelType)
-    //func mainAuthViewModelDidSelectSkip(viewModel: MainAuthViewModelType)
+    func mainAuthViewModelDidSelectSkip(viewModel: MainAuthViewModelType)
 }
 
 protocol MainAuthViewModelType : class {
@@ -24,7 +24,7 @@ protocol MainAuthViewModelType : class {
     // Properties
     var coordinatorDelegate : MainAuthViewModelCoordinatorDelegate? { get set }
     
-    func presentMainScreen()
+    func skipAuth()
     func presentFacebookSignupScreen()
     func presentEmailSignupScreen()
     func presentLoginScreen()

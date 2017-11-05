@@ -11,6 +11,7 @@ import UIKit
 
 protocol MainAuthCoordinatorDelegate : class {
     func mainAuthCoordinatorDidFinish(authenticationCoordinator: MainAuthenticationCoordinator)
+    func mainAuthCoordinatorDidSelectSkip(authenticationCoordinator: MainAuthenticationCoordinator)
 }
 
 class MainAuthenticationCoordinator: Coordinator {
@@ -62,7 +63,10 @@ extension MainAuthenticationCoordinator : MainAuthViewModelCoordinatorDelegate {
         emailLoginCoordinator.start()
         
     }
-    //func mainAuthViewModelDidSelectSkip(viewModel: MainAuthViewModelType)
+    
+    func mainAuthViewModelDidSelectSkip(viewModel: MainAuthViewModelType){
+        self.delegate?.mainAuthCoordinatorDidSelectSkip(authenticationCoordinator: self)
+    }
 }
 
 extension MainAuthenticationCoordinator : SignUpCoordinatorDelegate{

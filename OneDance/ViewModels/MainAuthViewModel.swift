@@ -14,9 +14,8 @@ class MainAuthViewModel : MainAuthViewModelType {
     weak var coordinatorDelegate : MainAuthViewModelCoordinatorDelegate?
     
     
-    public func presentMainScreen() {
-        print("The user is logged in")
-        
+    func skipAuth() {
+        coordinatorDelegate?.mainAuthViewModelDidSelectSkip(viewModel: self)
     }
     
     public func presentEmailSignupScreen() {

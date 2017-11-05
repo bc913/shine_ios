@@ -27,7 +27,7 @@ class MainAuthViewController: UIViewController {
     }
     
     func skipTapped() {
-        viewModel?.presentMainScreen()
+        viewModel?.skipAuth()
     }
     
     override func viewDidLoad() {
