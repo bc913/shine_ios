@@ -8,6 +8,7 @@
 
 import Foundation
 import Alamofire
+import AlamofireImage
 
 
 struct ShineNetworkService {
@@ -420,6 +421,48 @@ struct ShineNetworkService {
                         //
                         // To update anything on the main thread, just jump back on like so.
                         mainThreadCompletionHandler(error, userModel)
+                        
+                }
+            )
+        }
+        
+        static func getUserProfileImage(with url: String, mainThreadCompletionHandler: @escaping (_ error: NSError?, _ profileImage: UIImage?) ->()) {
+            
+            
+            
+            let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
+            Alamofire.request(url, method: .get)
+                .responseImage(
+                    queue: queue,
+                    completionHandler: { response in
+                        // You are now running on the concurrent `queue` you created earlier.
+                        print("Parsing JSON on thread: \(Thread.current) is main thread: \(Thread.isMainThread)")
+                        debugPrint(response)
+                        print("============")
+                        print("Request: \(String(describing: response.request))")   // original url request
+                        print("Response: \(String(describing: response.response))") // http url response
+                        print("Result: \(response.result)")                         // response serialization result
+                        
+                        // Server error
+                        var error : NSError? = nil
+                        guard response.result.isSuccess else {
+                            
+                            error = NSError(domain: "com.cheers.Shine.networkDomain",
+                                            code: Int(EPERM),
+                                            userInfo: [NSLocalizedDescriptionKey: "Server error"])
+                            
+                            mainThreadCompletionHandler(error, nil)
+                            return
+                        }
+                        
+                        
+                        // Validate your JSON response and convert into model objects if necessary
+                        if let image = response.result.value {
+                            
+                            // To update anything on the main thread, just jump back on like so.
+                            mainThreadCompletionHandler(error, image)
+                        }
+                        
                         
                 }
             )

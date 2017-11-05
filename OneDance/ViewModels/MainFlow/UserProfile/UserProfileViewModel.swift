@@ -20,20 +20,23 @@ class UserProfileViewModel : UserProfileViewModelType {
     var slogan: String = ""
     var bioLink: String = ""
     
+    var photUrl: String = ""
+    
     var followerCounter: String = ""
     var followingCounter: String = ""
     
     var model : UserProfileModelType? {
         didSet{
-            if model != nil {
-                self.userName = model?.userName ?? ""
-                self.fullName = model?.fullName ?? ""
-                self.bioLink = model?.bioLink ?? ""
-                self.slogan = model?.slogan ?? ""
-                
-                self.followerCounter = model?.followerCounter ?? ""
-                self.followingCounter = model?.followingCounter ?? ""
-            }
+            
+            self.userName = model?.userName ?? ""
+            self.fullName = model?.fullName ?? ""
+            self.bioLink = model?.bioLink ?? ""
+            self.slogan = model?.slogan ?? ""
+            
+            self.photUrl = model?.profilePhotoUrl ?? ""
+            
+            self.followerCounter = model?.followerCounter ?? ""
+            self.followingCounter = model?.followingCounter ?? ""
         }
     }
     
@@ -57,6 +60,7 @@ class UserProfileViewModel : UserProfileViewModelType {
         
         ShineNetworkService.API.getUserProfile(mainThreadCompletionHandler: modelCompletionHandler)
     }
+    
     
     init() {
         self.fetch()

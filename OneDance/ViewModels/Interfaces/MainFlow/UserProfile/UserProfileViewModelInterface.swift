@@ -27,6 +27,8 @@ protocol UserProfileViewModelType : class {
     var slogan : String { get set }
     var bioLink : String { get set }
     
+    var photUrl : String { get set }
+    
     var followerCounter : String { get set }
     var followingCounter : String { get set }
     

@@ -75,15 +75,29 @@ class UserProfileViewController: UIViewController {
         self.configureTagContainer()
         self.configureProfileImage()
         
-        
-        
         self.refreshDisplay()
         self.isLoaded = true
 
     }
     
+    
     func refreshDisplay(){
         self.title = self.viewModel?.userName
+        
+        //TODO: Place this hack to the PhotosManager.
+        let modelCompletionHandler : (NSError?, UIImage?) -> () = { (error: NSError?, profileImage: UIImage?) in
+            //Make sure we are on the main thread
+            DispatchQueue.main.async {
+                print("Am I back on the main thread: \(Thread.isMainThread)")
+                guard let error = error else {
+                    self.profileImageView.image = profileImage
+                    return
+                }
+            }
+            
+        }
+        
+        ShineNetworkService.API.getUserProfileImage(with: (self.viewModel?.photUrl)!, mainThreadCompletionHandler: modelCompletionHandler)
         
         self.fullNameLabel.text = self.viewModel?.fullName
         self.fullNameLabel.textAlignment = .center
@@ -100,14 +114,10 @@ class UserProfileViewController: UIViewController {
         self.followerLabel.text = "Followers"
         self.followerCounterLabel.text = self.viewModel?.followerCounter
         
-        
-        
         self.followingLabel.text = "Following"
         self.followingCounterLabel.text = self.viewModel?.followingCounter
-        
-        
-        
     }
+    
     private func configureProfileImage(){
         let profileImage : UIImage = UIImage(named: "profile")!
         self.profileImageView.image = profileImage

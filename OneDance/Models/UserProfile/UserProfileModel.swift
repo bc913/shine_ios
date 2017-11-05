@@ -67,11 +67,27 @@ extension UserProfileModel {
     
     init?(json:[String:Any]){
         
+        if let photoUrl = json["photoUrl"] as? String {
+            self.profilePhotoUrl = photoUrl
+        } else {
+            self.profilePhotoUrl = ""
+        }
+        
+        if let dj = json["djProfile"] as? [String:Any] {
+            self.djProfile = DJProfileModel(json: dj)
+        } else {
+            self.djProfile = nil
+        }
+        
+        if let instructor = json["instructorProfile"] as? [String:Any] {
+            self.instructor = InstructorProfileModel(json: instructor)
+        } else {
+            self.instructor = nil
+        }
+        
         if let userName = json["username"] as? String, let fullName = json["fullname"] as? String,
             let bioLink = json["website"] as? String, let slogan = json["bio"] as? String,
-            let dances = json["danceTypes"] as? [[String:Any]]/*,
-            let photoUrl = json["photoUrl"] as? String,
-            let dj = json["djProfile"] as? [String:Any], let instructor = json["instructorProfile"] as? [String:Any]*/{
+            let dances = json["danceTypes"] as? [[String:Any]] {
             
                 self.userName = userName
                 self.fullName = fullName
@@ -81,7 +97,6 @@ extension UserProfileModel {
                 self.followerCounter = "3.2k"
                 self.followingCounter = "123"
                 
-                self.profilePhotoUrl = ""
                 for danceObj in dances {
                     self.danceTypes.append(DanceType(json: danceObj)!)
                 }
@@ -89,10 +104,7 @@ extension UserProfileModel {
                 self.djProfile = nil
                 self.instructor = nil
             
-//            self.djProfile = DJProfileModel(json: dj)
-//            self.instructor = InstructorProfileModel(json: instructor)
-            
-        } else{
+        } else {
             return nil
         }
         
