@@ -24,5 +24,5 @@ protocol Location {
     var danceTypes : Array<String> { get set }
     var likes : Int { get set }
     var reviews : Array<String> { get set }
-    var futureEvents : Array<Event> { get }
+    //var futureEvents : Array<Event> { get }
 }

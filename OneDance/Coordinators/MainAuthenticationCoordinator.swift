@@ -86,7 +86,7 @@ extension MainAuthenticationCoordinator : EmailLoginCoordinatorDelegate{
         self.childCoordinators["EMAIL_LOGIN"] = nil
         
         // Onboarding and initial setup
-        self.presentInitialProfileSetup()
+        self.delegate?.mainAuthCoordinatorDidFinish(authenticationCoordinator: self)
     }
 }
 
@@ -99,6 +99,6 @@ extension MainAuthenticationCoordinator : InitialProfileSetupCoordinatorDelegate
     }
     
     func initialProfileSetupDidFinish(initialProfileSetupCoordinator: InitialProfileSetupCoordinator) {
-        print("MainAuthCoordinator :: initialProfileSetupDidFinish()")
+        self.delegate?.mainAuthCoordinatorDidFinish(authenticationCoordinator: self)
     }
 }

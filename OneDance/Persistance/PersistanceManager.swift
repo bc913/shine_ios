@@ -33,6 +33,12 @@ struct PersistanceManager {
             
         }
         
+        static var isLoggedIn : Bool {
+            get {
+                return self.secretId != nil
+            }
+        }
+        
 
     }
 }
