@@ -21,14 +21,15 @@ struct ShineNetworkService {
         // USer
         static let userUrl : String = baseUrl + "users/"
         static let updateDanceTypesUrl : String = userUrl + PersistanceManager.User.userId! + "/dancetypes"
-        static let updateProfileUrl : String = userUrl + PersistanceManager.User.userId! + "/profile"
+        static let profileUrl : String = userUrl + PersistanceManager.User.userId! + "/profile"
     }
     
     struct API {
         
-        static func createAccountWithEmail(name: String, surName: String, email: String, password: String, mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()){
+        static func createAccountWithEmail(userName: String, name: String, surName: String, email: String, password: String, mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()){
             
             let parameters: Parameters = [
+                "username": userName,
                 "fullname": name + " " + surName,
                 "email": email,
                 "password": password
@@ -63,14 +64,23 @@ struct ShineNetworkService {
                         
                         
                         // Validate your JSON response and convert into model objects if necessary
-                        if let json = response.result.value {
-                            print("JSON: \(json)") // serialized json response                  
+                        if let jsonData = response.result.value {
+                            print("JSON: \(jsonData)") // serialized json response
                             
-                            if let jsonDict = json as? [String:Any],
+                            if let jsonDict = jsonData as? [String:Any],
                                 let errorMessage = jsonDict["errorMessage"] as? String{
                                 error = NSError(domain: "com.cheers.Shine.userError",
                                                 code: Int(EPERM),
                                                 userInfo: [NSLocalizedDescriptionKey: errorMessage])
+                            }
+                            
+                            // TODO: Update this portion of the code based on the Login API change
+                            if let jsonDict = jsonData as? [String:Any] {
+                                if let userId = jsonDict["userId"] as? String, let secret = jsonDict["secret"] as? String{
+                                    print("userId: \(userId)")
+                                    print("secret: \(secret)")
+                                    PersistanceManager.User.saveLoginCredentials(userId: userId, secretID: secret)
+                                }
                             }
                             
                         }
@@ -301,7 +311,7 @@ struct ShineNetworkService {
             ]
             
             let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
-            Alamofire.request(Constants.updateProfileUrl, method: .put, parameters: parameters, encoding: JSONEncoding.default)
+            Alamofire.request(Constants.profileUrl, method: .put, parameters: parameters, encoding: JSONEncoding.default)
                 .responseJSON(
                     queue: queue,
                     completionHandler: { response in

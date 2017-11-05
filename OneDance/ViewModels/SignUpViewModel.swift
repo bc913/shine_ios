@@ -21,7 +21,21 @@ class EmailSignUpViewModel: EmailSignUpViewModelType {
         didSet {
             if oldValue != userName {
                 let oldCanSubmit = canSubmit
-                nameIsValidFormat = validateNameFormat(userName)
+                userNameIsValidFormat = validateNameFormat(userName)
+                if canSubmit != oldCanSubmit {
+                    viewDelegate?.canSubmitStatusDidChange(self, status: canSubmit)
+                }
+            }
+        }
+    }
+    fileprivate var userNameIsValidFormat: Bool = false
+    
+    /// Fullname
+    var name: String = "" {
+        didSet {
+            if oldValue != name {
+                let oldCanSubmit = canSubmit
+                nameIsValidFormat = validateNameFormat(name)
                 if canSubmit != oldCanSubmit {
                     viewDelegate?.canSubmitStatusDidChange(self, status: canSubmit)
                 }
@@ -31,11 +45,11 @@ class EmailSignUpViewModel: EmailSignUpViewModelType {
     fileprivate var nameIsValidFormat: Bool = false
     
     /// Surname
-    var userSurname: String = "" {
+    var surName: String = "" {
         didSet {
-            if oldValue != userSurname {
+            if oldValue != surName {
                 let oldCanSubmit = canSubmit
-                surNameIsValidFormat = validateSurNameFormat(userSurname)
+                surNameIsValidFormat = validateSurNameFormat(surName)
                 if canSubmit != oldCanSubmit {
                     viewDelegate?.canSubmitStatusDidChange(self, status: canSubmit)
                 }
@@ -74,7 +88,7 @@ class EmailSignUpViewModel: EmailSignUpViewModelType {
     
     /// canSubmit
     var canSubmit: Bool {
-        return emailIsValidFormat && passwordIsValidFormat && nameIsValidFormat && surNameIsValidFormat
+        return emailIsValidFormat && passwordIsValidFormat && nameIsValidFormat && surNameIsValidFormat && userNameIsValidFormat
     }
     
     /// Errors
@@ -122,7 +136,7 @@ class EmailSignUpViewModel: EmailSignUpViewModelType {
             DispatchQueue.main.async {
                 print("Am I back on the main thread: \(Thread.isMainThread)")
                 guard let error = error else {
-                    self.viewDelegate?.notifyUser(self, "Success", "Your Shine account is created.")
+                    //self.viewDelegate?.notifyUser(self, "Success", "Your Shine account is created.")
                     self.coordinatorDelegate?.emailSignUpViewModelDidCreateAccount(viewModel: self)
                     return
                 }
@@ -130,7 +144,7 @@ class EmailSignUpViewModel: EmailSignUpViewModelType {
             }
         }
         
-        ShineNetworkService.API.createAccountWithEmail(name: self.userName, surName: self.userSurname,
+        ShineNetworkService.API.createAccountWithEmail(userName: self.userName, name: self.name, surName: self.surName,
                                                      email: self.email,
                                                      password: self.password,
                                                      mainThreadCompletionHandler: modelCompletionHandler)

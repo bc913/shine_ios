@@ -19,9 +19,11 @@ class EmailSignUpViewController: UIViewController {
             refreshDisplay()
         }
     }
+    
     @IBOutlet weak var mainScrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
 
+    @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var surNameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
@@ -46,6 +48,7 @@ class EmailSignUpViewController: UIViewController {
         self.configureCreateAccountButton()
         
         // Signal slots
+        self.userNameTextField.addTarget(self, action: #selector(userNameFieldDidChange(_:)), for: UIControlEvents.editingChanged)
         self.nameTextField.addTarget(self, action: #selector(nameFieldDidChange(_:)), for: UIControlEvents.editingChanged)
         self.surNameTextField.addTarget(self, action: #selector(surNameFieldDidChange(_:)), for: UIControlEvents.editingChanged)
         self.emailTextField.addTarget(self, action: #selector(emailFieldDidChange(_:)), for: UIControlEvents.editingChanged)
@@ -63,6 +66,13 @@ class EmailSignUpViewController: UIViewController {
     }
 
     // Actions
+    func userNameFieldDidChange(_ textField: UITextField)
+    {
+        if let text = textField.text {
+            viewModel?.userName = text
+        }
+    }
+    
     func emailFieldDidChange(_ textField: UITextField)
     {
         if let text = textField.text {
@@ -80,14 +90,14 @@ class EmailSignUpViewController: UIViewController {
     func nameFieldDidChange(_ textField: UITextField)
     {
         if let text = textField.text {
-            viewModel?.userName = text
+            viewModel?.name = text
         }
     }
     
     func surNameFieldDidChange(_ textField: UITextField)
     {
         if let text = textField.text {
-            viewModel?.userSurname = text
+            viewModel?.surName = text
         }
     }
     
@@ -104,17 +114,21 @@ class EmailSignUpViewController: UIViewController {
         guard isLoaded else { return }
         
         if let viewModel = self.viewModel {
-            self.nameTextField.text = viewModel.userName
-            self.surNameTextField.text = viewModel.userSurname
+            self.userNameTextField.text = viewModel.userName
+            self.nameTextField.text = viewModel.name
+            self.surNameTextField.text = viewModel.surName
             self.emailTextField.text = viewModel.email
             self.passwordTextField.text = viewModel.password
             self.createAccountButton.isEnabled = viewModel.canSubmit
+            self.createAccountButton.isHidden = !viewModel.canSubmit
         } else{
+            self.userNameTextField.text = ""
             self.nameTextField.text = ""
             self.surNameTextField.text = ""
             self.emailTextField.text = ""
             self.passwordTextField.text = ""
             self.createAccountButton.isEnabled = false
+            self.createAccountButton.isHidden = true
         }
     }
     
@@ -125,7 +139,7 @@ class EmailSignUpViewController: UIViewController {
     
     
     private func configureAllTextFields(){
-        
+        self.userNameTextField.configure(placeholder: "User Name")
         self.nameTextField.configure(placeholder: "Name")
         self.surNameTextField.configure(placeholder: "Surname")
         self.emailTextField.configure(placeholder: "Email")
@@ -150,6 +164,7 @@ extension EmailSignUpViewController: EmailSignUpViewModelViewDelegate
     func canSubmitStatusDidChange(_ viewModel: EmailSignUpViewModelType, status: Bool)
     {
         self.createAccountButton.isEnabled = status
+        self.createAccountButton.isHidden = !status
     }
     
     func notifyUser(_ viewModel: EmailSignUpViewModelType, _ title: String, _ message: String) {
