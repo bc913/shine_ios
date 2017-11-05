@@ -346,6 +346,74 @@ struct ShineNetworkService {
             )
             
         }
+        
+        static func getUserProfile(mainThreadCompletionHandler: @escaping (_ error: NSError?, _ userModel:UserProfileModelType?) ->()) {
+            
+            
+            let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
+            Alamofire.request(Constants.profileUrl, method: .get, encoding: JSONEncoding.default)
+                .responseJSON(
+                    queue: queue,
+                    completionHandler: { response in
+                        // You are now running on the concurrent `queue` you created earlier.
+                        print("Parsing JSON on thread: \(Thread.current) is main thread: \(Thread.isMainThread)")
+                        debugPrint(response)
+                        print("============")
+                        print("Request: \(String(describing: response.request))")   // original url request
+                        print("Response: \(String(describing: response.response))") // http url response
+                        print("Result: \(response.result)")                         // response serialization result
+                        
+                        // Server error
+                        var error : NSError? = nil
+                        guard response.result.isSuccess else {
+                            
+                            error = NSError(domain: "com.cheers.Shine.networkDomain",
+                                            code: Int(EPERM),
+                                            userInfo: [NSLocalizedDescriptionKey: "Server error"])
+                            
+                            mainThreadCompletionHandler(error, nil)
+                            return
+                        }
+                        
+                        var userModel : UserProfileModelType?
+                        
+                        // Validate your JSON response and convert into model objects if necessary
+                        if let jsonData = response.result.value {
+                            print("JSON: \(jsonData)") // serialized json response
+                            
+                            if let jsonDict = jsonData as? [String:Any],
+                                let errorMessage = jsonDict["errorMessage"] as? String{
+                                error = NSError(domain: "com.cheers.Shine.userError",
+                                                code: Int(EPERM),
+                                                userInfo: [NSLocalizedDescriptionKey: errorMessage])
+                            }
+                            
+                            // TODO: Update this portion of the code based on the Login API change
+                            
+                            if let jsonDict = jsonData as? [String:Any] {
+                                if let userProfile = jsonDict["userProfile"] as? [String:Any]{
+                                    userModel = UserProfileModel(json: userProfile)
+                                }
+                                
+                            } else{
+                                error = NSError(domain: "com.cheers.Shine.userError",
+                                                code: Int(EPERM),
+                                                userInfo: [NSLocalizedDescriptionKey: "Data is not parsed successfully."])
+                            }
+                            
+                        }
+                        
+                        if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
+                            print("Data: \(utf8Text)") // original server data as UTF8 string
+                        }
+                        
+                        //
+                        // To update anything on the main thread, just jump back on like so.
+                        mainThreadCompletionHandler(error, userModel)
+                        
+                }
+            )
+        }
     }
     
 }
