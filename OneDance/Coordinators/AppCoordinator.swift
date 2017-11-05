@@ -14,6 +14,7 @@ class AppCoordinator : Coordinator {
     
     // Constants
     fileprivate let AUTHENTICATION_KEY: String  = "Authentication"
+    fileprivate let HOME_SCREEN_KEY : String = "HomeScreen"
     
     // Properties
     let window : UIWindow
@@ -28,14 +29,13 @@ class AppCoordinator : Coordinator {
     
     // Coordinator
     func start() {
-        if !isLoggedIn {
+        if !PersistanceManager.User.isLoggedIn {
             showAuthentication()
+        } else{
+            showHomeScreen()
         }
         
     }
-    
-    
-    
 }
 
 extension AppCoordinator : MainAuthCoordinatorDelegate {
@@ -52,8 +52,27 @@ extension AppCoordinator : MainAuthCoordinatorDelegate {
     
     func mainAuthCoordinatorDidFinish(authenticationCoordinator: MainAuthenticationCoordinator) {
         print("AppCoordinator :: mainAuthCoordinatorDidFinish")
+        self.showHomeScreen()
     }
     
+    func mainAuthCoordinatorDidSelectSkip(authenticationCoordinator: MainAuthenticationCoordinator) {
+        self.showHomeScreen()
+    }
+    
+}
+
+extension AppCoordinator : HomeScreenCoordinatorDelegate {
+    
+    func showHomeScreen(){
+        let homeScreenCoordinator = HomeScreenCoordinator(window: self.window)
+        childCoordinators[HOME_SCREEN_KEY] = homeScreenCoordinator
+        homeScreenCoordinator.delegate = self
+        homeScreenCoordinator.start()
+    }
+    
+    func userDidRequestRegistration(homeScreenCoordinator: HomeScreenCoordinator) {
+        print("User wants to register")
+    }
 }
 
 
