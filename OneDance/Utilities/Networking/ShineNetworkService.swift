@@ -9,11 +9,15 @@
 import Foundation
 import Alamofire
 import AlamofireImage
+import AWSCore
+import AWSS3
+import AWSCognito
 
 
 struct ShineNetworkService {
     
     private struct Constants {
+        
         static let baseUrl : String = "https://n48v6ca143.execute-api.us-east-1.amazonaws.com/test/"
         static let registerUserUrl : String = baseUrl + "users"
         static let emailLoginUrl : String = baseUrl + "login"
@@ -23,6 +27,22 @@ struct ShineNetworkService {
         static let userUrl : String = baseUrl + "users/"
         static let updateDanceTypesUrl : String = userUrl + PersistanceManager.User.userId! + "/dancetypes"
         static let profileUrl : String = userUrl + PersistanceManager.User.userId! + "/profile"
+        
+        struct AWS3 {
+            static let identityPoolId = "us-east-1:47270df4-2548-48b3-9625-25d30ee060ef"
+            static let regionType = AWSRegionType.USEast1
+            
+        }
+        
+    }
+    
+    struct S3 {
+        static func configureAWS(){
+            
+            let credentialsProvider = AWSCognitoCredentialsProvider(regionType: Constants.AWS3.regionType, identityPoolId: Constants.AWS3.identityPoolId)
+            let configuration = AWSServiceConfiguration(region: .USEast1, credentialsProvider: credentialsProvider)
+            AWSServiceManager.default().defaultServiceConfiguration = configuration
+        }
     }
     
     struct API {
