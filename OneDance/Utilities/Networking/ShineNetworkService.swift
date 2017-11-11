@@ -27,11 +27,16 @@ struct ShineNetworkService {
         static let userUrl : String = baseUrl + "users/"
         static let updateDanceTypesUrl : String = userUrl + PersistanceManager.User.userId! + "/dancetypes"
         static let profileUrl : String = userUrl + PersistanceManager.User.userId! + "/profile"
+        static let profilePhotoUrl : String = profileUrl + "/photo"
         
         struct AWS3 {
             static let identityPoolId = "us-east-1:47270df4-2548-48b3-9625-25d30ee060ef"
             static let regionType = AWSRegionType.USEast1
             
+            static let S3BucketName: String = "shinemedia" // Update this to your bucket name
+            
+            static let uploadKeyNameForProfileImage : String = "profile-image.png"
+            static let downloadKeyNameForProfileImage : String = "profile-image.png"
         }
         
     }
@@ -43,6 +48,26 @@ struct ShineNetworkService {
             let configuration = AWSServiceConfiguration(region: .USEast1, credentialsProvider: credentialsProvider)
             AWSServiceManager.default().defaultServiceConfiguration = configuration
         }
+        
+        static func uploadProfilePhoto(with data: Data, progressBlock: AWSS3TransferUtilityProgressBlock?, completionHandler: AWSS3TransferUtilityUploadCompletionHandlerBlock?, continueWithHandler : @escaping (AWSTask<AWSS3TransferUtilityUploadTask>) -> Any?){
+            print("#############################################################")
+            print(" ---------  S3.uploadProfilePhoto() ---------------------------")
+            let transferUtility = AWSS3TransferUtility.default()
+            let expression = AWSS3TransferUtilityUploadExpression()
+            expression.progressBlock = progressBlock
+            
+            transferUtility.uploadData(
+                data,
+                bucket: Constants.AWS3.S3BucketName,
+                key: Constants.AWS3.uploadKeyNameForProfileImage,
+                contentType: "image/png",
+                expression: expression,
+                completionHandler: completionHandler)
+            
+            API.changeProfilePhoto()
+            
+        }
+        
     }
     
     struct API {
@@ -62,6 +87,8 @@ struct ShineNetworkService {
                     queue: queue,
                     completionHandler: { response in
                         // You are now running on the concurrent `queue` you created earlier.
+                        print("#############################################################")
+                        print(" --------- createAccountWithEmail ---------------------------")
                         print("Parsing JSON on thread: \(Thread.current) is main thread: \(Thread.isMainThread)")
                         debugPrint(response)
                         print("============")
@@ -113,6 +140,7 @@ struct ShineNetworkService {
                         //
                         // To update anything on the main thread, just jump back on like so.
                         mainThreadCompletionHandler(error)
+                        print("#############################################################")
 
                 }
             )
@@ -195,6 +223,8 @@ struct ShineNetworkService {
                 .responseJSON(
                     queue: queue,
                     completionHandler: { response in
+                        print("#############################################################")
+                        print(" --------- getDanceTypes ---------------------------")
                         // You are now running on the concurrent `queue` you created earlier.
                         print("Parsing JSON on thread: \(Thread.current) is main thread: \(Thread.isMainThread)")
                         debugPrint(response)
@@ -252,6 +282,7 @@ struct ShineNetworkService {
                         //
                         // To update anything on the main thread, just jump back on like so.
                         mainThreadCompletionHandler(error, danceTypeItems)
+                        print("#############################################################")
                         
                 }
             )
@@ -283,7 +314,8 @@ struct ShineNetworkService {
                     queue: queue,
                     completionHandler: { response in
                         // You are now running on the concurrent `queue` you created earlier.
-                        print("##########  UPDATE DANCE TYPES ########")
+                        print("#############################################################")
+                        print(" ---------  updateDanceTypes() ---------------------------")
                         print("Parsing JSON on thread: \(Thread.current) is main thread: \(Thread.isMainThread)")
                         debugPrint(response)
                         print("============")
@@ -314,9 +346,11 @@ struct ShineNetworkService {
 //                            return
 //                        }
                         print("updateDanceType status Code: \(String(describing: response.response?.statusCode))")
-                        print("###############################")
+                        
                         // To update anything on the main thread, just jump back on like so.
                         mainThreadCompletionHandler(error)
+                        
+                        print("#############################################################")
                         
                 }
             )
@@ -337,7 +371,8 @@ struct ShineNetworkService {
                     queue: queue,
                     completionHandler: { response in
                         // You are now running on the concurrent `queue` you created earlier.
-                        print("##########  UPDATE DANCE TYPES ########")
+                        print("#############################################################")
+                        print(" ---------  updateProfileWith() ---------------------------")
                         print("Parsing JSON on thread: \(Thread.current) is main thread: \(Thread.isMainThread)")
                         debugPrint(response)
                         print("============")
@@ -369,9 +404,10 @@ struct ShineNetworkService {
                         //                            return
                         //                        }
                         print("updateDanceType status Code: \(String(describing: response.response?.statusCode))")
-                        print("###############################")
+                        
                         // To update anything on the main thread, just jump back on like so.
                         mainThreadCompletionHandler(error)
+                        print("#############################################################")
                         
                 }
             )
@@ -386,6 +422,8 @@ struct ShineNetworkService {
                 .responseJSON(
                     queue: queue,
                     completionHandler: { response in
+                        print("#############################################################")
+                        print(" ---------  getUserProfile() ---------------------------")
                         // You are now running on the concurrent `queue` you created earlier.
                         print("Parsing JSON on thread: \(Thread.current) is main thread: \(Thread.isMainThread)")
                         debugPrint(response)
@@ -441,6 +479,7 @@ struct ShineNetworkService {
                         //
                         // To update anything on the main thread, just jump back on like so.
                         mainThreadCompletionHandler(error, userModel)
+                        print("#############################################################")
                         
                 }
             )
@@ -455,6 +494,8 @@ struct ShineNetworkService {
                 .responseImage(
                     queue: queue,
                     completionHandler: { response in
+                        print("#############################################################")
+                        print(" ---------  getUserProfileImage() ---------------------------")
                         // You are now running on the concurrent `queue` you created earlier.
                         print("Parsing JSON on thread: \(Thread.current) is main thread: \(Thread.isMainThread)")
                         debugPrint(response)
@@ -482,11 +523,73 @@ struct ShineNetworkService {
                             // To update anything on the main thread, just jump back on like so.
                             mainThreadCompletionHandler(error, image)
                         }
-                        
-                        
+                        print("#############################################################")
+                       
                 }
             )
         }
+        
+        static func changeProfilePhoto() {
+            
+            let parameters : Parameters = [
+                "name" : Constants.AWS3.uploadKeyNameForProfileImage,
+                "photo" : true
+            ]
+            
+            let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
+            Alamofire.request(Constants.profilePhotoUrl, method: .put, parameters: parameters, encoding: JSONEncoding.default)
+                .responseJSON(
+                    queue: queue,
+                    completionHandler: { response in
+                        print("#############################################################")
+                        print(" ---------  changeProfilePhoto() ---------------------------")
+
+                        // You are now running on the concurrent `queue` you created earlier.
+                        print("Parsing JSON on thread: \(Thread.current) is main thread: \(Thread.isMainThread)")
+                        debugPrint(response)
+                        print("============")
+                        print("Request: \(String(describing: response.request))")   // original url request
+                        print("Response: \(String(describing: response.response))") // http url response
+                        print("Result: \(response.result)")                         // response serialization result
+                        
+                        // Server error
+                        var error : NSError? = nil
+                        guard response.result.isSuccess else {
+                            
+                            error = NSError(domain: "com.cheers.Shine.networkDomain",
+                                            code: Int(EPERM),
+                                            userInfo: [NSLocalizedDescriptionKey: "Server error"])
+                            
+                            return
+                        }
+                        
+                        
+                        // Validate your JSON response and convert into model objects if necessary
+                        if let jsonData = response.result.value {
+                            print("JSON: \(jsonData)") // serialized json response
+                            
+                            if let jsonDict = jsonData as? [String:Any],
+                                let errorMessage = jsonDict["errorMessage"] as? String{
+                                error = NSError(domain: "com.cheers.Shine.userError",
+                                                code: Int(EPERM),
+                                                userInfo: [NSLocalizedDescriptionKey: errorMessage])
+                            }
+                            
+                            // TODO: Update this portion of the code based on the Login API change
+                            
+                            
+                        }
+                        
+                        if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
+                            print("Data: \(utf8Text)") // original server data as UTF8 string
+                        }
+                        
+
+                        print("#############################################################")
+                }
+            )
+        }
+        
     }
     
 }

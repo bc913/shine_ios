@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AWSS3
 
 class ProfileImageSelectionViewController: UIViewController, UINavigationControllerDelegate {
 
@@ -14,6 +15,62 @@ class ProfileImageSelectionViewController: UIViewController, UINavigationControl
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var doneButton: UIButton!
     private var imagePickerController = UIImagePickerController()
+    
+    @IBOutlet weak var progressView: UIProgressView!
+    var completionHandler: AWSS3TransferUtilityUploadCompletionHandlerBlock?
+    var progressBlock: AWSS3TransferUtilityProgressBlock?
+    var continueWithHandler : ((AWSTask<AWSS3TransferUtilityUploadTask>) -> Any)?
+    
+    private func configureAWS(){
+        self.progressView.progress = 0.0;
+        //self.selectProfileImageLabel.text = "Ready"
+        
+        self.progressBlock = {(task, progress) in
+            DispatchQueue.main.async(execute: {
+                self.progressView.progress = Float(progress.fractionCompleted)
+                //self.selectProfileImageLabel.text = "Uploading..."
+            })
+        }
+        
+        self.completionHandler = { (task, error) -> Void in
+            DispatchQueue.main.async(execute: {
+                if let error = error {
+                    print("Failed with error: \(error)")
+                    //self.selectProfileImageLabel.text = "Failed"
+                }
+                else if(self.progressView.progress != 1.0) {
+                    //self.selectProfileImageLabel.text = "Failed"
+                    NSLog("Error: Failed - Likely due to invalid region / filename")
+                }
+                else{
+                    //self.selectProfileImageLabel.text = "Success"
+                }
+            })
+        }
+        
+        self.continueWithHandler = {(task) -> AnyObject! in
+            if let error = task.error {
+                print("Error: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    //self.selectProfileImageLabel.text = "Failed"
+                }
+                //
+            }
+            
+            if let _ = task.result {
+                DispatchQueue.main.async {
+                    //self.selectProfileImageLabel.text = "Generating Upload File"
+                }
+                //
+                print("Upload Starting!")
+                // Do something with uploadTask.
+            }
+            
+            return nil;
+            
+        }
+        
+    }
     
     fileprivate var isProfileImageSelected = false {
         didSet{
@@ -31,6 +88,9 @@ class ProfileImageSelectionViewController: UIViewController, UINavigationControl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // AWS
+        self.configureAWS()
         
         self.view.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
         self.contentView.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
@@ -137,6 +197,10 @@ extension ProfileImageSelectionViewController : UIImagePickerControllerDelegate 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             self.profileImageView.image = selectedImage
+            ShineNetworkService.S3.uploadProfilePhoto(with: UIImagePNGRepresentation(selectedImage)!,
+                                                      progressBlock: self.progressBlock,
+                                                      completionHandler: self.completionHandler,
+                                                      continueWithHandler: self.continueWithHandler!)
             self.isProfileImageSelected = true
             print("image picked")
         } else {

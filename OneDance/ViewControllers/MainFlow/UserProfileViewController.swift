@@ -97,8 +97,11 @@ class UserProfileViewController: UIViewController {
             
         }
         
+        
+        
         ShineNetworkService.API.getUserProfileImage(with: (self.viewModel?.photUrl)!, mainThreadCompletionHandler: modelCompletionHandler)
         
+        print("OSMAAAAAAAAAN")
         self.fullNameLabel.text = self.viewModel?.fullName
         self.fullNameLabel.textAlignment = .center
         self.fullNameLabel.textColor = UIColor.white

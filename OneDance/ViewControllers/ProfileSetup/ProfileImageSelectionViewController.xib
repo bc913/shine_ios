@@ -15,6 +15,7 @@
                 <outlet property="contentView" destination="fqt-tB-b6F" id="Eqi-tQ-OV9"/>
                 <outlet property="doneButton" destination="iSS-wl-9Mv" id="L5r-Jc-vs8"/>
                 <outlet property="profileImageView" destination="DAt-eg-R2a" id="fLu-Bl-060"/>
+                <outlet property="progressView" destination="WCg-JW-F35" id="ctc-sQ-xsb"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -44,13 +45,19 @@
                                 <action selector="doneButtonTapped:" destination="-1" eventType="touchUpInside" id="4LN-dL-gT3"/>
                             </connections>
                         </button>
+                        <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="WCg-JW-F35">
+                            <rect key="frame" x="60" y="140" width="256" height="2"/>
+                        </progressView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="iSS-wl-9Mv" firstAttribute="centerX" secondItem="fqt-tB-b6F" secondAttribute="centerX" id="Jgq-9b-qjS"/>
                         <constraint firstItem="DAt-eg-R2a" firstAttribute="centerY" secondItem="fqt-tB-b6F" secondAttribute="centerY" multiplier="0.9" id="Rv4-pC-ywz"/>
                         <constraint firstItem="DAt-eg-R2a" firstAttribute="centerX" secondItem="fqt-tB-b6F" secondAttribute="centerX" id="Ti1-gG-VzL"/>
+                        <constraint firstItem="WCg-JW-F35" firstAttribute="width" secondItem="DAt-eg-R2a" secondAttribute="width" id="gx6-mp-sLg"/>
+                        <constraint firstItem="DAt-eg-R2a" firstAttribute="top" secondItem="WCg-JW-F35" secondAttribute="bottom" constant="30" id="kIJ-nF-CaQ"/>
                         <constraint firstAttribute="bottom" secondItem="iSS-wl-9Mv" secondAttribute="bottom" constant="20" id="o5z-a6-171"/>
+                        <constraint firstItem="WCg-JW-F35" firstAttribute="centerX" secondItem="fqt-tB-b6F" secondAttribute="centerX" id="uDk-P6-v7v"/>
                     </constraints>
                 </view>
             </subviews>
@@ -61,6 +68,7 @@
                 <constraint firstItem="fqt-tB-b6F" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" id="Yug-0x-y7f"/>
                 <constraint firstItem="fqt-tB-b6F" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="zQ6-Pz-4CV"/>
             </constraints>
+            <point key="canvasLocation" x="34.5" y="53.5"/>
         </view>
     </objects>
 </document>
