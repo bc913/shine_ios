@@ -28,7 +28,7 @@ class HomeScreenCoordinator: Coordinator {
         let homeViewController = UITabBarController()
         
         // Timeline
-        let timeLineVC = UIViewController()
+        let timeLineVC = FeedViewController(nibName: "FeedViewController", bundle: nil)
         let timelineNavigationVC = UINavigationController(rootViewController: timeLineVC)
         let timelineTabrBarItem = UITabBarItem(title: "Feed", image: UIImage(named: "converter-tabbar.png"), tag: 1)
         timelineNavigationVC.tabBarItem = timelineTabrBarItem
