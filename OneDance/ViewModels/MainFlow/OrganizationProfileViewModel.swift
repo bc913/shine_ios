@@ -28,13 +28,16 @@ class OrganizationProfileViewModel : OrganizationProfileViewModelType {
             print("NAme is updated to \(name)")
         }
     }
-    var fullAddress: String = ""
-    var danceTypes = [IDanceType]()
-    var about: String = ""
-    var email: String = ""
     
+    var about: String = ""
+    var danceTypes = [IDanceType]()
+    
+    var email: String = ""
     var phoneNumber: String = ""
     var webUrl: String = ""
+    var facebookUrl : String = ""
+    var instagramUrl : String = ""
+    
     
     var hasClassForKids: Bool?{
         didSet{

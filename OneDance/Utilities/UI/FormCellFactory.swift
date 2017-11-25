@@ -23,14 +23,17 @@ enum FormCellType{
     case nameTitle
     case nameTitleWithImage
     
-    case location
-    case date
-    case dateRange
-    case datePicker
     case info
+    
     case email
     case url
     case phoneNumber
+    
+    case location
+    
+    case date
+    case dateRange
+    case datePicker
     
     case switchType
     case defaultType
@@ -144,6 +147,28 @@ struct FormItemCellFactory {
                 return cell
             }
             
+        case .email, .phoneNumber:
+            nibName = TextFieldFormCell.nib
+            identifier = TextFieldFormCell.identifier
+            tableView.register(nibName, forCellReuseIdentifier: identifier!)
+            if let cell = tableView.dequeueReusableCell(withIdentifier: identifier!) as? TextFieldFormCell {
+                cell.placeHolder = Helper.createPlaceHolderText(purpose: purpose, type: type)
+                return cell
+            }
+            
+        case .url:
+            nibName = TextFieldFormCell.nib
+            identifier = TextFieldFormCell.identifier
+            tableView.register(nibName, forCellReuseIdentifier: identifier!)
+            if let cell = tableView.dequeueReusableCell(withIdentifier: identifier!) as? TextFieldFormCell {
+                if placeHolder == nil {
+                    cell.placeHolder = Helper.createPlaceHolderText(purpose: purpose, type: type)
+                } else {
+                    cell.placeHolder = placeHolder
+                }
+                
+                return cell
+            }
             
         default:
             nibName = TextFieldCell.nib

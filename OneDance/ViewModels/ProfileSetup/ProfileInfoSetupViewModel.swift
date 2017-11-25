@@ -55,7 +55,7 @@ class ProfileInfoSetupViewModel: ProfileInfoSetupViewModelType {
             }
         }
         
-        ShineNetworkService.API.updateProfileWith(userName: self.userName, slogan: self.slogan, link: self.link, mainThreadCompletionHandler: modelCompletionHandler)
+        ShineNetworkService.API.User.updateProfileWith(userName: self.userName, slogan: self.slogan, link: self.link, mainThreadCompletionHandler: modelCompletionHandler)
         
         
     }

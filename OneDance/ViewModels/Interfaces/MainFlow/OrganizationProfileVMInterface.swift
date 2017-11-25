@@ -24,14 +24,19 @@ protocol OrganizationProfileViewModelType : class {
     var coordinatorDelegate : OrganizationProfileVMCoordinatorDelegate? { get set }
     
     var name: String { get set }
-    var fullAddress: String { get set }
-    var danceTypes : [IDanceType] { get set }
-    var about: String { get set }
-    var email: String { get set }
     
+    var about: String { get set }
+    var danceTypes : [IDanceType] { get set }
+ 
+    
+    // Contact info
+    var email: String { get set }
     var phoneNumber: String { get set }
     var webUrl: String { get set }
+    var facebookUrl : String { get set }
+    var instagramUrl : String { get set }
     
+    // Class info
     var hasClassForKids : Bool? { get set }
     var hasPrivateClasses : Bool? { get set }
     var instructors : [InstructorProfileModelType]?{ get set }

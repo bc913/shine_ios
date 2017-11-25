@@ -42,12 +42,12 @@ class DanceTypeTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
         
-        // Update the background colors to hide highlighting
-        self.contentView.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
-        // For accessory view background color
-        self.contentView.superview?.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
-        self.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
-        self.accessoryView?.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
+//        // Update the background colors to hide highlighting
+//        self.contentView.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
+//        // For accessory view background color
+//        self.contentView.superview?.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
+//        self.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
+//        self.accessoryView?.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
         
     }
     

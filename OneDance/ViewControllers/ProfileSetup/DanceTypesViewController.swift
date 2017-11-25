@@ -143,16 +143,16 @@ extension DanceTypesViewController : UITableViewDataSource {
 extension DanceTypesViewController : UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let selectedCell = self.tableView.cellForRow(at: indexPath) as? DanceTypeTableViewCell{
-            selectedCell.layer.borderColor = UIColor.blue.cgColor
-            selectedCell.accessoryType = .checkmark
+            //selectedCell.layer.borderColor = UIColor.blue.cgColor
+            //selectedCell.accessoryType = .checkmark
             self.checkForSelection()
         }
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         if let selectedCell = self.tableView.cellForRow(at: indexPath) as? DanceTypeTableViewCell {
-            selectedCell.layer.borderColor = selectedCell.defaultBorderColor
-            selectedCell.accessoryType = .none
+            //selectedCell.layer.borderColor = selectedCell.defaultBorderColor
+            //selectedCell.accessoryType = .none
             self.checkForSelection()
         }
         

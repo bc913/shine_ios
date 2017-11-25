@@ -7,15 +7,19 @@
 //
 
 import Foundation
+import UIKit
 
 struct PersistanceManager {
     
     struct User {
-        static func saveLoginCredentials(userId: String, secretID: String){
+        static func saveLoginCredentials(userId: String, secretID: String? = nil){
             let defaults = UserDefaults.standard
             
             defaults.set(userId, forKey: "UserID")
-            defaults.set(secretID, forKey: "SecretID")
+            if secretID != nil {
+                defaults.set(secretID, forKey: "SecretID")
+            }
+            
             
         }
         
@@ -40,5 +44,50 @@ struct PersistanceManager {
         }
         
 
+    }
+    
+    struct Device {
+        static var id : String {
+            get {
+                return UIDevice.current.identifierForVendor!.uuidString
+            }
+        }
+        
+        static var brand : String {
+            get {
+                return "Apple"
+            }
+        }
+        
+        static var model : String {
+            get {
+                return UIDevice.current.modelName
+            }
+        }
+        
+        static var osVersion : String {
+            get {
+                return UIDevice.current.systemVersion
+            }
+        }
+        
+        static var appVersion : String {
+            get {
+                return "1.0.0"
+            }
+        }
+        
+        static var systemName : String {
+            get {
+                return UIDevice.current.systemName
+            }
+        }
+        
+        static var systemVersion : String {
+            get {
+                return UIDevice.current.systemVersion
+            }
+        }
+        
     }
 }

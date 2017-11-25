@@ -21,6 +21,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
         
+        // Device
+        if !PersistanceManager.User.isLoggedIn {
+            ShineNetworkService.API.User.addDevice()
+        }
+        
+        
         // AWS configuration
         ShineNetworkService.S3.configureAWS()
         

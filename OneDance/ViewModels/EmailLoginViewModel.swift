@@ -88,7 +88,7 @@ class EmailLoginViewModel : EmailLoginViewModelType {
             }
         }
         
-        ShineNetworkService.API.loginUserWith( email: self.email,
+        ShineNetworkService.API.User.loginUserWith( email: self.email,
                                              password: self.password,
                                              mainThreadCompletionHandler: modelCompletionHandler)
         

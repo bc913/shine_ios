@@ -8,6 +8,12 @@
 
 import UIKit
 
+struct FormSectionItem{
+    var cells = [BaseFormCell]()
+    var title : String = ""
+    var sectionIndex : Int = 0
+}
+
 class CreateOrganizationProfileViewController: UIViewController {
 
     
@@ -36,16 +42,146 @@ class CreateOrganizationProfileViewController: UIViewController {
     
     /// The cells to display in the table.
     var cells = [BaseFormCell]()
+    var sectionsWithCells = [String : [BaseFormCell]]()
+    
+    
+    // Sections
+    var formSections = [FormSectionItem]()
+    // SectionCells
+    var nameCells = [BaseFormCell]()
+    var infoCells = [BaseFormCell]()
+    var contactCells = [BaseFormCell]()
+    
+    
     private func constructCells(){
+        
+        // Name & photo
+        
+        var nameSection = FormSectionItem()
+        nameSection.title = "Name"
+        nameSection.sectionIndex = 0
         
         if let cell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .nameTitle, placeHolder: nil) as? NameTitleFormCell {
             cell.valueChanged = {
                 self.viewModel?.name = cell.textField.text!
             }
             
-            cells.append(cell)
+            self.nameCells.append(cell)
         }
         
+        nameSection.cells = self.nameCells
+        formSections.append(nameSection)
+        
+        // Info
+        var infoSection = FormSectionItem()
+        infoSection.title = "About"
+        infoSection.sectionIndex = 1
+        
+        if let aboutCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .info, placeHolder: nil) as? TextViewFormCell{
+            
+            aboutCell.tableView = self.tableView
+            aboutCell.delegate = self
+            aboutCell.getIndexPath = {
+                return self.getIndexPathOfCell(aboutCell)
+            }
+            
+            
+            aboutCell.valueChanged = {
+                self.viewModel?.about = aboutCell.textView.text
+                print("DAteCell change is not applicaple")
+                
+            }
+            
+            self.infoCells.append(aboutCell)
+            
+        }
+        
+//        if let dateCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .date, placeHolder: nil) as? DateFormCell{
+//            
+//            dateCell.viewController = self
+//            dateCell.tableView = self.tableView
+//            
+//            if let dependentCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .datePicker, placeHolder: nil) as? DatePickerFormCell {
+//                
+//                dependentCell.parentCell = dateCell
+//                dateCell.dependentCells = [dependentCell]
+//                dateCell.getIndexPath = {
+//                    return self.getIndexPathOfCell(dateCell)
+//                }
+//            }
+//            
+//            dateCell.valueChanged = {
+//                self.updateCellsWithDependentsOfCell(dateCell, sectionIndex: infoSection.sectionIndex)
+//                print("DAteCell change is not applicaple")
+//                
+//            }
+//            
+//            infoCells.append(dateCell)
+//            
+//        }
+        
+        infoSection.cells = self.infoCells
+        formSections.append(infoSection)
+        
+        // Contact
+        var contactSection = FormSectionItem()
+        contactSection.title = "Contact"
+        contactSection.sectionIndex = 2
+        
+        
+        if let emailCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .email, placeHolder: nil) as? TextFieldFormCell{
+            
+            emailCell.valueChanged = {
+                self.viewModel?.email = emailCell.textField.text!
+            }
+            emailCell.changeKeyboardType(.emailAddress)
+            self.contactCells.append(emailCell)
+        }
+        
+        if let phoneCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .phoneNumber, placeHolder: nil) as? TextFieldFormCell{
+            
+            phoneCell.valueChanged = {
+                self.viewModel?.phoneNumber = phoneCell.textField.text!
+            }
+            phoneCell.changeKeyboardType(.phonePad)
+            self.contactCells.append(phoneCell)
+        }
+        
+        if let linkCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .url, placeHolder: nil) as? TextFieldFormCell{
+            
+            linkCell.valueChanged = {
+                self.viewModel?.webUrl = linkCell.textField.text!
+            }
+            linkCell.changeKeyboardType(.URL)
+            self.contactCells.append(linkCell)
+        }
+        
+        if let facebookUrlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .url, placeHolder: "Facebook (Optional)") as? TextFieldFormCell{
+            
+            facebookUrlCell.valueChanged = {
+                self.viewModel?.facebookUrl = facebookUrlCell.textField.text!
+            }
+            facebookUrlCell.changeKeyboardType(.URL)
+            self.contactCells.append(facebookUrlCell)
+        }
+        
+        
+        if let instagramUrlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .url, placeHolder: "Instagram (Optional)") as? TextFieldFormCell{
+            
+            instagramUrlCell.valueChanged = {
+                self.viewModel?.instagramUrl = instagramUrlCell.textField.text!
+            }
+            instagramUrlCell.changeKeyboardType(.URL)
+            self.contactCells.append(instagramUrlCell)
+        }
+        
+        
+        
+        
+        contactSection.cells = self.contactCells
+        formSections.append(contactSection)
+        
+        /*
         if let hasClassForKidsCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .switchType, placeHolder: "Has Classes for kids") as? SwitchFormCell{
             hasClassForKidsCell.valueChanged = {
                 self.viewModel?.hasClassForKids = hasClassForKidsCell.isOn
@@ -92,24 +228,7 @@ class CreateOrganizationProfileViewController: UIViewController {
             
         }
         
-        if let infoCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .info, placeHolder: nil) as? TextViewFormCell{
-            
-            infoCell.tableView = self.tableView
-            infoCell.delegate = self
-            infoCell.getIndexPath = {
-                return self.getIndexPathOfCell(infoCell)
-            }
-            
-            
-            infoCell.valueChanged = {
-                self.viewModel?.about = infoCell.textView.text
-                print("DAteCell change is not applicaple")
-                
-            }
-            
-            cells.append(infoCell)
-            
-        }
+        */
         
         
         
@@ -120,27 +239,52 @@ class CreateOrganizationProfileViewController: UIViewController {
     }
     
     /// Insert or remove cells into the cells list per the current value of a SwitchCell object.
-    func updateCellsWithDependentsOfCell(_ cell: DateFormCell) {
+    func updateCellsWithDependentsOfCell(_ cell: DateFormCell, sectionIndex : Int = 0) {
+        // Multiple sections. You have to hard code the corresponding cells array
         
         if let indexPath = getIndexPathOfCell(cell), !cell.dependentCells.isEmpty
         {
             let index = (indexPath as NSIndexPath).row + 1
             if cell.tapState {
-                cells.insert(contentsOf: cell.dependentCells as [BaseFormCell], at: index)
+                self.formSections[sectionIndex].cells.insert(contentsOf: cell.dependentCells as [BaseFormCell], at: index)
             }
             else {
                 let removeRange = index..<(index + cell.dependentCells.count)
-                cells.removeSubrange(removeRange)
+                self.formSections[sectionIndex].cells.removeSubrange(removeRange)
             }
         }
+        
+        
+        //Single section
+        
+//        if let indexPath = getIndexPathOfCell(cell), !cell.dependentCells.isEmpty
+//        {
+//            let index = (indexPath as NSIndexPath).row + 1
+//            if cell.tapState {
+//                cells.insert(contentsOf: cell.dependentCells as [BaseFormCell], at: index)
+//            }
+//            else {
+//                let removeRange = index..<(index + cell.dependentCells.count)
+//                cells.removeSubrange(removeRange)
+//            }
+//        }
     }
     
     /// Return the index of a given cell in the cells list.
     func getIndexPathOfCell(_ cell: UITableViewCell) -> IndexPath? {
-        if let row = cells.index(where: { $0 == cell }) {
-            return IndexPath(row: row, section: 0)
+        
+        for sectionItem in self.formSections {
+            if let row = sectionItem.cells.index(where: { $0 == cell }) {
+                return IndexPath(row: row, section: sectionItem.sectionIndex)
+            }
         }
+        
         return nil
+        
+//        if let row = cells.index(where: { $0 == cell }) {
+//            return IndexPath(row: row, section: 0)
+//        }
+//        return nil
     }
     
     override func viewDidLoad() {
@@ -209,26 +353,37 @@ class CreateOrganizationProfileViewController: UIViewController {
 extension CreateOrganizationProfileViewController : UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return self.formSections.count
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        var sectIndex = section
+        
+        if let index = self.formSections.index(where: {$0.sectionIndex == section}) {
+            sectIndex = index
+        }
+        
+        return self.formSections[sectIndex].title
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.cells.count
+        return self.formSections[section].cells.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return self.cells[indexPath.row]
+        return self.formSections[indexPath.section].cells[indexPath.row]
     }
 }
 
 extension CreateOrganizationProfileViewController : UITableViewDelegate{
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
-        if self.cells[indexPath.row] is TextViewFormCell {
+        if self.formSections[indexPath.section].cells[indexPath.row] is TextViewFormCell {
             return self.textViewHeight
         }
         
-        if let cell = cells[indexPath.row] as? BaseFormCell {
+        if let cell = self.formSections[indexPath.section].cells[indexPath.row] as? BaseFormCell {
             return cell.designatedHeight
         }
         return 100.0

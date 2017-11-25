@@ -58,7 +58,7 @@ class UserProfileViewModel : UserProfileViewModelType {
             
         }
         
-        ShineNetworkService.API.getUserProfile(mainThreadCompletionHandler: modelCompletionHandler)
+        ShineNetworkService.API.User.getMyProfile(mainThreadCompletionHandler: modelCompletionHandler)
     }
     
     

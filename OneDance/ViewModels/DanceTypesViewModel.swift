@@ -57,7 +57,7 @@ class DanceTypesViewModel: DanceTypesViewModelType {
             
         }
         
-        ShineNetworkService.API.getDanceTypes(mainThreadCompletionHandler: modelCompletionHandler)
+        ShineNetworkService.API.User.getDanceTypes(mainThreadCompletionHandler: modelCompletionHandler)
         print("DanceTypeViewModel.init() after network request")
         
         self.selectedItems = [IDanceType]()
@@ -102,7 +102,7 @@ class DanceTypesViewModel: DanceTypesViewModelType {
             }
         }
         
-        ShineNetworkService.API.update(danceTypes: self.selectedItems!, mainThreadCompletionHandler: modelCompletionHandler)
+        ShineNetworkService.API.User.update(danceTypes: self.selectedItems!, mainThreadCompletionHandler: modelCompletionHandler)
         
     }
 }

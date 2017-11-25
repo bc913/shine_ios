@@ -75,7 +75,7 @@ class UserProfileViewController: UIViewController {
         self.configureTagContainer()
         self.configureProfileImage()
         
-        self.refreshDisplay()
+        //self.refreshDisplay()
         self.isLoaded = true
 
     }
@@ -99,7 +99,7 @@ class UserProfileViewController: UIViewController {
         
         
         
-        ShineNetworkService.API.getUserProfileImage(with: (self.viewModel?.photUrl)!, mainThreadCompletionHandler: modelCompletionHandler)
+        ShineNetworkService.API.User.getUserProfileImage(with: (self.viewModel?.photUrl)!, mainThreadCompletionHandler: modelCompletionHandler)
         
         print("OSMAAAAAAAAAN")
         self.fullNameLabel.text = self.viewModel?.fullName

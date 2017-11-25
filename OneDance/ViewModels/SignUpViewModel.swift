@@ -144,10 +144,12 @@ class EmailSignUpViewModel: EmailSignUpViewModelType {
             }
         }
         
-        ShineNetworkService.API.createAccountWithEmail(userName: self.userName, name: self.name, surName: self.surName,
-                                                     email: self.email,
-                                                     password: self.password,
-                                                     mainThreadCompletionHandler: modelCompletionHandler)
+        ShineNetworkService.API.User.createAccountWithEmail(userName: self.userName,
+                                                            name: self.name,
+                                                            surName: self.surName,
+                                                            email: self.email,
+                                                            password: self.password,
+                                                            mainThreadCompletionHandler: modelCompletionHandler)
         
         
     }
