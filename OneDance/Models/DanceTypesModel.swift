@@ -8,8 +8,13 @@
 
 import Foundation
 
+protocol DanceTypesModelType
+{
+    func items(_ completionHandler: @escaping (_ items: [IDanceType]) -> Void)
+}
 
 class DanceTypesModel: DanceTypesModelType {
+    
     private var items = [IDanceType]()
     func items(_ completionHandler: @escaping ([IDanceType]) -> Void) {
             completionHandler(self.items)

@@ -25,13 +25,13 @@ class CreateOrganizationProfileViewController: UIViewController {
     fileprivate var isLoaded : Bool = false
     
     // VM
-    var viewModel : OrganizationProfileViewModelType? {
+    var viewModel : OrganizationViewModelType? {
         didSet{
             self.refreshDisplay()
         }
     }
     
-    private func refreshDisplay(){
+    fileprivate func refreshDisplay(){
         guard self.isLoaded else { return }
         
         self.title = "Create Organization"
@@ -51,6 +51,7 @@ class CreateOrganizationProfileViewController: UIViewController {
     var nameCells = [BaseFormCell]()
     var infoCells = [BaseFormCell]()
     var contactCells = [BaseFormCell]()
+    var danceCells = [BaseFormCell]()
     
     
     private func constructCells(){
@@ -62,6 +63,12 @@ class CreateOrganizationProfileViewController: UIViewController {
         nameSection.sectionIndex = 0
         
         if let cell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .nameTitle, placeHolder: nil) as? NameTitleFormCell {
+            
+            // Initialize the form if it is in edit mode
+            if self.viewModel?.mode == .edit {
+                cell.displayedValue = self.viewModel?.name ?? ""
+            }
+            
             cell.valueChanged = {
                 self.viewModel?.name = cell.textField.text!
             }
@@ -80,11 +87,15 @@ class CreateOrganizationProfileViewController: UIViewController {
         if let aboutCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .info, placeHolder: nil) as? TextViewFormCell{
             
             aboutCell.tableView = self.tableView
-            aboutCell.delegate = self
+            aboutCell.delegate = self // Expanding cell delegate
             aboutCell.getIndexPath = {
                 return self.getIndexPathOfCell(aboutCell)
             }
             
+            // Initialize the form if it is in edit mode
+            if self.viewModel?.mode == .edit {
+                aboutCell.displayedValue = self.viewModel?.about ?? ""
+            }
             
             aboutCell.valueChanged = {
                 self.viewModel?.about = aboutCell.textView.text
@@ -131,8 +142,13 @@ class CreateOrganizationProfileViewController: UIViewController {
         
         if let emailCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .email, placeHolder: nil) as? TextFieldFormCell{
             
+            // Initialize if it is edit mode
+            if self.viewModel?.mode == .edit {
+                emailCell.displayedValue = self.viewModel?.contactInfo?.email ?? ""
+            }
+            
             emailCell.valueChanged = {
-                self.viewModel?.email = emailCell.textField.text!
+                self.viewModel?.contactInfo?.email = emailCell.textField.text!
             }
             emailCell.changeKeyboardType(.emailAddress)
             self.contactCells.append(emailCell)
@@ -140,8 +156,13 @@ class CreateOrganizationProfileViewController: UIViewController {
         
         if let phoneCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .phoneNumber, placeHolder: nil) as? TextFieldFormCell{
             
+            // Initialize if it is edit mode
+            if self.viewModel?.mode == .edit {
+                phoneCell.displayedValue = self.viewModel?.contactInfo?.phone ?? ""
+            }
+            
             phoneCell.valueChanged = {
-                self.viewModel?.phoneNumber = phoneCell.textField.text!
+                self.viewModel?.contactInfo?.phone = phoneCell.textField.text!
             }
             phoneCell.changeKeyboardType(.phonePad)
             self.contactCells.append(phoneCell)
@@ -149,8 +170,13 @@ class CreateOrganizationProfileViewController: UIViewController {
         
         if let linkCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .url, placeHolder: nil) as? TextFieldFormCell{
             
+            // Initialize if it is edit mode
+            if self.viewModel?.mode == .edit {
+                linkCell.displayedValue = self.viewModel?.contactInfo?.website ?? ""
+            }
+            
             linkCell.valueChanged = {
-                self.viewModel?.webUrl = linkCell.textField.text!
+                self.viewModel?.contactInfo?.website = linkCell.textField.text!
             }
             linkCell.changeKeyboardType(.URL)
             self.contactCells.append(linkCell)
@@ -158,8 +184,13 @@ class CreateOrganizationProfileViewController: UIViewController {
         
         if let facebookUrlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .url, placeHolder: "Facebook (Optional)") as? TextFieldFormCell{
             
+            // Initialize if it is edit mode
+            if self.viewModel?.mode == .edit {
+                facebookUrlCell.displayedValue = self.viewModel?.contactInfo?.facebookUrl ?? ""
+            }
+            
             facebookUrlCell.valueChanged = {
-                self.viewModel?.facebookUrl = facebookUrlCell.textField.text!
+                self.viewModel?.contactInfo?.facebookUrl = facebookUrlCell.textField.text!
             }
             facebookUrlCell.changeKeyboardType(.URL)
             self.contactCells.append(facebookUrlCell)
@@ -168,8 +199,13 @@ class CreateOrganizationProfileViewController: UIViewController {
         
         if let instagramUrlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .url, placeHolder: "Instagram (Optional)") as? TextFieldFormCell{
             
+            // Initialize if it is edit mode
+            if self.viewModel?.mode == .edit {
+                instagramUrlCell.displayedValue = self.viewModel?.contactInfo?.instagramUrl ?? ""
+            }
+            
             instagramUrlCell.valueChanged = {
-                self.viewModel?.instagramUrl = instagramUrlCell.textField.text!
+                self.viewModel?.contactInfo?.instagramUrl = instagramUrlCell.textField.text!
             }
             instagramUrlCell.changeKeyboardType(.URL)
             self.contactCells.append(instagramUrlCell)
@@ -180,6 +216,63 @@ class CreateOrganizationProfileViewController: UIViewController {
         
         contactSection.cells = self.contactCells
         formSections.append(contactSection)
+        
+        
+        // Dance sepcific information
+        var danceSection = FormSectionItem(cells: [BaseFormCell](), title: "Dance", sectionIndex: 3)
+        
+        if let hasClassForKidsCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .switchType, placeHolder: "Classes for kids") as? SwitchFormCell{
+            
+            //
+            if self.viewModel?.mode == .edit {
+                hasClassForKidsCell.displayedValue = self.viewModel?.hasClassForKids ?? false
+            }
+            
+            hasClassForKidsCell.valueChanged = {
+                self.viewModel?.hasClassForKids = hasClassForKidsCell.isOn
+                
+            }
+            
+            self.danceCells.append(hasClassForKidsCell)
+            
+        }
+        
+        if let hasPrivateClassCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .switchType, placeHolder: "Private Class") as? SwitchFormCell{
+            
+            //
+            if self.viewModel?.mode == .edit {
+                hasPrivateClassCell.displayedValue = self.viewModel?.hasPrivateClass ?? false
+            }
+            
+            hasPrivateClassCell.valueChanged = {
+                self.viewModel?.hasPrivateClass = hasPrivateClassCell.isOn
+                
+            }
+            
+            self.danceCells.append(hasPrivateClassCell)
+            
+        }
+        
+        if let hasWeddingPackageCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .switchType, placeHolder: "Wedding package/classes") as? SwitchFormCell{
+            
+            //
+            if self.viewModel?.mode == .edit {
+                hasWeddingPackageCell.displayedValue = self.viewModel?.hasWeddingPackage ?? false
+            }
+            
+            hasWeddingPackageCell.valueChanged = {
+                self.viewModel?.hasWeddingPackage = hasWeddingPackageCell.isOn
+                
+            }
+            
+            self.danceCells.append(hasWeddingPackageCell)
+            
+        }
+        
+        danceSection.cells = self.danceCells
+        formSections.append(danceSection)        
+        
+        
         
         /*
         if let hasClassForKidsCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .switchType, placeHolder: "Has Classes for kids") as? SwitchFormCell{
@@ -346,6 +439,7 @@ class CreateOrganizationProfileViewController: UIViewController {
     
     func createOrganizationProfile() {
         print("create Event")
+        self.viewModel?.createOrganizationProfile()
     }
 
 }
@@ -430,5 +524,12 @@ fileprivate extension CreateOrganizationProfileViewController {
         let keyboardHeight = keyBoardValueEnd.height
         
         self.tableView.contentInset.bottom = keyboardHeight
+    }
+}
+
+extension CreateOrganizationProfileViewController : OrganizationViewModelViewDelegate{
+    func organizationInfoDidChange(viewModel: OrganizationViewModelType) {
+        self.refreshDisplay()
+        //self.tableView.reloadData()
     }
 }

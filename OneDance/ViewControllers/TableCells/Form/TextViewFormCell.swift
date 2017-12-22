@@ -26,6 +26,12 @@ class TextViewFormCell: BaseFormCell {
         }
     }
     
+    var displayedValue : String = "" {
+        didSet {
+            self.textView.text = displayedValue
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

@@ -13,10 +13,16 @@ enum SerializationError: Error {
     case invalid(String, Any)
 }
 
+protocol IDanceType {
+    var name : String { get }
+    var id : Int { get }
+}
+
 struct DanceType : IDanceType {
-    var name: String
-    var id: Int
+    var name: String = ""
+    var id: Int = 0
     
+    init() { }
     init(name: String, id: Int) {
         self.name = name
         self.id = id
@@ -35,5 +41,14 @@ extension DanceType {
         } else {
             return nil
         }
+    }
+}
+
+extension DanceType : JSONDecodable {
+    var jsonData : [String:Any] {
+        return [
+            "id" : self.id,
+            "name": self.name
+        ]
     }
 }

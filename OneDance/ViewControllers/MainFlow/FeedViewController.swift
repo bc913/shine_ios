@@ -49,7 +49,7 @@ class FeedViewController: UIViewController {
     private func createOrganizationAction(){
         
         let vc = CreateOrganizationProfileViewController(nibName: "CreateOrganizationProfileViewController", bundle: nil)
-        vc.viewModel = OrganizationProfileViewModel()
+        vc.viewModel = OrganizationViewModel(mode: .create)
         let navigationController = UINavigationController(rootViewController: vc)
         
         self.present(navigationController, animated: true, completion: nil)

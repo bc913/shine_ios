@@ -553,6 +553,7 @@ struct ShineNetworkService {
                     "Content-Type": "application/json",
                     "USER-ID": PersistanceManager.User.userId!
                 ]
+
                 
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
                 Alamofire.request(Constants.getMyProfileUrl, method: .get, encoding: JSONEncoding.default, headers: headers)

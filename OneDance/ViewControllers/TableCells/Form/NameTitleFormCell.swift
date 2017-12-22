@@ -18,6 +18,12 @@ final class NameTitleFormCell: BaseFormCell {
         }
     }
     
+    var displayedValue : String = "" {
+        didSet{
+            self.textField.text = displayedValue
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

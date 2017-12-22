@@ -30,6 +30,12 @@ class SwitchFormCell: BaseFormCell {
         }
     }
     
+    var displayedValue : Bool = false {
+        didSet{
+            self.switchControl.setOn(displayedValue, animated: false)
+        }
+    }
+    
     static var nib : UINib{
         return UINib(nibName: self.identifier, bundle: nil)
     }

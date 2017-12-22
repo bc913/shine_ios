@@ -53,26 +53,36 @@ protocol OrganizationProfileViewModelType : class {
     
 }
 
+protocol OrganizationViewModelViewDelegate : class {
+    func organizationInfoDidChange(viewModel: OrganizationViewModelType)
+}
 
-
-//protocol DanceAcademyViewModelType : class {
-//    
-//    var model : DanceAcademyModelType? { get set }
-//    
-//    var name: String { get set }
-//    var fullAddress: String { get set }
-//    var danceTypes : [IDanceType] { get set }
-//    var about: String { get set }
-//    var email: String { get set }
-//    
-//    var phoneNumber: String { get set }
-//    var webUrl: String { get set }
-//    
-//    
-//    
-//    
-//    //
-//    func createProfile()
-//    func viewProfile()
-//    func editProfile()
-//}
+protocol OrganizationViewModelType : class {
+    var mode : ViewModelMode { get set }
+    var viewDelegate : OrganizationViewModelViewDelegate? { get set }
+    //var coordinatorDelegate : OrganizationProfileVMCoordinatorDelegate? { get set }
+    var model : OrganizationType { get set }
+    
+    var id : String { get set }
+    var name : String { get set }
+    var about :String { get set }
+    
+    var danceTypes : [String] { get set }
+    
+    var contactInfo : ContactInfoItem? { get set }
+    
+    //var photo : ImageType? { get set }
+    var instructorList : [UserItem] { get set }
+    var djList : [UserItem] { get set }
+    
+    var hasClassForKids : Bool { get set }
+    var hasPrivateClass : Bool { get set }
+    var hasWeddingPackage : Bool { get set }
+    
+    var followers : Int { get set }
+    var posts : Int { get set }
+    
+    func createOrganizationProfile()
+    
+    
+}
