@@ -33,7 +33,7 @@ extension LoginModel : JSONDecodable {
 // Client
 //============
 
-struct ClientInfo {
+struct DeviceInfo {
     
     var id : String = ""
     var brand : String = ""
@@ -43,7 +43,7 @@ struct ClientInfo {
 }
 
 
-extension ClientInfo : JSONDecodable {
+extension DeviceInfo : JSONDecodable {
     
     var jsonData : [String:Any] {
         
@@ -89,7 +89,7 @@ struct RegistrationModel {
     var password : String = ""
     
     var facebookModel : FacebookUserModel = FacebookUserModel()
-    var client : ClientInfo = ClientInfo()
+    var client : DeviceInfo = DeviceInfo()
     
 }
 

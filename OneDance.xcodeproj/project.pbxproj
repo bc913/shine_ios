@@ -270,17 +270,9 @@
 		650049381F082D1B00F2FEB1 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				6500493D1F082EBB00F2FEB1 /* Interface */,
 				65FC6D401F132BBD00B33C09 /* ODUserManager.swift */,
 			);
 			name = Core;
-			sourceTree = "<group>";
-		};
-		6500493D1F082EBB00F2FEB1 /* Interface */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Interface;
 			sourceTree = "<group>";
 		};
 		6503EC231F075CA800D56AB5 = {

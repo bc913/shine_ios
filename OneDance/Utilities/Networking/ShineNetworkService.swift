@@ -18,7 +18,7 @@ struct ShineNetworkService {
     
     private struct Constants {
         
-        static let baseUrl : String = "https://pmfaazyf1i.execute-api.us-east-1.amazonaws.com/PROD/"
+        static let baseUrl : String = "https://cczx1tdm50.execute-api.us-east-1.amazonaws.com/DEV/"
         
         // User
         static let deviceUrl : String = baseUrl + "devices"
@@ -96,6 +96,12 @@ struct ShineNetworkService {
             
             static func addDevice(){
                 
+                let device = DeviceInfo(id: PersistanceManager.Device.id,
+                                        brand: PersistanceManager.Device.brand,
+                                        model: PersistanceManager.Device.model,
+                                        osVersion: PersistanceManager.Device.osVersion,
+                                        appVersion: PersistanceManager.Device.appVersion)
+                
                 let parameters: Parameters = [
                     "id": PersistanceManager.Device.id,
                     "brand": PersistanceManager.Device.brand,
@@ -105,7 +111,7 @@ struct ShineNetworkService {
                 ]
                 
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
-                Alamofire.request(Constants.deviceUrl, method: .post,parameters: parameters, encoding: JSONEncoding.default)
+                Alamofire.request(Constants.deviceUrl, method: .post,parameters: device.jsonData, encoding: JSONEncoding.default)
                     .responseJSON(
                         queue: queue,
                         completionHandler: { response in
