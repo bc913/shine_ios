@@ -96,11 +96,7 @@ struct ShineNetworkService {
             
             static func addDevice(){
                 
-                let device = DeviceInfo(id: PersistanceManager.Device.id,
-                                        brand: PersistanceManager.Device.brand,
-                                        model: PersistanceManager.Device.model,
-                                        osVersion: PersistanceManager.Device.osVersion,
-                                        appVersion: PersistanceManager.Device.appVersion)
+                let device = DeviceInfo()
                 
                 let parameters: Parameters = [
                     "id": PersistanceManager.Device.id,
@@ -109,6 +105,8 @@ struct ShineNetworkService {
                     "osVersion": PersistanceManager.Device.osVersion,
                     "appVersion": PersistanceManager.Device.appVersion
                 ]
+                
+                var osman : Parameters = device.jsonData
                 
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
                 Alamofire.request(Constants.deviceUrl, method: .post,parameters: device.jsonData, encoding: JSONEncoding.default)
@@ -165,27 +163,10 @@ struct ShineNetworkService {
                 
             }
             
-            static func createAccountWithEmail(userName: String, name: String, surName: String, email: String, password: String, mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()){
-                
-                let client: [String:String] = [
-                    "id": PersistanceManager.Device.id,
-                    "brand": PersistanceManager.Device.brand,
-                    "model": PersistanceManager.Device.model,
-                    "osVersion": PersistanceManager.Device.osVersion,
-                    "appVersion": PersistanceManager.Device.appVersion
-                ]
-                
-                let parameters: Parameters = [
-                    "userId": PersistanceManager.User.userId!,
-                    "username": userName,
-                    "fullname": name + " " + surName,
-                    "email": email,
-                    "password": password,
-                    "client": client
-                ]
+            static func createAccountWithEmail(model:RegistrationModel, mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()){
                 
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
-                Alamofire.request(Constants.registerUserUrl, method: .post,parameters: parameters, encoding: JSONEncoding.default)
+                Alamofire.request(Constants.registerUserUrl, method: .post,parameters: model.jsonData, encoding: JSONEncoding.default)
                     .responseJSON(
                         queue: queue,
                         completionHandler: { response in
@@ -241,22 +222,14 @@ struct ShineNetworkService {
                             //
                             // To update anything on the main thread, just jump back on like so.
                             mainThreadCompletionHandler(error)
-                            
-                            
-                            
                     }
                 )
             } // createAccountWithEmail
             
-            static func loginUserWith(email: String, password: String, mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()){
-                
-                let parameters: Parameters = [
-                    "email": email,
-                    "password": password
-                ]
-                
+            static func loginUserWith(model: LoginModel, mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()){
+               
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
-                Alamofire.request(Constants.emailLoginUrl, method: .post,parameters: parameters, encoding: JSONEncoding.default)
+                Alamofire.request(Constants.emailLoginUrl, method: .post,parameters: model.jsonData, encoding: JSONEncoding.default)
                     .responseJSON(
                         queue: queue,
                         completionHandler: { response in

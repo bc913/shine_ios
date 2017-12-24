@@ -13,13 +13,32 @@ import Foundation
 //============
 
 struct LoginModel {
+    
     var username : String?
     var email : String?
     var password : String = ""
     
+    init?(username: String?, email: String?, password: String) {
+        
+        if username == nil && email == nil {
+            return nil
+        }
+        
+        if username != nil && email != nil {
+            self.username = nil
+        } else {
+            self.username = username
+        }
+        
+        
+        self.email = email
+        self.password = password
+    }
+    
 }
 
 extension LoginModel : JSONDecodable {
+    
     var jsonData : [String:Any] {
         return [
             "username" : self.username ?? "",
@@ -35,11 +54,11 @@ extension LoginModel : JSONDecodable {
 
 struct DeviceInfo {
     
-    var id : String = ""
-    var brand : String = ""
-    var model : String = ""
-    var osVersion : String = ""
-    var appVersion : String = ""
+    var id : String = PersistanceManager.Device.id
+    var brand : String = PersistanceManager.Device.brand
+    var model : String = PersistanceManager.Device.model
+    var osVersion : String = PersistanceManager.Device.osVersion
+    var appVersion : String = PersistanceManager.Device.appVersion
 }
 
 
@@ -82,18 +101,19 @@ extension FacebookUserModel : JSONDecodable {
 //============
 
 struct RegistrationModel {
-    var userId : String = "" //ID of the installation, received in add new device API
+    let userId : String = PersistanceManager.User.userId! //ID of the installation, received in add new device API
     var username : String = ""
     var fullname : String = ""
     var email : String = ""
     var password : String = ""
     
-    var facebookModel : FacebookUserModel = FacebookUserModel()
-    var client : DeviceInfo = DeviceInfo()
+    var facebookModel : FacebookUserModel?
+    let client : DeviceInfo = DeviceInfo()
     
 }
 
 extension RegistrationModel : JSONDecodable {
+    
     var jsonData : [String:Any] {
         return [
             "userId" : self.userId,
@@ -101,7 +121,7 @@ extension RegistrationModel : JSONDecodable {
             "fullname" : self.fullname,
             "email" : self.email,
             "password" : self.password,
-            "facebook" : self.facebookModel.jsonData,
+            "facebook" : self.facebookModel?.jsonData ?? NSNull(),
             "client" : self.client.jsonData
         ]
     }

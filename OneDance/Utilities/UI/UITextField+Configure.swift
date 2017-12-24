@@ -33,4 +33,8 @@ extension UITextField{
         
         
     }
+    
+    func setCustomPlaceholder(text: String) {
+        self.attributedPlaceholder = NSAttributedString(string: text)
+    }
 }

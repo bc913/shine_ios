@@ -44,19 +44,6 @@ class EmailSignUpViewModel: EmailSignUpViewModelType {
     }
     fileprivate var nameIsValidFormat: Bool = false
     
-    /// Surname
-    var surName: String = "" {
-        didSet {
-            if oldValue != surName {
-                let oldCanSubmit = canSubmit
-                surNameIsValidFormat = validateSurNameFormat(surName)
-                if canSubmit != oldCanSubmit {
-                    viewDelegate?.canSubmitStatusDidChange(self, status: canSubmit)
-                }
-            }
-        }
-    }
-    fileprivate var surNameIsValidFormat: Bool = false
     
     /// Email
     var email: String = "" {
@@ -88,7 +75,7 @@ class EmailSignUpViewModel: EmailSignUpViewModelType {
     
     /// canSubmit
     var canSubmit: Bool {
-        return emailIsValidFormat && passwordIsValidFormat && nameIsValidFormat && surNameIsValidFormat && userNameIsValidFormat
+        return emailIsValidFormat && passwordIsValidFormat && nameIsValidFormat  && userNameIsValidFormat
     }
     
     /// Errors
@@ -103,12 +90,6 @@ class EmailSignUpViewModel: EmailSignUpViewModelType {
     fileprivate func validateNameFormat(_ name: String) -> Bool
     {
         let trimmedString = name.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        return trimmedString.characters.count > 1
-    }
-    
-    fileprivate func validateSurNameFormat(_ surname: String) -> Bool
-    {
-        let trimmedString = surname.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         return trimmedString.characters.count > 1
     }
     
@@ -144,12 +125,12 @@ class EmailSignUpViewModel: EmailSignUpViewModelType {
             }
         }
         
-        ShineNetworkService.API.User.createAccountWithEmail(userName: self.userName,
-                                                            name: self.name,
-                                                            surName: self.surName,
-                                                            email: self.email,
-                                                            password: self.password,
-                                                            mainThreadCompletionHandler: modelCompletionHandler)
+        let regModel = RegistrationModel(username: self.userName,
+                                         fullname: self.name,
+                                         email: self.email,
+                                         password: self.password,
+                                         facebookModel: nil)
+        ShineNetworkService.API.User.createAccountWithEmail(model:regModel, mainThreadCompletionHandler: modelCompletionHandler)
         
         
     }

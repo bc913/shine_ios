@@ -15,11 +15,11 @@ class EmailLoginViewModel : EmailLoginViewModelType {
     weak var viewDelegate: EmailLoginViewModelViewDelegate?
     
     /// Email
-    var email: String = "" {
+    var email: String? = "" {
         didSet {
-            if oldValue != email {
+            if email != nil && oldValue != email {
                 let oldCanSubmit = canSubmit
-                emailIsValidFormat = validateEmailFormat(email)
+                emailIsValidFormat = validateEmailFormat(email!)
                 if canSubmit != oldCanSubmit {
                     viewDelegate?.canSubmitStatusDidChange(self, status: canSubmit)
                 }
@@ -42,9 +42,16 @@ class EmailLoginViewModel : EmailLoginViewModelType {
     }
     fileprivate var passwordIsValidFormat: Bool = false
     
+    /// Username
+    var username : String? = ""
+    
     /// canSubmit
     var canSubmit: Bool {
-        return emailIsValidFormat && passwordIsValidFormat
+        if username == nil {
+            return emailIsValidFormat && passwordIsValidFormat
+        } else {
+            return passwordIsValidFormat
+        }
     }
     
     /// Errors
@@ -72,6 +79,7 @@ class EmailLoginViewModel : EmailLoginViewModelType {
     }
     
     func submit() {
+        
         print("EmailLogin :: submit()")        
         
         let modelCompletionHandler = { (error: NSError?) in
@@ -85,13 +93,12 @@ class EmailLoginViewModel : EmailLoginViewModelType {
                     return
                 }
                 self.errorMessage = error.localizedDescription
+                self.viewDelegate?.notifyUser(self, "Error", self.errorMessage)
             }
         }
         
-        ShineNetworkService.API.User.loginUserWith( email: self.email,
-                                             password: self.password,
-                                             mainThreadCompletionHandler: modelCompletionHandler)
-        
+        let loginModel : LoginModel? = LoginModel(username: self.username, email: self.email, password: self.password)
+        ShineNetworkService.API.User.loginUserWith( model:loginModel!, mainThreadCompletionHandler: modelCompletionHandler)
         
     }
     

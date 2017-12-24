@@ -24,7 +24,8 @@ protocol EmailLoginViewModelType : class {
     var coordinatorDelegate : EmailLoginViewModelCoordinatorDelegate? { get set }
     var viewDelegate : EmailLoginViewModelViewDelegate? { get set }
     
-    var email : String { get set }
+    var email : String? { get set }
+    var username : String? { get set }
     var password : String { get set }
     
     var canSubmit : Bool { get }

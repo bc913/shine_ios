@@ -13,6 +13,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var mainScrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var textFieldContainerView: UIView!
+    @IBOutlet weak var loginTypeControl: UISegmentedControl!
     
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -40,6 +41,7 @@ class LoginViewController: UIViewController {
         
         self.isLoaded = true
         self.configureSubmitLoginButton()
+        self.configureLoginControlType()
         
         self.emailTextField.addTarget(self, action: #selector(emailFieldDidChange(_:)), for: UIControlEvents.editingChanged)
         self.passwordTextField.addTarget(self, action: #selector(passwordFieldDidChange(_:)), for: UIControlEvents.editingChanged)
@@ -59,7 +61,11 @@ class LoginViewController: UIViewController {
     func emailFieldDidChange(_ textField: UITextField)
     {
         if let text = textField.text {
-            viewModel?.email = text
+            if loginType == .email {
+                viewModel?.email = text
+            } else {
+                viewModel?.username = text
+            }
         }
     }
     
@@ -74,6 +80,22 @@ class LoginViewController: UIViewController {
         viewModel?.submit()
     }
     
+    @IBAction func loginTypeChanged(_ sender: Any) {
+        
+        switch self.loginTypeControl.selectedSegmentIndex {
+        case 0:
+            self.emailTextField.setCustomPlaceholder(text: "Username")
+            self.viewModel?.email = nil
+            print("username selected")
+        case 1:
+            self.emailTextField.setCustomPlaceholder(text: "Email")
+            self.viewModel?.username = nil
+            print("email selected")
+        default: break
+            //
+        }
+        
+    }
     // Private methods
     private var isLoaded: Bool = false
     
@@ -81,7 +103,12 @@ class LoginViewController: UIViewController {
         guard isLoaded else { return }
         
         if let viewModel = self.viewModel {
-            self.emailTextField.text = viewModel.email
+            
+            if loginType == .email {
+                self.emailTextField.text = viewModel.email
+            } else {
+                self.emailTextField.text = viewModel.username
+            }
             self.passwordTextField.text = viewModel.password
             self.submitLoginButton.isEnabled = viewModel.canSubmit
         } else{
@@ -98,7 +125,7 @@ class LoginViewController: UIViewController {
     }
     
     private func configureAllTextFields(){
-        self.emailTextField.configure(placeholder: "Email")
+        self.emailTextField.configure(placeholder: "Username")
         self.passwordTextField.configure(placeholder: "Password")
     }
     
@@ -111,7 +138,26 @@ class LoginViewController: UIViewController {
         }
         
     }
+    
+    private func configureLoginControlType() {
+        self.loginTypeControl.setTitle("Username", forSegmentAt: 0)
+        self.loginTypeControl.setTitle("Email", forSegmentAt: 1)
+    }
+    
+    private var loginType : LoginType {
+        
+        if loginTypeControl.selectedSegmentIndex == 0 {
+            return .username
+        } else {
+            return .email
+        }
+    }
 
+}
+
+fileprivate enum LoginType {
+    case username
+    case email
 }
 
 extension LoginViewController : EmailLoginViewModelViewDelegate {

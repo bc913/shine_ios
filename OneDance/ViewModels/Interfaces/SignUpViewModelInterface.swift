@@ -27,7 +27,6 @@ protocol EmailSignUpViewModelType : class {
     //
     var userName: String { get set }
     var name : String { get set }
-    var surName: String { get set }
     var email: String { get set }
     var password: String { get set }
     
