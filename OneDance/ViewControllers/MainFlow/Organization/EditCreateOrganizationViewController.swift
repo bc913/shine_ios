@@ -1,8 +1,8 @@
 //
-//  CreateOrganizationProfileViewController.swift
+//  EditCreateOrganizationViewController.swift
 //  OneDance
 //
-//  Created by Burak Can on 11/19/17.
+//  Created by Burak Can on 12/24/17.
 //  Copyright © 2017 Burak Can. All rights reserved.
 //
 
@@ -14,11 +14,11 @@ struct FormSectionItem{
     var sectionIndex : Int = 0
 }
 
-class CreateOrganizationProfileViewController: UIViewController {
-
+class EditCreateOrganizationViewController: UIViewController {
+    
     
     @IBOutlet weak var tableView: UITableView!
-    
+
     // This is a hack to update texview dynamically when content of the text view is larger than its container cell size
     var textViewHeight : CGFloat = 150.0
     
@@ -42,7 +42,6 @@ class CreateOrganizationProfileViewController: UIViewController {
     
     /// The cells to display in the table.
     var cells = [BaseFormCell]()
-    var sectionsWithCells = [String : [BaseFormCell]]()
     
     
     // Sections
@@ -107,29 +106,29 @@ class CreateOrganizationProfileViewController: UIViewController {
             
         }
         
-//        if let dateCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .date, placeHolder: nil) as? DateFormCell{
-//            
-//            dateCell.viewController = self
-//            dateCell.tableView = self.tableView
-//            
-//            if let dependentCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .datePicker, placeHolder: nil) as? DatePickerFormCell {
-//                
-//                dependentCell.parentCell = dateCell
-//                dateCell.dependentCells = [dependentCell]
-//                dateCell.getIndexPath = {
-//                    return self.getIndexPathOfCell(dateCell)
-//                }
-//            }
-//            
-//            dateCell.valueChanged = {
-//                self.updateCellsWithDependentsOfCell(dateCell, sectionIndex: infoSection.sectionIndex)
-//                print("DAteCell change is not applicaple")
-//                
-//            }
-//            
-//            infoCells.append(dateCell)
-//            
-//        }
+        //        if let dateCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .date, placeHolder: nil) as? DateFormCell{
+        //
+        //            dateCell.viewController = self
+        //            dateCell.tableView = self.tableView
+        //
+        //            if let dependentCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .datePicker, placeHolder: nil) as? DatePickerFormCell {
+        //
+        //                dependentCell.parentCell = dateCell
+        //                dateCell.dependentCells = [dependentCell]
+        //                dateCell.getIndexPath = {
+        //                    return self.getIndexPathOfCell(dateCell)
+        //                }
+        //            }
+        //
+        //            dateCell.valueChanged = {
+        //                self.updateCellsWithDependentsOfCell(dateCell, sectionIndex: infoSection.sectionIndex)
+        //                print("DAteCell change is not applicaple")
+        //
+        //            }
+        //
+        //            infoCells.append(dateCell)
+        //
+        //        }
         
         infoSection.cells = self.infoCells
         formSections.append(infoSection)
@@ -270,65 +269,58 @@ class CreateOrganizationProfileViewController: UIViewController {
         }
         
         danceSection.cells = self.danceCells
-        formSections.append(danceSection)        
+        formSections.append(danceSection)
         
         
         
         /*
-        if let hasClassForKidsCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .switchType, placeHolder: "Has Classes for kids") as? SwitchFormCell{
-            hasClassForKidsCell.valueChanged = {
-                self.viewModel?.hasClassForKids = hasClassForKidsCell.isOn
-                
-            }
-            
-            cells.append(hasClassForKidsCell)
-            
-        }
-        
-        if let dateCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .date, placeHolder: nil) as? DateFormCell{
-            
-            dateCell.viewController = self
-            dateCell.tableView = self.tableView
-            
-            if let dependentCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .datePicker, placeHolder: nil) as? DatePickerFormCell {
-                
-                dependentCell.parentCell = dateCell
-                dateCell.dependentCells = [dependentCell]
-                dateCell.getIndexPath = {
-                    return self.getIndexPathOfCell(dateCell)
-                }
-            }
-            
-            dateCell.valueChanged = {
-                self.updateCellsWithDependentsOfCell(dateCell)
-                print("DAteCell change is not applicaple")
-                
-            }
-            
-            cells.append(dateCell)
-            
-        }
-        
-        if let locationCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .location, placeHolder: nil) as? LocationFormCell{
-            
-            locationCell.viewController = self
-            locationCell.valueChanged = {
-                print("Value change is not applicaple")
-                
-            }
-            
-            cells.append(locationCell)
-            
-        }
-        
-        */
-        
-        
-        
-        
-        
-        
-        
+         if let hasClassForKidsCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .switchType, placeHolder: "Has Classes for kids") as? SwitchFormCell{
+         hasClassForKidsCell.valueChanged = {
+         self.viewModel?.hasClassForKids = hasClassForKidsCell.isOn
+         
+         }
+         
+         cells.append(hasClassForKidsCell)
+         
+         }
+         
+         if let dateCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .date, placeHolder: nil) as? DateFormCell{
+         
+         dateCell.viewController = self
+         dateCell.tableView = self.tableView
+         
+         if let dependentCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .datePicker, placeHolder: nil) as? DatePickerFormCell {
+         
+         dependentCell.parentCell = dateCell
+         dateCell.dependentCells = [dependentCell]
+         dateCell.getIndexPath = {
+         return self.getIndexPathOfCell(dateCell)
+         }
+         }
+         
+         dateCell.valueChanged = {
+         self.updateCellsWithDependentsOfCell(dateCell)
+         print("DAteCell change is not applicaple")
+         
+         }
+         
+         cells.append(dateCell)
+         
+         }
+         
+         if let locationCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .location, placeHolder: nil) as? LocationFormCell{
+         
+         locationCell.viewController = self
+         locationCell.valueChanged = {
+         print("Value change is not applicaple")
+         
+         }
+         
+         cells.append(locationCell)
+         
+         }
+         
+         */
     }
     
     /// Insert or remove cells into the cells list per the current value of a SwitchCell object.
@@ -350,17 +342,17 @@ class CreateOrganizationProfileViewController: UIViewController {
         
         //Single section
         
-//        if let indexPath = getIndexPathOfCell(cell), !cell.dependentCells.isEmpty
-//        {
-//            let index = (indexPath as NSIndexPath).row + 1
-//            if cell.tapState {
-//                cells.insert(contentsOf: cell.dependentCells as [BaseFormCell], at: index)
-//            }
-//            else {
-//                let removeRange = index..<(index + cell.dependentCells.count)
-//                cells.removeSubrange(removeRange)
-//            }
-//        }
+        //        if let indexPath = getIndexPathOfCell(cell), !cell.dependentCells.isEmpty
+        //        {
+        //            let index = (indexPath as NSIndexPath).row + 1
+        //            if cell.tapState {
+        //                cells.insert(contentsOf: cell.dependentCells as [BaseFormCell], at: index)
+        //            }
+        //            else {
+        //                let removeRange = index..<(index + cell.dependentCells.count)
+        //                cells.removeSubrange(removeRange)
+        //            }
+        //        }
     }
     
     /// Return the index of a given cell in the cells list.
@@ -374,10 +366,11 @@ class CreateOrganizationProfileViewController: UIViewController {
         
         return nil
         
-//        if let row = cells.index(where: { $0 == cell }) {
-//            return IndexPath(row: row, section: 0)
-//        }
-//        return nil
+        //Single section
+        //        if let row = cells.index(where: { $0 == cell }) {
+        //            return IndexPath(row: row, section: 0)
+        //        }
+        //        return nil
     }
     
     override func viewDidLoad() {
@@ -444,7 +437,8 @@ class CreateOrganizationProfileViewController: UIViewController {
 
 }
 
-extension CreateOrganizationProfileViewController : UITableViewDataSource {
+// UITableViewDataSource
+extension EditCreateOrganizationViewController : UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return self.formSections.count
@@ -468,11 +462,15 @@ extension CreateOrganizationProfileViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return self.formSections[indexPath.section].cells[indexPath.row]
     }
+    
+    
 }
 
-extension CreateOrganizationProfileViewController : UITableViewDelegate{
+// UITableViewDelegate
+extension EditCreateOrganizationViewController : UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-
+        
         if self.formSections[indexPath.section].cells[indexPath.row] is TextViewFormCell {
             return self.textViewHeight
         }
@@ -482,9 +480,11 @@ extension CreateOrganizationProfileViewController : UITableViewDelegate{
         }
         return 100.0
     }
+    
 }
+
 // MARK: textview dynamic expansion delegate
-extension CreateOrganizationProfileViewController: ExpandingCellDelegate {
+extension EditCreateOrganizationViewController: ExpandingCellDelegate {
     
     func updateCellHeight(height: CGFloat, indexPath: IndexPath) {
         //expandingCellHeight = height
@@ -506,7 +506,7 @@ extension CreateOrganizationProfileViewController: ExpandingCellDelegate {
     }
 }
 
-fileprivate extension CreateOrganizationProfileViewController {
+fileprivate extension EditCreateOrganizationViewController {
     
     fileprivate func registerKeyboardNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: .UIKeyboardWillShow, object: nil)
@@ -527,9 +527,10 @@ fileprivate extension CreateOrganizationProfileViewController {
     }
 }
 
-extension CreateOrganizationProfileViewController : OrganizationViewModelViewDelegate{
+extension EditCreateOrganizationViewController : OrganizationViewModelViewDelegate{
     func organizationInfoDidChange(viewModel: OrganizationViewModelType) {
         self.refreshDisplay()
         //self.tableView.reloadData()
     }
 }
+

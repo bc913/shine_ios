@@ -332,6 +332,7 @@ struct EventModel {
         
         if let danceTypes = json["danceTypes"] as? [[String:Any]] {
             self.danceTypes = [DanceType]()
+            self.danceTypes!.reserveCapacity(danceTypes.count)
             for danceObj in danceTypes {
                 self.danceTypes?.append(DanceType(json: danceObj)!)
             }
@@ -416,8 +417,7 @@ extension EventModel : JSONDecodable {
         let organizationOwner = self.ownerOrganization as? JSONDecodable
         
         var dances : [[String:Any]]?
-        
-        if let danceTypeItems = self.danceTypes {
+        if let danceTypeItems = self.danceTypes, !(danceTypeItems.isEmpty) {
             
             dances = [[String:Any]]()
             dances?.reserveCapacity(danceTypeItems.count)
@@ -430,8 +430,6 @@ extension EventModel : JSONDecodable {
             }
         }
         
-        
-        
         let loc = self.location as? JSONDecodable
         let contact = self.contact as? JSONDecodable
         let photo = self.coverPhoto as? JSONDecodable
@@ -439,7 +437,7 @@ extension EventModel : JSONDecodable {
         
         // Instructors
         var instList : [[String:Any]]?
-        if let instructors = self.instructors{
+        if let instructors = self.instructors, !(instructors.isEmpty){
             
             instList = [[String:Any]]()
             instList?.reserveCapacity(instructors.count)
@@ -454,7 +452,7 @@ extension EventModel : JSONDecodable {
         
         // DJS
         var djList : [[String:Any]]?
-        if let djs = self.djs{
+        if let djs = self.djs, !(djs.isEmpty){
             
             djList = [[String:Any]]()
             djList?.reserveCapacity(djs.count)

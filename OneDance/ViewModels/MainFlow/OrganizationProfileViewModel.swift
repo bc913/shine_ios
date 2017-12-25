@@ -8,23 +8,58 @@
 
 import Foundation
 
+protocol OrganizationViewModelViewDelegate : class {
+    func organizationInfoDidChange(viewModel: OrganizationViewModelType)
+}
+
+protocol OrganizationViewModelType : class {
+    var mode : ViewModelMode { get set }
+    var viewDelegate : OrganizationViewModelViewDelegate? { get set }
+    //var coordinatorDelegate : OrganizationProfileVMCoordinatorDelegate? { get set }
+    var model : OrganizationType? { get set }
+    
+    var id : String { get set }
+    var name : String? { get set }
+    var about :String? { get set }
+    
+    var danceTypes : [DanceTypeItem]? { get set }
+    
+    var contactInfo : ContactInfoItem? { get set }
+    
+    //var photo : ImageType? { get set }
+    var instructors : [UserItem]? { get set }
+    var djs : [UserItem]? { get set }
+    
+    var hasClassForKids : Bool { get set }
+    var hasPrivateClass : Bool { get set }
+    var hasWeddingPackage : Bool { get set }
+    
+    var followers : Int? { get set }
+    var posts : Int? { get set }
+    
+    func createOrganizationProfile()
+    
+    
+}
+
 class OrganizationViewModel : OrganizationViewModelType {
     
     var mode : ViewModelMode
     var viewDelegate : OrganizationViewModelViewDelegate?
+    var model : OrganizationType?
     
-    var id : String = ""
-    var name : String = ""
-    var about :String = ""
+    var id : String
+    var name : String?
+    var about : String?
     
     // Dance types
-    var danceTypes = [String]()
+    var danceTypes : [DanceTypeItem]?
     
     // Contact info
     var contactInfo : ContactInfoItem?
     
-    var instructorList = [UserItem]()
-    var djList = [UserItem]()
+    var instructors : [UserItem]?
+    var djs : [UserItem]?
     
     // Dance academy info
     var hasClassForKids : Bool = false
@@ -32,75 +67,14 @@ class OrganizationViewModel : OrganizationViewModelType {
     var hasWeddingPackage : Bool = false
     
     // Relationship
-    var followers : Int = 0
+    var followers : Int?
     
     // Feed
-    var posts : Int = 0
-    
-    var model : OrganizationType  = Organization(){
-        didSet{
-            
-            self.id = self.model.id ?? ""
-            self.name = self.model.name ?? ""
-            self.about = self.model.about ?? ""
-            
-            // DAnce types
-            if self.danceTypes.count != 0 {
-                self.danceTypes.removeAll()
-            }
-            for danceItem in self.model.danceTypes {
-                self.danceTypes.append(danceItem.name)
-            }
-            
-            // Cotact info
-            if let contact = self.model.contact as? ContactInfo {
-                self.contactInfo = ContactInfoItem(contactInfoModel: contact)
-            }
-            
-            // Instructors
-            if !self.instructorList.isEmpty {
-                self.instructorList.removeAll()
-            }
-            
-            if let insts = self.model.instructors {
-                for instructor in insts {
-                    if let userLiteItem = instructor as? UserLite {
-                        self.instructorList.append(UserItem(userLiteModel: userLiteItem))
-                    }
-                }
-            }
-            
-            // DJs
-            if !self.djList.isEmpty {
-                self.djList.removeAll()
-            }
-            
-            if let djs = self.model.djs {
-                for dj in djs {
-                    if let djLiteItem = dj as? UserLite {
-                        self.djList.append(UserItem(userLiteModel: djLiteItem))
-                    }
-                }
-            }
-            
-            // Dance academy info
-            self.hasClassForKids = self.model.hasClassForKids
-            self.hasPrivateClass = self.model.hasPrivateClass
-            self.hasWeddingPackage = self.model.hasWeddingPackage
-            
-            // Relationship
-            self.followers = self.model.followerCounter ?? 0
-            
-            // Feed
-            self.posts = self.model.postsCounter ?? 0
-            
-            
-            
-        }
-    }
+    var posts : Int?
     
     init(mode: ViewModelMode, id: String = "") {
         self.mode = mode
+        self.id = id
         
         // Initialize model
         if mode == .create {
@@ -129,106 +103,150 @@ class OrganizationViewModel : OrganizationViewModelType {
         
     }
     
-    private func updateViewModel(){
+    private func populateViewModel(){
         
-        self.id = self.model.id ?? ""
-        self.name = self.model.name ?? ""
-        self.about = self.model.about ?? ""
+        self.id = self.model?.id ?? ""
+        self.name = self.model?.name ?? ""
+        self.about = self.model?.about ?? ""
         
-        // DAnce types
-        if self.danceTypes.count != 0 {
-            self.danceTypes.removeAll()
+        // Dance types
+        if let modelDances = self.model?.danceTypes, !modelDances.isEmpty {
+            
+            if self.danceTypes == nil {
+                self.danceTypes = [DanceTypeItem]()
+                self.danceTypes?.reserveCapacity(modelDances.count)
+            } else {
+                self.danceTypes?.removeAll()
+            }
+            
+            for dance in modelDances {
+                if let danceObj = dance as? DanceType {
+                    self.danceTypes?.append(DanceTypeItem(danceTypeModel: danceObj))
+                }
+            }
+        } else {
+            self.danceTypes = nil
         }
-        for danceItem in self.model.danceTypes {
-            self.danceTypes.append(danceItem.name)
-        }
+        
         
         // Contact info
-        if let contact = self.model.contact as? ContactInfo {
+        if let contact = self.model?.contact as? ContactInfo {
             self.contactInfo = ContactInfoItem(contactInfoModel: contact)
+        } else {
+            self.contactInfo = nil
         }
         
-        // Instructors
-        if !self.instructorList.isEmpty {
-            self.instructorList.removeAll()
-        }
-        
-        if let insts = self.model.instructors {
-            for instructor in insts {
-                if let userLiteItem = instructor as? UserLite {
-                    self.instructorList.append(UserItem(userLiteModel: userLiteItem))
+        if let modelInstructors = self.model?.instructors, !(modelInstructors.isEmpty) {
+            
+            if self.instructors != nil {
+                self.instructors?.removeAll()
+            } else {
+                self.instructors = [UserItem]()
+                self.instructors?.reserveCapacity(modelInstructors.count)
+            }
+            
+            for instLite in modelInstructors {
+                if let insLiteItem = instLite as? UserLite{
+                    self.instructors!.append(UserItem(userLiteModel: insLiteItem))
                 }
             }
+        } else {
+            self.instructors = nil
         }
         
-        // DJs
-        if !self.djList.isEmpty {
-            self.djList.removeAll()
-        }
-        
-        if let djs = self.model.djs {
-            for dj in djs {
-                if let djLiteItem = dj as? UserLite {
-                    self.djList.append(UserItem(userLiteModel: djLiteItem))
+        if let modelDjs = self.model?.djs, !(modelDjs.isEmpty) {
+            
+            if self.djs != nil {
+                self.djs!.removeAll()
+            } else {
+                self.djs = [UserItem]()
+                self.djs?.reserveCapacity(modelDjs.count)
+            }
+            
+            for modelDj in modelDjs {
+                if let modelDjLite = modelDj as? UserLite {
+                    self.djs!.append(UserItem(userLiteModel: modelDjLite))
                 }
             }
+        } else {
+            self.djs = nil
         }
         
         // Dance academy info
-        self.hasClassForKids = self.model.hasClassForKids
-        self.hasPrivateClass = self.model.hasPrivateClass
-        self.hasWeddingPackage = self.model.hasWeddingPackage
+        self.hasClassForKids = self.model?.hasClassForKids ?? false
+        self.hasPrivateClass = self.model?.hasPrivateClass ?? false
+        self.hasWeddingPackage = self.model?.hasWeddingPackage ?? false
         
         // Relationship
-        self.followers = self.model.followerCounter ?? 0
+        self.followers = self.model?.followerCounter
         
         // Feed
-        self.posts = self.model.postsCounter ?? 0
+        self.posts = self.model?.postsCounter
         
     }
     
     private func updateModel() {
         
-        self.model.id = self.id
-        self.model.name = self.name
-        self.model.about = self.about
+        self.model?.id = self.id
+        self.model?.name = self.name
+        self.model?.about = self.about
 
-        var selectedDanceTypes = [IDanceType]()
-        var idCounter = 1
-        for dance in self.danceTypes {
-            selectedDanceTypes.append(DanceType(name:dance, id:idCounter))
-            idCounter = idCounter + 1
-        }
-        self.model.danceTypes = selectedDanceTypes
-        
-        // Contacct
-        self.model.contact = self.contactInfo?.mapToLiteModel()
-        
-        // Instructors
-        var instructors = [UserLite]()
-        for instructorItem in self.instructorList {
-            instructors.append(instructorItem.mapToLiteModel())
-        }
-        self.model.instructors = instructors
-        
-        // DJs
-        var djs = [UserLite]()
-        for djItem in self.djList {
-            djs.append(djItem.mapToLiteModel())
+        // Dance types
+        if let selectedDances = self.danceTypes, !(selectedDances.isEmpty), self.model != nil {
+            
+            self.model!.danceTypes = nil
+            self.model!.danceTypes = [DanceType]()
+            self.model!.danceTypes!.reserveCapacity(selectedDances.count)
+            
+            for danceItem in selectedDances {
+                self.model!.danceTypes!.append(danceItem.mapToModel())
+            }
+            
+        } else{
+            self.model?.danceTypes = nil
         }
         
-        self.model.djs = djs
+        // Contact
+        self.model?.contact = self.contactInfo?.mapToLiteModel()
+        
+        if let instructorList = self.instructors, !(instructorList.isEmpty), self.model != nil {
+            
+            self.model!.instructors = nil
+            self.model!.instructors = [UserLite]()
+            self.model!.instructors!.reserveCapacity(instructorList.count)
+            
+            for instItem in instructorList {
+                self.model!.instructors!.append(instItem.mapToLiteModel())
+            }
+            
+        } else {
+            self.model?.instructors = nil
+        }
+        
+        if let djList = self.djs, !(djList.isEmpty), self.model != nil {
+            
+            self.model!.djs = nil
+            self.model!.djs = [UserLite]()
+            self.model!.djs!.reserveCapacity(djList.count)
+            
+            for djItem in djList {
+                self.model!.djs!.append(djItem.mapToLiteModel())
+            }
+            
+        } else {
+            self.model?.djs = nil
+        }
         
         // Dance acedemy info
-        self.model.hasClassForKids = self.hasClassForKids
-        self.model.hasPrivateClass = self.hasPrivateClass
-        self.model.hasWeddingPackage = self.hasWeddingPackage
+        self.model?.hasClassForKids = self.hasClassForKids
+        self.model?.hasPrivateClass = self.hasPrivateClass
+        self.model?.hasWeddingPackage = self.hasWeddingPackage
         
         // Relationship
-        self.model.followerCounter = self.followers
+        self.model?.followerCounter = self.followers
         
         // Feed
-        self.model.postsCounter = self.posts
+        self.model?.postsCounter = self.posts
     }
     
     

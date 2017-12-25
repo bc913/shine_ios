@@ -43,7 +43,7 @@ class UserViewModel {
     var bio : String?
     var websiteUrl : String?
     
-    var danceTypeItems : [DanceTypeItem]?
+    var danceTypes : [DanceTypeItem]?
     
     var djProfile : DJProfileItem?
     var instructorProfile : InstructorProfileItem?
@@ -82,28 +82,35 @@ class UserViewModel {
         self.websiteUrl = self.model?.websiteUrl
         
         // Favorite dances
-        if let modelDances = self.model?.favoriteDanceTypes {
+        // Dance types
+        if let modelDances = self.model?.danceTypes, !modelDances.isEmpty {
             
-            if self.danceTypeItems == nil {
-                self.danceTypeItems = [DanceTypeItem]()
-                self.danceTypeItems?.reserveCapacity(modelDances.count)
+            if self.danceTypes == nil {
+                self.danceTypes = [DanceTypeItem]()
+                self.danceTypes?.reserveCapacity(modelDances.count)
             } else {
-                self.danceTypeItems?.removeAll()
+                self.danceTypes?.removeAll()
             }
             
             for dance in modelDances {
                 if let danceObj = dance as? DanceType {
-                    self.danceTypeItems?.append(DanceTypeItem(danceTypeModel: danceObj))
+                    self.danceTypes?.append(DanceTypeItem(danceTypeModel: danceObj))
                 }
             }
+        } else {
+            self.danceTypes = nil
         }
         
         if let dj = self.model?.djProfile {
             self.djProfile = DJProfileItem(model: dj)
+        } else {
+            self.djProfile = nil
         }
         
         if let instructor = self.model?.instructorProfile {
             self.instructorProfile = InstructorProfileItem(model: instructor)
+        } else {
+            self.instructorProfile = nil
         }
         
         

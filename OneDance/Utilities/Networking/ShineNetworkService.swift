@@ -18,7 +18,7 @@ struct ShineNetworkService {
     
     private struct Constants {
         
-        static let baseUrl : String = "https://cczx1tdm50.execute-api.us-east-1.amazonaws.com/DEV/"
+        static let baseUrl : String = "https://cczx1tdm50.execute-api.us-east-1.amazonaws.com/PROD/"
         
         // User
         static let deviceUrl : String = baseUrl + "devices"
@@ -98,15 +98,15 @@ struct ShineNetworkService {
                 
                 let device = DeviceInfo()
                 
-                let parameters: Parameters = [
-                    "id": PersistanceManager.Device.id,
-                    "brand": PersistanceManager.Device.brand,
-                    "model": PersistanceManager.Device.model,
-                    "osVersion": PersistanceManager.Device.osVersion,
-                    "appVersion": PersistanceManager.Device.appVersion
-                ]
+//                let parameters: Parameters = [
+//                    "id": PersistanceManager.Device.id,
+//                    "brand": PersistanceManager.Device.brand,
+//                    "model": PersistanceManager.Device.model,
+//                    "osVersion": PersistanceManager.Device.osVersion,
+//                    "appVersion": PersistanceManager.Device.appVersion
+//                ]
                 
-                var osman : Parameters = device.jsonData
+                var info = device.jsonData
                 
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
                 Alamofire.request(Constants.deviceUrl, method: .post,parameters: device.jsonData, encoding: JSONEncoding.default)
@@ -165,8 +165,10 @@ struct ShineNetworkService {
             
             static func createAccountWithEmail(model:RegistrationModel, mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()){
                 
+                var parameters = model.jsonData
+                
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
-                Alamofire.request(Constants.registerUserUrl, method: .post,parameters: model.jsonData, encoding: JSONEncoding.default)
+                Alamofire.request(Constants.registerUserUrl, method: .post,parameters: parameters, encoding: JSONEncoding.default)
                     .responseJSON(
                         queue: queue,
                         completionHandler: { response in
@@ -292,8 +294,13 @@ struct ShineNetworkService {
             
             static func getDanceTypes(mainThreadCompletionHandler: @escaping (_ error: NSError?, _ data: [IDanceType]?) ->()) {
                 
+                let headers: HTTPHeaders = [
+                    "Content-Type": "application/json",
+                    "USER-ID": PersistanceManager.User.userId!
+                ]
+                
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
-                Alamofire.request(Constants.getDanceTypesUrl, method: .get, encoding: JSONEncoding.default)
+                Alamofire.request(Constants.getDanceTypesUrl, method: .get, encoding: JSONEncoding.default, headers: headers)
                     .responseJSON(
                         queue: queue,
                         completionHandler: { response in

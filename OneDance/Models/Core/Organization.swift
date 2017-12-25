@@ -186,7 +186,7 @@ protocol OrganizationType {
     var name : String? { get set } // required
     var about :String? { get set } // required
     
-    var danceTypes : [IDanceType] { get set } // required
+    var danceTypes : [IDanceType]? { get set } // required
     
     var contact : ContactInfoType? { get set } // required
     
@@ -208,7 +208,7 @@ struct Organization : OrganizationType{
     var name : String?
     var about :String?
     
-    var danceTypes = [IDanceType]()
+    var danceTypes : [IDanceType]?
     
     var contact : ContactInfoType?
     
@@ -244,10 +244,13 @@ extension Organization {
             self.about = about
         }
         
-        if let selectedDanceTypes = json["danceTypes"] as? [[String:Any]] {
-            for dancObj in selectedDanceTypes {
-                self.danceTypes.append(DanceType(json: dancObj)!)
+        if let danceTypes = json["danceTypes"] as? [[String:Any]] {
+            self.danceTypes = [DanceType]()
+            self.danceTypes!.reserveCapacity(danceTypes.count)
+            for danceObj in danceTypes {
+                self.danceTypes?.append(DanceType(json: danceObj)!)
             }
+            
         }
         
         if let contact = json["contactInfo"] as? [String:Any] {
@@ -300,11 +303,17 @@ extension Organization : JSONDecodable {
     
     var jsonData : [String:Any] {
         
-        var dances = [[String:Any]]()
-        for dance in self.danceTypes {
+        var dances : [[String:Any]]?
+        if let danceTypeItems = self.danceTypes, !(danceTypeItems.isEmpty) {
             
-            if let danceObj = dance as? DanceType {
-                dances.append(danceObj.jsonData)
+            dances = [[String:Any]]()
+            dances?.reserveCapacity(danceTypeItems.count)
+            
+            for dance in danceTypeItems {
+                
+                if let danceObj = dance as? DanceType {
+                    dances?.append(danceObj.jsonData)
+                }
             }
         }
         
@@ -313,7 +322,7 @@ extension Organization : JSONDecodable {
         
         // Instructors
         var instList : [[String:Any]]?
-        if let instructors = self.instructors{
+        if let instructors = self.instructors, !(instructors.isEmpty){
             
             instList = [[String:Any]]()
             instList?.reserveCapacity(instructors.count)
@@ -328,7 +337,7 @@ extension Organization : JSONDecodable {
         
         // DJS
         var djList : [[String:Any]]?
-        if let djs = self.djs{
+        if let djs = self.djs, !(djs.isEmpty){
             
             djList = [[String:Any]]()
             djList?.reserveCapacity(djs.count)
@@ -344,7 +353,7 @@ extension Organization : JSONDecodable {
             "id" : self.id ?? "",
             "name" : self.name ?? "",
             "about" : self.about ?? "",
-            "danceTypes": dances.isEmpty ? NSNull() : dances,
+            "danceTypes": (dances == nil || dances!.isEmpty) ? NSNull() : dances!,
             "contactInfo": contactInfo?.jsonData ?? NSNull(),
             "photo" : profilePhoto?.jsonData ?? NSNull(),
             "instructors" : (instList == nil || instList!.isEmpty) ? NSNull() : instList!,

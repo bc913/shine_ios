@@ -121,7 +121,7 @@ extension RegistrationModel : JSONDecodable {
             "fullname" : self.fullname,
             "email" : self.email,
             "password" : self.password,
-            "facebook" : self.facebookModel?.jsonData ?? NSNull(),
+            "facebook" : self.facebookModel?.jsonData ?? [String:Any](),
             "client" : self.client.jsonData
         ]
     }

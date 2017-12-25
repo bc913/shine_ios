@@ -298,7 +298,7 @@ protocol UserModelType {
     var bio : String? { get set }
     var websiteUrl : String? { get set }
     
-    var favoriteDanceTypes : [IDanceType]? { get set }
+    var danceTypes : [IDanceType]? { get set }
     
     var djProfile : DJProfileType? { get set }
     var instructorProfile : InstructorProfileType? { get set }
@@ -324,7 +324,7 @@ struct UserModel : UserModelType{
     var bio : String?
     var websiteUrl : String?
     
-    var favoriteDanceTypes : [IDanceType]?
+    var danceTypes : [IDanceType]?
     
     var djProfile : DJProfileType?
     var instructorProfile : InstructorProfileType?
@@ -377,12 +377,10 @@ extension UserModel {
         
         if let danceTypes = json["selectedDanceTypes"] as? [[String:Any]], !danceTypes.isEmpty {
             
-            if self.favoriteDanceTypes == nil {
-                self.favoriteDanceTypes = [DanceType]()
-            }
-            
+            self.danceTypes = [DanceType]()
+            self.danceTypes!.reserveCapacity(danceTypes.count)
             for danceObj in danceTypes {
-                self.favoriteDanceTypes?.append(DanceType(json: danceObj)!)
+                self.danceTypes?.append(DanceType(json: danceObj)!)
             }
         }
         

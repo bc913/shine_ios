@@ -23,14 +23,14 @@ protocol EventViewModelType : class {
 }
 
 
-class EventViewModel : EventViewModelType {
+class EventViewModel {
     
     weak var viewDelegate : EventViewModelViewDelegate?
     weak var coordinatorDelegate : EventViewModelCoordinatorDelegate?
     
     var model : EventModel?
     var mode : ShineMode
-    var id : String?
+    var id : String
     
     fileprivate var errorMessage : String?
     
@@ -64,43 +64,56 @@ class EventViewModel : EventViewModelType {
     // Update
     func populateViewModel(){
         
+        self.id = self.model?.id ?? ""
         self.title = self.model?.title ?? ""
         self.description = self.model?.description ?? ""
         
         // Owners
         if let ownerAsUser = self.model?.ownerUser as? UserLite {
-            self.ownerUser.mapFromLiteModel(userLiteModel: ownerAsUser)
+            self.ownerUser = nil
+            self.ownerUser = UserItem(userLiteModel: ownerAsUser)
+        } else {
+            self.ownerUser = nil
         }
         
         if let ownerAsOrg = self.model?.ownerOrganization as? OrganizationLite {
-            self.ownerOrg.mapFromLiteModel(organizationLiteModel: ownerAsOrg)
+            self.ownerOrg = nil
+            self.ownerOrg = OrganizationLiteItem(organizationLiteModel: ownerAsOrg)
+        } else {
+            self.ownerOrg = nil
         }
         
         // Dance types
-        if let modelDances = self.model?.danceTypes {
+        if let modelDances = self.model?.danceTypes, !modelDances.isEmpty {
             
-            if self.danceTypeItems == nil {
-                self.danceTypeItems = [DanceTypeItem]()
-                self.danceTypeItems?.reserveCapacity(modelDances.count)
+            if self.danceTypes == nil {
+                self.danceTypes = [DanceTypeItem]()
+                self.danceTypes?.reserveCapacity(modelDances.count)
             } else {
-                self.danceTypeItems?.removeAll()
+                self.danceTypes?.removeAll()
             }
             
             for dance in modelDances {
                 if let danceObj = dance as? DanceType {
-                   self.danceTypeItems?.append(DanceTypeItem(danceTypeModel: danceObj))
+                   self.danceTypes?.append(DanceTypeItem(danceTypeModel: danceObj))
                 }
             }
+        } else {
+            self.danceTypes = nil
         }
         
         self.webUrl = self.model?.webUrl?.path ?? ""
         
         if let loc = self.model?.location as? LocationLite {
             self.location = LocationItem(locationLiteModel: loc)
+        } else {
+            self.location = nil
         }
         
         if let contact = self.model?.contact {
             self.contactPerson = ContactPersonItem(model: contact)
+        } else {
+            self.contactPerson = nil
         }
         
         // TODO: Image type
@@ -118,12 +131,13 @@ class EventViewModel : EventViewModelType {
         self.danceLevel = self.model?.level
         self.eventType = self.model?.type
         
-        if let modelInstructors = self.model?.instructors {
+        if let modelInstructors = self.model?.instructors, !(modelInstructors.isEmpty) {
             
             if self.instructors != nil {
                 self.instructors?.removeAll()
             } else {
                 self.instructors = [UserItem]()
+                self.instructors?.reserveCapacity(modelInstructors.count)
             }
             
             for instLite in modelInstructors {
@@ -131,14 +145,17 @@ class EventViewModel : EventViewModelType {
                     self.instructors!.append(UserItem(userLiteModel: insLiteItem))
                 }
             }
+        } else {
+            self.instructors = nil
         }
         
-        if let modelDjs = self.model?.djs {
+        if let modelDjs = self.model?.djs, !(modelDjs.isEmpty) {
             
             if self.djs != nil {
                 self.djs!.removeAll()
             } else {
                 self.djs = [UserItem]()
+                self.djs?.reserveCapacity(modelDjs.count)
             }
             
             for modelDj in modelDjs {
@@ -146,6 +163,8 @@ class EventViewModel : EventViewModelType {
                     self.djs!.append(UserItem(userLiteModel: modelDjLite))
                 }
             }
+        } else {
+            self.djs = nil
         }
         
         self.hasWorkshop = self.model?.hasWorkshop ?? false
@@ -159,6 +178,8 @@ class EventViewModel : EventViewModelType {
         // Fee policy
         if let fee = self.model?.fee {
             self.feePolicy = FeePolicyItem(model: fee)
+        } else {
+            self.feePolicy = nil
         }
         
         
@@ -167,29 +188,27 @@ class EventViewModel : EventViewModelType {
     
     func updateModel(){
         
+        self.model?.id = self.id
         self.model?.title = self.title
         self.model?.description = self.description
         
         // Owners
-        self.model?.ownerUser = self.ownerUser.mapToLiteModel()
-        self.model?.ownerOrganization = self.ownerOrg.mapToLite()
+        self.model?.ownerUser = self.ownerUser?.mapToLiteModel()
+        self.model?.ownerOrganization = self.ownerOrg?.mapToLite()
         
         // Dance types
-        if let selectedDances = self.danceTypeItems{
+        if let selectedDances = self.danceTypes, !(selectedDances.isEmpty), self.model != nil {
             
-            if self.model != nil {
+            self.model!.danceTypes = nil
+            self.model!.danceTypes = [DanceType]()
+            self.model!.danceTypes!.reserveCapacity(selectedDances.count)
                 
-                if self.model?.danceTypes != nil || !(self.model?.danceTypes!.isEmpty)!{
-                    self.model?.danceTypes?.removeAll()
-                } else {
-                    self.model?.danceTypes = [DanceType]()
-                    self.model?.danceTypes?.reserveCapacity(selectedDances.count)
-                }
-                
-                for danceItem in selectedDances {
-                    self.model?.danceTypes?.append(danceItem.mapToModel())
-                }
+            for danceItem in selectedDances {
+                self.model!.danceTypes!.append(danceItem.mapToModel())
             }
+            
+        } else{
+            self.model?.danceTypes = nil
         }
         
         self.model?.webUrl = URL(string: self.webUrl)
@@ -211,28 +230,32 @@ class EventViewModel : EventViewModelType {
         self.model?.level = self.danceLevel
         self.model?.type = self.eventType
         
-        if let instructorList = self.instructors {
+        if let instructorList = self.instructors, !(instructorList.isEmpty), self.model != nil {
             
-            var insLiteList = [UserLite]()
-            insLiteList.reserveCapacity(instructorList.count)
+            self.model!.instructors = nil
+            self.model!.instructors = [UserLite]()
+            self.model!.instructors!.reserveCapacity(instructorList.count)
             
             for instItem in instructorList {
-                insLiteList.append(instItem.mapToLiteModel())
+                self.model!.instructors!.append(instItem.mapToLiteModel())
             }
-            
-            self.model?.instructors = insLiteList
+
+        } else {
+            self.model?.instructors = nil
         }
         
-        if let djList = self.djs {
+        if let djList = self.djs, !(djList.isEmpty), self.model != nil {
             
-            var djLiteList = [UserLite]()
-            djLiteList.reserveCapacity(djList.count)
+            self.model!.djs = nil
+            self.model!.djs = [UserLite]()
+            self.model!.djs!.reserveCapacity(djList.count)
             
             for djItem in djList {
-                djLiteList.append(djItem.mapToLiteModel())
+                self.model!.djs!.append(djItem.mapToLiteModel())
             }
             
-            self.model?.djs = djLiteList
+        } else {
+            self.model?.djs = nil
         }
         
         self.model?.hasWorkshop = self.hasWorkshop
@@ -252,10 +275,10 @@ class EventViewModel : EventViewModelType {
     
     var title : String = ""
     var description : String = ""
-    var ownerUser : UserItem = UserItem()
-    var ownerOrg : OrganizationLiteItem = OrganizationLiteItem()
+    var ownerUser : UserItem?
+    var ownerOrg : OrganizationLiteItem?
     
-    var danceTypeItems : [DanceTypeItem]?
+    var danceTypes : [DanceTypeItem]?
     
     var webUrl : String = ""
     

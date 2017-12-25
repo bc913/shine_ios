@@ -41,6 +41,10 @@ class FeedViewController: UIViewController {
             self.createOrganizationAction()
         }))
         
+        actionSheet.addAction(UIAlertAction(title: "Create Event", style: UIAlertActionStyle.default, handler: { (alert:UIAlertAction!) -> Void in
+            self.createEventAction()
+        }))
+        
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
         
         self.present(actionSheet, animated: true, completion: nil)
@@ -48,11 +52,21 @@ class FeedViewController: UIViewController {
     
     private func createOrganizationAction(){
         
-        let vc = CreateOrganizationProfileViewController(nibName: "CreateOrganizationProfileViewController", bundle: nil)
+        let vc = EditCreateOrganizationViewController(nibName: "EditCreateOrganizationViewController", bundle: nil)
         vc.viewModel = OrganizationViewModel(mode: .create)
         let navigationController = UINavigationController(rootViewController: vc)
         
         self.present(navigationController, animated: true, completion: nil)
     }
+
+    private func createEventAction(){
+        
+        let vc = EditCreateEventViewController(nibName: "EditCreateEventViewController", bundle: nil)
+        vc.viewModel = EventViewModel(mode: .create)
+        let navigationController = UINavigationController(rootViewController: vc)
+        
+        self.present(navigationController, animated: true, completion: nil)
+    }
+    
 
 }
