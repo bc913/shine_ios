@@ -102,7 +102,7 @@ extension ContactInfo : JSONDecodable {
             "website" : self.website?.absoluteString ?? "",
             "instagramUrl" : self.instagramUrl?.absoluteString ?? "",
             "facebookUrl" : self.facebookUrl?.absoluteString ?? "",
-            "locations" : (locs == nil || locs!.isEmpty) ? NSNull() : locs!
+            "locations" : (locs == nil || locs!.isEmpty) ? [[String:Any]]() : locs!
         ]
     }
 }
@@ -169,8 +169,8 @@ extension OrganizationLite : JSONDecodable {
         return [
             "id" : self.id ?? "",
             "name" : self.name ?? "",
-            "photo" : photo?.jsonData ?? NSNull(),
-            "location" :loc?.jsonData ?? NSNull(),
+            "photo" : photo?.jsonData ?? [String:Any](),
+            "location" :loc?.jsonData ?? [String:Any](),
             "followers" : self.followerCounter ?? 0
         ]
     }
@@ -353,11 +353,11 @@ extension Organization : JSONDecodable {
             "id" : self.id ?? "",
             "name" : self.name ?? "",
             "about" : self.about ?? "",
-            "danceTypes": (dances == nil || dances!.isEmpty) ? NSNull() : dances!,
-            "contactInfo": contactInfo?.jsonData ?? NSNull(),
-            "photo" : profilePhoto?.jsonData ?? NSNull(),
-            "instructors" : (instList == nil || instList!.isEmpty) ? NSNull() : instList!,
-            "djs": (djList == nil || djList!.isEmpty) ? NSNull() : djList!,
+            "danceTypes": (dances == nil || dances!.isEmpty) ? [[String:Any]]() : dances!,
+            "contactInfo": contactInfo?.jsonData ?? [String:Any](),
+            "photo" : profilePhoto?.jsonData ?? [String:Any](),
+            "instructors" : (instList == nil || instList!.isEmpty) ? [[String:Any]]() : instList!,
+            "djs": (djList == nil || djList!.isEmpty) ? [[String:Any]]() : djList!,
             "hasClassForKids" : self.hasClassForKids,
             "hasPrivateClass" : self.hasPrivateClass,
             "hasWeddingPackage":self.hasWeddingPackage,

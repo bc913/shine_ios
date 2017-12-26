@@ -248,10 +248,10 @@ extension EventLite : JSONDecodable {
             "title": self.title,
             "start": self.startDate.timeIntervalSince1970 * 1000,
             "end" : self.endDate.timeIntervalSince1970 * 1000,
-            "location" : loc?.jsonData ?? NSNull(),
-            "photo" : eventPhoto ?? NSNull(),
-            "danceTypes" : (dances == nil || dances!.isEmpty) ? NSNull() : dances!,
-            "attendees" : attendeesInfo?.jsonData ?? NSNull(),
+            "location" : loc?.jsonData ?? [String:Any](),
+            "photo" : eventPhoto ?? [String:Any](),
+            "danceTypes" : (dances == nil || dances!.isEmpty) ? [[String:Any]]() : dances!,
+            "attendees" : attendeesInfo?.jsonData ?? [String:Any](),
             "type" : self.eventType?.rawValue ?? ""
         ]
     }
@@ -472,25 +472,25 @@ extension EventModel : JSONDecodable {
             "id": self.id ?? "",
             "title": self.title,
             "desc" : self.description,
-            "ownerUser" : userOwner?.jsonData ?? NSNull(),
-            "ownerOrganization" : organizationOwner?.jsonData ?? NSNull(),
-            "danceTypes" : (dances == nil || dances!.isEmpty) ? NSNull() : dances!,
+            "ownerUser" : userOwner?.jsonData ?? [String:Any](),
+            "ownerOrganization" : organizationOwner?.jsonData ?? [String:Any](),
+            "danceTypes" : (dances == nil || dances!.isEmpty) ? [[String:Any]]() : dances!,
             "url" : self.webUrl?.path ?? "",
-            "location" : loc?.jsonData ?? NSNull(),
-            "contactPerson" : contact?.jsonData ?? NSNull(),
-            "photo" : photo?.jsonData ?? NSNull(),
-            "attendees" : attendeesQuantity?.jsonData ?? NSNull(),
+            "location" : loc?.jsonData ?? [String:Any](),
+            "contactPerson" : contact?.jsonData ?? [String:Any](),
+            "photo" : photo?.jsonData ?? [String:Any](),
+            "attendees" : attendeesQuantity?.jsonData ?? [String:Any](),
             "start" : (self.startingTime?.timeIntervalSince1970)! * 1000,
             "end" : (self.endTime?.timeIntervalSince1970)! * 1000,
             "duration": self.duration ?? "",
             "level" : self.level?.rawValue ?? "",
             "type" : self.type?.rawValue ?? "",
-            "instructors" : (instList == nil || instList!.isEmpty) ? NSNull() : instList!,
-            "djs":(djList == nil || djList!.isEmpty) ? NSNull() : djList!,
-            "policy" : eventPolicy?.jsonData ?? NSNull(),
+            "instructors" : (instList == nil || instList!.isEmpty) ? [[String:Any]]() : instList!,
+            "djs":(djList == nil || djList!.isEmpty) ? [[String:Any]]() : djList!,
+            "policy" : eventPolicy?.jsonData ?? [String:Any](),
             "hasWorkshop":self.hasWorkshop,
             "hasPerformance" : self.hasPerformance,
-            "fee" : feePolicy?.jsonData ?? NSNull()
+            "fee" : feePolicy?.jsonData ?? [String:Any]()
         ]
     }
 }

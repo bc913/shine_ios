@@ -159,7 +159,7 @@ extension FeePolicy : JSONDecodable {
         
         var opts : [[String:Any]]?
         
-        if let modelOptions = self.options {
+        if let modelOptions = self.options, !(modelOptions.isEmpty) {
             
             opts = [[String:Any]]()
             opts?.reserveCapacity(modelOptions.count)
@@ -174,7 +174,7 @@ extension FeePolicy : JSONDecodable {
         }
         
         return [
-            "options" : (opts == nil || opts!.isEmpty) ? NSNull() : opts!,
+            "options" : (opts == nil || opts!.isEmpty) ? [[String:Any]]() : opts!,
             "description" : self.description ?? ""
         ]
     }

@@ -140,8 +140,8 @@ extension MediaImage : JSONDecodable {
         return [
             "id" : self.id ?? "",
             "image" : true,
-            "thumbnail" : thumb?.jsonData ?? NSNull(),
-            "standardImage" : std?.jsonData ?? NSNull()
+            "thumbnail" : thumb?.jsonData ?? [String:Any](),
+            "standardImage" : std?.jsonData ?? [String:Any]()
         ]
     }
 }

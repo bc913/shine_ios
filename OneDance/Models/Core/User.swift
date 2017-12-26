@@ -75,7 +75,7 @@ extension UserLite : JSONDecodable {
             "userId" : self.userId,
             "username" : self.userName,
             "fullname" : self.fullName,
-            "profilePhoto" : photo?.jsonData ?? NSNull()
+            "profilePhoto" : photo?.jsonData ?? [String:Any]()
         ]
     }
 }
@@ -169,10 +169,10 @@ extension InstructorProfile : JSONDecodable {
         
         return [
             "instructorBio" : self.bio,
-            "selectedDanceTypes" : (dances == nil || dances!.isEmpty) ? NSNull() : dances!,
+            "selectedDanceTypes" : (dances == nil || dances!.isEmpty) ? [[String:Any]]() : dances!,
             "sinceYear" : self.sinceYear,
             "freelance": self.canFreelance,
-            "relatedOrganizationLites" : (relatetedOrgs == nil || relatetedOrgs!.isEmpty) ? NSNull() : relatetedOrgs!
+            "relatedOrganizationLites" : (relatetedOrgs == nil || relatetedOrgs!.isEmpty) ? [[String:Any]]() : relatetedOrgs!
         ]
     }
 }
@@ -268,10 +268,10 @@ extension DJProfile : JSONDecodable {
         
         return [
             "djBio" : self.bio,
-            "selectedDanceTypes" : (dances == nil || dances!.isEmpty) ? NSNull() : dances!,
+            "selectedDanceTypes" : (dances == nil || dances!.isEmpty) ? [[String:Any]]() : dances!,
             "sinceYear" : self.sinceYear,
             "freelance": self.canFreelance,
-            "relatedOrganizationLites" : (relatetedOrgs == nil || relatetedOrgs!.isEmpty) ? NSNull() : relatetedOrgs!
+            "relatedOrganizationLites" : (relatetedOrgs == nil || relatetedOrgs!.isEmpty) ? [[String:Any]]() : relatetedOrgs!
         ]
     }
 }
