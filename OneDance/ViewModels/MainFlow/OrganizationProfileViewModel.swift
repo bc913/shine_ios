@@ -10,6 +10,9 @@ import Foundation
 
 protocol OrganizationViewModelViewDelegate : class {
     func organizationInfoDidChange(viewModel: OrganizationViewModelType)
+    
+    func organizationCreationDidSuccess(viewModel: OrganizationViewModelType)
+    func organizationCreationDidCancelled(viewModel: OrganizationViewModelType)
 }
 
 protocol OrganizationViewModelType : class {
@@ -24,8 +27,8 @@ protocol OrganizationViewModelType : class {
     
     var danceTypes : [DanceTypeItem]? { get set }
     
-    var contactInfo : ContactInfoItem? { get set }
-    
+    var contactInfo : ContactInfoItem { get set }
+
     //var photo : ImageType? { get set }
     var instructors : [UserItem]? { get set }
     var djs : [UserItem]? { get set }
@@ -56,7 +59,7 @@ class OrganizationViewModel : OrganizationViewModelType {
     var danceTypes : [DanceTypeItem]?
     
     // Contact info
-    var contactInfo : ContactInfoItem?
+    var contactInfo : ContactInfoItem = ContactInfoItem()
     
     var instructors : [UserItem]?
     var djs : [UserItem]?
@@ -78,10 +81,10 @@ class OrganizationViewModel : OrganizationViewModelType {
         
         // Initialize model
         if mode == .create {
-            self.model = Organization()
+            self.model = OrganizationModel()
             //self.updateViewModel()
         } else {
-            let modelCompletionHandler = { (error: NSError?, model: Organization) in
+            let modelCompletionHandler = { (error: NSError?, model: OrganizationModel) in
                 //Make sure we are on the main thread
                 DispatchQueue.main.async {
                     guard let error = error else {
@@ -133,7 +136,7 @@ class OrganizationViewModel : OrganizationViewModelType {
         if let contact = self.model?.contact as? ContactInfo {
             self.contactInfo = ContactInfoItem(contactInfoModel: contact)
         } else {
-            self.contactInfo = nil
+            self.contactInfo = ContactInfoItem()
         }
         
         if let modelInstructors = self.model?.instructors, !(modelInstructors.isEmpty) {
@@ -207,7 +210,7 @@ class OrganizationViewModel : OrganizationViewModelType {
         }
         
         // Contact
-        self.model?.contact = self.contactInfo?.mapToLiteModel()
+        self.model?.contact = self.contactInfo.mapToLiteModel()
         
         if let instructorList = self.instructors, !(instructorList.isEmpty), self.model != nil {
             
@@ -252,8 +255,27 @@ class OrganizationViewModel : OrganizationViewModelType {
     
     func createOrganizationProfile(){
         self.updateModel()
-        // Network request with model
         
+        let modelCompletionHandler = { (error: NSError?) in
+            //Make sure we are on the main thread
+            DispatchQueue.main.async {
+                guard let error = error else {
+                    // Update view
+                    self.viewDelegate?.organizationCreationDidSuccess(viewModel: self)
+                    //self.updateViewModel()
+                    //self.coordinatorDelegate?.authenticateViewModelDidLogin(viewModel: self)
+                    return
+                }
+                //self.errorMessage = error.localizedDescription
+            }
+        }
+        // Network request with model
+        ShineNetworkService.API.Organization.createOrganization(model: self.model as! OrganizationModel, mainThreadCompletionHandler: modelCompletionHandler)
+        
+    }
+    
+    func cancelEditCreateOrganization(){
+        self.viewDelegate?.organizationCreationDidCancelled(viewModel: self)
     }
     
     func editOrganiztionProfile(){
@@ -262,120 +284,6 @@ class OrganizationViewModel : OrganizationViewModelType {
     
     func deleteorganizationProfile(){
         
-    }
-    
-    // Contact info update
-    func updatePhoneNumber(number: String){ self.contactInfo?.phone = number }
-    func updateEmailInfo(email:String){ self.contactInfo?.email = email}
-    func updateWebSiteUrlInfo(websiteUrl: String) { self.contactInfo?.website = websiteUrl }
-    func updateFacebookUrlInfo(faceUrl: String) { self.contactInfo?.facebookUrl = faceUrl }
-    func updateInstagramUrlInfo(instaUrl: String) { self.contactInfo?.instagramUrl = instaUrl }
-    
-}
-
-struct OrganizationProfileItem : FormItem {
-    var type: FormItemType.Input
-    var title: String
-    var rowsCount: Int
-    
-    
-}
-
-class OrganizationProfileViewModel : OrganizationProfileViewModelType {
-    
-    weak var coordinatorDelegate : OrganizationProfileVMCoordinatorDelegate?
-    weak var viewDelegate : OrganizationProfileVMViewDelegate?
-    
-    var name: String = "" {
-        didSet{
-            print("NAme is updated to \(name)")
-        }
-    }
-    
-    var about: String = ""
-    var danceTypes = [IDanceType]()
-    
-    var email: String = ""
-    var phoneNumber: String = ""
-    var webUrl: String = ""
-    var facebookUrl : String = ""
-    var instagramUrl : String = ""
-    
-    
-    var hasClassForKids: Bool?{
-        didSet{
-            print("Has classes for kids: \(String(describing: hasClassForKids))")
-        }
-    }
-    var hasPrivateClasses: Bool?
-    var instructors: [InstructorProfileModelType]?
-    
-    init() {
-        self.updateItems()
-    }
-    
-    var numberOfItems: Int {
-        if let items = self.organizationProfileItems {
-            return items.count
-        }
-        
-        return 0
-    }
-    
-    func itemAtIndex(_ index: Int) -> FormItem? {
-        if let items = self.organizationProfileItems, items.count > index {
-            return items[index]
-        }
-        
-        return nil
-    }
-    
-    func createProfile() {
-        //
-        print("CreateOrganizationPRofile")
-    }
-    
-    func viewProfile() {
-        //
-        print("viewProfile")
-    }
-    
-    func editProfile() {
-        //
-        print("editProfile")
-    }
-    
-    private var organizationProfileItems : [FormItem]? = []
-    
-    private func updateItems(){
-        
-        
-        // Main Info
-        let nameItem = OrganizationProfileItem(type: FormItemType.Input.ShortText, title: "Name", rowsCount: 1)
-        organizationProfileItems?.append(nameItem)
-        
-        let fullAddressItem = OrganizationProfileItem(type: .ShortText, title: "Address", rowsCount: 1)
-        organizationProfileItems?.append(fullAddressItem)
-        
-        let aboutItem = OrganizationProfileItem(type: .ShortText, title: "About", rowsCount: 1)
-        organizationProfileItems?.append(aboutItem)
-        
-        let emailItem = OrganizationProfileItem(type: .ShortText, title: "E-mail", rowsCount: 1)
-        organizationProfileItems?.append(emailItem)
-        
-        
-        // Contact
-        let phoneNumberItem = OrganizationProfileItem(type: .ShortText, title: "Phone", rowsCount: 1)
-        organizationProfileItems?.append(phoneNumberItem)
-        
-        let webUrlItem = OrganizationProfileItem(type: .ShortText, title: "Link", rowsCount: 1)
-        organizationProfileItems?.append(webUrlItem)
-        
-        
-    }
-    
-    
-    
-    
+    }   
 }
 

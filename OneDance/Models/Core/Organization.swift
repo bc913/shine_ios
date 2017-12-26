@@ -202,7 +202,7 @@ protocol OrganizationType {
     var postsCounter : Int? { get set }
 }
 
-struct Organization : OrganizationType{
+struct OrganizationModel : OrganizationType{
     
     var id : String?
     var name : String?
@@ -228,17 +228,18 @@ struct Organization : OrganizationType{
     
 }
 
-extension Organization {
+extension OrganizationModel {
     
     init?(json: [String:Any]){
         
-        if let id = json["id"] as? String {
-            self.id = id
+        
+        guard let id = json["id"] as? String, let name = json["name"] as? String else {
+            
+            return nil
         }
         
-        if let name = json["name"] as? String {
-            self.name = name
-        }
+        self.id = id
+        self.name = name
         
         if let about = json["about"] as? String {
             self.about = about
@@ -299,7 +300,7 @@ extension Organization {
     }
 }
 
-extension Organization : JSONDecodable {
+extension OrganizationModel : JSONDecodable {
     
     var jsonData : [String:Any] {
         
@@ -348,6 +349,9 @@ extension Organization : JSONDecodable {
                 }
             }
         }
+        
+        // Empty array
+        let empty  : [[String:Any]] = [[String:Any]()]
         
         return [
             "id" : self.id ?? "",

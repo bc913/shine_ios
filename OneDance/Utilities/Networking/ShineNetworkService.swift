@@ -36,6 +36,11 @@ struct ShineNetworkService {
         static let updateUserProfileUrl : String = getMyProfileUrl
         static let changeProfilePhotoUrl : String = userUrl + "/me" + "/profile" + "/photo"
         
+        struct Organization {
+            static let base : String = baseUrl + "organizations"
+            static let createUrl : String = base
+        }
+        
         struct AWS3 {
             static let identityPoolId = "us-east-1:47270df4-2548-48b3-9625-25d30ee060ef"
             static let regionType = AWSRegionType.USEast1
@@ -90,6 +95,144 @@ struct ShineNetworkService {
                 print("Response: \(String(describing: response.response))") // http url response
                 print("Result: \(response.result)")                         // response serialization result
             }
+        }
+        
+        struct Organization {
+            
+            static func createOrganization(model: OrganizationModel, mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()) {
+                
+                let headers: HTTPHeaders = [
+                    "Content-Type": "application/json",
+                    "USER-ID": PersistanceManager.User.userId!
+                ]
+                
+                var pars = model.jsonData
+                
+                let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
+                Alamofire.request(Constants.Organization.createUrl, method: .post,parameters: model.jsonData, encoding: JSONEncoding.default, headers: headers)
+                    .responseJSON(
+                        queue: queue,
+                        completionHandler: { response in
+                            
+                            // Debug
+                            Helper.debugResponse(methodName: "createOrganization()", response: response)
+                            
+                            // Check status code
+                            let httpStatusCode = response.response?.statusCode
+                            
+                            // Error
+                            var error : NSError? = nil
+                            guard response.result.isSuccess else {
+                                
+                                error = ErrorFactory.createForAlamofireResponse(with: httpStatusCode!)
+                                mainThreadCompletionHandler(error)
+                                print("Error 1")
+                                return
+                            }
+                            // serialized json response
+                            guard let jsonData = response.result.value, let jsonDict = jsonData as? [String:Any] else{
+                                error = ErrorFactory.createForResponseDataSerialization(with: httpStatusCode!)
+                                mainThreadCompletionHandler(error)
+                                print("Error 2")
+                                return
+                            }
+                            
+                            guard let organizationModel = OrganizationModel(json: jsonDict) else {
+                                
+                                if let errorMessage = jsonDict["message"] as? String{
+                                    error = ErrorFactory.create(.User, .User, .User, description: errorMessage)
+                                    print("Error 3")
+                                    
+                                } else {
+                                    error = ErrorFactory.create(.Network, .Network, .DataJSONSerialization)
+                                    print("Error 4")
+                                    
+                                }
+                                
+                                mainThreadCompletionHandler(error)
+                                return
+                                
+                            }
+                            
+                            if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
+                                print("Data: \(utf8Text)") // original server data as UTF8 string
+                            }
+                            
+                            //
+                            // To update anything on the main thread, just jump back on like so.
+                            mainThreadCompletionHandler(error)
+                    }
+                )
+                
+                
+                
+            }
+            
+            static func createAccountWithEmail(model:RegistrationModel, mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()){
+                
+                var parameters = model.jsonData
+                
+                let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
+                Alamofire.request(Constants.registerUserUrl, method: .post,parameters: parameters, encoding: JSONEncoding.default)
+                    .responseJSON(
+                        queue: queue,
+                        completionHandler: { response in
+                            
+                            // Debug
+                            Helper.debugResponse(methodName: "createAccountWithEmail()", response: response)
+                            
+                            // Check status code
+                            let httpStatusCode = response.response?.statusCode
+                            
+                            // Error
+                            var error : NSError? = nil
+                            guard response.result.isSuccess else {
+                                
+                                error = ErrorFactory.createForAlamofireResponse(with: httpStatusCode!)
+                                mainThreadCompletionHandler(error)
+                                print("Error 1")
+                                return
+                            }
+                            // serialized json response
+                            guard let jsonData = response.result.value, let jsonDict = jsonData as? [String:Any] else{
+                                error = ErrorFactory.createForResponseDataSerialization(with: httpStatusCode!)
+                                mainThreadCompletionHandler(error)
+                                print("Error 2")
+                                return
+                            }
+                            
+                            guard let userId = jsonDict["userId"] as? String, let secret = jsonDict["secret"] as? String else {
+                                
+                                if let errorMessage = jsonDict["message"] as? String{
+                                    error = ErrorFactory.create(.User, .User, .User, description: errorMessage)
+                                    print("Error 3")
+                                    
+                                } else {
+                                    error = ErrorFactory.create(.Network, .Network, .DataJSONSerialization)
+                                    print("Error 4")
+                                    
+                                }
+                                
+                                mainThreadCompletionHandler(error)
+                                return
+                            }
+                            
+                            // Success
+                            print("userId: \(userId)")
+                            print("secret: \(secret)")
+                            PersistanceManager.User.saveLoginCredentials(userId: userId, secretID: secret)
+                            
+                            if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
+                                print("Data: \(utf8Text)") // original server data as UTF8 string
+                            }
+                            
+                            //
+                            // To update anything on the main thread, just jump back on like so.
+                            mainThreadCompletionHandler(error)
+                    }
+                )
+            } // createAccountWithEmail
+            
         }
         
         struct User {
@@ -230,6 +373,8 @@ struct ShineNetworkService {
             
             static func loginUserWith(model: LoginModel, mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()){
                
+                var parameters = model.jsonData
+                
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
                 Alamofire.request(Constants.emailLoginUrl, method: .post,parameters: model.jsonData, encoding: JSONEncoding.default)
                     .responseJSON(

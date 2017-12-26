@@ -26,7 +26,12 @@ class EditCreateOrganizationViewController: UIViewController {
     
     // VM
     var viewModel : OrganizationViewModelType? {
+        
+        willSet{
+            viewModel?.viewDelegate = nil
+        }
         didSet{
+            viewModel?.viewDelegate = self
             self.refreshDisplay()
         }
     }
@@ -63,10 +68,8 @@ class EditCreateOrganizationViewController: UIViewController {
         
         if let cell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .nameTitle, placeHolder: nil) as? NameTitleFormCell {
             
-            // Initialize the form if it is in edit mode
-            if self.viewModel?.mode == .edit {
-                cell.displayedValue = self.viewModel?.name ?? ""
-            }
+            // Initialize the form
+            cell.displayedValue = self.viewModel?.name ?? ""
             
             cell.valueChanged = {
                 self.viewModel?.name = cell.textField.text!
@@ -92,9 +95,7 @@ class EditCreateOrganizationViewController: UIViewController {
             }
             
             // Initialize the form if it is in edit mode
-            if self.viewModel?.mode == .edit {
-                aboutCell.displayedValue = self.viewModel?.about ?? ""
-            }
+            aboutCell.displayedValue = self.viewModel?.about ?? ""
             
             aboutCell.valueChanged = {
                 self.viewModel?.about = aboutCell.textView.text
@@ -142,12 +143,10 @@ class EditCreateOrganizationViewController: UIViewController {
         if let emailCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .email, placeHolder: nil) as? TextFieldFormCell{
             
             // Initialize if it is edit mode
-            if self.viewModel?.mode == .edit {
-                emailCell.displayedValue = self.viewModel?.contactInfo?.email ?? ""
-            }
+            emailCell.displayedValue = self.viewModel?.contactInfo.email ?? ""
             
             emailCell.valueChanged = {
-                self.viewModel?.contactInfo?.email = emailCell.textField.text!
+                self.viewModel?.contactInfo.email = emailCell.textField.text!
             }
             emailCell.changeKeyboardType(.emailAddress)
             self.contactCells.append(emailCell)
@@ -156,12 +155,10 @@ class EditCreateOrganizationViewController: UIViewController {
         if let phoneCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .phoneNumber, placeHolder: nil) as? TextFieldFormCell{
             
             // Initialize if it is edit mode
-            if self.viewModel?.mode == .edit {
-                phoneCell.displayedValue = self.viewModel?.contactInfo?.phone ?? ""
-            }
+            phoneCell.displayedValue = self.viewModel?.contactInfo.phone ?? ""
             
             phoneCell.valueChanged = {
-                self.viewModel?.contactInfo?.phone = phoneCell.textField.text!
+                self.viewModel?.contactInfo.phone = phoneCell.textField.text!
             }
             phoneCell.changeKeyboardType(.phonePad)
             self.contactCells.append(phoneCell)
@@ -170,12 +167,10 @@ class EditCreateOrganizationViewController: UIViewController {
         if let linkCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .url, placeHolder: nil) as? TextFieldFormCell{
             
             // Initialize if it is edit mode
-            if self.viewModel?.mode == .edit {
-                linkCell.displayedValue = self.viewModel?.contactInfo?.website ?? ""
-            }
+            linkCell.displayedValue = self.viewModel?.contactInfo.website ?? ""
             
             linkCell.valueChanged = {
-                self.viewModel?.contactInfo?.website = linkCell.textField.text!
+                self.viewModel?.contactInfo.website = linkCell.textField.text!
             }
             linkCell.changeKeyboardType(.URL)
             self.contactCells.append(linkCell)
@@ -184,12 +179,10 @@ class EditCreateOrganizationViewController: UIViewController {
         if let facebookUrlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .url, placeHolder: "Facebook (Optional)") as? TextFieldFormCell{
             
             // Initialize if it is edit mode
-            if self.viewModel?.mode == .edit {
-                facebookUrlCell.displayedValue = self.viewModel?.contactInfo?.facebookUrl ?? ""
-            }
+            facebookUrlCell.displayedValue = self.viewModel?.contactInfo.facebookUrl ?? ""
             
             facebookUrlCell.valueChanged = {
-                self.viewModel?.contactInfo?.facebookUrl = facebookUrlCell.textField.text!
+                self.viewModel?.contactInfo.facebookUrl = facebookUrlCell.textField.text!
             }
             facebookUrlCell.changeKeyboardType(.URL)
             self.contactCells.append(facebookUrlCell)
@@ -199,12 +192,10 @@ class EditCreateOrganizationViewController: UIViewController {
         if let instagramUrlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .url, placeHolder: "Instagram (Optional)") as? TextFieldFormCell{
             
             // Initialize if it is edit mode
-            if self.viewModel?.mode == .edit {
-                instagramUrlCell.displayedValue = self.viewModel?.contactInfo?.instagramUrl ?? ""
-            }
+            instagramUrlCell.displayedValue = self.viewModel?.contactInfo.instagramUrl ?? ""
             
             instagramUrlCell.valueChanged = {
-                self.viewModel?.contactInfo?.instagramUrl = instagramUrlCell.textField.text!
+                self.viewModel?.contactInfo.instagramUrl = instagramUrlCell.textField.text!
             }
             instagramUrlCell.changeKeyboardType(.URL)
             self.contactCells.append(instagramUrlCell)
@@ -223,9 +214,7 @@ class EditCreateOrganizationViewController: UIViewController {
         if let hasClassForKidsCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .switchType, placeHolder: "Classes for kids") as? SwitchFormCell{
             
             //
-            if self.viewModel?.mode == .edit {
-                hasClassForKidsCell.displayedValue = self.viewModel?.hasClassForKids ?? false
-            }
+            hasClassForKidsCell.displayedValue = self.viewModel?.hasClassForKids ?? false
             
             hasClassForKidsCell.valueChanged = {
                 self.viewModel?.hasClassForKids = hasClassForKidsCell.isOn
@@ -239,9 +228,7 @@ class EditCreateOrganizationViewController: UIViewController {
         if let hasPrivateClassCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .switchType, placeHolder: "Private Class") as? SwitchFormCell{
             
             //
-            if self.viewModel?.mode == .edit {
-                hasPrivateClassCell.displayedValue = self.viewModel?.hasPrivateClass ?? false
-            }
+            hasPrivateClassCell.displayedValue = self.viewModel?.hasPrivateClass ?? false
             
             hasPrivateClassCell.valueChanged = {
                 self.viewModel?.hasPrivateClass = hasPrivateClassCell.isOn
@@ -255,9 +242,7 @@ class EditCreateOrganizationViewController: UIViewController {
         if let hasWeddingPackageCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .switchType, placeHolder: "Wedding package/classes") as? SwitchFormCell{
             
             //
-            if self.viewModel?.mode == .edit {
-                hasWeddingPackageCell.displayedValue = self.viewModel?.hasWeddingPackage ?? false
-            }
+            hasWeddingPackageCell.displayedValue = self.viewModel?.hasWeddingPackage ?? false
             
             hasWeddingPackageCell.valueChanged = {
                 self.viewModel?.hasWeddingPackage = hasWeddingPackageCell.isOn
@@ -431,7 +416,7 @@ class EditCreateOrganizationViewController: UIViewController {
     }
     
     func createOrganizationProfile() {
-        print("create Event")
+        print("create ORganization")
         self.viewModel?.createOrganizationProfile()
     }
 
@@ -531,6 +516,14 @@ extension EditCreateOrganizationViewController : OrganizationViewModelViewDelega
     func organizationInfoDidChange(viewModel: OrganizationViewModelType) {
         self.refreshDisplay()
         //self.tableView.reloadData()
+    }
+    
+    func organizationCreationDidSuccess(viewModel: OrganizationViewModelType){
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func organizationCreationDidCancelled(viewModel: OrganizationViewModelType) {
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
