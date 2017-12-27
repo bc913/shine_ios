@@ -61,16 +61,16 @@ extension AppCoordinator : MainAuthCoordinatorDelegate {
     
 }
 
-extension AppCoordinator : HomeScreenCoordinatorDelegate {
+extension AppCoordinator : MainFlowCoordinatorDelegate {
     
     func showHomeScreen(){
-        let homeScreenCoordinator = HomeScreenCoordinator(window: self.window)
+        let homeScreenCoordinator = MainFlowCoordinator(window: self.window)
         childCoordinators[HOME_SCREEN_KEY] = homeScreenCoordinator
         homeScreenCoordinator.delegate = self
         homeScreenCoordinator.start()
     }
     
-    func userDidRequestRegistration(homeScreenCoordinator: HomeScreenCoordinator) {
+    func userDidRequestRegistration(mainFlowCoordinator: MainFlowCoordinator) {
         print("User wants to register")
     }
 }

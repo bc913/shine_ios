@@ -11,7 +11,7 @@ import Foundation
 protocol Coordinator : class {
     
     func start()
-    var childCoordinators : [String : Coordinator] { get set }
+    //var childCoordinators : [String : Coordinator] { get set }
     
 }
 

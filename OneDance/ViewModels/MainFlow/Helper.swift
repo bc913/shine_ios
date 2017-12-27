@@ -10,13 +10,6 @@
 
 import Foundation
 
-enum ViewModelMode {
-    case edit
-    case viewOnly
-    case create
-    case delete
-}
-
 enum ShineMode {
     case edit
     case viewOnly

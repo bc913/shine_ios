@@ -8,7 +8,17 @@
 
 import Foundation
 
+typealias OrganizationVMCoordinatorDelegate = OrganizationViewModelCoordinatorDelegate & ChildViewModelCoordinatorDelegate
+
+protocol OrganizationViewModelCoordinatorDelegate : class {
+    // Edit
+    func viewModelDidRequestEditCreate(viewModel: OrganizationViewModelType)
+    func viewModelDidFinishEditCreate(viewModel: OrganizationViewModelType)
+    func viewModelDidCancelEditCreate(viewModel: OrganizationViewModelType)
+}
+
 protocol OrganizationViewModelViewDelegate : class {
+    
     func organizationInfoDidChange(viewModel: OrganizationViewModelType)
     
     func organizationCreationDidSuccess(viewModel: OrganizationViewModelType)
@@ -16,9 +26,9 @@ protocol OrganizationViewModelViewDelegate : class {
 }
 
 protocol OrganizationViewModelType : class {
-    var mode : ViewModelMode { get set }
+    var mode : ShineMode  { get set }
     var viewDelegate : OrganizationViewModelViewDelegate? { get set }
-    //var coordinatorDelegate : OrganizationProfileVMCoordinatorDelegate? { get set }
+    var coordinatorDelegate : OrganizationVMCoordinatorDelegate? { get set }
     var model : OrganizationType? { get set }
     
     var id : String { get set }
@@ -47,8 +57,9 @@ protocol OrganizationViewModelType : class {
 
 class OrganizationViewModel : OrganizationViewModelType {
     
-    var mode : ViewModelMode
+    var mode : ShineMode
     var viewDelegate : OrganizationViewModelViewDelegate?
+    var coordinatorDelegate: OrganizationVMCoordinatorDelegate?
     var model : OrganizationType?
     
     var id : String
@@ -75,7 +86,7 @@ class OrganizationViewModel : OrganizationViewModelType {
     // Feed
     var posts : Int?
     
-    init(mode: ViewModelMode, id: String = "") {
+    init(mode: ShineMode, id: String = "") {
         self.mode = mode
         self.id = id
         
@@ -261,9 +272,12 @@ class OrganizationViewModel : OrganizationViewModelType {
             DispatchQueue.main.async {
                 guard let error = error else {
                     // Update view
-                    self.viewDelegate?.organizationCreationDidSuccess(viewModel: self)
+                    
+                    //self.viewDelegate?.organizationCreationDidSuccess(viewModel: self)
                     //self.updateViewModel()
-                    //self.coordinatorDelegate?.authenticateViewModelDidLogin(viewModel: self)
+                    
+                    
+                    self.coordinatorDelegate?.viewModelDidFinishEditCreate(viewModel: self)
                     return
                 }
                 //self.errorMessage = error.localizedDescription
@@ -275,7 +289,8 @@ class OrganizationViewModel : OrganizationViewModelType {
     }
     
     func cancelEditCreateOrganization(){
-        self.viewDelegate?.organizationCreationDidCancelled(viewModel: self)
+        self.coordinatorDelegate?.viewModelDidCancelEditCreate(viewModel: self)
+        //self.viewDelegate?.organizationCreationDidCancelled(viewModel: self)
     }
     
     func editOrganiztionProfile(){

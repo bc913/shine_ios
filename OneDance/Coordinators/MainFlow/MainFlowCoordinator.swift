@@ -1,21 +1,21 @@
 //
-//  HomeScreenCoordinator.swift
+//  MainFlowCoordinator.swift
 //  OneDance
 //
-//  Created by Burak Can on 10/29/17.
+//  Created by Burak Can on 12/26/17.
 //  Copyright © 2017 Burak Can. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
-protocol HomeScreenCoordinatorDelegate : class {
-    func userDidRequestRegistration(homeScreenCoordinator: HomeScreenCoordinator)
+protocol MainFlowCoordinatorDelegate : class {
+    func userDidRequestRegistration(mainFlowCoordinator: MainFlowCoordinator)
 }
 
-class HomeScreenCoordinator: Coordinator {
+class MainFlowCoordinator: Coordinator {
     
-    weak var delegate : HomeScreenCoordinatorDelegate?
+    weak var delegate : MainFlowCoordinatorDelegate?
     
     let window : UIWindow
     var childCoordinators = [String : Coordinator]()
@@ -28,8 +28,11 @@ class HomeScreenCoordinator: Coordinator {
         let homeViewController = UITabBarController()
         
         // Timeline
-        let timeLineVC = FeedViewController(nibName: "FeedViewController", bundle: nil)
-        let timelineNavigationVC = UINavigationController(rootViewController: timeLineVC)
+        //let timeLineVC = FeedViewController(nibName: "FeedViewController", bundle: nil)
+        
+        let timelineNavigationVC = UINavigationController()
+        let feedCoordinator = HomeScreenContainerCoordinator(containerNavController: timelineNavigationVC)
+        feedCoordinator.start()
         let timelineTabrBarItem = UITabBarItem(title: "Feed", image: UIImage(named: "converter-tabbar.png"), tag: 1)
         timelineNavigationVC.tabBarItem = timelineTabrBarItem
         

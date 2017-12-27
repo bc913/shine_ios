@@ -394,7 +394,7 @@ class EventViewModel : EventViewModelType {
             }
         }
         // Network request with model
-        ShineNetworkService.API.Event.create(model: self.model!, mainThreadCompletionHandler: modelCompletionHandler)       
+        ShineNetworkService.API.Event.create(model: self.model!, mainThreadCompletionHandler: modelCompletionHandler)
         
         // Notify timeline to refresh through coordinator
     }
