@@ -11,6 +11,9 @@ import Foundation
 
 protocol EventViewModelViewDelegate : class {
     
+    func editCreateDidSucceed(viewModel: EventViewModelType)
+    func editCreateDidCancelled(viewModel: EventViewModelType)
+    
 }
 
 protocol EventViewModelCoordinatorDelegate : class {
@@ -20,10 +23,63 @@ protocol EventViewModelCoordinatorDelegate : class {
 
 protocol EventViewModelType : class {
     
+    weak var viewDelegate : EventViewModelViewDelegate? { get set }
+    weak var coordinatorDelegate : EventViewModelCoordinatorDelegate? { get set }
+    var mode : ShineMode { get set }
+    
+    var id : String { get set }
+    
+    var title : String { get set }
+    var description : String { get set }
+    var ownerUser : UserItem? { get set }
+    var ownerOrg : OrganizationLiteItem? { get set }
+    
+    var danceTypes : [DanceTypeItem]? { get set }
+    
+    var webUrl : String { get set }
+    
+    var location : LocationItem? { get set }
+    var contactPerson : ContactPersonItem? { get set }
+    
+    //TODO: Imagetype
+    
+    // Attendance Info
+    var interestedCounter : Int { get set }
+    var goingCounter : Int { get set }
+    var notGoingCounter : Int { get set }
+    
+    // Time
+    var startTime : Date { get set }
+    var endTime : Date { get set }
+    var duration : Int { get }
+    
+    var danceLevel : DanceLevel? { get set }
+    var eventType : EventType? { get set }
+    var instructors : [UserItem]? { get set }
+    var djs : [UserItem]? { get set }
+    
+    var hasWorkshop : Bool { get set }
+    var hasPerformance : Bool { get set }
+    
+    // Event Policy
+    var hasDressCode : Bool { get set }
+    var partnerRequired : Bool { get set }
+    var eventPolicyDescription : String? { get set }
+    
+    // Fee policy
+    var feePolicy : FeePolicyItem? { get set }
+    
+    // Methods
+    func create()
+    func edit()
+    func delete()
+    func cancel()
+    
+    
 }
 
 
-class EventViewModel {
+class EventViewModel : EventViewModelType {
     
     weak var viewDelegate : EventViewModelViewDelegate?
     weak var coordinatorDelegate : EventViewModelCoordinatorDelegate?
@@ -318,8 +374,42 @@ class EventViewModel {
     // Fee policy
     var feePolicy : FeePolicyItem?
     
+    // Methods
     
+    func create(){
+        //Network request
+        self.updateModel()
+        
+        let modelCompletionHandler = { (error: NSError?) in
+            //Make sure we are on the main thread
+            DispatchQueue.main.async {
+                guard let error = error else {
+                    // Update view
+                    self.viewDelegate?.editCreateDidSucceed(viewModel: self)
+                    //self.updateViewModel()
+                    //self.coordinatorDelegate?.authenticateViewModelDidLogin(viewModel: self)
+                    return
+                }
+                //self.errorMessage = error.localizedDescription
+            }
+        }
+        // Network request with model
+        ShineNetworkService.API.Event.create(model: self.model!, mainThreadCompletionHandler: modelCompletionHandler)       
+        
+        // Notify timeline to refresh through coordinator
+    }
     
+    func edit(){
+        // Network request
+        self.viewDelegate?.editCreateDidSucceed(viewModel: self)
+    }
     
+    func delete(){
+        
+    }
+    
+    func cancel(){
+        self.viewDelegate?.editCreateDidCancelled(viewModel: self)
+    }
     
 }

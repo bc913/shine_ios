@@ -270,7 +270,7 @@ class OrganizationViewModel : OrganizationViewModelType {
             }
         }
         // Network request with model
-        ShineNetworkService.API.Organization.createOrganization(model: self.model as! OrganizationModel, mainThreadCompletionHandler: modelCompletionHandler)
+        ShineNetworkService.API.Organization.create(model: self.model as! OrganizationModel, mainThreadCompletionHandler: modelCompletionHandler)
         
     }
     

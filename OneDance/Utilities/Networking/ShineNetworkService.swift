@@ -37,7 +37,12 @@ struct ShineNetworkService {
         static let changeProfilePhotoUrl : String = userUrl + "/me" + "/profile" + "/photo"
         
         struct Organization {
-            static let base : String = baseUrl + "organizations"
+            private static let base : String = baseUrl + "organizations"
+            static let createUrl : String = base
+        }
+        
+        struct Event {
+            private static let base : String = baseUrl + "events"
             static let createUrl : String = base
         }
         
@@ -99,14 +104,12 @@ struct ShineNetworkService {
         
         struct Organization {
             
-            static func createOrganization(model: OrganizationModel, mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()) {
+            static func create(model: OrganizationModel, mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()) {
                 
                 let headers: HTTPHeaders = [
                     "Content-Type": "application/json",
                     "USER-ID": PersistanceManager.User.userId!
                 ]
-                
-                var pars = model.jsonData
                 
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
                 Alamofire.request(Constants.Organization.createUrl, method: .post,parameters: model.jsonData, encoding: JSONEncoding.default, headers: headers)
@@ -163,23 +166,27 @@ struct ShineNetworkService {
                             mainThreadCompletionHandler(error)
                     }
                 )
-                
-                
-                
-            }
+            } // createOranization
+        }
+        
+        struct Event {
             
-            static func createAccountWithEmail(model:RegistrationModel, mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()){
+            static func create(model: EventModel, mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()) {
                 
-                var parameters = model.jsonData
+                //TODO: Consider event created by organization
+                let headers: HTTPHeaders = [
+                    "Content-Type": "application/json",
+                    "USER-ID": PersistanceManager.User.userId!
+                ]
                 
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
-                Alamofire.request(Constants.registerUserUrl, method: .post,parameters: parameters, encoding: JSONEncoding.default)
+                Alamofire.request(Constants.Event.createUrl, method: .post,parameters: model.jsonData, encoding: JSONEncoding.default, headers: headers)
                     .responseJSON(
                         queue: queue,
                         completionHandler: { response in
                             
                             // Debug
-                            Helper.debugResponse(methodName: "createAccountWithEmail()", response: response)
+                            Helper.debugResponse(methodName: "Event.create()", response: response)
                             
                             // Check status code
                             let httpStatusCode = response.response?.statusCode
@@ -201,7 +208,7 @@ struct ShineNetworkService {
                                 return
                             }
                             
-                            guard let userId = jsonDict["userId"] as? String, let secret = jsonDict["secret"] as? String else {
+                            guard let eventModel = EventModel(json: jsonDict) else {
                                 
                                 if let errorMessage = jsonDict["message"] as? String{
                                     error = ErrorFactory.create(.User, .User, .User, description: errorMessage)
@@ -215,12 +222,8 @@ struct ShineNetworkService {
                                 
                                 mainThreadCompletionHandler(error)
                                 return
+                                
                             }
-                            
-                            // Success
-                            print("userId: \(userId)")
-                            print("secret: \(secret)")
-                            PersistanceManager.User.saveLoginCredentials(userId: userId, secretID: secret)
                             
                             if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
                                 print("Data: \(utf8Text)") // original server data as UTF8 string
@@ -231,8 +234,7 @@ struct ShineNetworkService {
                             mainThreadCompletionHandler(error)
                     }
                 )
-            } // createAccountWithEmail
-            
+            } // createEvent
         }
         
         struct User {

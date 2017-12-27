@@ -20,8 +20,12 @@ class EditCreateEventViewController: UIViewController {
     fileprivate var isLoaded : Bool = false
     
     // VM
-    var viewModel : EventViewModel? {
+    var viewModel : EventViewModelType? {
+        willSet{
+            self.viewModel?.viewDelegate = nil
+        }
         didSet{
+            self.viewModel?.viewDelegate = self
             self.refreshDisplay()
         }
     }
@@ -40,14 +44,11 @@ class EditCreateEventViewController: UIViewController {
     
     private func constructCells(){
         
-        
         // title cell
         if let cell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .nameTitle, placeHolder: nil) as? NameTitleFormCell {
             
             // Initialize the form if it is in edit mode
-            if self.viewModel?.mode == .edit {
-                cell.displayedValue = (self.viewModel?.title)!
-            }
+            cell.displayedValue = (self.viewModel?.title)!
             
             cell.valueChanged = {
                 self.viewModel?.title = cell.textField.text!
@@ -104,9 +105,7 @@ class EditCreateEventViewController: UIViewController {
             }
             
             // Initialize the form if it is in edit mode
-            if self.viewModel?.mode == .edit {
-                aboutCell.displayedValue = (self.viewModel?.description)!
-            }
+            aboutCell.displayedValue = (self.viewModel?.description)!
             
             aboutCell.valueChanged = {
                 self.viewModel?.description = aboutCell.textView.text
@@ -200,19 +199,24 @@ class EditCreateEventViewController: UIViewController {
     private func configureNavigationBar(){
         
         // Cancel
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelCreateOrganizationProfile))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelCreateEditEvent))
         
-        // Done
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Create", style: .plain, target: self, action: #selector(createOrganizationProfile))
+        // Create/Edit
+        var createEditTitle : String = "Create"
+        if self.viewModel?.mode == .edit {
+            createEditTitle = "Edit"
+        }
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: createEditTitle, style: .plain, target: self, action: #selector(createEditEvent))
     }
     
-    func cancelCreateOrganizationProfile(){
-        self.dismiss(animated: true, completion: nil)
+    func createEditEvent(){
+        self.viewModel?.create()
     }
     
-    func createOrganizationProfile() {
+    func cancelCreateEditEvent() {
         print("create Event")
-        //self.viewModel?.createOrganizationProfile()
+        self.viewModel?.cancel()
     }
 
 }
@@ -302,5 +306,17 @@ extension EditCreateEventViewController: ExpandingCellDelegate {
         //let indexPath = IndexPath(row: expandingIndexRow, section: 0)
         
         //tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+    }
+}
+
+// MARK: EventViewModelViewDelegate
+extension EditCreateEventViewController : EventViewModelViewDelegate {
+    
+    func editCreateDidSucceed(viewModel: EventViewModelType){
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func editCreateDidCancelled(viewModel: EventViewModelType){
+        self.dismiss(animated: true, completion: nil)
     }
 }
