@@ -14,7 +14,7 @@ class AppCoordinator : Coordinator {
     
     // Constants
     fileprivate let AUTHENTICATION_KEY: String  = "Authentication"
-    fileprivate let HOME_SCREEN_KEY : String = "HomeScreen"
+    fileprivate let MAIN_FLOW_KEY : String = "MainFlow"
     
     // Properties
     let window : UIWindow
@@ -64,10 +64,10 @@ extension AppCoordinator : MainAuthCoordinatorDelegate {
 extension AppCoordinator : MainFlowCoordinatorDelegate {
     
     func showHomeScreen(){
-        let homeScreenCoordinator = MainFlowCoordinator(window: self.window)
-        childCoordinators[HOME_SCREEN_KEY] = homeScreenCoordinator
-        homeScreenCoordinator.delegate = self
-        homeScreenCoordinator.start()
+        let mainflowCoordinator = MainFlowCoordinator(window: self.window)
+        childCoordinators[MAIN_FLOW_KEY] = mainflowCoordinator
+        mainflowCoordinator.delegate = self
+        mainflowCoordinator.start()
     }
     
     func userDidRequestRegistration(mainFlowCoordinator: MainFlowCoordinator) {

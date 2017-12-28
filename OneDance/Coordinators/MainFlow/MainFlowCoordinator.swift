@@ -15,6 +15,10 @@ protocol MainFlowCoordinatorDelegate : class {
 
 class MainFlowCoordinator: Coordinator {
     
+    fileprivate let HOME_TAB_KEY : String = "HomeScreen"
+    fileprivate let EXPLORE_TAB_KEY : String = "Explore"
+    fileprivate let PROFILE_TAB_KEY : String = "Profile"
+    
     weak var delegate : MainFlowCoordinatorDelegate?
     
     let window : UIWindow
@@ -26,13 +30,14 @@ class MainFlowCoordinator: Coordinator {
     
     func start() {
         let homeViewController = UITabBarController()
+
         
-        // Timeline
-        //let timeLineVC = FeedViewController(nibName: "FeedViewController", bundle: nil)
-        
+        // Home
         let timelineNavigationVC = UINavigationController()
-        let feedCoordinator = HomeScreenContainerCoordinator(containerNavController: timelineNavigationVC)
-        feedCoordinator.start()
+        let homeScreenCoordinator = HomeScreenContainerCoordinator(containerNavController: timelineNavigationVC)
+        childCoordinators[HOME_TAB_KEY] = homeScreenCoordinator
+        homeScreenCoordinator.start()
+        
         let timelineTabrBarItem = UITabBarItem(title: "Feed", image: UIImage(named: "converter-tabbar.png"), tag: 1)
         timelineNavigationVC.tabBarItem = timelineTabrBarItem
         

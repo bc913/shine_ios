@@ -27,7 +27,7 @@ protocol TimeLineViewModelCoordinatorDelegate : class {
 
 protocol TimeLineViewModelType : class {
     
-    weak var coordinatorDelegate : TimeLineViewModelCoordinatorDelegate? { get set }
+    weak var coordinatorDelegate : TimeLineVMCoordinatorDelegate? { get set }
     weak var viewDelegate : TimeLineViewModelViewDelegate? { get set }
     
     func createOrganization()
@@ -36,7 +36,7 @@ protocol TimeLineViewModelType : class {
 
 class TimeLineViewModel : TimeLineViewModelType {
     
-    weak var coordinatorDelegate: TimeLineViewModelCoordinatorDelegate? {
+    weak var coordinatorDelegate: TimeLineVMCoordinatorDelegate? {
         didSet{
             print("TimelineCoordinatorDelagate::Didset")
         }

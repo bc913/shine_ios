@@ -412,7 +412,7 @@ class EditCreateOrganizationViewController: UIViewController {
     }
     
     func cancelCreateOrganizationProfile(){
-        self.dismiss(animated: true, completion: nil)
+        self.viewModel?.cancelEditCreateOrganization()
     }
     
     func createOrganizationProfile() {

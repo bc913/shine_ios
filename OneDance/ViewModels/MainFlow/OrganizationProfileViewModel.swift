@@ -51,6 +51,7 @@ protocol OrganizationViewModelType : class {
     var posts : Int? { get set }
     
     func createOrganizationProfile()
+    func cancelEditCreateOrganization()
     
     
 }

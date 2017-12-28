@@ -150,7 +150,7 @@ class HomeScreenContainerCoordinator : Coordinator{
         self.showTimeLine()
     }
     
-    var activeCoordinator : BaseChildCoordinator?
+    //var activeCoordinator : BaseChildCoordinator?
     
 //    var userCoordinator : UserProfileCoordinator?
 //    var organizationCoordinator : OrganizationProfileCoordinator?
@@ -235,7 +235,7 @@ extension HomeScreenContainerCoordinator : TimeLineCoordinatorDelegate {
         
         let timelineCoordinator = TimeLineCoordinator(host: self.containerNavigationController, id: PersistanceManager.User.userId!)
         childCoordinators["TIMELINE"] = timelineCoordinator
-        activeCoordinator = timelineCoordinator
+        //activeCoordinator = timelineCoordinator
         timelineCoordinator.delegate = self
         timelineCoordinator.start()
         
@@ -246,25 +246,19 @@ extension HomeScreenContainerCoordinator : TimeLineCoordinatorDelegate {
 //MARK: TimelineCoordinator
 //===============================================================================================
 protocol TimeLineCoordinatorDelegate : class {
-    func showTimeLine()
+
 }
 
 class TimeLineCoordinator : BaseChildCoordinator {
-    var mode : ShineMode
-    //private var viewModel : EventViewModel? // Emin degilim
     
-    init(host: UINavigationController, id: String, mode: ShineMode = .viewOnly) {
-        self.mode = mode
-        //self.viewModel = EventViewModel(mode: self.mode, id: id)
-        super.init(host:host, id: id)
-    }
+    fileprivate let ORGANIZATION_KEY : String = "Organization"
+    fileprivate let EVENT_KEY : String = "Event"
     
-    override convenience init(host: UINavigationController, id: String) {
-        self.init(host:host, id: id, mode: .viewOnly)
-    }
+    var childCoordinators = [String: BaseChildCoordinator]()
 }
 
 extension TimeLineCoordinator : Coordinator {
+    
     func start() {
         let vc = TimeLineViewController(nibName: "TimeLineViewController", bundle: nil)
         print("TimeLineCoordinator.start()")
@@ -273,6 +267,7 @@ extension TimeLineCoordinator : Coordinator {
         vc.viewModel = viewModel
         self.hostNavigationController.setViewControllers([vc], animated: false) // It is always root controller
     }
+    
 }
 
 extension TimeLineCoordinator : TimeLineViewModelCoordinatorDelegate {
@@ -280,6 +275,7 @@ extension TimeLineCoordinator : TimeLineViewModelCoordinatorDelegate {
     func viewModelDidSelectCreateOrganization(viewModel: TimeLineViewModelType) {
         print("Create Organization")
         let coordinator = OrganizationCoordinator(host: self.hostNavigationController, id: "", mode: .create)
+        self.childCoordinators[ORGANIZATION_KEY] = coordinator
         coordinator.start()
     }
     
