@@ -76,11 +76,7 @@ class TimeLineViewController: UIViewController {
     
     private func createEventAction(){
         
-        let vc = EditCreateEventViewController(nibName: "EditCreateEventViewController", bundle: nil)
-        vc.viewModel = EventViewModel(mode: .create)
-        let navigationController = UINavigationController(rootViewController: vc)
-        
-        self.navigationController?.present(navigationController, animated: true, completion: nil)
+        self.viewModel?.createEvent()
     }
 
 }

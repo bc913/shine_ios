@@ -80,10 +80,24 @@ protocol ChildCoordinatorDelegate : class {
     // Notify timeline
     //func childCoordinatorNotifyTimeline(sender:BaseChildCoordinator, id: String, notification: NotificationType )
     
+    
+    // OPERATION
+    func childCoordinatorDidFinishOperation(from sender: BaseChildCoordinator, for mode: ShineMode)
+    
+    // GO BACK
+    func childCoordinatorDidRequestGoBack(sender: BaseChildCoordinator, mode: ShineMode)
+    
 }
 
 /// Base class definitions for all child coordinators under container coordinator.
 /// Every child coordinator should inherit this.
+
+protocol BaseChildCoordinatorType : class {
+    weak var delegate : ChildCoordinatorDelegate? { get set }
+    var id : String { get set }
+    var hostNavigationController : UINavigationController { get set }
+}
+
 class BaseChildCoordinator {
     
     weak var delegate : ChildCoordinatorDelegate? // Container coordinator
@@ -102,35 +116,45 @@ class BaseChildCoordinator {
 
 protocol ChildViewModelCoordinatorDelegate : class {
     
-    func viewModelDidSelectUserProfile(viewModel: Modeable, userID: String, requestedMode: ShineMode )
-    func viewModelDidSelectOrganizationProfile(viewModel: Modeable, organizationID: String, requestedMode: ShineMode)
-    func viewModelDidSelectEvent(viewModel: Modeable, eventID: String, requestedMode: ShineMode)
-    func viewModelDidSelectList(viewModel: Modeable, id: String, listType: ListType)
-    func viewModelDidSelectPost(viewModel: Modeable, postID: String)
+    func viewModelDidSelectUserProfile(userID: String, requestedMode: ShineMode )
+    func viewModelDidSelectOrganizationProfile(organizationID: String, requestedMode: ShineMode)
+    func viewModelDidSelectEvent(eventID: String, requestedMode: ShineMode)
+    func viewModelDidSelectList(id: String, listType: ListType)
+    func viewModelDidSelectPost(postID: String)
+    func viewModelDidFinishOperation(mode: ShineMode)
+    func viewModelDidSelectGoBack(mode: ShineMode)
 }
 
 /// coordinator delegate of every child view model has this
 extension BaseChildCoordinator : ChildViewModelCoordinatorDelegate {
     
     // User
-    func viewModelDidSelectUserProfile(viewModel: Modeable, userID: String, requestedMode: ShineMode ) {
+    func viewModelDidSelectUserProfile(userID: String, requestedMode: ShineMode ) {
         self.delegate?.childCoordinatorDidRequestUserDetail(sender: self, id: userID, mode: requestedMode)
     }
     // Organization
-    func viewModelDidSelectOrganizationProfile(viewModel: Modeable, organizationID: String, requestedMode: ShineMode){
+    func viewModelDidSelectOrganizationProfile(organizationID: String, requestedMode: ShineMode){
         self.delegate?.childCoordinatorDidRequestOrganizationDetail(sender: self, id: organizationID, mode: requestedMode)
     }
     //Event
-    func viewModelDidSelectEvent(viewModel: Modeable, eventID: String, requestedMode: ShineMode) {
+    func viewModelDidSelectEvent(eventID: String, requestedMode: ShineMode) {
         self.delegate?.childCoordinatorDidRequestEventDetail(sender: self, id: eventID, mode: requestedMode)
     }
     // List
-    func viewModelDidSelectList(viewModel: Modeable, id: String, listType: ListType){
+    func viewModelDidSelectList(id: String, listType: ListType){
         self.delegate?.childCoordinatorDidRequestList(sender: self, id: id, listType: listType)
     }
     // Post
-    func viewModelDidSelectPost(viewModel: Modeable, postID: String){
+    func viewModelDidSelectPost(postID: String){
         self.delegate?.childCoordinatorDidRequestPostDetail(sender: self, id: postID)
+    }
+    
+    func viewModelDidFinishOperation(mode: ShineMode) {
+        self.delegate?.childCoordinatorDidFinishOperation(from: self, for: mode)
+    }
+    
+    func viewModelDidSelectGoBack(mode: ShineMode) {
+        self.delegate?.childCoordinatorDidRequestGoBack(sender: self, mode: mode)
     }
 }
 //===============================================================================================
@@ -138,9 +162,11 @@ extension BaseChildCoordinator : ChildViewModelCoordinatorDelegate {
 //===============================================================================================
 
 class HomeScreenContainerCoordinator : Coordinator{
-    
+  
     var childCoordinators = [String: BaseChildCoordinator]()
     var containerNavigationController: UINavigationController
+    
+    var coordinatorStack : Stack<BaseChildCoordinator> = Stack<BaseChildCoordinator>()
     
     init(containerNavController: UINavigationController) {
         self.containerNavigationController = containerNavController
@@ -150,31 +176,20 @@ class HomeScreenContainerCoordinator : Coordinator{
         self.showTimeLine()
     }
     
-    //var activeCoordinator : BaseChildCoordinator?
+    func updateChildCoordinators(sender: BaseChildCoordinator){
+        
+        if sender is TimeLineCoordinator {
+            self.childCoordinators[CoordinatorKeyName.TIMELINE] = nil
+        }
+        
+    }
+}
+
+extension HomeScreenContainerCoordinator{
     
-//    var userCoordinator : UserProfileCoordinator?
-//    var organizationCoordinator : OrganizationProfileCoordinator?
-//    var eventCoordinator : EventCoordinator?
-//    var timeLineCoordinator : TimeLineCoordinator?
-//    var listCoordinator : ListCoordinator?
-//    var postCoordinator : PostCoordinator?
-//    
-//    func updateChildCoordinators(sender: BaseChildCoordinator){
-//        if sender is UserProfileCoordinator {
-//            childCoordinators["USER"] = nil
-//        } else if sender is OrganizationProfileCoordinator {
-//            childCoordinators["ORGANIZATION"] = nil
-//        } else if sender is EventCoordinator {
-//            childCoordinators["EVENT"] = nil
-//        } else if sender is TimeLineCoordinator {
-//            childCoordinators["TIMELINE"] = nil
-//        } else if sender is ListCoordinator {
-//            childCoordinators["LIST"] = nil
-//        } else if sender is PostCoordinator {
-//            childCoordinators["POST"] = nil
-//        }
-//        
-//    }
+    var activeCoordinator : BaseChildCoordinator? {
+        return self.coordinatorStack.top
+    }
 }
 
 extension HomeScreenContainerCoordinator : ChildCoordinatorDelegate {
@@ -190,19 +205,19 @@ extension HomeScreenContainerCoordinator : ChildCoordinatorDelegate {
     
     func childCoordinatorDidRequestOrganizationDetail(sender: BaseChildCoordinator, id: String, mode: ShineMode){
 //        self.updateChildCoordinators(sender: sender)
-//        let orgCoordinator = OrganizationProfileCoordinator(host: self.containerNavigationController, id: id, mode: mode)
-//        childCoordinators["ORGANIZATION"] = orgCoordinator
-//        orgCoordinator.delegate = self
-//        orgCoordinator.start()
+        let orgCoordinator = OrganizationCoordinator(host: self.containerNavigationController, id: id, mode: mode)        
+        orgCoordinator.delegate = self
+        self.coordinatorStack.push(orgCoordinator)
+        orgCoordinator.start()
         
     }
     
     func childCoordinatorDidRequestEventDetail(sender: BaseChildCoordinator, id: String, mode: ShineMode){
 //        self.updateChildCoordinators(sender: sender)
-//        let eventCoordinator = EventCoordinator(host: self.containerNavigationController, id: id, mode: mode)
-//        childCoordinators["EVENT"] = eventCoordinator
-//        eventCoordinator.delegate = self
-//        eventCoordinator.start()
+        let eventCoordinator = EventCoordinator(host: self.containerNavigationController, id: id, mode: mode)
+        eventCoordinator.delegate = self
+        self.coordinatorStack.push(eventCoordinator)
+        eventCoordinator.start()
     }
     
     func childCoordinatorDidRequestList(sender: BaseChildCoordinator, id: String, listType: ListType ){
@@ -226,6 +241,18 @@ extension HomeScreenContainerCoordinator : ChildCoordinatorDelegate {
         self.showTimeLine()
     }
     
+    // Notify container when delete, edit and create operations are done
+    func childCoordinatorDidFinishOperation(from: BaseChildCoordinator, for: ShineMode){
+        self.containerNavigationController.topViewController?.dismiss(animated: true, completion: nil)
+        self.coordinatorStack.pop()
+    }
+    
+    //GO BACK
+    func childCoordinatorDidRequestGoBack(sender: BaseChildCoordinator, mode: ShineMode) {
+        self.containerNavigationController.popViewController(animated: true)
+        self.coordinatorStack.pop()
+    }
+    
     
 }
     
@@ -234,9 +261,11 @@ extension HomeScreenContainerCoordinator : TimeLineCoordinatorDelegate {
     func showTimeLine() {
         
         let timelineCoordinator = TimeLineCoordinator(host: self.containerNavigationController, id: PersistanceManager.User.userId!)
-        childCoordinators["TIMELINE"] = timelineCoordinator
+        //childCoordinators["TIMELINE"] = timelineCoordinator
         //activeCoordinator = timelineCoordinator
+        
         timelineCoordinator.delegate = self
+        self.coordinatorStack.push(timelineCoordinator)
         timelineCoordinator.start()
         
     }
@@ -245,16 +274,14 @@ extension HomeScreenContainerCoordinator : TimeLineCoordinatorDelegate {
 //===============================================================================================
 //MARK: TimelineCoordinator
 //===============================================================================================
+// This is the root coordinator of the home screen view
+
 protocol TimeLineCoordinatorDelegate : class {
 
 }
 
 class TimeLineCoordinator : BaseChildCoordinator {
     
-    fileprivate let ORGANIZATION_KEY : String = "Organization"
-    fileprivate let EVENT_KEY : String = "Event"
-    
-    var childCoordinators = [String: BaseChildCoordinator]()
 }
 
 extension TimeLineCoordinator : Coordinator {
@@ -263,7 +290,7 @@ extension TimeLineCoordinator : Coordinator {
         let vc = TimeLineViewController(nibName: "TimeLineViewController", bundle: nil)
         print("TimeLineCoordinator.start()")
         let viewModel = TimeLineViewModel() // it doesn't have mode. It is always view only mode.
-        viewModel.coordinatorDelegate = self //typealias TimelineCoordinatorDelegate: ChildViewModelCoordinatorDelegate & TimeLineViewModelCoordinatorDelegate
+        viewModel.coordinatorDelegate = self //typealias TimelineVMCoordinatorDelegate: ChildViewModelCoordinatorDelegate & TimeLineViewModelCoordinatorDelegate
         vc.viewModel = viewModel
         self.hostNavigationController.setViewControllers([vc], animated: false) // It is always root controller
     }
@@ -273,10 +300,7 @@ extension TimeLineCoordinator : Coordinator {
 extension TimeLineCoordinator : TimeLineViewModelCoordinatorDelegate {
     
     func viewModelDidSelectCreateOrganization(viewModel: TimeLineViewModelType) {
-        print("Create Organization")
-        let coordinator = OrganizationCoordinator(host: self.hostNavigationController, id: "", mode: .create)
-        self.childCoordinators[ORGANIZATION_KEY] = coordinator
-        coordinator.start()
+
     }
     
     func viewModelDidSelectCreateEvent(viewModel: TimeLineViewModelType) {
@@ -292,7 +316,6 @@ extension TimeLineCoordinator : TimeLineViewModelCoordinatorDelegate {
 class OrganizationCoordinator : BaseChildCoordinator{
     
     var mode : ShineMode
-    //private var viewModel : EventViewModel? // Emin degilim
     
     init(host: UINavigationController, id: String, mode: ShineMode = .viewOnly) {
         self.mode = mode
@@ -332,7 +355,7 @@ extension OrganizationCoordinator : Coordinator {
     
     func startCreateEditOrganization(){
         
-        var vc = EditCreateOrganizationViewController(nibName: "EditCreateOrganizationViewController", bundle: nil)
+        let vc = EditCreateOrganizationViewController(nibName: "EditCreateOrganizationViewController", bundle: nil)
         let viewModel = OrganizationViewModel(mode: self.mode, id: self.mode == .create ? "" : self.id)
         viewModel.coordinatorDelegate = self //typealias OrganizationProfileCoordinatorDelegate = ChildViewModelCoordinatorDelegate & OrganizationViewModelCoordinatorDelegate
         
@@ -381,4 +404,54 @@ extension OrganizationCoordinator : OrganizationViewModelCoordinatorDelegate {
         self.mode = .viewOnly
         self.hostNavigationController.topViewController?.dismiss(animated: true)
     }
+}
+
+//===============================================================================================
+//MARK: EventCoordinator
+//===============================================================================================
+
+class EventCoordinator : BaseChildCoordinator {
+    var mode : ShineMode
+    
+    init(host: UINavigationController, id: String, mode: ShineMode = .viewOnly) {
+        self.mode = mode
+        //self.viewModel = EventViewModel(mode: self.mode, id: id)
+        super.init(host:host, id: id)
+    }
+    
+    override convenience init(host: UINavigationController, id: String) {
+        self.init(host:host, id: id, mode: .viewOnly)
+    }
+}
+
+extension EventCoordinator : Coordinator {
+    
+    func start() {
+        if self.mode == .viewOnly {
+            self.startViewEventDetail()
+        } else{
+            self.startCreateEditEvent()
+        }
+    }
+    
+    func startViewEventDetail() {
+        
+    }
+    
+    func startCreateEditEvent(){
+        
+        let vc = EditCreateEventViewController(nibName: "EditCreateEventViewController", bundle: nil)
+        let viewModel = EventViewModel(mode: self.mode, id: self.id)
+        viewModel.coordinatorDelegate = self
+        vc.viewModel = viewModel
+        
+        let navigationController = UINavigationController(rootViewController: vc)
+        self.hostNavigationController.topViewController?.present(navigationController, animated:true)
+        
+    }
+    
+}
+
+extension EventCoordinator : EventViewModelCoordinatorDelegate{
+    
 }

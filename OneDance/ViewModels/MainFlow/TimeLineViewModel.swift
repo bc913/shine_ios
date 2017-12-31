@@ -45,11 +45,12 @@ class TimeLineViewModel : TimeLineViewModelType {
     
     
     func createOrganization() {
-        self.coordinatorDelegate?.viewModelDidSelectCreateOrganization(viewModel: self)
+        self.coordinatorDelegate?.viewModelDidSelectOrganizationProfile(organizationID: "", requestedMode: .create)
+        
     }
     
     func createEvent() {
-        self.coordinatorDelegate?.viewModelDidSelectCreateEvent(viewModel: self)
+        self.coordinatorDelegate?.viewModelDidSelectEvent(eventID: "", requestedMode: .create)
     }
     
     

@@ -16,6 +16,10 @@ enum ShineMode {
     case create
     case delete
 }
+
+protocol Refreshable : class {
+    func refresh()
+}
 //============
 // DanceType item
 //============

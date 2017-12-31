@@ -20,15 +20,14 @@ protocol OrganizationViewModelCoordinatorDelegate : class {
 protocol OrganizationViewModelViewDelegate : class {
     
     func organizationInfoDidChange(viewModel: OrganizationViewModelType)
-    
     func organizationCreationDidSuccess(viewModel: OrganizationViewModelType)
     func organizationCreationDidCancelled(viewModel: OrganizationViewModelType)
 }
 
 protocol OrganizationViewModelType : class {
     var mode : ShineMode  { get set }
-    var viewDelegate : OrganizationViewModelViewDelegate? { get set }
-    var coordinatorDelegate : OrganizationVMCoordinatorDelegate? { get set }
+    weak var viewDelegate : OrganizationViewModelViewDelegate? { get set }
+    weak var coordinatorDelegate : OrganizationVMCoordinatorDelegate? { get set }
     var model : OrganizationType? { get set }
     
     var id : String { get set }
@@ -52,6 +51,7 @@ protocol OrganizationViewModelType : class {
     
     func createOrganizationProfile()
     func cancelEditCreateOrganization()
+    func goBack()
     
     
 }
@@ -59,8 +59,8 @@ protocol OrganizationViewModelType : class {
 class OrganizationViewModel : OrganizationViewModelType {
     
     var mode : ShineMode
-    var viewDelegate : OrganizationViewModelViewDelegate?
-    var coordinatorDelegate: OrganizationVMCoordinatorDelegate?
+    weak var viewDelegate : OrganizationViewModelViewDelegate?
+    weak var coordinatorDelegate: OrganizationVMCoordinatorDelegate?
     var model : OrganizationType?
     
     var id : String
@@ -273,12 +273,7 @@ class OrganizationViewModel : OrganizationViewModelType {
             DispatchQueue.main.async {
                 guard let error = error else {
                     // Update view
-                    
-                    //self.viewDelegate?.organizationCreationDidSuccess(viewModel: self)
-                    //self.updateViewModel()
-                    
-                    
-                    self.coordinatorDelegate?.viewModelDidFinishEditCreate(viewModel: self)
+                    self.coordinatorDelegate?.viewModelDidFinishOperation(mode: .create)
                     return
                 }
                 //self.errorMessage = error.localizedDescription
@@ -290,7 +285,7 @@ class OrganizationViewModel : OrganizationViewModelType {
     }
     
     func cancelEditCreateOrganization(){
-        self.coordinatorDelegate?.viewModelDidCancelEditCreate(viewModel: self)
+        self.coordinatorDelegate?.viewModelDidFinishOperation(mode: self.mode)
         //self.viewDelegate?.organizationCreationDidCancelled(viewModel: self)
     }
     
@@ -300,6 +295,12 @@ class OrganizationViewModel : OrganizationViewModelType {
     
     func deleteorganizationProfile(){
         
-    }   
+    }
+    
+    func goBack(){
+        if self.mode != .create || self.mode != .edit {
+            self.coordinatorDelegate?.viewModelDidSelectGoBack(mode: self.mode)
+        }
+    }
 }
 

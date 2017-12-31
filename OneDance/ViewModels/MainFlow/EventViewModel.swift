@@ -20,11 +20,13 @@ protocol EventViewModelCoordinatorDelegate : class {
     
 }
 
+typealias EventVMCoordinatorDelegate = EventViewModelCoordinatorDelegate & ChildViewModelCoordinatorDelegate
+
 
 protocol EventViewModelType : class {
     
     weak var viewDelegate : EventViewModelViewDelegate? { get set }
-    weak var coordinatorDelegate : EventViewModelCoordinatorDelegate? { get set }
+    weak var coordinatorDelegate : EventVMCoordinatorDelegate? { get set }
     var mode : ShineMode { get set }
     
     var id : String { get set }
@@ -74,6 +76,7 @@ protocol EventViewModelType : class {
     func edit()
     func delete()
     func cancel()
+    func goBack()
     
     
 }
@@ -82,7 +85,7 @@ protocol EventViewModelType : class {
 class EventViewModel : EventViewModelType {
     
     weak var viewDelegate : EventViewModelViewDelegate?
-    weak var coordinatorDelegate : EventViewModelCoordinatorDelegate?
+    weak var coordinatorDelegate : EventVMCoordinatorDelegate?
     
     var model : EventModel?
     var mode : ShineMode
@@ -385,9 +388,7 @@ class EventViewModel : EventViewModelType {
             DispatchQueue.main.async {
                 guard let error = error else {
                     // Update view
-                    self.viewDelegate?.editCreateDidSucceed(viewModel: self)
-                    //self.updateViewModel()
-                    //self.coordinatorDelegate?.authenticateViewModelDidLogin(viewModel: self)
+                    self.coordinatorDelegate?.viewModelDidFinishOperation(mode: self.mode)
                     return
                 }
                 //self.errorMessage = error.localizedDescription
@@ -401,7 +402,7 @@ class EventViewModel : EventViewModelType {
     
     func edit(){
         // Network request
-        self.viewDelegate?.editCreateDidSucceed(viewModel: self)
+        self.coordinatorDelegate?.viewModelDidFinishOperation(mode: self.mode)
     }
     
     func delete(){
@@ -409,7 +410,13 @@ class EventViewModel : EventViewModelType {
     }
     
     func cancel(){
-        self.viewDelegate?.editCreateDidCancelled(viewModel: self)
+        self.coordinatorDelegate?.viewModelDidFinishOperation(mode: self.mode)
+    }
+    
+    func goBack(){
+        if self.mode != .create || self.mode != .edit {
+            self.coordinatorDelegate?.viewModelDidSelectGoBack(mode: self.mode)
+        }
     }
     
 }
