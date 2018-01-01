@@ -17,7 +17,6 @@
 		650415DC1FF038B700D19A89 /* EditCreateEventViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 650415DA1FF038B700D19A89 /* EditCreateEventViewController.xib */; };
 		650415E01FF03A4900D19A89 /* EditCreateOrganizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650415DE1FF03A4900D19A89 /* EditCreateOrganizationViewController.swift */; };
 		650415E11FF03A4900D19A89 /* EditCreateOrganizationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 650415DF1FF03A4900D19A89 /* EditCreateOrganizationViewController.xib */; };
-		6504E9F91FCA3BE000A29B97 /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6504E9F81FCA3BE000A29B97 /* Media.swift */; };
 		650905DF1FDF8B00004E272D /* Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650905DE1FDF8B00004E272D /* Authentication.swift */; };
 		6509345D1FEA2023001AB8EB /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6509345C1FEA2023001AB8EB /* UserViewModel.swift */; };
 		650AF5A41F89836200DE46E1 /* ShineNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650AF5A31F89836200DE46E1 /* ShineNetworkService.swift */; };
@@ -46,6 +45,11 @@
 		65427D281F90508300407C5D /* DanceTypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65427D261F90508300407C5D /* DanceTypeTableViewCell.swift */; };
 		65427D291F90508300407C5D /* DanceTypeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65427D271F90508300407C5D /* DanceTypeTableViewCell.xib */; };
 		65427D2B1F905BA100407C5D /* InitialProfileSetupCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65427D2A1F905BA100407C5D /* InitialProfileSetupCoordinator.swift */; };
+		65439CE31FF9E2D800EDE435 /* PhotosManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65439CE21FF9E2D800EDE435 /* PhotosManager.swift */; };
+		65439CE61FF9FA6100EDE435 /* DecodeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65439CE51FF9FA6100EDE435 /* DecodeOperation.swift */; };
+		65439CE81FF9FA9600EDE435 /* ImageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65439CE71FF9FA9600EDE435 /* ImageRequest.swift */; };
+		65439CEB1FF9FCD300EDE435 /* DanceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65439CE91FF9FCD300EDE435 /* DanceType.swift */; };
+		65439CEC1FF9FCD300EDE435 /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65439CEA1FF9FCD300EDE435 /* Media.swift */; };
 		654479151FC7507200FE3B58 /* ShineError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654479141FC7507200FE3B58 /* ShineError.swift */; };
 		654479181FC7995400FE3B58 /* UIDevice+ModelName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654479171FC7995400FE3B58 /* UIDevice+ModelName.swift */; };
 		654672711FA02A7A002DDC40 /* ProfileInfoSetupViewModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654672701FA02A7A002DDC40 /* ProfileInfoSetupViewModelInterface.swift */; };
@@ -53,7 +57,6 @@
 		654672751FA030A1002DDC40 /* ProfileInfoSetupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 654672731FA030A1002DDC40 /* ProfileInfoSetupViewController.xib */; };
 		6546A0451FBBC65500B23685 /* NameTitleFormCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6546A0431FBBC65500B23685 /* NameTitleFormCell.swift */; };
 		6546A0461FBBC65500B23685 /* NameTitleFormCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6546A0441FBBC65500B23685 /* NameTitleFormCell.xib */; };
-		6548EE591FB8B9F20076EA4B /* OrganizationProfileVMInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6548EE581FB8B9F20076EA4B /* OrganizationProfileVMInterface.swift */; };
 		6548EE5B1FB8BA170076EA4B /* OrganizationProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6548EE5A1FB8BA170076EA4B /* OrganizationProfileViewModel.swift */; };
 		6548EE681FB8CFE70076EA4B /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6548EE661FB8CFE70076EA4B /* TextFieldCell.swift */; };
 		6548EE691FB8CFE70076EA4B /* TextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6548EE671FB8CFE70076EA4B /* TextFieldCell.xib */; };
@@ -61,7 +64,6 @@
 		6548EE6D1FB8D00E0076EA4B /* SwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6548EE6B1FB8D00E0076EA4B /* SwitchCell.xib */; };
 		6548EE6F1FB918C30076EA4B /* FormCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6548EE6E1FB918C30076EA4B /* FormCellFactory.swift */; };
 		654938B61F98578D00B6D60C /* PersistanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654938B51F98578D00B6D60C /* PersistanceManager.swift */; };
-		654987171F8F04D7002DFB0C /* DanceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654987161F8F04D7002DFB0C /* DanceType.swift */; };
 		6549871B1F8F0F31002DFB0C /* DanceTypesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6549871A1F8F0F31002DFB0C /* DanceTypesModel.swift */; };
 		6549871D1F8F1747002DFB0C /* DanceTypesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6549871C1F8F1747002DFB0C /* DanceTypesViewModel.swift */; };
 		6549E7841F8B2DF7000C475E /* danceTypes.json in Resources */ = {isa = PBXBuildFile; fileRef = 6549E7831F8B2DF7000C475E /* danceTypes.json */; };
@@ -82,8 +84,6 @@
 		655CE7551FA17423005B0774 /* ProfileInfoSetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655CE7541FA17423005B0774 /* ProfileInfoSetupViewModel.swift */; };
 		6561CED51FDE38FD008EC9A3 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6561CED41FDE38FD008EC9A3 /* Helper.swift */; };
 		6561CED71FDE4022008EC9A3 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6561CED61FDE4022008EC9A3 /* Common.swift */; };
-		656296E51FABF6BA00511E25 /* UserProfileViewModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656296E41FABF6BA00511E25 /* UserProfileViewModelInterface.swift */; };
-		656296E71FABF6FF00511E25 /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656296E61FABF6FF00511E25 /* UserProfileViewModel.swift */; };
 		65640E021F9C423E006C2E21 /* ProfileImageSelectionVMInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65640E011F9C423E006C2E21 /* ProfileImageSelectionVMInterface.swift */; };
 		65640E051F9C43E5006C2E21 /* ProfileImageSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65640E041F9C43E5006C2E21 /* ProfileImageSelectionViewModel.swift */; };
 		65640E081F9CF123006C2E21 /* ProfileImageSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65640E061F9CF123006C2E21 /* ProfileImageSelectionViewController.swift */; };
@@ -102,9 +102,6 @@
 		65BEE2D81FBA82B5009FB690 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BEE2D61FBA82B5009FB690 /* FeedViewController.swift */; };
 		65BEE2D91FBA82B5009FB690 /* FeedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65BEE2D71FBA82B5009FB690 /* FeedViewController.xib */; };
 		65C045291F6E37B9003824E0 /* MainAuthenticationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C045281F6E37B9003824E0 /* MainAuthenticationCoordinator.swift */; };
-		65C98F5A1FB7F42900D5D996 /* DJProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C98F571FB7F42900D5D996 /* DJProfileModel.swift */; };
-		65C98F5B1FB7F42900D5D996 /* InstructorProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C98F581FB7F42900D5D996 /* InstructorProfileModel.swift */; };
-		65C98F5C1FB7F42900D5D996 /* UserProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C98F591FB7F42900D5D996 /* UserProfileModel.swift */; };
 		65F538D51FA811B20034DAFA /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F538D31FA811B20034DAFA /* UserProfileViewController.swift */; };
 		65F538D61FA811B20034DAFA /* UserProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65F538D41FA811B20034DAFA /* UserProfileViewController.xib */; };
 		65FC55E11F67921C00E02503 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FC55E01F67921C00E02503 /* Coordinator.swift */; };
@@ -151,7 +148,6 @@
 		650415DA1FF038B700D19A89 /* EditCreateEventViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditCreateEventViewController.xib; path = ViewControllers/MainFlow/Event/EditCreateEventViewController.xib; sourceTree = "<group>"; };
 		650415DE1FF03A4900D19A89 /* EditCreateOrganizationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditCreateOrganizationViewController.swift; path = ViewControllers/MainFlow/Organization/EditCreateOrganizationViewController.swift; sourceTree = "<group>"; };
 		650415DF1FF03A4900D19A89 /* EditCreateOrganizationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditCreateOrganizationViewController.xib; path = ViewControllers/MainFlow/Organization/EditCreateOrganizationViewController.xib; sourceTree = "<group>"; };
-		6504E9F81FCA3BE000A29B97 /* Media.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Media.swift; path = Models/MainFlow/Media.swift; sourceTree = "<group>"; };
 		650905DE1FDF8B00004E272D /* Authentication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Authentication.swift; path = Models/Core/Authentication.swift; sourceTree = "<group>"; };
 		6509345C1FEA2023001AB8EB /* UserViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserViewModel.swift; path = ViewModels/MainFlow/UserViewModel.swift; sourceTree = "<group>"; };
 		650AF5A31F89836200DE46E1 /* ShineNetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShineNetworkService.swift; path = Utilities/Networking/ShineNetworkService.swift; sourceTree = "<group>"; };
@@ -180,6 +176,11 @@
 		65427D261F90508300407C5D /* DanceTypeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceTypeTableViewCell.swift; path = ViewControllers/TableCells/DanceTypeTableViewCell.swift; sourceTree = "<group>"; };
 		65427D271F90508300407C5D /* DanceTypeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DanceTypeTableViewCell.xib; path = ViewControllers/TableCells/DanceTypeTableViewCell.xib; sourceTree = "<group>"; };
 		65427D2A1F905BA100407C5D /* InitialProfileSetupCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InitialProfileSetupCoordinator.swift; path = Coordinators/InitialProfileSetupCoordinator.swift; sourceTree = "<group>"; };
+		65439CE21FF9E2D800EDE435 /* PhotosManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotosManager.swift; path = Utilities/Media/PhotosManager.swift; sourceTree = "<group>"; };
+		65439CE51FF9FA6100EDE435 /* DecodeOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DecodeOperation.swift; path = Utilities/Media/Decoding/DecodeOperation.swift; sourceTree = "<group>"; };
+		65439CE71FF9FA9600EDE435 /* ImageRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageRequest.swift; path = Utilities/Media/Decoding/ImageRequest.swift; sourceTree = "<group>"; };
+		65439CE91FF9FCD300EDE435 /* DanceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceType.swift; path = Models/Core/DanceType.swift; sourceTree = "<group>"; };
+		65439CEA1FF9FCD300EDE435 /* Media.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Media.swift; path = Models/Core/Media.swift; sourceTree = "<group>"; };
 		654479141FC7507200FE3B58 /* ShineError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShineError.swift; path = Utilities/Error/ShineError.swift; sourceTree = "<group>"; };
 		654479171FC7995400FE3B58 /* UIDevice+ModelName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIDevice+ModelName.swift"; path = "Utilities/Extensions/UIDevice+ModelName.swift"; sourceTree = "<group>"; };
 		654672701FA02A7A002DDC40 /* ProfileInfoSetupViewModelInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileInfoSetupViewModelInterface.swift; path = ViewModels/Interfaces/ProfileInfoSetupViewModelInterface.swift; sourceTree = "<group>"; };
@@ -187,7 +188,6 @@
 		654672731FA030A1002DDC40 /* ProfileInfoSetupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ProfileInfoSetupViewController.xib; path = ViewControllers/ProfileSetup/ProfileInfoSetupViewController.xib; sourceTree = "<group>"; };
 		6546A0431FBBC65500B23685 /* NameTitleFormCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NameTitleFormCell.swift; path = ViewControllers/TableCells/Form/NameTitleFormCell.swift; sourceTree = "<group>"; };
 		6546A0441FBBC65500B23685 /* NameTitleFormCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NameTitleFormCell.xib; path = ViewControllers/TableCells/Form/NameTitleFormCell.xib; sourceTree = "<group>"; };
-		6548EE581FB8B9F20076EA4B /* OrganizationProfileVMInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OrganizationProfileVMInterface.swift; path = ViewModels/Interfaces/MainFlow/OrganizationProfileVMInterface.swift; sourceTree = "<group>"; };
 		6548EE5A1FB8BA170076EA4B /* OrganizationProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OrganizationProfileViewModel.swift; path = ViewModels/MainFlow/OrganizationProfileViewModel.swift; sourceTree = "<group>"; };
 		6548EE661FB8CFE70076EA4B /* TextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TextFieldCell.swift; path = ViewControllers/TableCells/Base/TextFieldCell.swift; sourceTree = "<group>"; };
 		6548EE671FB8CFE70076EA4B /* TextFieldCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TextFieldCell.xib; path = ViewControllers/TableCells/Base/TextFieldCell.xib; sourceTree = "<group>"; };
@@ -195,7 +195,6 @@
 		6548EE6B1FB8D00E0076EA4B /* SwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SwitchCell.xib; path = ViewControllers/TableCells/Base/SwitchCell.xib; sourceTree = "<group>"; };
 		6548EE6E1FB918C30076EA4B /* FormCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FormCellFactory.swift; path = Utilities/UI/FormCellFactory.swift; sourceTree = "<group>"; };
 		654938B51F98578D00B6D60C /* PersistanceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PersistanceManager.swift; path = Persistance/PersistanceManager.swift; sourceTree = "<group>"; };
-		654987161F8F04D7002DFB0C /* DanceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceType.swift; path = Models/Data/DanceType.swift; sourceTree = "<group>"; };
 		6549871A1F8F0F31002DFB0C /* DanceTypesModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceTypesModel.swift; path = Models/DanceTypesModel.swift; sourceTree = "<group>"; };
 		6549871C1F8F1747002DFB0C /* DanceTypesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceTypesViewModel.swift; path = ViewModels/DanceTypesViewModel.swift; sourceTree = "<group>"; };
 		6549E7831F8B2DF7000C475E /* danceTypes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = danceTypes.json; path = Resources/danceTypes.json; sourceTree = "<group>"; };
@@ -216,8 +215,6 @@
 		655CE7541FA17423005B0774 /* ProfileInfoSetupViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileInfoSetupViewModel.swift; path = ViewModels/ProfileSetup/ProfileInfoSetupViewModel.swift; sourceTree = "<group>"; };
 		6561CED41FDE38FD008EC9A3 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Helper.swift; path = ViewModels/MainFlow/Helper.swift; sourceTree = "<group>"; };
 		6561CED61FDE4022008EC9A3 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Common.swift; path = Models/Core/Common.swift; sourceTree = "<group>"; };
-		656296E41FABF6BA00511E25 /* UserProfileViewModelInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserProfileViewModelInterface.swift; path = ViewModels/Interfaces/MainFlow/UserProfile/UserProfileViewModelInterface.swift; sourceTree = "<group>"; };
-		656296E61FABF6FF00511E25 /* UserProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserProfileViewModel.swift; path = ViewModels/MainFlow/UserProfile/UserProfileViewModel.swift; sourceTree = "<group>"; };
 		65640E011F9C423E006C2E21 /* ProfileImageSelectionVMInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileImageSelectionVMInterface.swift; path = ViewModels/Interfaces/ProfileImageSelectionVMInterface.swift; sourceTree = "<group>"; };
 		65640E041F9C43E5006C2E21 /* ProfileImageSelectionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileImageSelectionViewModel.swift; path = ViewModels/ProfileSetup/ProfileImageSelectionViewModel.swift; sourceTree = "<group>"; };
 		65640E061F9CF123006C2E21 /* ProfileImageSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileImageSelectionViewController.swift; path = ViewControllers/ProfileSetup/ProfileImageSelectionViewController.swift; sourceTree = "<group>"; };
@@ -236,9 +233,6 @@
 		65BEE2D61FBA82B5009FB690 /* FeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FeedViewController.swift; path = ViewControllers/MainFlow/FeedViewController.swift; sourceTree = "<group>"; };
 		65BEE2D71FBA82B5009FB690 /* FeedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FeedViewController.xib; path = ViewControllers/MainFlow/FeedViewController.xib; sourceTree = "<group>"; };
 		65C045281F6E37B9003824E0 /* MainAuthenticationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainAuthenticationCoordinator.swift; path = Coordinators/MainAuthenticationCoordinator.swift; sourceTree = "<group>"; };
-		65C98F571FB7F42900D5D996 /* DJProfileModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DJProfileModel.swift; path = Models/MainFlow/DJProfileModel.swift; sourceTree = "<group>"; };
-		65C98F581FB7F42900D5D996 /* InstructorProfileModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InstructorProfileModel.swift; path = Models/MainFlow/InstructorProfileModel.swift; sourceTree = "<group>"; };
-		65C98F591FB7F42900D5D996 /* UserProfileModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserProfileModel.swift; path = Models/MainFlow/UserProfileModel.swift; sourceTree = "<group>"; };
 		65F538D31FA811B20034DAFA /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserProfileViewController.swift; path = ViewControllers/MainFlow/UserProfileViewController.swift; sourceTree = "<group>"; };
 		65F538D41FA811B20034DAFA /* UserProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = UserProfileViewController.xib; path = ViewControllers/MainFlow/UserProfileViewController.xib; sourceTree = "<group>"; };
 		65FC55E01F67921C00E02503 /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Coordinator.swift; path = Coordinators/Coordinator.swift; sourceTree = "<group>"; };
@@ -393,6 +387,7 @@
 		650AF5A11F89818000DE46E1 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				65439CE11FF9E2B500EDE435 /* Media */,
 				654479161FC798F700FE3B58 /* Extensions */,
 				654479111FC74D7000FE3B58 /* Error */,
 				654BB8CB1F8D99570044A555 /* UI */,
@@ -442,7 +437,6 @@
 		650CB27E1F68E8550093F2FC /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
-				65F538D81FA81D150034DAFA /* MainFlow */,
 				650CB2811F68EBF20093F2FC /* MainAuthViewModelInterface.swift */,
 				65BC8BF71F819F6800F5AF94 /* SignUpViewModelInterface.swift */,
 				656834D01F8C6B5F00ADCBA2 /* EmailLoginViewModelInterface.swift */,
@@ -456,6 +450,8 @@
 		650E2E461FD0F6690061C301 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				65439CE91FF9FCD300EDE435 /* DanceType.swift */,
+				65439CEA1FF9FCD300EDE435 /* Media.swift */,
 				652A3CFB1FD4B96200376CB6 /* Organization.swift */,
 				652A3CFF1FD50DC000376CB6 /* Location.swift */,
 				652A3D031FD50E5600376CB6 /* EventBase.swift */,
@@ -500,6 +496,24 @@
 				65427D271F90508300407C5D /* DanceTypeTableViewCell.xib */,
 			);
 			name = TableCells;
+			sourceTree = "<group>";
+		};
+		65439CE11FF9E2B500EDE435 /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				65439CE41FF9FA2800EDE435 /* Decoding */,
+				65439CE21FF9E2D800EDE435 /* PhotosManager.swift */,
+			);
+			name = Media;
+			sourceTree = "<group>";
+		};
+		65439CE41FF9FA2800EDE435 /* Decoding */ = {
+			isa = PBXGroup;
+			children = (
+				65439CE51FF9FA6100EDE435 /* DecodeOperation.swift */,
+				65439CE71FF9FA9600EDE435 /* ImageRequest.swift */,
+			);
+			name = Decoding;
 			sourceTree = "<group>";
 		};
 		654424341FA6BAB100CC850D /* MainFlow */ = {
@@ -555,14 +569,6 @@
 				6525BD401FC1E57400249AFC /* TextViewFormCell.xib */,
 			);
 			name = Form;
-			sourceTree = "<group>";
-		};
-		6546A51E1FAAC31D00E4CC56 /* UserProfile */ = {
-			isa = PBXGroup;
-			children = (
-				656296E41FABF6BA00511E25 /* UserProfileViewModelInterface.swift */,
-			);
-			name = UserProfile;
 			sourceTree = "<group>";
 		};
 		6548EE611FB8CF290076EA4B /* Base */ = {
@@ -622,25 +628,6 @@
 			name = UI;
 			sourceTree = "<group>";
 		};
-		656296E11FABF4E400511E25 /* UserProfile */ = {
-			isa = PBXGroup;
-			children = (
-				656296E61FABF6FF00511E25 /* UserProfileViewModel.swift */,
-			);
-			name = UserProfile;
-			sourceTree = "<group>";
-		};
-		656296E81FABFB8B00511E25 /* MainFlow */ = {
-			isa = PBXGroup;
-			children = (
-				65C98F571FB7F42900D5D996 /* DJProfileModel.swift */,
-				65C98F581FB7F42900D5D996 /* InstructorProfileModel.swift */,
-				65C98F591FB7F42900D5D996 /* UserProfileModel.swift */,
-				6504E9F81FCA3BE000A29B97 /* Media.swift */,
-			);
-			name = MainFlow;
-			sourceTree = "<group>";
-		};
 		65640E031F9C4325006C2E21 /* ProfileSetup */ = {
 			isa = PBXGroup;
 			children = (
@@ -654,21 +641,11 @@
 		65F538D71FA81D050034DAFA /* MainFlow */ = {
 			isa = PBXGroup;
 			children = (
-				656296E11FABF4E400511E25 /* UserProfile */,
 				6548EE5A1FB8BA170076EA4B /* OrganizationProfileViewModel.swift */,
 				6561CED41FDE38FD008EC9A3 /* Helper.swift */,
 				65714CFD1FE600B7001FAB44 /* EventViewModel.swift */,
 				6509345C1FEA2023001AB8EB /* UserViewModel.swift */,
 				650C6B031FF34B560008597C /* TimeLineViewModel.swift */,
-			);
-			name = MainFlow;
-			sourceTree = "<group>";
-		};
-		65F538D81FA81D150034DAFA /* MainFlow */ = {
-			isa = PBXGroup;
-			children = (
-				6546A51E1FAAC31D00E4CC56 /* UserProfile */,
-				6548EE581FB8B9F20076EA4B /* OrganizationProfileVMInterface.swift */,
 			);
 			name = MainFlow;
 			sourceTree = "<group>";
@@ -700,9 +677,7 @@
 			isa = PBXGroup;
 			children = (
 				650E2E461FD0F6690061C301 /* Core */,
-				656296E81FABFB8B00511E25 /* MainFlow */,
 				6549870B1F8EFFD5002DFB0C /* Data */,
-				654987161F8F04D7002DFB0C /* DanceType.swift */,
 				6549871A1F8F0F31002DFB0C /* DanceTypesModel.swift */,
 			);
 			name = Models;
@@ -953,17 +928,18 @@
 				6546A0451FBBC65500B23685 /* NameTitleFormCell.swift in Sources */,
 				6525BD411FC1E57400249AFC /* TextViewFormCell.swift in Sources */,
 				656834D51F8C8A7600ADCBA2 /* EmailLoginCoordinator.swift in Sources */,
+				65439CE61FF9FA6100EDE435 /* DecodeOperation.swift in Sources */,
 				65FC55E11F67921C00E02503 /* Coordinator.swift in Sources */,
+				65439CE81FF9FA9600EDE435 /* ImageRequest.swift in Sources */,
 				6548EE681FB8CFE70076EA4B /* TextFieldCell.swift in Sources */,
 				65BEE2D81FBA82B5009FB690 /* FeedViewController.swift in Sources */,
 				654479181FC7995400FE3B58 /* UIDevice+ModelName.swift in Sources */,
 				6564BE2E1F85D3F4005AF655 /* LoginViewController.swift in Sources */,
 				654E01F41FC0B4EE0095C4D1 /* LocationFormCell.swift in Sources */,
-				654987171F8F04D7002DFB0C /* DanceType.swift in Sources */,
 				654BB8D11F8DCBE80044A555 /* DanceTypesViewModelInterface.swift in Sources */,
 				650415DB1FF038B700D19A89 /* EditCreateEventViewController.swift in Sources */,
 				6525BD3D1FC1DD3800249AFC /* TextFieldFormCell.swift in Sources */,
-				656296E71FABF6FF00511E25 /* UserProfileViewModel.swift in Sources */,
+				65439CE31FF9E2D800EDE435 /* PhotosManager.swift in Sources */,
 				652F007D1F6B83F80085C5F5 /* MainAuthViewModel.swift in Sources */,
 				652A3CFC1FD4B96200376CB6 /* Organization.swift in Sources */,
 				650415E01FF03A4900D19A89 /* EditCreateOrganizationViewController.swift in Sources */,
@@ -972,9 +948,7 @@
 				652A3D061FD50F0900376CB6 /* User.swift in Sources */,
 				654479151FC7507200FE3B58 /* ShineError.swift in Sources */,
 				65427D2B1F905BA100407C5D /* InitialProfileSetupCoordinator.swift in Sources */,
-				65C98F5B1FB7F42900D5D996 /* InstructorProfileModel.swift in Sources */,
 				656834D31F8C7F8300ADCBA2 /* EmailLoginViewModel.swift in Sources */,
-				6504E9F91FCA3BE000A29B97 /* Media.swift in Sources */,
 				654B1D241F942A1900B13925 /* DanceTypesViewController.swift in Sources */,
 				65640E081F9CF123006C2E21 /* ProfileImageSelectionViewController.swift in Sources */,
 				6503EC381F075CA900D56AB5 /* OneDance.xcdatamodeld in Sources */,
@@ -985,7 +959,6 @@
 				65FC6D411F132BBD00B33C09 /* ODUserManager.swift in Sources */,
 				65427D281F90508300407C5D /* DanceTypeTableViewCell.swift in Sources */,
 				655CE7551FA17423005B0774 /* ProfileInfoSetupViewModel.swift in Sources */,
-				65C98F5A1FB7F42900D5D996 /* DJProfileModel.swift in Sources */,
 				650AF5A41F89836200DE46E1 /* ShineNetworkService.swift in Sources */,
 				6548EE5B1FB8BA170076EA4B /* OrganizationProfileViewModel.swift in Sources */,
 				65640E021F9C423E006C2E21 /* ProfileImageSelectionVMInterface.swift in Sources */,
@@ -995,16 +968,15 @@
 				652A3CFE1FD4F44A00376CB6 /* JSON.swift in Sources */,
 				6561CED71FDE4022008EC9A3 /* Common.swift in Sources */,
 				652A3D041FD50E5600376CB6 /* EventBase.swift in Sources */,
-				6548EE591FB8B9F20076EA4B /* OrganizationProfileVMInterface.swift in Sources */,
 				65BC8BEF1F8166D700F5AF94 /* EmailSignUpViewController.swift in Sources */,
+				65439CEB1FF9FCD300EDE435 /* DanceType.swift in Sources */,
 				654E01F01FBFEDDC0095C4D1 /* SwitchFormCell.swift in Sources */,
+				65439CEC1FF9FCD300EDE435 /* Media.swift in Sources */,
 				654BB8CD1F8DA8950044A555 /* UITextField+Configure.swift in Sources */,
 				654E01FC1FC120DA0095C4D1 /* DateFormCell.swift in Sources */,
 				65BC8BFA1F81D74600F5AF94 /* SignUpViewModel.swift in Sources */,
-				65C98F5C1FB7F42900D5D996 /* UserProfileModel.swift in Sources */,
 				6503EC301F075CA900D56AB5 /* AppDelegate.swift in Sources */,
 				654E02001FC139060095C4D1 /* DatePickerFormCell.swift in Sources */,
-				656296E51FABF6BA00511E25 /* UserProfileViewModelInterface.swift in Sources */,
 				6561CED51FDE38FD008EC9A3 /* Helper.swift in Sources */,
 				652A3D001FD50DC000376CB6 /* Location.swift in Sources */,
 				65714CFE1FE600B7001FAB44 /* EventViewModel.swift in Sources */,
