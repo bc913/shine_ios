@@ -24,7 +24,7 @@ final class PhotoManager {
     // Can not be initialized explicitly
     private init (){}
     
-    // static let instance = ODUserManager() // Another singleton way
+    // static let instance = PhotoManager() // Another singleton way
     
     private static var photoManagerInstance : PhotoManager {
         let userManager = PhotoManager()
