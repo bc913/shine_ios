@@ -14,18 +14,49 @@ protocol UserViewModelCoordinatorDelegate : class {
 
 protocol UserViewModelViewDelegate : class {
     
+    func viewModelDidFetchUserProfile(viewModel: UserViewModelType)
 }
 
-class UserViewModel {
+
+protocol UserViewModelType : class {
+    
+    weak var coordinatorDelegate : UserViewModelCoordinatorDelegate? { get set }
+    weak var viewDelegate : UserViewModelViewDelegate? { get set }
+    
+    var mode : ShineMode { get set }
+    var model : UserModelType? { get set }
+    
+    var id : String { get set }
+    var username : String { get set }
+    var fullname : String { get set }
+    
+    var email : String { get set }
+    var postsCounter : Int? { get set }
+    var isAccountPrivate : Bool { get set }
+    
+    var followerCounter : Int? { get set }
+    var followingCounter : Int? { get set }
+    
+    var bio : String? { get set }
+    var websiteUrl : String? { get set }
+    
+    var danceTypes : [DanceTypeItem]? { get set }
+    var djProfile : DJProfileItem? { get set }
+    var instructorProfile : InstructorProfileItem? { get set }
+    
+}
+
+class UserViewModel : UserViewModelType{
     
     // UserViewModel can only be in view only mode.
     
     weak var coordinatorDelegate : UserViewModelCoordinatorDelegate?
     weak var viewDelegate : UserViewModelViewDelegate?
+    private var isMyProfile : Bool
+    
     
     var mode : ShineMode = .viewOnly
     var model : UserModelType?
-    
     
     // Properties
     var id : String
@@ -44,14 +75,14 @@ class UserViewModel {
     var websiteUrl : String?
     
     var danceTypes : [DanceTypeItem]?
-    
     var djProfile : DJProfileItem?
     var instructorProfile : InstructorProfileItem?
     
     // Ctors
-    init(mode: ShineMode, id: String) {
+    init(mode: ShineMode, id: String = "", isMyProfile: Bool = false) {
         self.mode = mode
         self.id = id
+        self.isMyProfile = isMyProfile
         
         self.fetchModelData()
     }
@@ -120,13 +151,14 @@ class UserViewModel {
     // Fetch model data
     private func fetchModelData(){
         
-        let modelCompletionHandler = { (error: NSError?, model:UserModel?) in
+        let modelCompletionHandler = { (error: NSError?, model:UserModelType?) in
             //Make sure we are on the main thread
             DispatchQueue.main.async {
                 print("Am I back on the main thread: \(Thread.isMainThread)")
                 guard let error = error else {
                     self.model = model
-                    // Populate view Model
+                    self.populateViewModel()
+                    self.viewDelegate?.viewModelDidFetchUserProfile(viewModel: self)
                     return
                 }
                 self.model = nil
@@ -135,6 +167,13 @@ class UserViewModel {
             }
             
         }
+        
+        if self.isMyProfile {
+            ShineNetworkService.API.User.getMyProfile(mainThreadCompletionHandler: modelCompletionHandler)
+        } else {
+            ShineNetworkService.API.User.getUserProfile(otherUserId: self.id, mainThreadCompletionHandler: modelCompletionHandler)
+        }
+        
     }
     
     // Actions

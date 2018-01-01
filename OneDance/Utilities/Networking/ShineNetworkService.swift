@@ -31,7 +31,9 @@ struct ShineNetworkService {
         //static let updateDanceTypesUrl : String = userUrl + PersistanceManager.User.userId! + "/dancetypes"
         
         
-        static let getUserProfileUrl : String = userUrl + "/" + PersistanceManager.User.userId! + "/profile"
+        static func getUserProfileUrl(otherUserID: String) -> String {
+            return userUrl + "/" + otherUserID + "/profile"
+        }
         static let getMyProfileUrl : String = userUrl + "/me" + "/profile"
         static let updateUserProfileUrl : String = getMyProfileUrl
         static let changeProfilePhotoUrl : String = userUrl + "/me" + "/profile" + "/photo"
@@ -617,11 +619,17 @@ struct ShineNetworkService {
                 
             }// UpdateProfileWith
             
-            static func getUserProfile(mainThreadCompletionHandler: @escaping (_ error: NSError?, _ userModel:UserProfileModelType?) ->()) {
+            static func getUserProfile(otherUserId: String, mainThreadCompletionHandler: @escaping (_ error: NSError?, _ userModel:UserModelType?) ->()) {
                 
+                var otherUserUrl = Constants.getUserProfileUrl(otherUserID: otherUserId)
+                
+                let headers: HTTPHeaders = [
+                    "Content-Type": "application/json",
+                    "USER-ID": PersistanceManager.User.userId!
+                ]
                 
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
-                Alamofire.request(Constants.getUserProfileUrl, method: .get, encoding: JSONEncoding.default)
+                Alamofire.request(otherUserUrl, method: .get, encoding: JSONEncoding.default, headers: headers)
                     .responseJSON(
                         queue: queue,
                         completionHandler: { response in
@@ -657,8 +665,7 @@ struct ShineNetworkService {
                                 
                             }
                             
-                            var userModel : UserProfileModelType?
-                            userModel = UserProfileModel(json: jsonDict)
+                            let userModel : UserModelType? = UserModel(json: jsonDict)
                             
                             if userModel == nil {
                                 error = ErrorFactory.createForResponseDataSerialization(with: nil)
@@ -680,7 +687,7 @@ struct ShineNetworkService {
                 )
             }//GetUserProfile
             
-            static func getMyProfile(mainThreadCompletionHandler: @escaping (_ error: NSError?, _ userModel:UserProfileModelType?) ->()) {
+            static func getMyProfile(mainThreadCompletionHandler: @escaping (_ error: NSError?, _ userModel:UserModelType?) ->()) {
                 
                 let headers: HTTPHeaders = [
                     "Content-Type": "application/json",
@@ -725,8 +732,7 @@ struct ShineNetworkService {
                                 
                             }
                             
-                            var userModel : UserProfileModelType?
-                            userModel = UserProfileModel(json: jsonDict)
+                            let userModel : UserModelType? = UserModel(json: jsonDict)
                             
                             if userModel == nil {
                                 error = ErrorFactory.createForResponseDataSerialization(with: nil)

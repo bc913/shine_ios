@@ -49,15 +49,13 @@ class UserProfileViewController: UIViewController {
     @IBOutlet weak var tag3Label: UILabel!
     
     var isLoaded : Bool = false
-    var viewModel : UserProfileViewModelType? {
+    var viewModel : UserViewModelType? {
         willSet {
             self.viewModel?.viewDelegate = nil
         }
         didSet{
             self.viewModel?.viewDelegate = self
-            if self.isLoaded {
-                self.refreshDisplay()
-            }
+            self.refreshDisplay()
         }
     }
     
@@ -65,7 +63,7 @@ class UserProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
+        self.view.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.22, alpha: 1.0)
         self.mainScrollView.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
         self.contentView.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
         self.profileInfoContainerView.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
@@ -73,52 +71,63 @@ class UserProfileViewController: UIViewController {
         self.configureFollowContainer()
         self.configureInfoContainer()
         self.configureTagContainer()
-        self.configureProfileImage()
+        self.configureProfileImage()        
         
-        //self.refreshDisplay()
         self.isLoaded = true
+        self.refreshDisplay()
 
     }
     
     
     func refreshDisplay(){
-        self.title = self.viewModel?.userName
+        
         
         //TODO: Place this hack to the PhotosManager.
-        let modelCompletionHandler : (NSError?, UIImage?) -> () = { (error: NSError?, profileImage: UIImage?) in
-            //Make sure we are on the main thread
-            DispatchQueue.main.async {
-                print("Am I back on the main thread: \(Thread.isMainThread)")
-                guard let error = error else {
-                    self.profileImageView.image = profileImage
-                    return
-                }
-            }
-            
+//        let modelCompletionHandler : (NSError?, UIImage?) -> () = { (error: NSError?, profileImage: UIImage?) in
+//            //Make sure we are on the main thread
+//            DispatchQueue.main.async {
+//                print("Am I back on the main thread: \(Thread.isMainThread)")
+//                guard let error = error else {
+//                    self.profileImageView.image = profileImage
+//                    return
+//                }
+//            }
+//            
+//        }
+        
+        
+        //ShineNetworkService.API.User.getUserProfileImage(with: (self.viewModel?.photUrl)!, mainThreadCompletionHandler: modelCompletionHandler)
+        
+        guard self.isLoaded else {
+            return
         }
         
+        if let viewModel = self.viewModel {
+            
+            self.title = viewModel.username
+            self.fullNameLabel.text = viewModel.fullname
+            self.sloganLabel.text = viewModel.bio ?? ""
+            self.linkLabel.text = viewModel.websiteUrl ?? ""
+            self.followerCounterLabel.text = String(viewModel.followerCounter ?? 0)
+            self.followingCounterLabel.text = String(viewModel.followingCounter ?? 0)
+            
+        } else {
+            
+            self.title = ""
+            self.fullNameLabel.text = ""
+            self.sloganLabel.text = ""
+            self.linkLabel.text = ""
+            self.followerCounterLabel.text = ""
+            self.followingCounterLabel.text = ""
+        }
+        
+        self.tag2ImageView.isHidden = self.viewModel?.instructorProfile != nil ? false : true
+        self.tag2Label.isHidden = self.tag2ImageView.isHidden
+        
+        self.tag3ImageView.isHidden = self.viewModel?.djProfile != nil ? false : true
+        self.tag3Label.isHidden = self.tag3ImageView.isHidden
         
         
-        ShineNetworkService.API.User.getUserProfileImage(with: (self.viewModel?.photUrl)!, mainThreadCompletionHandler: modelCompletionHandler)
-        
-        print("OSMAAAAAAAAAN")
-        self.fullNameLabel.text = self.viewModel?.fullName
-        self.fullNameLabel.textAlignment = .center
-        self.fullNameLabel.textColor = UIColor.white
-        
-        self.sloganLabel.text = self.viewModel?.slogan
-        self.sloganLabel.textAlignment = .center
-        self.sloganLabel.textColor = UIColor.white
-        
-        self.linkLabel.text = self.viewModel?.bioLink
-        self.linkLabel.textAlignment = .center
-        self.linkLabel.textColor = UIColor.white
-        
-        self.followerLabel.text = "Followers"
-        self.followerCounterLabel.text = self.viewModel?.followerCounter
-        
-        self.followingLabel.text = "Following"
-        self.followingCounterLabel.text = self.viewModel?.followingCounter
     }
     
     private func configureProfileImage(){
@@ -138,7 +147,8 @@ class UserProfileViewController: UIViewController {
         self.followContainerView.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
         self.followerContainerView.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
         self.followingContainerView.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
-      
+        
+        self.followerLabel.text = "Followers"
         self.followerLabel.textAlignment = .center
         self.followerCounterLabel.textAlignment = .center
         self.followerLabel.textColor = UIColor.white
@@ -148,6 +158,7 @@ class UserProfileViewController: UIViewController {
         self.followerLabel.font = UIFont(name: fontName, size: 12)
         self.followerCounterLabel.font = UIFont(name: fontName, size: 16)
         
+        self.followingLabel.text = "Following"
         self.followingLabel.textAlignment = .center
         self.followingCounterLabel.textAlignment = .center
         self.followingLabel.textColor = UIColor.white
@@ -192,6 +203,7 @@ class UserProfileViewController: UIViewController {
         self.tag1ImageView.contentMode = .scaleAspectFill // veya .center
         //self.tag1ImageView.layer.borderWidth = 3.0
         self.tag1ImageView.layer.borderColor = UIColor.white.cgColor
+        self.tag1ImageView.isHidden = false
         
         let tag2Image : UIImage = UIImage(named: "instructor")!
         self.tag2ImageView.image = tag2Image
@@ -200,6 +212,7 @@ class UserProfileViewController: UIViewController {
         self.tag2ImageView.contentMode = .scaleAspectFill // veya .center
         //self.tag2ImageView.layer.borderWidth = 3.0
         self.tag2ImageView.layer.borderColor = UIColor.white.cgColor
+        self.tag2ImageView.isHidden = true
         
         let tag3Image : UIImage = UIImage(named: "dj")!
         self.tag3ImageView.image = tag3Image
@@ -208,18 +221,21 @@ class UserProfileViewController: UIViewController {
         self.tag3ImageView.contentMode = .scaleAspectFill // veya .center
         //self.tag3ImageView.layer.borderWidth = 3.0
         self.tag3ImageView.layer.borderColor = UIColor.white.cgColor
-        
+        self.tag3ImageView.isHidden = true
         
         // Texts
-        self.tag1Label.isEnabled = false
+        self.tag1Label.isHidden = false
+        self.tag1Label.text = "Dancer"
         self.tag1Label.textAlignment = .center
         self.tag1Label.textColor = UIColor.white
         
-        self.tag2Label.isEnabled = false
+        self.tag2Label.isHidden = true
+        self.tag2Label.text = "Instructor"
         self.tag2Label.textAlignment = .center
         self.tag2Label.textColor = UIColor.white
         
-        self.tag3Label.isEnabled = false
+        self.tag3Label.isHidden = true
+        self.tag3Label.text = "DJ"
         self.tag3Label.textAlignment = .center
         self.tag3Label.textColor = UIColor.white
         
@@ -235,8 +251,8 @@ class UserProfileViewController: UIViewController {
 
 }
 
-extension UserProfileViewController : UserProfileViewModelViewDelegate {
-    func viewModelDidFetchUserProfile(viewModel: UserProfileViewModelType) {
-        self.viewModel = viewModel
+extension UserProfileViewController : UserViewModelViewDelegate {
+    func viewModelDidFetchUserProfile(viewModel: UserViewModelType) {
+        self.refreshDisplay()
     }
 }
