@@ -9,7 +9,9 @@
 import Foundation
 import Alamofire
 import AlamofireImage
-
+import AWSCore
+import AWSS3
+import AWSCognito
 
 extension UInt64 {
     
@@ -27,9 +29,9 @@ final class PhotoManager {
     // static let instance = PhotoManager() // Another singleton way
     
     private static var photoManagerInstance : PhotoManager {
-        let userManager = PhotoManager()
+        let manager = PhotoManager()
         // Do some configuration
-        return userManager
+        return manager
     }
     
     class func instance() -> PhotoManager {
@@ -82,4 +84,45 @@ final class PhotoManager {
         decodeQueue.addOperation(operation)
         return operation
     }
+    
+    // MARK: - Image Uploading
+    private struct Constants {
+        struct AWS3 {
+            static let identityPoolId = "us-east-1:47270df4-2548-48b3-9625-25d30ee060ef"
+            static let regionType = AWSRegionType.USEast1
+            
+            static let S3BucketName: String = "shinemedia" // Update this to your bucket name
+            
+            static let uploadKeyNameForProfileImage : String = "profile-image.png"
+            static let downloadKeyNameForProfileImage : String = "profile-image.png"
+        }
+    }
+    
+    
+    func configureAWS(){
+        
+        let credentialsProvider = AWSCognitoCredentialsProvider(regionType: Constants.AWS3.regionType, identityPoolId: Constants.AWS3.identityPoolId)
+        let configuration = AWSServiceConfiguration(region: Constants.AWS3.regionType, credentialsProvider: credentialsProvider)
+        AWSServiceManager.default().defaultServiceConfiguration = configuration
+    }
+    
+    func uploadProfilePhoto(with data: Data, progressBlock: AWSS3TransferUtilityProgressBlock?, completionHandler: AWSS3TransferUtilityUploadCompletionHandlerBlock?, continueWithHandler : @escaping (AWSTask<AWSS3TransferUtilityUploadTask>) -> Any?){
+        print("#############################################################")
+        print(" ---------  S3.uploadProfilePhoto() ---------------------------")
+        let transferUtility = AWSS3TransferUtility.default()
+        let expression = AWSS3TransferUtilityUploadExpression()
+        expression.progressBlock = progressBlock
+        
+        transferUtility.uploadData(
+            data,
+            bucket: Constants.AWS3.S3BucketName,
+            key: Constants.AWS3.uploadKeyNameForProfileImage,
+            contentType: "image/png",
+            expression: expression,
+            completionHandler: completionHandler)
+        
+        ShineNetworkService.API.User.changeProfilePhoto()
+        
+    }
+    
 }

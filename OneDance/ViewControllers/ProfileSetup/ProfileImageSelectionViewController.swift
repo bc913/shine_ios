@@ -21,6 +21,8 @@ class ProfileImageSelectionViewController: UIViewController, UINavigationControl
     var progressBlock: AWSS3TransferUtilityProgressBlock?
     var continueWithHandler : ((AWSTask<AWSS3TransferUtilityUploadTask>) -> Any)?
     
+    var photoManager = PhotoManager.instance()
+    
     private func configureAWS(){
         self.progressView.progress = 0.0;
         //self.selectProfileImageLabel.text = "Ready"
@@ -197,7 +199,7 @@ extension ProfileImageSelectionViewController : UIImagePickerControllerDelegate 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             self.profileImageView.image = selectedImage
-            ShineNetworkService.S3.uploadProfilePhoto(with: UIImagePNGRepresentation(selectedImage)!,
+            self.photoManager.uploadProfilePhoto(with: UIImagePNGRepresentation(selectedImage)!,
                                                       progressBlock: self.progressBlock,
                                                       completionHandler: self.completionHandler,
                                                       continueWithHandler: self.continueWithHandler!)
