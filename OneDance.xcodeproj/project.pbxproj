@@ -96,6 +96,8 @@
 		656834D31F8C7F8300ADCBA2 /* EmailLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656834D21F8C7F8300ADCBA2 /* EmailLoginViewModel.swift */; };
 		656834D51F8C8A7600ADCBA2 /* EmailLoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656834D41F8C8A7600ADCBA2 /* EmailLoginCoordinator.swift */; };
 		65714CFE1FE600B7001FAB44 /* EventViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65714CFD1FE600B7001FAB44 /* EventViewModel.swift */; };
+		6588B008201E69110046C7A0 /* NameTitleWithImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6588B006201E69110046C7A0 /* NameTitleWithImageCell.swift */; };
+		6588B009201E69110046C7A0 /* NameTitleWithImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6588B007201E69110046C7A0 /* NameTitleWithImageCell.xib */; };
 		65BC8BEF1F8166D700F5AF94 /* EmailSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BC8BED1F8166D700F5AF94 /* EmailSignUpViewController.swift */; };
 		65BC8BF01F8166D700F5AF94 /* EmailSignUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65BC8BEE1F8166D700F5AF94 /* EmailSignUpViewController.xib */; };
 		65BC8BF81F819F6800F5AF94 /* SignUpViewModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BC8BF71F819F6800F5AF94 /* SignUpViewModelInterface.swift */; };
@@ -229,6 +231,8 @@
 		656834D21F8C7F8300ADCBA2 /* EmailLoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EmailLoginViewModel.swift; path = ViewModels/EmailLoginViewModel.swift; sourceTree = "<group>"; };
 		656834D41F8C8A7600ADCBA2 /* EmailLoginCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EmailLoginCoordinator.swift; path = Coordinators/EmailLoginCoordinator.swift; sourceTree = "<group>"; };
 		65714CFD1FE600B7001FAB44 /* EventViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EventViewModel.swift; path = ViewModels/MainFlow/EventViewModel.swift; sourceTree = "<group>"; };
+		6588B006201E69110046C7A0 /* NameTitleWithImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NameTitleWithImageCell.swift; path = ViewControllers/TableCells/Form/NameTitleWithImageCell.swift; sourceTree = "<group>"; };
+		6588B007201E69110046C7A0 /* NameTitleWithImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NameTitleWithImageCell.xib; path = ViewControllers/TableCells/Form/NameTitleWithImageCell.xib; sourceTree = "<group>"; };
 		65BC8BED1F8166D700F5AF94 /* EmailSignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EmailSignUpViewController.swift; path = ViewControllers/Authentication/EmailSignUpViewController.swift; sourceTree = "<group>"; };
 		65BC8BEE1F8166D700F5AF94 /* EmailSignUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EmailSignUpViewController.xib; path = ViewControllers/Authentication/EmailSignUpViewController.xib; sourceTree = "<group>"; };
 		65BC8BF71F819F6800F5AF94 /* SignUpViewModelInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SignUpViewModelInterface.swift; path = ViewModels/Interfaces/SignUpViewModelInterface.swift; sourceTree = "<group>"; };
@@ -581,6 +585,8 @@
 				6525BD3C1FC1DD3800249AFC /* TextFieldFormCell.xib */,
 				6525BD3F1FC1E57400249AFC /* TextViewFormCell.swift */,
 				6525BD401FC1E57400249AFC /* TextViewFormCell.xib */,
+				6588B006201E69110046C7A0 /* NameTitleWithImageCell.swift */,
+				6588B007201E69110046C7A0 /* NameTitleWithImageCell.xib */,
 			);
 			name = Form;
 			sourceTree = "<group>";
@@ -824,6 +830,7 @@
 				65BC8BF01F8166D700F5AF94 /* EmailSignUpViewController.xib in Resources */,
 				650415E11FF03A4900D19A89 /* EditCreateOrganizationViewController.xib in Resources */,
 				654E01F51FC0B4EE0095C4D1 /* LocationFormCell.xib in Resources */,
+				6588B009201E69110046C7A0 /* NameTitleWithImageCell.xib in Resources */,
 				654672751FA030A1002DDC40 /* ProfileInfoSetupViewController.xib in Resources */,
 				654E01F11FBFEDDC0095C4D1 /* SwitchFormCell.xib in Resources */,
 				6546A0461FBBC65500B23685 /* NameTitleFormCell.xib in Resources */,
@@ -997,6 +1004,7 @@
 				650C6B021FF34AA50008597C /* MainFlowCoordinator.swift in Sources */,
 				654672741FA030A1002DDC40 /* ProfileInfoSetupViewController.swift in Sources */,
 				6549871D1F8F1747002DFB0C /* DanceTypesViewModel.swift in Sources */,
+				6588B008201E69110046C7A0 /* NameTitleWithImageCell.swift in Sources */,
 				65439CF01FFA0A3D00EDE435 /* UserTableCell.swift in Sources */,
 				650C6B071FF35F500008597C /* TimeLineViewController.swift in Sources */,
 				654672711FA02A7A002DDC40 /* ProfileInfoSetupViewModelInterface.swift in Sources */,

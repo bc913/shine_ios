@@ -102,6 +102,16 @@ struct FormItemCellFactory {
                 cell.placeHolder = Helper.createPlaceHolderText(purpose: purpose, type: type)
                 return cell
             }
+        case .nameTitleWithImage:
+            
+            nibName = NameTitleWithImageCell.nib
+            identifier = NameTitleWithImageCell.identifier
+            
+            tableView.register(nibName, forCellReuseIdentifier: identifier!)
+            if let cell = tableView.dequeueReusableCell(withIdentifier: identifier!) as? NameTitleWithImageCell {
+                cell.placeHolder = Helper.createPlaceHolderText(purpose: purpose, type: type)
+                return cell
+            }
             
         case .switchType:
             nibName = SwitchFormCell.nib

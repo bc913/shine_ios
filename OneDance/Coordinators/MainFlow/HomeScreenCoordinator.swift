@@ -31,7 +31,7 @@ protocol Modeable {
 
 //=======================
 //MARK: ChildCoordinators
-//=======================
+//MARK:=======================
 
 // Every parent coordinator shoul adopt this
 protocol ChildCoordinatorDelegate : class {
@@ -408,7 +408,7 @@ extension OrganizationCoordinator : OrganizationViewModelCoordinatorDelegate {
 
 //===============================================================================================
 //MARK: EventCoordinator
-//===============================================================================================
+//MARK:==========================
 
 class EventCoordinator : BaseChildCoordinator {
     var mode : ShineMode
@@ -455,3 +455,4 @@ extension EventCoordinator : Coordinator {
 extension EventCoordinator : EventViewModelCoordinatorDelegate{
     
 }
+

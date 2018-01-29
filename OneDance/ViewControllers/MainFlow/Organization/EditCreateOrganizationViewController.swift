@@ -471,7 +471,7 @@ extension EditCreateOrganizationViewController : UITableViewDelegate {
 // MARK: textview dynamic expansion delegate
 extension EditCreateOrganizationViewController: ExpandingCellDelegate {
     
-    func updateCellHeight(height: CGFloat, indexPath: IndexPath) {
+    func updateCellHeight(cell: BaseFormCell, height: CGFloat, indexPath: IndexPath?) {
         //expandingCellHeight = height
         
         self.textViewHeight = height + 20

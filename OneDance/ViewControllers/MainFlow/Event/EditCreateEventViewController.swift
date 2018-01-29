@@ -8,7 +8,8 @@
 
 import UIKit
 
-class EditCreateEventViewController: UIViewController {
+
+class EditCreateEventViewController: UIViewController, UINavigationControllerDelegate {
     
     
     @IBOutlet weak var tableView: UITableView!
@@ -16,6 +17,12 @@ class EditCreateEventViewController: UIViewController {
     
     // This is a hack to update texview dynamically when content of the text view is larger than its container cell size
     var textViewHeight : CGFloat = 150.0
+    
+    // Cell height for nameWithImage cell
+    var nameWithImageCellHeight : CGFloat = 66.0
+    
+    // Image picker controller for nameWithImagecell
+    var imagePickerController = UIImagePickerController()
     
     fileprivate var isLoaded : Bool = false
     
@@ -44,17 +51,21 @@ class EditCreateEventViewController: UIViewController {
     
     private func constructCells(){
         
-        // title cell
-        if let cell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .nameTitle, placeHolder: nil) as? NameTitleFormCell {
+        
+        // title with image cell
+        if let nameWithImageCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .nameTitleWithImage, placeHolder: nil) as? NameTitleWithImageCell {
             
             // Initialize the form if it is in edit mode
-            cell.displayedValue = (self.viewModel?.title)!
+            nameWithImageCell.displayedValue = (self.viewModel?.title)!
             
-            cell.valueChanged = {
-                self.viewModel?.title = cell.textField.text!
+            nameWithImageCell.expandDelegate = self
+            nameWithImageCell.imageSelectionDelegate = self
+            
+            nameWithImageCell.valueChanged = {
+                self.viewModel?.title = nameWithImageCell.nameTextField.text!
             }
             
-            self.cells.append(cell)
+            self.cells.append(nameWithImageCell)
         }
         
         // DAte cell
@@ -157,6 +168,7 @@ class EditCreateEventViewController: UIViewController {
         
         self.configureTableView()
         self.configureNavigationBar()
+        self.configureImagePickerController()
         self.registerKeyboardNotifications()
         
         
@@ -210,6 +222,13 @@ class EditCreateEventViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: createEditTitle, style: .plain, target: self, action: #selector(createEditEvent))
     }
     
+    private func configureImagePickerController(){
+        
+        self.imagePickerController.delegate = self // UINavigationControllerDelegate
+        self.imagePickerController.allowsEditing = false
+        
+    }
+    
     func createEditEvent(){
         self.viewModel?.create()
     }
@@ -219,6 +238,56 @@ class EditCreateEventViewController: UIViewController {
         self.viewModel?.cancel()
     }
 
+}
+
+extension EditCreateEventViewController : UIImagePickerControllerDelegate {
+    
+    // TODO: Check for this error when the image is loaded.
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        if let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage, let index = self.cells.index(where: {$0 is NameTitleWithImageCell}) {
+            
+            if let cell = self.cells[index] as? NameTitleWithImageCell {
+                cell.eventImageView.image = selectedImage
+                cell.imagePicked()
+                print("image picked")
+            }
+            
+            
+        } else {
+            print("Exception")
+        }
+        
+        //self.dismiss(animated: true, completion: nil)
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    // Not required but expected to implement
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension EditCreateEventViewController : CellWithImageSelectorDelegate{
+    
+    func cellTappedForImageSelection(_ cell: BaseFormCell) {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        actionSheet.addAction(UIAlertAction(title: "Camera", style: UIAlertActionStyle.default, handler: { (alert:UIAlertAction!) -> Void in
+            self.imagePickerController.sourceType = .camera
+            self.present(self.imagePickerController, animated: true, completion: nil)
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Gallery", style: UIAlertActionStyle.default, handler: { (alert:UIAlertAction!) -> Void in
+            self.imagePickerController.sourceType = .photoLibrary
+            self.present(self.imagePickerController, animated: true, completion: nil)
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
+        
+        self.present(actionSheet, animated: true, completion: nil)
+    }
 }
 
 // UITableViewDataSource
@@ -252,6 +321,10 @@ extension EditCreateEventViewController : UITableViewDataSource {
 extension EditCreateEventViewController : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        if self.cells[indexPath.row] is NameTitleWithImageCell {
+            return self.nameWithImageCellHeight
+        }
         
         if self.cells[indexPath.row] is TextViewFormCell {
             return self.textViewHeight
@@ -289,10 +362,18 @@ fileprivate extension EditCreateEventViewController {
 // MARK: textview dynamic expansion delegate
 extension EditCreateEventViewController: ExpandingCellDelegate {
     
-    func updateCellHeight(height: CGFloat, indexPath: IndexPath) {
+    func updateCellHeight(cell: BaseFormCell, height: CGFloat, indexPath: IndexPath?) {
         //expandingCellHeight = height
         
-        self.textViewHeight = height + 20
+        if cell is TextViewFormCell {
+            self.textViewHeight = height + 20
+        }
+        
+        if cell is NameTitleWithImageCell {
+            self.nameWithImageCellHeight = self.nameWithImageCellHeight + height
+        }
+        
+        
         // Disabling animations gives us our desired behaviour
         UIView.setAnimationsEnabled(false)
         /* These will causes table cell heights to be recaluclated,

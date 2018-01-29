@@ -9,7 +9,7 @@
 import UIKit
 
 protocol ExpandingCellDelegate : class {
-    func updateCellHeight(height: CGFloat, indexPath: IndexPath)
+    func updateCellHeight(cell: BaseFormCell, height: CGFloat, indexPath: IndexPath?)
 }
 
 class TextViewFormCell: BaseFormCell {
@@ -108,7 +108,7 @@ extension TextViewFormCell : UITextViewDelegate {
         if height > self.designatedHeight, let indexPath = getIndexPath?() {
             
             print("Osmaaaaaaan")
-            self.delegate?.updateCellHeight(height: height,indexPath: indexPath)
+            self.delegate?.updateCellHeight(cell: self, height: height,indexPath: indexPath)
             
             
         }
