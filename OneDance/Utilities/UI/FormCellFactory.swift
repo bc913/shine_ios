@@ -40,14 +40,9 @@ enum FormCellType{
 }
 
 enum FormPurpose {
-    case createClassEvent
-    case createPartyEvent
-    case createNightEvent
-    case createWorkshopEvent
-    case createFestivalEvent
     
-    case createOrganizationProfile
-    case createDanceAcademyProfile
+    case createDanceEvent
+    case createDanceOrganization
 }
 
 
@@ -200,26 +195,12 @@ struct FormItemCellFactory {
             
             switch type {
             case .nameTitle, .nameTitleWithImage:
-                if purpose == .createOrganizationProfile {
+                if purpose == .createDanceEvent {
+                    placeHolder = "Event Title"
+                    
+                } else if purpose == .createDanceOrganization {
                     placeHolder = "Organization Name"
                     
-                } else if purpose == .createDanceAcademyProfile {
-                    placeHolder = "Dance Academy Name"
-                    
-                } else if purpose == .createNightEvent {
-                    placeHolder = "Title for dance night event"
-                    
-                } else if purpose == .createFestivalEvent {
-                    placeHolder = "Festival title"
-                    
-                } else if purpose == .createClassEvent {
-                    placeHolder = "Class Name"
-                    
-                } else if purpose == .createPartyEvent {
-                    placeHolder = "Party title"
-                    
-                } else if purpose == .createWorkshopEvent {
-                    placeHolder = "Workshop title"
                 } else {
                     placeHolder = "Title"
                 }

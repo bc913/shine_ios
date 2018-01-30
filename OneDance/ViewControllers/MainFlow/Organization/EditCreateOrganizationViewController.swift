@@ -66,7 +66,7 @@ class EditCreateOrganizationViewController: UIViewController {
         nameSection.title = "Name"
         nameSection.sectionIndex = 0
         
-        if let cell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .nameTitle, placeHolder: nil) as? NameTitleFormCell {
+        if let cell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .nameTitle, placeHolder: nil) as? NameTitleFormCell {
             
             // Initialize the form
             cell.displayedValue = self.viewModel?.name ?? ""
@@ -86,7 +86,7 @@ class EditCreateOrganizationViewController: UIViewController {
         infoSection.title = "About"
         infoSection.sectionIndex = 1
         
-        if let aboutCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .info, placeHolder: nil) as? TextViewFormCell{
+        if let aboutCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .info, placeHolder: nil) as? TextViewFormCell{
             
             aboutCell.tableView = self.tableView
             aboutCell.delegate = self // Expanding cell delegate
@@ -140,7 +140,7 @@ class EditCreateOrganizationViewController: UIViewController {
         contactSection.sectionIndex = 2
         
         
-        if let emailCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .email, placeHolder: nil) as? TextFieldFormCell{
+        if let emailCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .email, placeHolder: nil) as? TextFieldFormCell{
             
             // Initialize if it is edit mode
             emailCell.displayedValue = self.viewModel?.contactInfo.email ?? ""
@@ -152,7 +152,7 @@ class EditCreateOrganizationViewController: UIViewController {
             self.contactCells.append(emailCell)
         }
         
-        if let phoneCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .phoneNumber, placeHolder: nil) as? TextFieldFormCell{
+        if let phoneCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .phoneNumber, placeHolder: nil) as? TextFieldFormCell{
             
             // Initialize if it is edit mode
             phoneCell.displayedValue = self.viewModel?.contactInfo.phone ?? ""
@@ -164,7 +164,7 @@ class EditCreateOrganizationViewController: UIViewController {
             self.contactCells.append(phoneCell)
         }
         
-        if let linkCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .url, placeHolder: nil) as? TextFieldFormCell{
+        if let linkCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .url, placeHolder: nil) as? TextFieldFormCell{
             
             // Initialize if it is edit mode
             linkCell.displayedValue = self.viewModel?.contactInfo.website ?? ""
@@ -176,7 +176,7 @@ class EditCreateOrganizationViewController: UIViewController {
             self.contactCells.append(linkCell)
         }
         
-        if let facebookUrlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .url, placeHolder: "Facebook (Optional)") as? TextFieldFormCell{
+        if let facebookUrlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .url, placeHolder: "Facebook (Optional)") as? TextFieldFormCell{
             
             // Initialize if it is edit mode
             facebookUrlCell.displayedValue = self.viewModel?.contactInfo.facebookUrl ?? ""
@@ -189,7 +189,7 @@ class EditCreateOrganizationViewController: UIViewController {
         }
         
         
-        if let instagramUrlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .url, placeHolder: "Instagram (Optional)") as? TextFieldFormCell{
+        if let instagramUrlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .url, placeHolder: "Instagram (Optional)") as? TextFieldFormCell{
             
             // Initialize if it is edit mode
             instagramUrlCell.displayedValue = self.viewModel?.contactInfo.instagramUrl ?? ""
@@ -211,7 +211,7 @@ class EditCreateOrganizationViewController: UIViewController {
         // Dance sepcific information
         var danceSection = FormSectionItem(cells: [BaseFormCell](), title: "Dance", sectionIndex: 3)
         
-        if let hasClassForKidsCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .switchType, placeHolder: "Classes for kids") as? SwitchFormCell{
+        if let hasClassForKidsCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .switchType, placeHolder: "Classes for kids") as? SwitchFormCell{
             
             //
             hasClassForKidsCell.displayedValue = self.viewModel?.hasClassForKids ?? false
@@ -225,7 +225,7 @@ class EditCreateOrganizationViewController: UIViewController {
             
         }
         
-        if let hasPrivateClassCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .switchType, placeHolder: "Private Class") as? SwitchFormCell{
+        if let hasPrivateClassCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .switchType, placeHolder: "Private Class") as? SwitchFormCell{
             
             //
             hasPrivateClassCell.displayedValue = self.viewModel?.hasPrivateClass ?? false
@@ -239,7 +239,7 @@ class EditCreateOrganizationViewController: UIViewController {
             
         }
         
-        if let hasWeddingPackageCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .switchType, placeHolder: "Wedding package/classes") as? SwitchFormCell{
+        if let hasWeddingPackageCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .switchType, placeHolder: "Wedding package/classes") as? SwitchFormCell{
             
             //
             hasWeddingPackageCell.displayedValue = self.viewModel?.hasWeddingPackage ?? false

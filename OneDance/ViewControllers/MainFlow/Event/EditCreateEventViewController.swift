@@ -53,10 +53,12 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
         
         
         // title with image cell
-        if let nameWithImageCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .nameTitleWithImage, placeHolder: nil) as? NameTitleWithImageCell {
+        if let nameWithImageCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .nameTitleWithImage, placeHolder: nil) as? NameTitleWithImageCell {
             
             // Initialize the form if it is in edit mode
-            nameWithImageCell.displayedValue = (self.viewModel?.title)!
+            if let vm = self.viewModel, vm.mode == .edit {
+                nameWithImageCell.displayedValue = vm.title
+            }
             
             nameWithImageCell.expandDelegate = self
             nameWithImageCell.imageSelectionDelegate = self
@@ -69,12 +71,12 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
         }
         
         // DAte cell
-        if let dateCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .date, placeHolder: nil) as? DateFormCell{
+        if let dateCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .date, placeHolder: nil) as? DateFormCell{
             
             dateCell.viewController = self
             dateCell.tableView = self.tableView
             
-            if let dependentCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .datePicker, placeHolder: nil) as? DatePickerFormCell {
+            if let dependentCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .datePicker, placeHolder: nil) as? DatePickerFormCell {
                 
                 dependentCell.parentCell = dateCell
                 dateCell.dependentCells = [dependentCell]
@@ -94,7 +96,7 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
         }
         
         // Location cell
-        if let locationCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .location, placeHolder: nil) as? LocationFormCell{
+        if let locationCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .location, placeHolder: nil) as? LocationFormCell{
             
             locationCell.viewController = self
             locationCell.valueChanged = {
@@ -107,7 +109,7 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
         }
         
         // More info
-        if let aboutCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .info, placeHolder: nil) as? TextViewFormCell{
+        if let aboutCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .info, placeHolder: nil) as? TextViewFormCell{
             
             aboutCell.tableView = self.tableView
             aboutCell.delegate = self // Expanding cell delegate
@@ -127,6 +129,26 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
             self.cells.append(aboutCell)
             
         }
+        
+        // URL
+        if let urlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .url, placeHolder: nil) as? TextFieldFormCell{
+            
+            // Initialize if it is edit mode
+            if self.viewModel != nil {
+                urlCell.displayedValue = self.viewModel!.webUrl
+            }
+            
+            urlCell.changeKeyboardType(.URL)
+            
+            urlCell.valueChanged = {
+                self.viewModel?.webUrl = urlCell.textField.text!
+            }
+            
+            self.cells.append(urlCell)
+            
+        }
+        
+        // 
         
     }
     

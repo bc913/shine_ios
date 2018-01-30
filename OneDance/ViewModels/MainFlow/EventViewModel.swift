@@ -27,10 +27,10 @@ protocol EventViewModelType : class {
     
     weak var viewDelegate : EventViewModelViewDelegate? { get set }
     weak var coordinatorDelegate : EventVMCoordinatorDelegate? { get set }
+    
     var mode : ShineMode { get set }
     
     var id : String { get set }
-    
     var title : String { get set }
     var description : String { get set }
     var ownerUser : UserItem? { get set }
@@ -60,14 +60,16 @@ protocol EventViewModelType : class {
     var instructors : [UserItem]? { get set }
     var djs : [UserItem]? { get set }
     
-    var hasWorkshop : Bool { get set }
-    var hasPerformance : Bool { get set }
     
     // Event Policy
     var hasDressCode : Bool { get set }
     var partnerRequired : Bool { get set }
     var eventPolicyDescription : String? { get set }
     
+    //
+    var hasWorkshop : Bool { get set }
+    var hasPerformance : Bool { get set }
+
     // Fee policy
     var feePolicy : FeePolicyItem? { get set }
     
@@ -270,8 +272,10 @@ class EventViewModel : EventViewModelType {
             self.model?.danceTypes = nil
         }
         
+        //Url
         self.model?.webUrl = URL(string: self.webUrl)
         
+        // Location contact
         self.model?.location = self.location?.mapToLiteModel()
         self.model?.contact = self.contactPerson?.mapToModel()
         
@@ -339,7 +343,11 @@ class EventViewModel : EventViewModelType {
     
     var danceTypes : [DanceTypeItem]?
     
-    var webUrl : String = ""
+    var webUrl : String = "" {
+        didSet{
+            print("weburl : \(webUrl)")
+        }
+    }
     
     var location : LocationItem?
     var contactPerson : ContactPersonItem?
