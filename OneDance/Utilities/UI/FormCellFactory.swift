@@ -136,10 +136,10 @@ struct FormItemCellFactory {
             }
             
         case .datePicker:
-            nibName = DatePickerFormCell.nib
-            identifier = DatePickerFormCell.identifier
+            nibName = DatePickerCell.nib
+            identifier = DatePickerCell.identifier
             tableView.register(nibName, forCellReuseIdentifier: identifier!)
-            if let cell = tableView.dequeueReusableCell(withIdentifier: identifier!) as? DatePickerFormCell {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: identifier!) as? DatePickerCell {
                 return cell
             }
             

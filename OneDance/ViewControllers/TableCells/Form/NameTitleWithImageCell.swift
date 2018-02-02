@@ -20,7 +20,6 @@ class NameTitleWithImageCell: BaseFormCell {
     @IBOutlet weak var imageSelector: UIImageView!
     @IBOutlet weak var nameTextField: UITextField!
     
-    weak var expandDelegate : ExpandingCellDelegate?
     weak var imageSelectionDelegate : CellWithImageSelectorDelegate?
     
     var placeHolder : String?{

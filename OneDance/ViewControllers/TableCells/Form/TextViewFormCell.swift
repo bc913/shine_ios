@@ -8,14 +8,12 @@
 
 import UIKit
 
-protocol ExpandingCellDelegate : class {
-    func updateCellHeight(cell: BaseFormCell, height: CGFloat, indexPath: IndexPath?)
-}
+
 
 class TextViewFormCell: BaseFormCell {
 
     @IBOutlet weak var textView: UITextView!
-    weak var delegate : ExpandingCellDelegate?
+    
     
     
     weak var tableView : UITableView?
@@ -108,7 +106,7 @@ extension TextViewFormCell : UITextViewDelegate {
         if height > self.designatedHeight, let indexPath = getIndexPath?() {
             
             print("Osmaaaaaaan")
-            self.delegate?.updateCellHeight(cell: self, height: height,indexPath: indexPath)
+            self.expandDelegate?.updateCellHeight(cell: self, height: height,indexPath: indexPath)
             
             
         }

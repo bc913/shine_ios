@@ -89,7 +89,7 @@ class EditCreateOrganizationViewController: UIViewController {
         if let aboutCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .info, placeHolder: nil) as? TextViewFormCell{
             
             aboutCell.tableView = self.tableView
-            aboutCell.delegate = self // Expanding cell delegate
+            aboutCell.expandDelegate = self // Expanding cell delegate
             aboutCell.getIndexPath = {
                 return self.getIndexPathOfCell(aboutCell)
             }

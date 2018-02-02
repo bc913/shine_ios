@@ -83,6 +83,8 @@
 		654E01FD1FC120DA0095C4D1 /* DateFormCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 654E01FB1FC120DA0095C4D1 /* DateFormCell.xib */; };
 		654E02001FC139060095C4D1 /* DatePickerFormCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654E01FE1FC139060095C4D1 /* DatePickerFormCell.swift */; };
 		654E02011FC139060095C4D1 /* DatePickerFormCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 654E01FF1FC139060095C4D1 /* DatePickerFormCell.xib */; };
+		654FE85D2022D5FF002D1D23 /* DatePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654FE85B2022D5FF002D1D23 /* DatePickerCell.swift */; };
+		654FE85E2022D5FF002D1D23 /* DatePickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 654FE85C2022D5FF002D1D23 /* DatePickerCell.xib */; };
 		655CE7551FA17423005B0774 /* ProfileInfoSetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655CE7541FA17423005B0774 /* ProfileInfoSetupViewModel.swift */; };
 		6561CED51FDE38FD008EC9A3 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6561CED41FDE38FD008EC9A3 /* Helper.swift */; };
 		6561CED71FDE4022008EC9A3 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6561CED61FDE4022008EC9A3 /* Common.swift */; };
@@ -218,6 +220,8 @@
 		654E01FB1FC120DA0095C4D1 /* DateFormCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DateFormCell.xib; path = ViewControllers/TableCells/Form/DateFormCell.xib; sourceTree = "<group>"; };
 		654E01FE1FC139060095C4D1 /* DatePickerFormCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DatePickerFormCell.swift; path = ViewControllers/TableCells/Form/DatePickerFormCell.swift; sourceTree = "<group>"; };
 		654E01FF1FC139060095C4D1 /* DatePickerFormCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DatePickerFormCell.xib; path = ViewControllers/TableCells/Form/DatePickerFormCell.xib; sourceTree = "<group>"; };
+		654FE85B2022D5FF002D1D23 /* DatePickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DatePickerCell.swift; path = ViewControllers/TableCells/Form/DatePickerCell.swift; sourceTree = "<group>"; };
+		654FE85C2022D5FF002D1D23 /* DatePickerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DatePickerCell.xib; path = ViewControllers/TableCells/Form/DatePickerCell.xib; sourceTree = "<group>"; };
 		655CE7541FA17423005B0774 /* ProfileInfoSetupViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileInfoSetupViewModel.swift; path = ViewModels/ProfileSetup/ProfileInfoSetupViewModel.swift; sourceTree = "<group>"; };
 		6561CED41FDE38FD008EC9A3 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Helper.swift; path = ViewModels/MainFlow/Helper.swift; sourceTree = "<group>"; };
 		6561CED61FDE4022008EC9A3 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Common.swift; path = Models/Core/Common.swift; sourceTree = "<group>"; };
@@ -587,6 +591,8 @@
 				6525BD401FC1E57400249AFC /* TextViewFormCell.xib */,
 				6588B006201E69110046C7A0 /* NameTitleWithImageCell.swift */,
 				6588B007201E69110046C7A0 /* NameTitleWithImageCell.xib */,
+				654FE85B2022D5FF002D1D23 /* DatePickerCell.swift */,
+				654FE85C2022D5FF002D1D23 /* DatePickerCell.xib */,
 			);
 			name = Form;
 			sourceTree = "<group>";
@@ -823,6 +829,7 @@
 				654E02011FC139060095C4D1 /* DatePickerFormCell.xib in Resources */,
 				65FD06F51F1D726C00932E5F /* LocationSearchTableViewCell.xib in Resources */,
 				6525BD421FC1E57400249AFC /* TextViewFormCell.xib in Resources */,
+				654FE85E2022D5FF002D1D23 /* DatePickerCell.xib in Resources */,
 				6548EE691FB8CFE70076EA4B /* TextFieldCell.xib in Resources */,
 				650CB27D1F68DF020093F2FC /* MainAuthViewController.xib in Resources */,
 				6564BE2F1F85D3F4005AF655 /* LoginViewController.xib in Resources */,
@@ -1004,6 +1011,7 @@
 				650C6B021FF34AA50008597C /* MainFlowCoordinator.swift in Sources */,
 				654672741FA030A1002DDC40 /* ProfileInfoSetupViewController.swift in Sources */,
 				6549871D1F8F1747002DFB0C /* DanceTypesViewModel.swift in Sources */,
+				654FE85D2022D5FF002D1D23 /* DatePickerCell.swift in Sources */,
 				6588B008201E69110046C7A0 /* NameTitleWithImageCell.swift in Sources */,
 				65439CF01FFA0A3D00EDE435 /* UserTableCell.swift in Sources */,
 				650C6B071FF35F500008597C /* TimeLineViewController.swift in Sources */,

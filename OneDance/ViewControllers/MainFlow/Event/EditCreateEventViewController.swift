@@ -26,6 +26,9 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
     
     fileprivate var isLoaded : Bool = false
     
+    // ACtive selection
+    var activeIndex : IndexPath?
+    
     // VM
     var viewModel : EventViewModelType? {
         willSet{
@@ -71,25 +74,27 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
         }
         
         // DAte cell
-        if let dateCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .date, placeHolder: nil) as? DateFormCell{
+        if let dateCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .datePicker, placeHolder: nil) as? DatePickerCell{
             
-            dateCell.viewController = self
-            dateCell.tableView = self.tableView
+            dateCell.expandDelegate = self
             
-            if let dependentCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .datePicker, placeHolder: nil) as? DatePickerFormCell {
-                
-                dependentCell.parentCell = dateCell
-                dateCell.dependentCells = [dependentCell]
-                dateCell.getIndexPath = {
-                    return self.getIndexPathOfCell(dateCell)
-                }
-            }
-            
-            dateCell.valueChanged = {
-                self.updateCellsWithDependentsOfCell(dateCell)
-                print("DAteCell change is not applicaple")
-                
-            }
+//            dateCell.viewController = self
+//            dateCell.tableView = self.tableView
+//            
+//            if let dependentCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .datePicker, placeHolder: nil) as? DatePickerFormCell {
+//                
+//                dependentCell.parentCell = dateCell
+//                dateCell.dependentCells = [dependentCell]
+//                dateCell.getIndexPath = {
+//                    return self.getIndexPathOfCell(dateCell)
+//                }
+//            }
+//            
+//            dateCell.valueChanged = {
+//                self.updateCellsWithDependentsOfCell(dateCell)
+//                print("DAteCell change is not applicaple")
+//                
+//            }
             
             cells.append(dateCell)
             
@@ -112,7 +117,7 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
         if let aboutCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .info, placeHolder: nil) as? TextViewFormCell{
             
             aboutCell.tableView = self.tableView
-            aboutCell.delegate = self // Expanding cell delegate
+            aboutCell.expandDelegate = self // Expanding cell delegate
             aboutCell.getIndexPath = {
                 return self.getIndexPathOfCell(aboutCell)
             }
@@ -220,6 +225,7 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.tableView.allowsSelection = true
         
         // Hide empty unused cells
         self.tableView.tableFooterView = UIView()
@@ -358,6 +364,12 @@ extension EditCreateEventViewController : UITableViewDelegate {
         return 100.0
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        print("Row is selected: \(indexPath.row)")
+        
+    }
+    
 }
 
 fileprivate extension EditCreateEventViewController {
@@ -397,14 +409,14 @@ extension EditCreateEventViewController: ExpandingCellDelegate {
         
         
         // Disabling animations gives us our desired behaviour
-        UIView.setAnimationsEnabled(false)
+        //UIView.setAnimationsEnabled(false)
         /* These will causes table cell heights to be recaluclated,
          without reloading the entire cell */
         
         tableView.beginUpdates()
         tableView.endUpdates()
         // Re-enable animations
-        UIView.setAnimationsEnabled(true)
+        //UIView.setAnimationsEnabled(true)
         
         //let indexPath = IndexPath(row: expandingIndexRow, section: 0)
         
