@@ -13,11 +13,7 @@ import UIKit
 class TextViewFormCell: BaseFormCell {
 
     @IBOutlet weak var textView: UITextView!
-    
-    
-    
-    weak var tableView : UITableView?
-    
+        
     var placeHolder : String? {
         didSet{
             self.textView.text = placeHolder
@@ -42,12 +38,17 @@ class TextViewFormCell: BaseFormCell {
         
         self.textView.textColor = UIColor.lightGray
         
+        //
+        self.isCollapsible = false
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+        
+        print("TextView cell is selected: \(self.isSelected)")
     }
     
     static var nib : UINib{
@@ -56,20 +57,8 @@ class TextViewFormCell: BaseFormCell {
     
     static var identifier : String {
         return String(describing: self)
-    }   
-    
-    override var designatedHeight: CGFloat{
-        get {
-            return 150.0
-        }
-        
-        set(newHeight) {
-        }
-        
     }
     
-    /// A block to call to get the index path of this cell int its containing table.
-    var getIndexPath: ((Void) -> IndexPath?)?
     
     func calculateTextViewHeight(_ textView: UITextView) -> CGFloat{
         let fixedWidth = textView.frame.size.width
@@ -82,15 +71,25 @@ class TextViewFormCell: BaseFormCell {
         return newFrame.height
     }
     
+    override func clearCellState() {
+        self.textView.endEditing(true)
+        super.clearCellState()
+    }
+    
 }
 
 extension TextViewFormCell : UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
+        
+        print("TextView user started typing")
         if textView.textColor == UIColor.lightGray {
             textView.text = nil
             textView.textColor = UIColor.black
         }
+        
+        self.updateCellSelection()
+        self.notifyTableView()
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
@@ -98,6 +97,8 @@ extension TextViewFormCell : UITextViewDelegate {
             textView.text = self.placeHolder
             textView.textColor = UIColor.lightGray
         }
+        
+        print("TextView user stopped typing")
     }
     
     func textViewDidChange(_ textView: UITextView) {

@@ -21,13 +21,23 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
     // Cell height for nameWithImage cell
     var nameWithImageCellHeight : CGFloat = 66.0
     
+    // Cell height for date picker
+    var datePickerCellHeight : CGFloat = 44.0
+    
     // Image picker controller for nameWithImagecell
     var imagePickerController = UIImagePickerController()
     
     fileprivate var isLoaded : Bool = false
     
     // ACtive selection
-    var activeIndex : IndexPath?
+    var activeIndex : IndexPath? {
+        willSet{
+            if let index = self.activeIndex {
+                self.cells[index.row].clearCellState()
+            }
+            
+        }
+    }
     
     // VM
     var viewModel : EventViewModelType? {
@@ -73,32 +83,77 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
             self.cells.append(nameWithImageCell)
         }
         
-        // DAte cell
-        if let dateCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .datePicker, placeHolder: nil) as? DatePickerCell{
+        // Date cell
+        if let dateCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .datePicker, placeHolder: nil) as? ShineDatePickerCell {
+            
+            // Initialize the form if it is in edit mode
+            if let vm = self.viewModel, vm.mode == .edit {
+                dateCell.date = vm.startTime
+            }
             
             dateCell.expandDelegate = self
+            dateCell.selectionDelegate = self
+            dateCell.getIndexPath = {
+                return self.getIndexPathOfCell(dateCell)
+            }
             
-//            dateCell.viewController = self
-//            dateCell.tableView = self.tableView
-//            
-//            if let dependentCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .datePicker, placeHolder: nil) as? DatePickerFormCell {
-//                
-//                dependentCell.parentCell = dateCell
-//                dateCell.dependentCells = [dependentCell]
-//                dateCell.getIndexPath = {
-//                    return self.getIndexPathOfCell(dateCell)
-//                }
-//            }
-//            
-//            dateCell.valueChanged = {
-//                self.updateCellsWithDependentsOfCell(dateCell)
-//                print("DAteCell change is not applicaple")
-//                
-//            }
+            dateCell.valueChanged = {
+                self.viewModel?.startTime = dateCell.date
+            }
             
             cells.append(dateCell)
+        }
+        
+//        if let dateCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .datePicker, placeHolder: nil) as? DatePickerCell{
+//            
+//            dateCell.expandDelegate = self
+//            
+////            dateCell.viewController = self
+////            dateCell.tableView = self.tableView
+////            
+////            if let dependentCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .datePicker, placeHolder: nil) as? DatePickerFormCell {
+////                
+////                dependentCell.parentCell = dateCell
+////                dateCell.dependentCells = [dependentCell]
+////                dateCell.getIndexPath = {
+////                    return self.getIndexPathOfCell(dateCell)
+////                }
+////            }
+////            
+////            dateCell.valueChanged = {
+////                self.updateCellsWithDependentsOfCell(dateCell)
+////                print("DAteCell change is not applicaple")
+////                
+////            }
+//            
+//            cells.append(dateCell)
+//            
+//        }
+        
+        // Description
+        if let aboutCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .info, placeHolder: nil) as? TextViewFormCell{
+            
+            // Initialize the form if it is in edit mode
+            if let vm = self.viewModel, vm.mode == .edit {
+                aboutCell.displayedValue = vm.description
+            }
+            
+            aboutCell.expandDelegate = self // Expanding cell delegate
+            aboutCell.selectionDelegate = self
+            aboutCell.getIndexPath = {
+                return self.getIndexPathOfCell(aboutCell)
+            }           
+            
+            aboutCell.valueChanged = {
+                self.viewModel?.description = aboutCell.textView.text
+                print("DAteCell change is not applicaple")
+                
+            }
+            
+            self.cells.append(aboutCell)
             
         }
+        
         
         // Location cell
         if let locationCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .location, placeHolder: nil) as? LocationFormCell{
@@ -113,27 +168,7 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
             
         }
         
-        // More info
-        if let aboutCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .info, placeHolder: nil) as? TextViewFormCell{
-            
-            aboutCell.tableView = self.tableView
-            aboutCell.expandDelegate = self // Expanding cell delegate
-            aboutCell.getIndexPath = {
-                return self.getIndexPathOfCell(aboutCell)
-            }
-            
-            // Initialize the form if it is in edit mode
-            aboutCell.displayedValue = (self.viewModel?.description)!
-            
-            aboutCell.valueChanged = {
-                self.viewModel?.description = aboutCell.textView.text
-                print("DAteCell change is not applicaple")
-                
-            }
-            
-            self.cells.append(aboutCell)
-            
-        }
+        
         
         // URL
         if let urlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .url, placeHolder: nil) as? TextFieldFormCell{
@@ -152,6 +187,50 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
             self.cells.append(urlCell)
             
         }
+        
+        // Event type
+        if let eventTypeCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .picker, placeHolder: "Event Type") as? PickerFormCell {
+            
+            if let vm = self.viewModel, vm.mode == .edit {
+                eventTypeCell.selectedValue = (vm.eventType?.rawValue)!
+            }
+            
+            eventTypeCell.expandDelegate = self
+            eventTypeCell.selectionDelegate = self
+            eventTypeCell.items = EventType.allCases()
+            eventTypeCell.valueChanged = {
+                self.viewModel?.eventType = EventType(rawValue: eventTypeCell.selectedValue)
+            }
+            
+            eventTypeCell.getIndexPath = {
+                return self.getIndexPathOfCell(eventTypeCell)
+            }
+            
+            self.cells.append(eventTypeCell)
+        }
+        
+        // Dance level
+        if let danceLevelCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .picker, placeHolder: "Dance Level") as? PickerFormCell {
+            
+            if let vm = self.viewModel, vm.mode == .edit {
+                danceLevelCell.selectedValue = (vm.eventType?.rawValue)!
+            }
+            
+            danceLevelCell.expandDelegate = self
+            danceLevelCell.selectionDelegate = self
+            danceLevelCell.items = DanceLevel.allCases()
+            danceLevelCell.valueChanged = {
+                self.viewModel?.danceLevel = DanceLevel(rawValue: danceLevelCell.selectedValue)
+            }
+            
+            danceLevelCell.getIndexPath = {
+                return self.getIndexPathOfCell(danceLevelCell)
+            }
+            
+            self.cells.append(danceLevelCell)
+        }
+        
+        
         
         // 
         
@@ -407,6 +486,9 @@ extension EditCreateEventViewController: ExpandingCellDelegate {
             self.nameWithImageCellHeight = self.nameWithImageCellHeight + height
         }
         
+        if cell is DatePickerCell {
+            self.datePickerCellHeight = self.datePickerCellHeight + height
+        }
         
         // Disabling animations gives us our desired behaviour
         //UIView.setAnimationsEnabled(false)
@@ -421,6 +503,17 @@ extension EditCreateEventViewController: ExpandingCellDelegate {
         //let indexPath = IndexPath(row: expandingIndexRow, section: 0)
         
         //tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+    }
+}
+
+// MARK: CellSelectionDelegate
+extension EditCreateEventViewController : CellSelectionDelegate{
+    
+    func cellSelectionChanged(_ cell: BaseFormCell, state: SelectionState, indexPath: IndexPath?) {
+        if self.activeIndex != indexPath {
+            self.activeIndex = indexPath
+        }
+        
     }
 }
 

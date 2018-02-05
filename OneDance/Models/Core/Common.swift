@@ -196,4 +196,22 @@ enum DanceLevel : String {
     case allLevels = "Open to all levels"
     case other = "Other"
     case custom
+    
+    static func allCases() -> Array<String> {
+        
+        var cases = Array<String>()
+        
+        cases.append(DanceLevel.beginner.rawValue)
+        cases.append(DanceLevel.advBeginner.rawValue)
+        cases.append(DanceLevel.intermediate.rawValue)
+        cases.append(DanceLevel.upperIntermediate.rawValue)
+        cases.append(DanceLevel.advanced.rawValue)
+        cases.append(DanceLevel.pro.rawValue)
+        cases.append(DanceLevel.performance.rawValue)
+        cases.append(DanceLevel.competition.rawValue)
+        cases.append(DanceLevel.allLevels.rawValue)
+        cases.append(DanceLevel.other.rawValue)
+        
+        return cases
+    }
 }

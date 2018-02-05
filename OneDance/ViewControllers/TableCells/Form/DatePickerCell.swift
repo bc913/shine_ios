@@ -18,6 +18,9 @@ class DatePickerCell: BaseFormCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var value: UILabel!
     
+    @IBOutlet weak var datePicker: UIDatePicker!
+    
+    
     var dateFormatter = DateFormatter()
     
     var placeHolder : String?{
@@ -44,7 +47,7 @@ class DatePickerCell: BaseFormCell {
     func cellSelected(tapGestureRecognizer: UIGestureRecognizer){
         if (tapGestureRecognizer.view) != nil {
             print("Date picker tapped")
-            
+            self.updateCellSelection()
         }
     }
     
@@ -64,11 +67,11 @@ class DatePickerCell: BaseFormCell {
 
         // Configure the view for the selected state
         print("Date cell is selected: \(self.isSelected)")
-        expandDelegate?.updateCellHeight(cell: self, height: 216.0, indexPath: nil)
+        
     }
     
     override var designatedHeight: CGFloat {
-        return self.isSelected ? 260.0 : 44.0
+        return self.selectionState == .selected ? 260.0 : 44.0
     }
     
     static var nib : UINib{

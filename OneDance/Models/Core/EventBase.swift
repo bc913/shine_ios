@@ -265,7 +265,21 @@ enum EventType : String {
     case _workshop = "Workshop"
     case _party = "Party"
     case _festival = "Festival"
-    case _undefined = "Not defined"
+    case _other = "Other"
+
+    
+    static func allCases() -> Array<String> {
+        
+        var cases = Array<String>()
+        
+        cases.append(EventType._class.rawValue)
+        cases.append(EventType._workshop.rawValue)
+        cases.append(EventType._party.rawValue)
+        cases.append(EventType._festival.rawValue)
+        cases.append(EventType._other.rawValue)        
+        
+        return cases
+    }
 }
 
 

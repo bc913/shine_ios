@@ -51,8 +51,6 @@ class SwitchFormCell: BaseFormCell {
     /// A list of cells that are inserted/removed from the table based on the value of the switch.
     var dependentCells = [UITableViewCell]()
     
-    /// A block to call to get the index path of this cell int its containing table.
-    var getIndexPath: ((Void) -> IndexPath?)?
     
     /// A boolean that toggles the switch.
     var isOn: Bool {

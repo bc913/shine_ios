@@ -14,15 +14,20 @@ enum SelectionState {
     
 }
 
+enum ExpandState {
+    case expandable
+    case nonExpandable
+}
+
 protocol SelectableCell : class {
     var selectionState : SelectionState { get set }
     
-    func anotherCellSelected()
+    func updateCellSelection()
     
 }
 
 protocol CellSelectionDelegate : class {
-    func cellSelectionChanged(_ cell: BaseFormCell, indexPath: IndexPath, state: SelectionState)
+    func cellSelectionChanged(_ cell: BaseFormCell, state: SelectionState, indexPath: IndexPath?)
 }
 
 protocol ExpandingCellDelegate : class {
@@ -30,6 +35,12 @@ protocol ExpandingCellDelegate : class {
 }
 
 
+/** 
+ Inherit from this table cell if you have form type table view
+ 
+ - Parameter osman: OSman toptur
+ 
+ */
 class BaseFormCell: UITableViewCell {
 
     override var designatedHeight: CGFloat{
@@ -39,20 +50,54 @@ class BaseFormCell: UITableViewCell {
     /// The block to call when the value of the text field changes.
     var valueChanged: ((Void) -> Void)?
     
+    /// A block to call to get the index path of this cell int its containing table.
+    var getIndexPath: ((Void) -> IndexPath?)?
+    
+    /// Override this in subclasses if needed
+    func clearCellState(){
+        if self.selectionState == .selected {
+            self.updateCellSelection()
+        }
+    }
+    
+    /// Set this as true in subclasses if the cell is collapsible
+    var isCollapsible : Bool?
+    
     // Determines the selection state
-    var selectionState : SelectionState = .deselected
+    internal var selectionState : SelectionState = .deselected {
+        didSet{
+            if let collapsible = self.isCollapsible {
+                if collapsible {
+                    self.expandDelegate?.updateCellHeight(cell: self, height: 100.0, indexPath: nil)
+                }
+            }
+            
+        }
+    }
     
     // Expanding
     weak var expandDelegate : ExpandingCellDelegate?
     
     // Selection
-    var selectionDelegate : CellSelectionDelegate?
+    weak var selectionDelegate : CellSelectionDelegate?
 
 }
 
 extension BaseFormCell : SelectableCell {
     
-    func anotherCellSelected() {
-        self.selectionState = .deselected
+    func updateCellSelection() {
+        if self.selectionState == .deselected {
+            self.selectionState = .selected
+        }
+        else{
+            self.selectionState = .deselected
+        }
+    }
+    
+    func notifyTableView(){
+        // Notify the table view
+        let index = self.getIndexPath?()
+        self.selectionDelegate?.cellSelectionChanged(self, state: selectionState, indexPath: index)
     }
 }
+

@@ -60,10 +60,7 @@ class DateFormCell: BaseFormCell {
     
     /// A list of cells that are inserted/removed from the table based on the value of the switch.
     var dependentCells = [BaseFormCell]()
-    
-    /// A block to call to get the index path of this cell int its containing table.
-    var getIndexPath: ((Void) -> IndexPath?)?
-   
+       
  
     // MARK: Interface
     

@@ -360,7 +360,12 @@ class EventViewModel : EventViewModelType {
     var notGoingCounter : Int = 0
     
     // Time
-    var startTime : Date = Date()
+    var startTime : Date = Date(){
+        didSet{
+            print("startTime: \(startTime)")
+            print("startTime - epoch: \(startTime.timeIntervalSince1970 * 1000)")
+        }
+    }
     var endTime : Date = Calendar.current.date(byAdding: .hour, value: 3, to: Date()) ?? Date()
     
     var duration : Int {

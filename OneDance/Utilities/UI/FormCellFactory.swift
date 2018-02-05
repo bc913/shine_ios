@@ -35,6 +35,7 @@ enum FormCellType{
     case dateRange
     case datePicker
     
+    case picker
     case switchType
     case defaultType
 }
@@ -136,12 +137,20 @@ struct FormItemCellFactory {
             }
             
         case .datePicker:
-            nibName = DatePickerCell.nib
-            identifier = DatePickerCell.identifier
+            nibName = ShineDatePickerCell.nib
+            identifier = ShineDatePickerCell.identifier
             tableView.register(nibName, forCellReuseIdentifier: identifier!)
-            if let cell = tableView.dequeueReusableCell(withIdentifier: identifier!) as? DatePickerCell {
-                return cell
-            }
+            let cell = ShineDatePickerCell(style: .default, reuseIdentifier: ShineDatePickerCell.identifier)
+            cell.placeHolder = Helper.createPlaceHolderText(purpose: purpose, type: type)
+            return cell
+            
+        case .picker:
+            nibName = nil
+            identifier = PickerFormCell.identifier
+            tableView.register(PickerFormCell.self, forCellReuseIdentifier: identifier!)
+            let cell = PickerFormCell(style: .default, reuseIdentifier: identifier)
+            cell.placeHolder = placeHolder
+            return cell            
             
         case .info:
             nibName = TextViewFormCell.nib
@@ -207,6 +216,8 @@ struct FormItemCellFactory {
             case .location:
                 placeHolder = "Location"
             case .date:
+                placeHolder = "Date"
+            case .datePicker:
                 placeHolder = "Date"
             case .email:
                 placeHolder = "E-mail"

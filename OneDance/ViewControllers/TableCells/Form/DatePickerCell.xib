@@ -66,6 +66,7 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="containerView" destination="OwQ-D8-4Kc" id="lvu-FD-CyO"/>
+                <outlet property="datePicker" destination="h9O-cE-jc2" id="jRh-X9-S7x"/>
                 <outlet property="title" destination="67I-hq-jgj" id="mjz-NN-IlS"/>
                 <outlet property="value" destination="nNn-MB-Kur" id="bzb-Td-s3w"/>
             </connections>
