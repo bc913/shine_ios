@@ -58,9 +58,7 @@ class DateFormCell: BaseFormCell {
         self.value.text = self.dateFormatter.string(from: Date())
     }
     
-    /// A list of cells that are inserted/removed from the table based on the value of the switch.
-    var dependentCells = [BaseFormCell]()
-       
+   
  
     // MARK: Interface
     

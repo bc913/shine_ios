@@ -50,12 +50,24 @@ class TextFieldFormCell: BaseFormCell {
         self.textField.keyboardType = type
     }
     
+    override func clearCellState() {
+        self.textField.endEditing(true)
+        print("textFieldClearCellState")
+        super.clearCellState()
+    }
+    
     
 }
 
 extension TextFieldFormCell : UITextFieldDelegate {
     
     // MARK: UITextFieldDelegate
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        self.updateCellSelection()
+        self.notifyTableView()
+        print("textFieldDidBeginEditing")
+    }
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
 //        textField.textAlignment = .left

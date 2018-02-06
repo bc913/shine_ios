@@ -217,7 +217,7 @@ class ShineDatePickerCell: BaseFormCell {
                 multiplier: 1.0,
                 constant: 0
             ),
-            ])
+        ])
         
         // Right label
         self.contentContainer.addConstraints([
@@ -288,7 +288,7 @@ class ShineDatePickerCell: BaseFormCell {
                 multiplier: 1.0,
                 constant: 44.0
             ),
-            ])
+        ])
         
         // Container.
         self.contentView.addConstraints([

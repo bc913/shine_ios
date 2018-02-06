@@ -38,6 +38,8 @@ enum FormCellType{
     case picker
     case switchType
     case defaultType
+    
+    case shineTextField
 }
 
 enum FormPurpose {
@@ -109,14 +111,27 @@ struct FormItemCellFactory {
                 return cell
             }
             
-        case .switchType:
-            nibName = SwitchFormCell.nib
-            identifier = SwitchFormCell.identifier
-            tableView.register(nibName, forCellReuseIdentifier: identifier!)
-            if let cell = tableView.dequeueReusableCell(withIdentifier: identifier!) as? SwitchFormCell {
+        case .shineTextField:
+            identifier = ShineTextFieldCell.identifier
+            tableView.register(ShineTextFieldCell.self, forCellReuseIdentifier: identifier!)
+            let cell = ShineTextFieldCell(style: .default, reuseIdentifier: identifier)
+            if placeHolder != nil {
                 cell.placeHolder = placeHolder
-                return cell
+            } else {
+                cell.placeHolder = Helper.createPlaceHolderText(purpose: purpose, type: type)
             }
+            return cell
+            
+        case .switchType:
+            identifier = ShineSwitchCell.identifier
+            tableView.register(ShineSwitchCell.self, forCellReuseIdentifier: identifier!)
+            let cell = ShineSwitchCell(style: .default, reuseIdentifier: identifier)
+            if placeHolder != nil {
+                cell.placeHolder = placeHolder
+            } else {
+                cell.placeHolder = Helper.createPlaceHolderText(purpose: purpose, type: type)
+            }
+            return cell
             
         case .location:
             nibName = LocationFormCell.nib
@@ -185,11 +200,17 @@ struct FormItemCellFactory {
             }
             
         default:
-            nibName = TextFieldCell.nib
-            identifier = TextFieldCell.identifier
+            nibName = TextFieldFormCell.nib
+            identifier = TextFieldFormCell.identifier
             
             tableView.register(nibName, forCellReuseIdentifier: identifier!)
-            if let cell = tableView.dequeueReusableCell(withIdentifier: identifier!) as? TextFieldCell {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: identifier!) as? TextFieldFormCell {
+                if placeHolder == nil {
+                    cell.placeHolder = Helper.createPlaceHolderText(purpose: purpose, type: type)
+                } else {
+                    cell.placeHolder = placeHolder
+                }
+                
                 return cell
             }
         }

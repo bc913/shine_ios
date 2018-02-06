@@ -16,6 +16,7 @@ class SwitchFormCell: BaseFormCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        self.switchControl.setOn(false, animated: false)
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -48,10 +49,6 @@ class SwitchFormCell: BaseFormCell {
     /// The table view controller of the table view that contains this cell. Used when inserting and removing cells that are conditionally displayed by the switch.
     weak var tableView : UITableView?
     
-    /// A list of cells that are inserted/removed from the table based on the value of the switch.
-    var dependentCells = [UITableViewCell]()
-    
-    
     /// A boolean that toggles the switch.
     var isOn: Bool {
         get {
@@ -69,8 +66,13 @@ class SwitchFormCell: BaseFormCell {
     // MARK: Interface
     
     @IBAction func toggled(_ sender: Any) {
-        handleValueChanged()
         
+        if self.selectionState == .deselected {
+            self.updateCellSelection()
+            self.notifyTableView()
+        }
+        
+        handleValueChanged()
     }
     
     /// Handle changes in the switch's value.
@@ -89,11 +91,13 @@ class SwitchFormCell: BaseFormCell {
         
         guard !indexPaths.isEmpty else { return }
         
+        self.tableView?.beginUpdates()
         if switchControl.isOn {
             tableView?.insertRows(at: indexPaths, with: .bottom)
         } else {
             tableView?.deleteRows(at: indexPaths, with: .bottom)
         }
+        self.tableView?.endUpdates()
     }
     
     

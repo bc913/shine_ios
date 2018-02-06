@@ -30,6 +30,8 @@
 		650CB27C1F68DF020093F2FC /* MainAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650CB27A1F68DF020093F2FC /* MainAuthViewController.swift */; };
 		650CB27D1F68DF020093F2FC /* MainAuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 650CB27B1F68DF020093F2FC /* MainAuthViewController.xib */; };
 		650CB2821F68EBF20093F2FC /* MainAuthViewModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650CB2811F68EBF20093F2FC /* MainAuthViewModelInterface.swift */; };
+		65100F1E20295A36006CEEA4 /* ShineSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65100F1D20295A36006CEEA4 /* ShineSwitchCell.swift */; };
+		65100F20202967E2006CEEA4 /* ShineTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65100F1F202967E2006CEEA4 /* ShineTextFieldCell.swift */; };
 		65134F1A1F1B18CC0017C930 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65134F191F1B18CC0017C930 /* MapKit.framework */; };
 		65134F1D1F1B19C40017C930 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65134F1B1F1B19C40017C930 /* MapViewController.swift */; };
 		65134F1E1F1B19C40017C930 /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65134F1C1F1B19C40017C930 /* MapViewController.xib */; };
@@ -169,6 +171,8 @@
 		650CB27A1F68DF020093F2FC /* MainAuthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainAuthViewController.swift; path = Authentication/MainAuthViewController.swift; sourceTree = "<group>"; };
 		650CB27B1F68DF020093F2FC /* MainAuthViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainAuthViewController.xib; path = Authentication/MainAuthViewController.xib; sourceTree = "<group>"; };
 		650CB2811F68EBF20093F2FC /* MainAuthViewModelInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainAuthViewModelInterface.swift; path = ViewModels/Interfaces/MainAuthViewModelInterface.swift; sourceTree = "<group>"; };
+		65100F1D20295A36006CEEA4 /* ShineSwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShineSwitchCell.swift; path = ViewControllers/TableCells/Form/ShineSwitchCell.swift; sourceTree = "<group>"; };
+		65100F1F202967E2006CEEA4 /* ShineTextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShineTextFieldCell.swift; path = ViewControllers/TableCells/Form/ShineTextFieldCell.swift; sourceTree = "<group>"; };
 		65134F191F1B18CC0017C930 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		65134F1B1F1B19C40017C930 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = UI/ViewControllers/MapViewController.swift; sourceTree = "<group>"; };
 		65134F1C1F1B19C40017C930 /* MapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MapViewController.xib; path = UI/ViewControllers/MapViewController.xib; sourceTree = "<group>"; };
@@ -599,6 +603,8 @@
 				654FE85C2022D5FF002D1D23 /* DatePickerCell.xib */,
 				6558EB4420263EB500D184D2 /* ShineDatePickerCell.swift */,
 				6502E9EB2027B7AF00333BD4 /* PickerFormCell.swift */,
+				65100F1D20295A36006CEEA4 /* ShineSwitchCell.swift */,
+				65100F1F202967E2006CEEA4 /* ShineTextFieldCell.swift */,
 			);
 			name = Form;
 			sourceTree = "<group>";
@@ -969,10 +975,12 @@
 				65439CE31FF9E2D800EDE435 /* PhotosManager.swift in Sources */,
 				652F007D1F6B83F80085C5F5 /* MainAuthViewModel.swift in Sources */,
 				652A3CFC1FD4B96200376CB6 /* Organization.swift in Sources */,
+				65100F20202967E2006CEEA4 /* ShineTextFieldCell.swift in Sources */,
 				650415E01FF03A4900D19A89 /* EditCreateOrganizationViewController.swift in Sources */,
 				6548EE6C1FB8D00E0076EA4B /* SwitchCell.swift in Sources */,
 				65FD06F11F1D719F00932E5F /* LocationSearchTableViewController.swift in Sources */,
 				652A3D061FD50F0900376CB6 /* User.swift in Sources */,
+				65100F1E20295A36006CEEA4 /* ShineSwitchCell.swift in Sources */,
 				654479151FC7507200FE3B58 /* ShineError.swift in Sources */,
 				65427D2B1F905BA100407C5D /* InitialProfileSetupCoordinator.swift in Sources */,
 				656834D31F8C7F8300ADCBA2 /* EmailLoginViewModel.swift in Sources */,

@@ -98,6 +98,7 @@ extension TextViewFormCell : UITextViewDelegate {
             textView.textColor = UIColor.lightGray
         }
         
+        self.valueChanged?()
         print("TextView user stopped typing")
     }
     

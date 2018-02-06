@@ -53,6 +53,9 @@ class BaseFormCell: UITableViewCell {
     /// A block to call to get the index path of this cell int its containing table.
     var getIndexPath: ((Void) -> IndexPath?)?
     
+    /// A list of cells that are inserted/removed from the table based on the value of the switch.
+    var dependentCells = [BaseFormCell]()
+    
     /// Override this in subclasses if needed
     func clearCellState(){
         if self.selectionState == .selected {

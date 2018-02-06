@@ -171,11 +171,17 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
         
         
         // URL
-        if let urlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .url, placeHolder: nil) as? TextFieldFormCell{
+        if let urlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "Url") as? ShineTextFieldCell{
             
             // Initialize if it is edit mode
             if self.viewModel != nil {
                 urlCell.displayedValue = self.viewModel!.webUrl
+            }
+            
+            urlCell.selectionDelegate = self
+            
+            urlCell.getIndexPath = {
+                return self.getIndexPathOfCell(urlCell)
             }
             
             urlCell.changeKeyboardType(.URL)
@@ -231,13 +237,258 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
         }
         
         
+        // Fee policy
+        if let feePolicyCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .switchType, placeHolder: "Fee") as? ShineSwitchCell {
+            
+            //
+            if let vm = self.viewModel, vm.mode == .edit, let feePolicy = vm.feePolicy {
+                feePolicyCell.displayedValue = true
+            }
+            
+            feePolicyCell.getIndexPath = {
+                return self.getIndexPathOfCell(feePolicyCell)
+            }
+            
+            
+            var dependentCells = [BaseFormCell]()
+            if let feeTypeCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .defaultType, placeHolder: "Type") as? TextFieldFormCell{
+                
+                if let vm = self.viewModel, vm.mode == .edit, let feePolicy = vm.feePolicy {
+                    feeTypeCell.displayedValue = feePolicy.options?[0].type ?? ""
+                }
+                
+                feeTypeCell.selectionDelegate = self
+                
+                feeTypeCell.getIndexPath = {
+                    return self.getIndexPathOfCell(feeTypeCell)
+                }
+                
+                feeTypeCell.valueChanged = {
+                    self.viewModel?.feePolicy?.options?[0].type = feeTypeCell.textField.text!
+                }
+                
+                dependentCells.append(feeTypeCell)
+                
+            }
+            
+            if let feeValueCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .defaultType, placeHolder: "Cover") as? TextFieldFormCell{
+                
+                if let vm = self.viewModel, vm.mode == .edit, let feePolicy = vm.feePolicy {
+                    feeValueCell.displayedValue = String(describing: feePolicy.options?[0].value)
+                }
+                
+                feeValueCell.selectionDelegate = self
+                
+                feeValueCell.getIndexPath = {
+                    return self.getIndexPathOfCell(feeValueCell)
+                }
+                
+                feeValueCell.valueChanged = {
+                    self.viewModel?.feePolicy?.options?[0].value = Double(feeValueCell.textField.text!) ?? 0.0
+                }
+                
+                feeValueCell.changeKeyboardType(.decimalPad)
+                
+                dependentCells.append(feeValueCell)
+                
+            }
+            
+            if let sessionsCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .defaultType, placeHolder: "Sessions") as? TextFieldFormCell{
+                
+                if let vm = self.viewModel, vm.mode == .edit, let feePolicy = vm.feePolicy {
+                    sessionsCell.displayedValue = String(describing: feePolicy.options?[0].numberOfSessions) 
+                }
+                
+                sessionsCell.selectionDelegate = self
+                
+                sessionsCell.getIndexPath = {
+                    return self.getIndexPathOfCell(sessionsCell)
+                }
+                
+                sessionsCell.changeKeyboardType(.numberPad)
+                sessionsCell.valueChanged = {
+                    self.viewModel?.feePolicy?.options?[0].numberOfSessions = Int(sessionsCell.textField.text!)
+                }
+                
+                dependentCells.append(sessionsCell)
+                
+            }
+            
+            // Description
+            if let descCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .info, placeHolder: "Tell about the event's fee policy") as? TextViewFormCell{
+                
+                // Initialize the form if it is in edit mode
+                if let vm = self.viewModel, vm.mode == .edit, let feePolicy = vm.feePolicy {
+                    descCell.displayedValue = feePolicy.description ?? ""
+                }
+                
+                descCell.expandDelegate = self // Expanding cell delegate
+                descCell.selectionDelegate = self
+                descCell.getIndexPath = {
+                    return self.getIndexPathOfCell(descCell)
+                }
+                
+                descCell.valueChanged = {
+                    self.viewModel?.feePolicy?.description = descCell.textView.text
+                    
+                }
+                
+                dependentCells.append(descCell)
+                
+            }
+            
+            
+            feePolicyCell.dependentCells = dependentCells
+            feePolicyCell.valueChanged = {
+                self.updateCellsWithDependentsOfCell(feePolicyCell)
+                
+            }
+            feePolicyCell.tableView = self.tableView
+            self.cells.append(feePolicyCell)
+            
+        }
         
-        // 
+        
+        // HasPerformance
+        if let hasPerfCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .switchType, placeHolder: "Performance") as? ShineSwitchCell {
+            
+            if let vm = self.viewModel, vm.mode == .edit {
+                hasPerfCell.displayedValue = vm.hasPerformance
+            }
+            
+            hasPerfCell.selectionDelegate = self
+            hasPerfCell.getIndexPath = {
+                return self.getIndexPathOfCell(hasPerfCell)
+            }
+            
+            hasPerfCell.valueChanged = {
+                self.viewModel?.hasPerformance = hasPerfCell.isOn
+            }
+            
+            self.cells.append(hasPerfCell)
+            
+        }
+        
+        // hasWorkshop
+        if let hasWSCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .switchType, placeHolder: "Workshop") as? ShineSwitchCell {
+            
+            if let vm = self.viewModel, vm.mode == .edit {
+                hasWSCell.displayedValue = vm.hasWorkshop
+            }
+            
+            hasWSCell.selectionDelegate = self
+            hasWSCell.getIndexPath = {
+                return self.getIndexPathOfCell(hasWSCell)
+            }
+            
+            hasWSCell.valueChanged = {
+                self.viewModel?.hasWorkshop = hasWSCell.isOn
+            }
+            
+            self.cells.append(hasWSCell)
+            
+        }
+        
+        // Contact Person
+        if let contactPersonCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .switchType, placeHolder: "Contact Person") as? ShineSwitchCell {
+            
+            //
+            if let vm = self.viewModel, vm.mode == .edit, let _ = vm.contactPerson {
+                contactPersonCell.displayedValue = true
+            }
+            
+            contactPersonCell.getIndexPath = {
+                return self.getIndexPathOfCell(contactPersonCell)
+            }
+            
+            
+            var dependentCells = [BaseFormCell]()
+            
+            if let nameCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .defaultType, placeHolder: "Name") as? TextFieldFormCell{
+                
+                if let vm = self.viewModel, vm.mode == .edit, let contactPerson = vm.contactPerson {
+                    nameCell.displayedValue = contactPerson.name
+                }
+                
+                nameCell.selectionDelegate = self
+                
+                nameCell.getIndexPath = {
+                    return self.getIndexPathOfCell(nameCell)
+                }
+                
+                nameCell.valueChanged = {
+                    self.viewModel?.contactPerson?.name = nameCell.textField.text!
+                }
+                
+                dependentCells.append(nameCell)
+                
+            }
+            
+            if let emailCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .email, placeHolder: nil) as? TextFieldFormCell{
+                
+                if let vm = self.viewModel, vm.mode == .edit, let contactPerson = vm.contactPerson {
+                    emailCell.displayedValue = contactPerson.email
+                }
+                
+                emailCell.selectionDelegate = self
+                
+                emailCell.getIndexPath = {
+                    return self.getIndexPathOfCell(emailCell)
+                }
+                
+                emailCell.valueChanged = {
+                    self.viewModel?.contactPerson?.email = emailCell.textField.text!
+                }
+                
+                emailCell.changeKeyboardType(.emailAddress)
+                
+                dependentCells.append(emailCell)
+                
+            }
+            
+            if let phoneCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .phoneNumber, placeHolder: nil) as? TextFieldFormCell{
+                
+                if let vm = self.viewModel, vm.mode == .edit, let contactPerson = vm.contactPerson {
+                    phoneCell.displayedValue = contactPerson.phone
+                }
+                
+                phoneCell.selectionDelegate = self
+                
+                phoneCell.getIndexPath = {
+                    return self.getIndexPathOfCell(phoneCell)
+                }
+                
+                phoneCell.changeKeyboardType(.phonePad)
+                phoneCell.valueChanged = {
+                    self.viewModel?.contactPerson?.phone = phoneCell.textField.text!
+                }
+                
+                dependentCells.append(phoneCell)
+                
+            }
+            
+            
+            
+            contactPersonCell.dependentCells = dependentCells
+            contactPersonCell.valueChanged = {
+                self.updateCellsWithDependentsOfCell(contactPersonCell)
+                
+            }
+            contactPersonCell.tableView = self.tableView
+            self.cells.append(contactPersonCell)
+            
+        }
+        
+        
+        
         
     }
     
+    
+    
+    
     /// Insert or remove cells into the cells list per the current value of a SwitchCell object.
-    func updateCellsWithDependentsOfCell(_ cell: DateFormCell, sectionIndex : Int = 0) {
+    func updateCellsWithDependentsOfCell(_ cell: BaseFormCell, sectionIndex : Int = 0) {
         // Multiple sections. You have to hard code the corresponding cells array
         
         //Single section
@@ -245,13 +496,18 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
         if let indexPath = getIndexPathOfCell(cell), !cell.dependentCells.isEmpty
         {
             let index = (indexPath as NSIndexPath).row + 1
-            if cell.tapState {
-                cells.insert(contentsOf: cell.dependentCells as [BaseFormCell], at: index)
+            
+            if let switchCell = cell as? ShineSwitchCell {
+                
+                if switchCell.isOn {
+                    cells.insert(contentsOf: switchCell.dependentCells, at: index)
+                }
+                else {
+                    let removeRange = index..<(index + cell.dependentCells.count)
+                    cells.removeSubrange(removeRange)
+                }
             }
-            else {
-                let removeRange = index..<(index + cell.dependentCells.count)
-                cells.removeSubrange(removeRange)
-            }
+            
         }
         
         

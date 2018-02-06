@@ -210,7 +210,7 @@ class EditCreateOrganizationViewController: UIViewController {
         // Dance sepcific information
         var danceSection = FormSectionItem(cells: [BaseFormCell](), title: "Dance", sectionIndex: 3)
         
-        if let hasClassForKidsCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .switchType, placeHolder: "Classes for kids") as? SwitchFormCell{
+        if let hasClassForKidsCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .switchType, placeHolder: "Classes for kids") as? ShineSwitchCell{
             
             //
             hasClassForKidsCell.displayedValue = self.viewModel?.hasClassForKids ?? false
@@ -224,7 +224,7 @@ class EditCreateOrganizationViewController: UIViewController {
             
         }
         
-        if let hasPrivateClassCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .switchType, placeHolder: "Private Class") as? SwitchFormCell{
+        if let hasPrivateClassCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .switchType, placeHolder: "Private Class") as? ShineSwitchCell{
             
             //
             hasPrivateClassCell.displayedValue = self.viewModel?.hasPrivateClass ?? false
@@ -238,7 +238,7 @@ class EditCreateOrganizationViewController: UIViewController {
             
         }
         
-        if let hasWeddingPackageCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .switchType, placeHolder: "Wedding package/classes") as? SwitchFormCell{
+        if let hasWeddingPackageCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .switchType, placeHolder: "Wedding package/classes") as? ShineSwitchCell{
             
             //
             hasWeddingPackageCell.displayedValue = self.viewModel?.hasWeddingPackage ?? false
@@ -307,37 +307,37 @@ class EditCreateOrganizationViewController: UIViewController {
          */
     }
     
-    /// Insert or remove cells into the cells list per the current value of a SwitchCell object.
-    func updateCellsWithDependentsOfCell(_ cell: DateFormCell, sectionIndex : Int = 0) {
-        // Multiple sections. You have to hard code the corresponding cells array
-        
-        if let indexPath = getIndexPathOfCell(cell), !cell.dependentCells.isEmpty
-        {
-            let index = (indexPath as NSIndexPath).row + 1
-            if cell.tapState {
-                self.formSections[sectionIndex].cells.insert(contentsOf: cell.dependentCells as [BaseFormCell], at: index)
-            }
-            else {
-                let removeRange = index..<(index + cell.dependentCells.count)
-                self.formSections[sectionIndex].cells.removeSubrange(removeRange)
-            }
-        }
-        
-        
-        //Single section
-        
-        //        if let indexPath = getIndexPathOfCell(cell), !cell.dependentCells.isEmpty
-        //        {
-        //            let index = (indexPath as NSIndexPath).row + 1
-        //            if cell.tapState {
-        //                cells.insert(contentsOf: cell.dependentCells as [BaseFormCell], at: index)
-        //            }
-        //            else {
-        //                let removeRange = index..<(index + cell.dependentCells.count)
-        //                cells.removeSubrange(removeRange)
-        //            }
-        //        }
-    }
+//    /// Insert or remove cells into the cells list per the current value of a SwitchCell object.
+//    func updateCellsWithDependentsOfCell(_ cell: DateFormCell, sectionIndex : Int = 0) {
+//        // Multiple sections. You have to hard code the corresponding cells array
+//        
+//        if let indexPath = getIndexPathOfCell(cell), !cell.dependentCells.isEmpty
+//        {
+//            let index = (indexPath as NSIndexPath).row + 1
+//            if cell.tapState {
+//                self.formSections[sectionIndex].cells.insert(contentsOf: cell.dependentCells as [BaseFormCell], at: index)
+//            }
+//            else {
+//                let removeRange = index..<(index + cell.dependentCells.count)
+//                self.formSections[sectionIndex].cells.removeSubrange(removeRange)
+//            }
+//        }
+//        
+//        
+//        //Single section
+//        
+//        //        if let indexPath = getIndexPathOfCell(cell), !cell.dependentCells.isEmpty
+//        //        {
+//        //            let index = (indexPath as NSIndexPath).row + 1
+//        //            if cell.tapState {
+//        //                cells.insert(contentsOf: cell.dependentCells as [BaseFormCell], at: index)
+//        //            }
+//        //            else {
+//        //                let removeRange = index..<(index + cell.dependentCells.count)
+//        //                cells.removeSubrange(removeRange)
+//        //            }
+//        //        }
+//    }
     
     /// Return the index of a given cell in the cells list.
     func getIndexPathOfCell(_ cell: UITableViewCell) -> IndexPath? {
