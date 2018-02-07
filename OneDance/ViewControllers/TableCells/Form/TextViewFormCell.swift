@@ -106,11 +106,7 @@ extension TextViewFormCell : UITextViewDelegate {
         let height = calculateTextViewHeight(textView)
         
         if height > self.designatedHeight, let indexPath = getIndexPath?() {
-            
-            print("Osmaaaaaaan")
             self.expandDelegate?.updateCellHeight(cell: self, height: height,indexPath: indexPath)
-            
-            
         }
     }
 }

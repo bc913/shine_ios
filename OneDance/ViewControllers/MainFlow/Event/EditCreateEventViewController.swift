@@ -131,7 +131,7 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
 //        }
         
         // Description
-        if let aboutCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .info, placeHolder: nil) as? TextViewFormCell{
+        if let aboutCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextView, placeHolder: nil) as? ShineTextViewCell{
             
             // Initialize the form if it is in edit mode
             if let vm = self.viewModel, vm.mode == .edit {
@@ -337,7 +337,7 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
                 
             }
             
-            
+            feePolicyCell.selectionDelegate = self
             feePolicyCell.dependentCells = dependentCells
             feePolicyCell.valueChanged = {
                 self.updateCellsWithDependentsOfCell(feePolicyCell)

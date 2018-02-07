@@ -78,7 +78,7 @@ class ShineTextFieldCell: BaseFormCell {
     }
     
     override public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: ShineSwitchCell.identifier)
+        super.init(style: style, reuseIdentifier: ShineTextFieldCell.identifier)
         
         self.setup()
     }

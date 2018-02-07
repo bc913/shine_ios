@@ -24,6 +24,8 @@ enum FormCellType{
     case nameTitleWithImage
     
     case info
+    case about
+    case description
     
     case email
     case url
@@ -40,6 +42,7 @@ enum FormCellType{
     case defaultType
     
     case shineTextField
+    case shineTextView
 }
 
 enum FormPurpose {
@@ -122,6 +125,17 @@ struct FormItemCellFactory {
             }
             return cell
             
+        case .shineTextView:
+            identifier = ShineTextViewCell.identifier
+            tableView.register(ShineTextViewCell.self, forCellReuseIdentifier: identifier!)
+            let cell = ShineTextViewCell(style: .default, reuseIdentifier: identifier)
+            if placeHolder != nil {
+                cell.placeHolder = placeHolder
+            } else {
+                cell.placeHolder = Helper.createPlaceHolderText(purpose: purpose, type: type)
+            }
+            return cell
+            
         case .switchType:
             identifier = ShineSwitchCell.identifier
             tableView.register(ShineSwitchCell.self, forCellReuseIdentifier: identifier!)
@@ -167,7 +181,7 @@ struct FormItemCellFactory {
             cell.placeHolder = placeHolder
             return cell            
             
-        case .info:
+        case .info, .about, .description:
             nibName = TextViewFormCell.nib
             identifier = TextViewFormCell.identifier
             tableView.register(nibName, forCellReuseIdentifier: identifier!)
@@ -246,6 +260,10 @@ struct FormItemCellFactory {
                 placeHolder = "Link"
             case .info:
                 placeHolder = "Info"
+            case .about:
+                placeHolder = "About"
+            case .description:
+                placeHolder = "Description"
             case .phoneNumber:
                 placeHolder = "Phone"
             default:
