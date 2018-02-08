@@ -64,7 +64,6 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
     
     private func constructCells(){
         
-        
         // title with image cell
         if let nameWithImageCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .nameTitleWithImage, placeHolder: nil) as? NameTitleWithImageCell {
             
@@ -83,8 +82,8 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
             self.cells.append(nameWithImageCell)
         }
         
-        // Date cell
-        if let dateCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .datePicker, placeHolder: nil) as? ShineDatePickerCell {
+        // Start Date cell
+        if let dateCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .datePicker, placeHolder: "Start Time") as? ShineDatePickerCell {
             
             // Initialize the form if it is in edit mode
             if let vm = self.viewModel, vm.mode == .edit {
@@ -102,6 +101,27 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
             }
             
             cells.append(dateCell)
+        }
+        
+        // End Date cell
+        if let endDateCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .datePicker, placeHolder: "End Time") as? ShineDatePickerCell {
+            
+            // Initialize the form if it is in edit mode
+            if let vm = self.viewModel, vm.mode == .edit {
+                endDateCell.date = vm.endTime
+            }
+            
+            endDateCell.expandDelegate = self
+            endDateCell.selectionDelegate = self
+            endDateCell.getIndexPath = {
+                return self.getIndexPathOfCell(endDateCell)
+            }
+            
+            endDateCell.valueChanged = {
+                self.viewModel?.endTime = endDateCell.date
+            }
+            
+            cells.append(endDateCell)
         }
         
 //        if let dateCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .datePicker, placeHolder: nil) as? DatePickerCell{
@@ -131,7 +151,7 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
 //        }
         
         // Description
-        if let aboutCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextView, placeHolder: nil) as? ShineTextViewCell{
+        if let aboutCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextView, placeHolder: "Tell us about your event details") as? ShineTextViewCell{
             
             // Initialize the form if it is in edit mode
             if let vm = self.viewModel, vm.mode == .edit {
@@ -154,7 +174,6 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
             
         }
         
-        
         // Location cell
         if let locationCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .location, placeHolder: nil) as? LocationFormCell{
             
@@ -168,8 +187,6 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
             
         }
         
-        
-        
         // URL
         if let urlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "Url") as? ShineTextFieldCell{
             
@@ -179,19 +196,16 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
             }
             
             urlCell.selectionDelegate = self
-            
             urlCell.getIndexPath = {
                 return self.getIndexPathOfCell(urlCell)
             }
             
             urlCell.changeKeyboardType(.URL)
-            
             urlCell.valueChanged = {
                 self.viewModel?.webUrl = urlCell.textField.text!
             }
             
             self.cells.append(urlCell)
-            
         }
         
         // Event type
@@ -251,7 +265,7 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
             
             
             var dependentCells = [BaseFormCell]()
-            if let feeTypeCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .defaultType, placeHolder: "Type") as? TextFieldFormCell{
+            if let feeTypeCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "Type") as? ShineTextFieldCell{
                 
                 if let vm = self.viewModel, vm.mode == .edit, let feePolicy = vm.feePolicy {
                     feeTypeCell.displayedValue = feePolicy.options?[0].type ?? ""
@@ -271,7 +285,7 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
                 
             }
             
-            if let feeValueCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .defaultType, placeHolder: "Cover") as? TextFieldFormCell{
+            if let feeValueCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "Cover") as? ShineTextFieldCell{
                 
                 if let vm = self.viewModel, vm.mode == .edit, let feePolicy = vm.feePolicy {
                     feeValueCell.displayedValue = String(describing: feePolicy.options?[0].value)
@@ -293,7 +307,7 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
                 
             }
             
-            if let sessionsCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .defaultType, placeHolder: "Sessions") as? TextFieldFormCell{
+            if let sessionsCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "Sessions") as? ShineTextFieldCell{
                 
                 if let vm = self.viewModel, vm.mode == .edit, let feePolicy = vm.feePolicy {
                     sessionsCell.displayedValue = String(describing: feePolicy.options?[0].numberOfSessions) 
@@ -315,7 +329,7 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
             }
             
             // Description
-            if let descCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .info, placeHolder: "Tell about the event's fee policy") as? TextViewFormCell{
+            if let descCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextView, placeHolder: "Tell about the event's fee policy") as? ShineTextViewCell{
                 
                 // Initialize the form if it is in edit mode
                 if let vm = self.viewModel, vm.mode == .edit, let feePolicy = vm.feePolicy {
@@ -348,6 +362,45 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
             
         }
         
+        // Dresscode
+        if let dressCodeCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .switchType, placeHolder: "Dress Code?") as? ShineSwitchCell {
+            
+            if let vm = self.viewModel, vm.mode == .edit {
+                dressCodeCell.displayedValue = vm.hasDressCode
+            }
+            
+            dressCodeCell.selectionDelegate = self
+            dressCodeCell.getIndexPath = {
+                return self.getIndexPathOfCell(dressCodeCell)
+            }
+            
+            dressCodeCell.valueChanged = {
+                self.viewModel?.hasDressCode = dressCodeCell.isOn
+            }
+            
+            self.cells.append(dressCodeCell)
+            
+        }
+        
+        // partner Required
+        if let partnerReqCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .switchType, placeHolder: "Partner required?") as? ShineSwitchCell {
+            
+            if let vm = self.viewModel, vm.mode == .edit {
+                partnerReqCell.displayedValue = vm.partnerRequired
+            }
+            
+            partnerReqCell.selectionDelegate = self
+            partnerReqCell.getIndexPath = {
+                return self.getIndexPathOfCell(partnerReqCell)
+            }
+            
+            partnerReqCell.valueChanged = {
+                self.viewModel?.partnerRequired = partnerReqCell.isOn
+            }
+            
+            self.cells.append(partnerReqCell)
+            
+        }
         
         // HasPerformance
         if let hasPerfCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .switchType, placeHolder: "Performance") as? ShineSwitchCell {
@@ -404,7 +457,7 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
             
             var dependentCells = [BaseFormCell]()
             
-            if let nameCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .defaultType, placeHolder: "Name") as? TextFieldFormCell{
+            if let nameCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "Name") as? ShineTextFieldCell{
                 
                 if let vm = self.viewModel, vm.mode == .edit, let contactPerson = vm.contactPerson {
                     nameCell.displayedValue = contactPerson.name
@@ -424,7 +477,7 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
                 
             }
             
-            if let emailCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .email, placeHolder: nil) as? TextFieldFormCell{
+            if let emailCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "E-mail") as? ShineTextFieldCell{
                 
                 if let vm = self.viewModel, vm.mode == .edit, let contactPerson = vm.contactPerson {
                     emailCell.displayedValue = contactPerson.email
@@ -446,7 +499,7 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
                 
             }
             
-            if let phoneCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .phoneNumber, placeHolder: nil) as? TextFieldFormCell{
+            if let phoneCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "Phone") as? ShineTextFieldCell{
                 
                 if let vm = self.viewModel, vm.mode == .edit, let contactPerson = vm.contactPerson {
                     phoneCell.displayedValue = contactPerson.phone
@@ -468,7 +521,7 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
             }
             
             
-            
+            contactPersonCell.selectionDelegate = self
             contactPersonCell.dependentCells = dependentCells
             contactPersonCell.valueChanged = {
                 self.updateCellsWithDependentsOfCell(contactPersonCell)
@@ -483,9 +536,6 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
         
         
     }
-    
-    
-    
     
     /// Insert or remove cells into the cells list per the current value of a SwitchCell object.
     func updateCellsWithDependentsOfCell(_ cell: BaseFormCell, sectionIndex : Int = 0) {
@@ -509,8 +559,6 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
             }
             
         }
-        
-        
         
     }
     
@@ -689,20 +737,10 @@ extension EditCreateEventViewController : UITableViewDelegate {
             return self.nameWithImageCellHeight
         }
         
-        if self.cells[indexPath.row] is TextViewFormCell {
-            return self.textViewHeight
-        }
-        
         if let cell = self.cells[indexPath.row] as? BaseFormCell {
             return cell.designatedHeight
         }
         return 100.0
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        print("Row is selected: \(indexPath.row)")
-        
     }
     
 }
@@ -732,18 +770,10 @@ fileprivate extension EditCreateEventViewController {
 extension EditCreateEventViewController: ExpandingCellDelegate {
     
     func updateCellHeight(cell: BaseFormCell, height: CGFloat, indexPath: IndexPath?) {
-        //expandingCellHeight = height
-        
-        if cell is TextViewFormCell {
-            self.textViewHeight = height + 20
-        }
+    
         
         if cell is NameTitleWithImageCell {
             self.nameWithImageCellHeight = self.nameWithImageCellHeight + height
-        }
-        
-        if cell is DatePickerCell {
-            self.datePickerCellHeight = self.datePickerCellHeight + height
         }
         
         // Disabling animations gives us our desired behaviour

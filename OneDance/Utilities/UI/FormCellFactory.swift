@@ -170,7 +170,11 @@ struct FormItemCellFactory {
             identifier = ShineDatePickerCell.identifier
             tableView.register(nibName, forCellReuseIdentifier: identifier!)
             let cell = ShineDatePickerCell(style: .default, reuseIdentifier: ShineDatePickerCell.identifier)
-            cell.placeHolder = Helper.createPlaceHolderText(purpose: purpose, type: type)
+            if placeHolder != nil {
+                cell.placeHolder = placeHolder
+            } else {
+                cell.placeHolder = Helper.createPlaceHolderText(purpose: purpose, type: type)
+            }
             return cell
             
         case .picker:

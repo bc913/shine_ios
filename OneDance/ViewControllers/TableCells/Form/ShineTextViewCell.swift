@@ -37,11 +37,8 @@ class ShineTextViewCell: BaseFormCell {
     
     fileprivate func setup(){
         
-        self.clipsToBounds = false
-        self.autoresizesSubviews = true
-        
-        self.contentView.clipsToBounds = true
-        self.contentView.autoresizesSubviews = true
+        self.clipsToBounds = true
+        self.contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
         let views = [textView]
         for view in views {
@@ -56,9 +53,7 @@ class ShineTextViewCell: BaseFormCell {
         // Configure textfield
         self.textView.delegate = self
         self.textView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        self.contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-
-        self.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.textView.isScrollEnabled = false
         
         // Implement placeholder
         self.textView.textColor = UIColor.lightGray
@@ -130,24 +125,14 @@ class ShineTextViewCell: BaseFormCell {
     
     
     /// Expand delegate
-    func calculateTextViewHeight(_ textView: UITextView) -> CGFloat{
+    func calculateTextViewHeight(_ textView: UITextView) -> CGFloat {
+        
         let fixedWidth = textView.frame.size.width
         let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: .greatestFiniteMagnitude))
         var newFrame = textView.frame
         
         let height : CGFloat = newSize.height > self.designatedHeight ? newSize.height : self.designatedHeight
         newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: height)
-        
-        
-        let cellHeight = self.frame.size.height
-        print("cellHeight: \(cellHeight)")
-        
-        let contentHeight = self.contentView.frame.size.height
-        print("contentHeight: \(contentHeight)")
-        
-        
-        //print("Container height: \(self.contentContainer.frame.size.height)")
-        print("TextView Height: \(textView.frame.size.height)")
         
         return newFrame.height
     }
@@ -189,9 +174,7 @@ extension ShineTextViewCell : UITextViewDelegate {
         let height = calculateTextViewHeight(textView)
         
         if height > self.actualHeight, let indexPath = getIndexPath?() {
-            print("height: \(height)")
-            print("actual height: \(self.actualHeight)")
-            self.actualHeight = height
+            self.actualHeight = height + 10
             self.expandDelegate?.updateCellHeight(cell: self, height: height,indexPath: indexPath)
         }
     }
