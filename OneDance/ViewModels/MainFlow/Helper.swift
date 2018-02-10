@@ -21,6 +21,39 @@ protocol Refreshable : class {
     func refresh()
 }
 //============
+// AttendeesQuantityItem
+//============
+struct AttendanceQuantityItem {
+    
+    var going: Int = 0
+    var notGoing: Int = 0
+    var interested: Int = 0
+    
+    init() { }
+    init(going: Int, notGoing: Int, interested: Int) {
+        self.going = going
+        self.notGoing = notGoing
+        self.interested = interested
+    }
+    
+    init(model: AttendeesQuantityType){
+        self.mapFromModel(model: model)
+    }
+    
+    func mapToModel() -> AttendeesQuantityType {
+        let attendees = AttendeesQuantity(going: self.going, notGoing: self.notGoing, interested: self.interested)
+        return attendees
+    }
+    
+    mutating func mapFromModel(model: AttendeesQuantityType){
+        self.going = model.going
+        self.notGoing = model.notGoing
+        self.interested = model.interested
+    }
+}
+
+
+//============
 // DanceType item
 //============
 
@@ -85,10 +118,12 @@ struct FeeOptionItem {
 
 struct FeePolicyItem {
     
-    var options : [FeeOptionItem]?
+    var options = [FeeOptionItem]()
     var description : String?
     
-    init() { }
+    init() {
+        self.options.append(FeeOptionItem())
+    }
     init(options: [FeeOptionItem], description: String = "") {
         self.options = options
         self.description = description
@@ -100,18 +135,14 @@ struct FeePolicyItem {
     
     mutating func mapFromModel(model: FeePolicyType) {
         
-        if let modelOptions = model.options, !modelOptions.isEmpty {
-            
-            if self.options == nil {
-                self.options = [FeeOptionItem]()
-            } else {
-                if !(self.options!.isEmpty) {
-                    self.options!.removeAll()
-                }
+        if let modelOptions = model.options, !modelOptions.isEmpty {            
+
+            if !(self.options.isEmpty) {
+                self.options.removeAll()
             }
             
             for modelOpt in modelOptions {
-                self.options!.append(FeeOptionItem(model: modelOpt))
+                self.options.append(FeeOptionItem(model: modelOpt))
             }
         }
         
@@ -122,12 +153,12 @@ struct FeePolicyItem {
     
     func maptoModel() -> FeePolicyType {
         
-        if let optionItems = self.options, !optionItems.isEmpty {
+        if !(self.options.isEmpty) {
             
             var options = [FeeOption]()
-            options.reserveCapacity(optionItems.count)
+            options.reserveCapacity(self.options.count)
             
-            for optionItem in optionItems {
+            for optionItem in self.options {
                 if let option = optionItem.mapToModel() as? FeeOption {
                     options.append(option)
                 }
@@ -463,6 +494,12 @@ struct ContactPersonItem {
         self.email = model.email ?? ""
         self.phone = model.phone ?? ""
         
+    }
+    
+    mutating func clear(){
+        self.name = ""
+        self.email = ""
+        self.phone = ""
     }
 }
 

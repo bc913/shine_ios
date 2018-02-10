@@ -258,6 +258,12 @@ class EventViewModel : EventViewModelType {
         self.model?.ownerOrganization = self.ownerOrg?.mapToLite()
         
         // Dance types
+        //TODO: Remove this code
+        var danceItem = DanceTypeItem()
+        danceItem.id = "0"
+        danceItem.name = "Salsa"
+        self.danceTypes?.append(danceItem)
+        
         if let selectedDances = self.danceTypes, !(selectedDances.isEmpty), self.model != nil {
             
             self.model!.danceTypes = nil
@@ -276,13 +282,17 @@ class EventViewModel : EventViewModelType {
         self.model?.webUrl = URL(string: self.webUrl)
         
         // Location contact
+        //TODO: Remove this code
+        self.location = LocationItem()
+        self.location?.id = "647fe149-815c-4a4b-92dd-2eaa307f5ce4"
+        self.location?.name = "name"
+        
         self.model?.location = self.location?.mapToLiteModel()
         self.model?.contact = self.contactPerson?.mapToModel()
         
         // Attendance Info
-        self.model?.attendees?.interested = self.interestedCounter
-        self.model?.attendees?.going = self.goingCounter
-        self.model?.attendees?.notGoing = self.notGoingCounter
+        let attendence = AttendanceQuantityItem(going: self.goingCounter, notGoing: self.notGoingCounter, interested: self.interestedCounter)
+        self.model?.attendees = attendence.mapToModel()
         
         // Time
         self.model?.startingTime = self.startTime
@@ -325,6 +335,10 @@ class EventViewModel : EventViewModelType {
         self.model?.hasPerformance = self.hasPerformance
         
         // Event policy
+        if self.model != nil && self.model!.policy == nil {
+            self.model!.policy = EventPolicy()
+        }
+        
         self.model?.policy?.dressCode = self.hasDressCode
         self.model?.policy?.partnerRequired = self.partnerRequired
         self.model?.policy?.other = self.eventPolicyDescription
@@ -338,11 +352,11 @@ class EventViewModel : EventViewModelType {
     
     var title : String = ""
     var description : String = ""
+    
     var ownerUser : UserItem?
     var ownerOrg : OrganizationLiteItem?
     
-    var danceTypes : [DanceTypeItem]?
-    
+    var danceTypes : [DanceTypeItem]?    
     var webUrl : String = "" {
         didSet{
             print("weburl : \(webUrl)")
@@ -395,7 +409,7 @@ class EventViewModel : EventViewModelType {
     func create(){
         //Network request
         self.updateModel()
-        
+        print(String(reflecting: self.model!))
         let modelCompletionHandler = { (error: NSError?) in
             //Make sure we are on the main thread
             DispatchQueue.main.async {

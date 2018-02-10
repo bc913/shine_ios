@@ -10,7 +10,7 @@ import Foundation
 
 
 //============
-// AttendeeType
+// MARK: AttendeeType
 //============
 
 protocol AttendeesQuantityType {
@@ -52,8 +52,8 @@ extension AttendeesQuantity : JSONDecodable {
 }
 
 //============
-// Event Contact Person
-//============
+// MARK: Event Contact Person
+// ============
 
 protocol ContactPersonType {
     
@@ -95,7 +95,7 @@ extension ContactPerson : JSONDecodable {
 }
 
 //============
-// Event Policy
+// MARK: Event Policy
 //============
 
 protocol EventPolicyType {
@@ -147,8 +147,10 @@ extension EventPolicy : JSONDecodable {
     
 }
 
+
+
 //============
-// Event Lite
+// MARK: Event Lite
 //============
 
 protocol EventLiteType {
@@ -284,7 +286,7 @@ enum EventType : String {
 
 
 //============
-// Event Base
+// MARK: Event
 //============
 struct EventModel {
     
@@ -494,8 +496,8 @@ extension EventModel : JSONDecodable {
             "contactPerson" : contact?.jsonData ?? [String:Any](),
             "photo" : photo?.jsonData ?? [String:Any](),
             "attendees" : attendeesQuantity?.jsonData ?? [String:Any](),
-            "start" : (self.startingTime?.timeIntervalSince1970)! * 1000,
-            "end" : (self.endTime?.timeIntervalSince1970)! * 1000,
+            "start" : self.startingTime != nil ? Int(((self.startingTime?.timeIntervalSince1970)! * 1000).rounded()) : 0,
+            "end" : self.endTime != nil ? Int(((self.endTime?.timeIntervalSince1970)! * 1000).rounded()) : 0,
             "duration": self.duration ?? "",
             "level" : self.level?.rawValue ?? "",
             "type" : self.type?.rawValue ?? "",
