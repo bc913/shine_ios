@@ -675,6 +675,7 @@ extension EditCreateEventViewController : UIImagePickerControllerDelegate {
             if let cell = self.cells[index] as? NameTitleWithImageCell {
                 cell.eventImageView.image = selectedImage
                 cell.imagePicked()
+                self.viewModel?.imageData = UIImagePNGRepresentation(selectedImage)
                 print("image picked")
             }
             

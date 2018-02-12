@@ -44,6 +44,7 @@ protocol EventViewModelType : class {
     var contactPerson : ContactPersonItem? { get set }
     
     //TODO: Imagetype
+    var imageData : Data? { get set }
     
     // Attendance Info
     var interestedCounter : Int { get set }
@@ -367,6 +368,7 @@ class EventViewModel : EventViewModelType {
     var contactPerson : ContactPersonItem?
     
     //TODO: Imagetype
+    var imageData: Data?
     
     // Attendance Info
     var interestedCounter : Int = 0
@@ -415,6 +417,7 @@ class EventViewModel : EventViewModelType {
             DispatchQueue.main.async {
                 guard let error = error else {
                     // Update view
+                    
                     self.coordinatorDelegate?.viewModelDidFinishOperation(mode: self.mode)
                     return
                 }

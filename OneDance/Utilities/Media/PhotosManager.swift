@@ -95,6 +95,8 @@ final class PhotoManager {
             
             static let uploadKeyNameForProfileImage : String = "profile-image.png"
             static let downloadKeyNameForProfileImage : String = "profile-image.png"
+            
+            static let uploadKeyNameForEventImage : String = "event-image.png"
         }
     }
     
@@ -124,5 +126,24 @@ final class PhotoManager {
         ShineNetworkService.API.User.changeProfilePhoto()
         
     }
+    
+    func uploadCreateEventImage(with data: Data, eventId: String, progressBlock: AWSS3TransferUtilityProgressBlock?, completionHandler: AWSS3TransferUtilityUploadCompletionHandlerBlock?, continueWithHandler : @escaping (AWSTask<AWSS3TransferUtilityUploadTask>) -> Any?){
+        print("#############################################################")
+        print(" ---------  S3.uploadCreateEventImage() ---------------------")
+        let transferUtility = AWSS3TransferUtility.default()
+        let expression = AWSS3TransferUtilityUploadExpression()
+        expression.progressBlock = progressBlock
+        
+        transferUtility.uploadData(
+            data,
+            bucket: Constants.AWS3.S3BucketName,
+            key: Constants.AWS3.uploadKeyNameForEventImage,
+            contentType: "image/png",
+            expression: expression,
+            completionHandler: completionHandler)
+        
+        ShineNetworkService.API.Event.changeEventPhoto(eventId: eventId, uploadKeyName: Constants.AWS3.uploadKeyNameForEventImage)
+    }
+    
     
 }
