@@ -14,7 +14,7 @@ struct FormSectionItem{
     var sectionIndex : Int = 0
 }
 
-class EditCreateOrganizationViewController: UIViewController {
+class EditCreateOrganizationViewController: UIViewController, UINavigationControllerDelegate {
     
     
     @IBOutlet weak var tableView: UITableView!
@@ -22,7 +22,23 @@ class EditCreateOrganizationViewController: UIViewController {
     // This is a hack to update texview dynamically when content of the text view is larger than its container cell size
     var textViewHeight : CGFloat = 150.0
     
+    // Cell height for nameWithImage cell
+    var nameWithImageCellHeight : CGFloat = 66.0
+    
     fileprivate var isLoaded : Bool = false
+    
+    // Image picker controller for nameWithImagecell
+    var imagePickerController = UIImagePickerController()
+    
+    // ACtive selection
+    var activeIndex : IndexPath? {
+        willSet{
+            if let index = self.activeIndex {
+                self.cells[index.row].clearCellState()
+            }
+            
+        }
+    }
     
     // VM
     var viewModel : OrganizationViewModelType? {
@@ -51,11 +67,6 @@ class EditCreateOrganizationViewController: UIViewController {
     
     // Sections
     var formSections = [FormSectionItem]()
-    // SectionCells
-    var nameCells = [BaseFormCell]()
-    var infoCells = [BaseFormCell]()
-    var contactCells = [BaseFormCell]()
-    var danceCells = [BaseFormCell]()
     
     
     private func constructCells(){
@@ -66,246 +77,217 @@ class EditCreateOrganizationViewController: UIViewController {
         nameSection.title = "Name"
         nameSection.sectionIndex = 0
         
-        if let cell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .nameTitle, placeHolder: nil) as? NameTitleFormCell {
+        if let nameWithImageCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .nameTitleWithImage, placeHolder: nil) as? NameTitleWithImageCell {
             
-            // Initialize the form
-            cell.displayedValue = self.viewModel?.name ?? ""
-            
-            cell.valueChanged = {
-                self.viewModel?.name = cell.textField.text!
+            // Initialize the form if it is in edit mode
+            if let vm = self.viewModel, vm.mode == .edit {
+                nameWithImageCell.displayedValue = vm.name!
             }
             
-            self.nameCells.append(cell)
+            nameWithImageCell.expandDelegate = self
+            nameWithImageCell.imageSelectionDelegate = self
+            nameWithImageCell.selectionDelegate = self
+            
+            nameWithImageCell.valueChanged = {
+                self.viewModel?.name = nameWithImageCell.nameTextField.text!
+            }
+            
+            self.cells.append(nameWithImageCell)
         }
         
-        nameSection.cells = self.nameCells
-        formSections.append(nameSection)
-        
         // Info
-        var infoSection = FormSectionItem()
-        infoSection.title = "About"
-        infoSection.sectionIndex = 1
         
-        if let aboutCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .info, placeHolder: nil) as? TextViewFormCell{
+        if let aboutCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .shineTextView, placeHolder: "Tell us about your dance organization") as? ShineTextViewCell{
+            
+            // Initialize the form if it is in edit mode
+            if let vm = self.viewModel, vm.mode == .edit {
+                aboutCell.displayedValue = vm.about ?? ""
+            }
             
             aboutCell.expandDelegate = self // Expanding cell delegate
+            aboutCell.selectionDelegate = self
             aboutCell.getIndexPath = {
                 return self.getIndexPathOfCell(aboutCell)
             }
             
-            // Initialize the form if it is in edit mode
-            aboutCell.displayedValue = self.viewModel?.about ?? ""
-            
             aboutCell.valueChanged = {
                 self.viewModel?.about = aboutCell.textView.text
-                print("DAteCell change is not applicaple")
-                
             }
             
-            self.infoCells.append(aboutCell)
-            
+            self.cells.append(aboutCell)
         }
         
-        //        if let dateCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .date, placeHolder: nil) as? DateFormCell{
-        //
-        //            dateCell.viewController = self
-        //            dateCell.tableView = self.tableView
-        //
-        //            if let dependentCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .datePicker, placeHolder: nil) as? DatePickerFormCell {
-        //
-        //                dependentCell.parentCell = dateCell
-        //                dateCell.dependentCells = [dependentCell]
-        //                dateCell.getIndexPath = {
-        //                    return self.getIndexPathOfCell(dateCell)
-        //                }
-        //            }
-        //
-        //            dateCell.valueChanged = {
-        //                self.updateCellsWithDependentsOfCell(dateCell, sectionIndex: infoSection.sectionIndex)
-        //                print("DAteCell change is not applicaple")
-        //
-        //            }
-        //
-        //            infoCells.append(dateCell)
-        //
-        //        }
-        
-        infoSection.cells = self.infoCells
-        formSections.append(infoSection)
-        
         // Contact
-        var contactSection = FormSectionItem()
-        contactSection.title = "Contact"
-        contactSection.sectionIndex = 2
         
-        
-        if let emailCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .email, placeHolder: nil) as? TextFieldFormCell{
+        if let emailCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .shineTextField, placeHolder: "E-mail") as? ShineTextFieldCell{
             
             // Initialize if it is edit mode
-            emailCell.displayedValue = self.viewModel?.contactInfo.email ?? ""
+            if let vm = self.viewModel, vm.mode == .edit {
+                emailCell.displayedValue = vm.contactInfo.email
+            }
+            
+            emailCell.selectionDelegate = self
+            emailCell.getIndexPath = {
+                return self.getIndexPathOfCell(emailCell)
+            }
             
             emailCell.valueChanged = {
                 self.viewModel?.contactInfo.email = emailCell.textField.text!
             }
             emailCell.changeKeyboardType(.emailAddress)
-            self.contactCells.append(emailCell)
+            self.cells.append(emailCell)
         }
         
-        if let phoneCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .phoneNumber, placeHolder: nil) as? TextFieldFormCell{
+        if let phoneCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .shineTextField, placeHolder: "Phone") as? ShineTextFieldCell{
             
             // Initialize if it is edit mode
-            phoneCell.displayedValue = self.viewModel?.contactInfo.phone ?? ""
+            if let vm = self.viewModel, vm.mode == .edit {
+                phoneCell.displayedValue = vm.contactInfo.phone
+            }
+            phoneCell.selectionDelegate = self
+            phoneCell.getIndexPath = {
+                return self.getIndexPathOfCell(phoneCell)
+            }
             
+            phoneCell.changeKeyboardType(.phonePad)
             phoneCell.valueChanged = {
                 self.viewModel?.contactInfo.phone = phoneCell.textField.text!
             }
-            phoneCell.changeKeyboardType(.phonePad)
-            self.contactCells.append(phoneCell)
+
+            self.cells.append(phoneCell)
         }
         
-        if let linkCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .url, placeHolder: nil) as? TextFieldFormCell{
+        if let linkCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .shineTextField, placeHolder: "Url") as? ShineTextFieldCell{
             
             // Initialize if it is edit mode
-            linkCell.displayedValue = self.viewModel?.contactInfo.website ?? ""
+            if let vm = self.viewModel, vm.mode == .edit {
+                linkCell.displayedValue = vm.contactInfo.website
+            }
+            
+            linkCell.selectionDelegate = self
+            linkCell.getIndexPath = {
+                return self.getIndexPathOfCell(linkCell)
+            }
             
             linkCell.valueChanged = {
                 self.viewModel?.contactInfo.website = linkCell.textField.text!
             }
+            
             linkCell.changeKeyboardType(.URL)
-            self.contactCells.append(linkCell)
+            self.cells.append(linkCell)
         }
         
-        if let facebookUrlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .url, placeHolder: "Facebook (Optional)") as? TextFieldFormCell{
+        if let facebookUrlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .shineTextField, placeHolder: "Facebook") as? ShineTextFieldCell{
             
             // Initialize if it is edit mode
-            facebookUrlCell.displayedValue = self.viewModel?.contactInfo.facebookUrl ?? ""
+            if let vm = self.viewModel, vm.mode == .edit {
+                facebookUrlCell.displayedValue = vm.contactInfo.facebookUrl
+            }
+            
+            facebookUrlCell.selectionDelegate = self
+            facebookUrlCell.getIndexPath = {
+                return self.getIndexPathOfCell(facebookUrlCell)
+            }
             
             facebookUrlCell.valueChanged = {
                 self.viewModel?.contactInfo.facebookUrl = facebookUrlCell.textField.text!
             }
+            
             facebookUrlCell.changeKeyboardType(.URL)
-            self.contactCells.append(facebookUrlCell)
+            
+            self.cells.append(facebookUrlCell)
         }
         
         
-        if let instagramUrlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .url, placeHolder: "Instagram (Optional)") as? TextFieldFormCell{
+        if let instagramUrlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .shineTextField, placeHolder: "Instagram") as? ShineTextFieldCell{
             
             // Initialize if it is edit mode
-            instagramUrlCell.displayedValue = self.viewModel?.contactInfo.instagramUrl ?? ""
+            if let vm = self.viewModel, vm.mode == .edit {
+                instagramUrlCell.displayedValue = vm.contactInfo.instagramUrl
+            }
+            
+            instagramUrlCell.selectionDelegate = self
+            instagramUrlCell.getIndexPath = {
+                return self.getIndexPathOfCell(instagramUrlCell)
+            }
             
             instagramUrlCell.valueChanged = {
                 self.viewModel?.contactInfo.instagramUrl = instagramUrlCell.textField.text!
             }
+            
             instagramUrlCell.changeKeyboardType(.URL)
-            self.contactCells.append(instagramUrlCell)
+            
+            self.cells.append(instagramUrlCell)
         }
-        
-        
-        
-        
-        contactSection.cells = self.contactCells
-        formSections.append(contactSection)
-        
         
         // Dance sepcific information
         var danceSection = FormSectionItem(cells: [BaseFormCell](), title: "Dance", sectionIndex: 3)
         
         if let hasClassForKidsCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .switchType, placeHolder: "Classes for kids") as? ShineSwitchCell{
             
-            //
-            hasClassForKidsCell.displayedValue = self.viewModel?.hasClassForKids ?? false
+            // Initialize if it is edit mode
+            if let vm = self.viewModel, vm.mode == .edit {
+                hasClassForKidsCell.displayedValue = vm.hasClassForKids
+            }
+            
+            hasClassForKidsCell.selectionDelegate = self
+            hasClassForKidsCell.getIndexPath = {
+                return self.getIndexPathOfCell(hasClassForKidsCell)
+            }
             
             hasClassForKidsCell.valueChanged = {
                 self.viewModel?.hasClassForKids = hasClassForKidsCell.isOn
                 
             }
             
-            self.danceCells.append(hasClassForKidsCell)
+            self.cells.append(hasClassForKidsCell)
             
         }
         
         if let hasPrivateClassCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .switchType, placeHolder: "Private Class") as? ShineSwitchCell{
             
-            //
-            hasPrivateClassCell.displayedValue = self.viewModel?.hasPrivateClass ?? false
+            // Initialize if it is edit mode
+            if let vm = self.viewModel, vm.mode == .edit {
+                hasPrivateClassCell.displayedValue = vm.hasPrivateClass
+            }
+            
+            hasPrivateClassCell.selectionDelegate = self
+            hasPrivateClassCell.getIndexPath = {
+                return self.getIndexPathOfCell(hasPrivateClassCell)
+            }
             
             hasPrivateClassCell.valueChanged = {
                 self.viewModel?.hasPrivateClass = hasPrivateClassCell.isOn
                 
             }
             
-            self.danceCells.append(hasPrivateClassCell)
+            self.cells.append(hasPrivateClassCell)
             
         }
         
         if let hasWeddingPackageCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .switchType, placeHolder: "Wedding package/classes") as? ShineSwitchCell{
             
-            //
-            hasWeddingPackageCell.displayedValue = self.viewModel?.hasWeddingPackage ?? false
+            // Initialize if it is edit mode
+            if let vm = self.viewModel, vm.mode == .edit {
+                hasWeddingPackageCell.displayedValue = vm.hasWeddingPackage
+            }
+            
+            hasWeddingPackageCell.selectionDelegate = self
+            hasWeddingPackageCell.getIndexPath = {
+                return self.getIndexPathOfCell(hasWeddingPackageCell)
+            }
             
             hasWeddingPackageCell.valueChanged = {
                 self.viewModel?.hasWeddingPackage = hasWeddingPackageCell.isOn
                 
             }
             
-            self.danceCells.append(hasWeddingPackageCell)
+            self.cells.append(hasWeddingPackageCell)
+            
             
         }
-        
-        danceSection.cells = self.danceCells
-        formSections.append(danceSection)
-        
-        
-        
-        /*
-         if let hasClassForKidsCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .switchType, placeHolder: "Has Classes for kids") as? SwitchFormCell{
-         hasClassForKidsCell.valueChanged = {
-         self.viewModel?.hasClassForKids = hasClassForKidsCell.isOn
-         
-         }
-         
-         cells.append(hasClassForKidsCell)
-         
-         }
-         
-         if let dateCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .date, placeHolder: nil) as? DateFormCell{
-         
-         dateCell.viewController = self
-         dateCell.tableView = self.tableView
-         
-         if let dependentCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .datePicker, placeHolder: nil) as? DatePickerFormCell {
-         
-         dependentCell.parentCell = dateCell
-         dateCell.dependentCells = [dependentCell]
-         dateCell.getIndexPath = {
-         return self.getIndexPathOfCell(dateCell)
-         }
-         }
-         
-         dateCell.valueChanged = {
-         self.updateCellsWithDependentsOfCell(dateCell)
-         print("DAteCell change is not applicaple")
-         
-         }
-         
-         cells.append(dateCell)
-         
-         }
-         
-         if let locationCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createOrganizationProfile, type: .location, placeHolder: nil) as? LocationFormCell{
-         
-         locationCell.viewController = self
-         locationCell.valueChanged = {
-         print("Value change is not applicaple")
-         
-         }
-         
-         cells.append(locationCell)
-         
-         }
-         
-         */
     }
+    
     
 //    /// Insert or remove cells into the cells list per the current value of a SwitchCell object.
 //    func updateCellsWithDependentsOfCell(_ cell: DateFormCell, sectionIndex : Int = 0) {
@@ -342,19 +324,19 @@ class EditCreateOrganizationViewController: UIViewController {
     /// Return the index of a given cell in the cells list.
     func getIndexPathOfCell(_ cell: UITableViewCell) -> IndexPath? {
         
-        for sectionItem in self.formSections {
-            if let row = sectionItem.cells.index(where: { $0 == cell }) {
-                return IndexPath(row: row, section: sectionItem.sectionIndex)
-            }
-        }
-        
-        return nil
+        // Multiple section
+//        for sectionItem in self.formSections {
+//            if let row = sectionItem.cells.index(where: { $0 == cell }) {
+//                return IndexPath(row: row, section: sectionItem.sectionIndex)
+//            }
+//        }
+//        return nil
         
         //Single section
-        //        if let row = cells.index(where: { $0 == cell }) {
-        //            return IndexPath(row: row, section: 0)
-        //        }
-        //        return nil
+        if let row = cells.index(where: { $0 == cell }) {
+            return IndexPath(row: row, section: 0)
+        }
+        return nil
     }
     
     override func viewDidLoad() {
@@ -362,6 +344,7 @@ class EditCreateOrganizationViewController: UIViewController {
         
         self.configureTableView()
         self.configureNavigationBar()
+        self.configureImagePickerController()
         self.registerKeyboardNotifications()
         
         
@@ -410,6 +393,13 @@ class EditCreateOrganizationViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Create", style: .plain, target: self, action: #selector(createOrganizationProfile))
     }
     
+    private func configureImagePickerController(){
+        
+        self.imagePickerController.delegate = self // UINavigationControllerDelegate
+        self.imagePickerController.allowsEditing = false
+        
+    }
+    
     func cancelCreateOrganizationProfile(){
         self.viewModel?.cancelEditCreateOrganization()
     }
@@ -425,26 +415,26 @@ class EditCreateOrganizationViewController: UIViewController {
 extension EditCreateOrganizationViewController : UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return self.formSections.count
+        return 1
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        
-        var sectIndex = section
-        
-        if let index = self.formSections.index(where: {$0.sectionIndex == section}) {
-            sectIndex = index
-        }
-        
-        return self.formSections[sectIndex].title
-    }
+//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        
+//        var sectIndex = section
+//        
+//        if let index = self.formSections.index(where: {$0.sectionIndex == section}) {
+//            sectIndex = index
+//        }
+//        
+//        return self.formSections[sectIndex].title
+//    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.formSections[section].cells.count
+        return self.cells.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return self.formSections[indexPath.section].cells[indexPath.row]
+        return self.cells[indexPath.row]
     }
     
     
@@ -455,13 +445,14 @@ extension EditCreateOrganizationViewController : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        if self.formSections[indexPath.section].cells[indexPath.row] is TextViewFormCell {
-            return self.textViewHeight
+        if self.cells[indexPath.row] is NameTitleWithImageCell {
+            return self.nameWithImageCellHeight
         }
         
-        if let cell = self.formSections[indexPath.section].cells[indexPath.row] as? BaseFormCell {
+        if let cell = self.cells[indexPath.row] as? BaseFormCell {
             return cell.designatedHeight
         }
+        
         return 100.0
     }
     
@@ -473,7 +464,10 @@ extension EditCreateOrganizationViewController: ExpandingCellDelegate {
     func updateCellHeight(cell: BaseFormCell, height: CGFloat, indexPath: IndexPath?) {
         //expandingCellHeight = height
         
-        self.textViewHeight = height + 20
+        if cell is NameTitleWithImageCell {
+            self.nameWithImageCellHeight = self.nameWithImageCellHeight + height
+        }
+        
         // Disabling animations gives us our desired behaviour
         UIView.setAnimationsEnabled(false)
         /* These will causes table cell heights to be recaluclated,
@@ -489,6 +483,68 @@ extension EditCreateOrganizationViewController: ExpandingCellDelegate {
         //tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
     }
 }
+
+// MARK: CellSelectionDelegate
+extension EditCreateOrganizationViewController : CellSelectionDelegate{
+    
+    func cellSelectionChanged(_ cell: BaseFormCell, state: SelectionState, indexPath: IndexPath?) {
+        if self.activeIndex != indexPath {
+            self.activeIndex = indexPath
+        }
+        
+    }
+}
+
+extension EditCreateOrganizationViewController : UIImagePickerControllerDelegate {
+    
+    // TODO: Check for this error when the image is loaded.
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        if let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage, let index = self.cells.index(where: {$0 is NameTitleWithImageCell}) {
+            
+            if let cell = self.cells[index] as? NameTitleWithImageCell {
+                cell.eventImageView.image = selectedImage
+                cell.imagePicked()
+                print("image picked")
+            }
+            
+            
+        } else {
+            print("Exception")
+        }
+        
+        //self.dismiss(animated: true, completion: nil)
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    // Not required but expected to implement
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension EditCreateOrganizationViewController : CellWithImageSelectorDelegate{
+    
+    func cellTappedForImageSelection(_ cell: BaseFormCell) {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        actionSheet.addAction(UIAlertAction(title: "Camera", style: UIAlertActionStyle.default, handler: { (alert:UIAlertAction!) -> Void in
+            self.imagePickerController.sourceType = .camera
+            self.present(self.imagePickerController, animated: true, completion: nil)
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Gallery", style: UIAlertActionStyle.default, handler: { (alert:UIAlertAction!) -> Void in
+            self.imagePickerController.sourceType = .photoLibrary
+            self.present(self.imagePickerController, animated: true, completion: nil)
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
+        
+        self.present(actionSheet, animated: true, completion: nil)
+    }
+}
+
 
 fileprivate extension EditCreateOrganizationViewController {
     

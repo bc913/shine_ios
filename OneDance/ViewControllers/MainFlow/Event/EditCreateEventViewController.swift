@@ -75,6 +75,7 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
             
             nameWithImageCell.expandDelegate = self
             nameWithImageCell.imageSelectionDelegate = self
+            nameWithImageCell.selectionDelegate = self
             
             nameWithImageCell.valueChanged = {
                 self.viewModel?.title = nameWithImageCell.nameTextField.text!
@@ -167,8 +168,6 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
             
             aboutCell.valueChanged = {
                 self.viewModel?.description = aboutCell.textView.text
-                print("DAteCell change is not applicaple")
-                
             }
             
             self.cells.append(aboutCell)
