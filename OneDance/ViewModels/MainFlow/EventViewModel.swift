@@ -96,6 +96,8 @@ class EventViewModel : EventViewModelType {
     
     fileprivate var errorMessage : String?
     
+    var photoManager = PhotoManager.instance()
+    
     init(mode: ShineMode, id: String = "") {
         self.mode = mode
         self.id = id
@@ -411,8 +413,8 @@ class EventViewModel : EventViewModelType {
     func create(){
         //Network request
         self.updateModel()
-        print(String(reflecting: self.model!))
-        let modelCompletionHandler = { (error: NSError?) in
+        
+        let uploadPhotoCompletionHandler = { (error: NSError?) in
             //Make sure we are on the main thread
             DispatchQueue.main.async {
                 guard let error = error else {
@@ -423,7 +425,28 @@ class EventViewModel : EventViewModelType {
                 }
                 //self.errorMessage = error.localizedDescription
             }
+            
+            
         }
+        
+        let modelCompletionHandler = { (error: NSError?, eventId: String?) in
+            //Make sure we are on the main thread
+            DispatchQueue.main.async {
+                guard let error = error else {
+
+                    if self.imageData != nil && eventId != nil{
+                        self.photoManager.uploadCreateEventImage(with: self.imageData!, eventId: eventId!, progressBlock: nil, completionHandler: nil, shineCompletionHandler: uploadPhotoCompletionHandler)
+                    } else{
+                        self.coordinatorDelegate?.viewModelDidFinishOperation(mode: self.mode)
+                    }
+                    
+                    return
+                }
+                //self.errorMessage = error.localizedDescription
+            }
+        }
+        
+        
         // Network request with model
         ShineNetworkService.API.Event.create(model: self.model!, mainThreadCompletionHandler: modelCompletionHandler)
         

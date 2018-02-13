@@ -329,14 +329,22 @@ struct EventModel {
     init?(json: [String:Any]) {
         
         guard let id = json["id"] as? String, let title = json["title"] as? String,
-            let desc = json["desc"] as? String, let location = json["location"] as? [String:Any] else {
+            let desc = json["desc"] as? String else {
+                
+                print("EventModel failed")
+                print("id: \(String(describing: json["id"] as? String))")
+                
+                
                 return nil
         }
         
         self.id = id
         self.title = title
         self.description = desc
-        self.location = LocationLite(json: location)!
+        if let location = json["location"] as? [String:Any] {
+            self.location = LocationLite(json: location)!
+        }
+        
         
         if let owner = json["ownerUser"] as? [String:Any] {
             self.ownerUser = UserLite(json: owner)

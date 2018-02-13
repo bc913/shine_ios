@@ -179,7 +179,7 @@ struct ShineNetworkService {
         
         struct Event {
             
-            static func create(model: EventModel, mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()) {
+            static func create(model: EventModel, mainThreadCompletionHandler: @escaping (_ error: NSError?, _ eventId: String?) ->()) {
                 
                 //TODO: Consider event created by organization
                 let headers: HTTPHeaders = [
@@ -204,14 +204,14 @@ struct ShineNetworkService {
                             guard response.result.isSuccess else {
                                 
                                 error = ErrorFactory.createForAlamofireResponse(with: httpStatusCode!)
-                                mainThreadCompletionHandler(error)
+                                mainThreadCompletionHandler(error, nil)
                                 print("Error 1")
                                 return
                             }
                             // serialized json response
                             guard let jsonData = response.result.value, let jsonDict = jsonData as? [String:Any] else{
                                 error = ErrorFactory.createForResponseDataSerialization(with: httpStatusCode!)
-                                mainThreadCompletionHandler(error)
+                                mainThreadCompletionHandler(error, nil)
                                 print("Error 2")
                                 return
                             }
@@ -228,7 +228,7 @@ struct ShineNetworkService {
                                     
                                 }
                                 
-                                mainThreadCompletionHandler(error)
+                                mainThreadCompletionHandler(error, nil)
                                 return
                                 
                             }
@@ -237,14 +237,15 @@ struct ShineNetworkService {
                                 print("Data: \(utf8Text)") // original server data as UTF8 string
                             }
                             
+                            print("Event created id: \(String(describing: eventModel.id))")
                             //
                             // To update anything on the main thread, just jump back on like so.
-                            mainThreadCompletionHandler(error)
+                            mainThreadCompletionHandler(error, eventModel.id)
                     }
                 )
             } // createEvent
             
-            static func changeEventPhoto(eventId: String, uploadKeyName: String){
+            static func changeEventPhoto(eventId: String, uploadKeyName: String, mainThreadCompletionHandler: @escaping(_ error: NSError) -> ()){
                 
                 let parameters : Parameters = [
                     "name" : uploadKeyName,
@@ -260,13 +261,13 @@ struct ShineNetworkService {
                 
                 
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
-                Alamofire.request(url, method: .post,parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+                Alamofire.request(url, method: .put,parameters: parameters, encoding: JSONEncoding.default, headers: headers)
                     .responseJSON(
                         queue: queue,
                         completionHandler: { response in
                             
                             // Debug
-                            Helper.debugResponse(methodName: "Event.create()", response: response)
+                            Helper.debugResponse(methodName: "EventImage.create()", response: response)
                             
                             // Check status code
                             let httpStatusCode = response.response?.statusCode
@@ -308,6 +309,8 @@ struct ShineNetworkService {
                             if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
                                 print("Data: \(utf8Text)") // original server data as UTF8 string
                             }
+                            
+                            print("Event image created")
                             
                             //
                             // To update anything on the main thread, just jump back on like so.
@@ -699,7 +702,7 @@ struct ShineNetworkService {
             
             static func getUserProfile(otherUserId: String, mainThreadCompletionHandler: @escaping (_ error: NSError?, _ userModel:UserModelType?) ->()) {
                 
-                var otherUserUrl = Constants.getUserProfileUrl(otherUserID: otherUserId)
+                let otherUserUrl = Constants.getUserProfileUrl(otherUserID: otherUserId)
                 
                 let headers: HTTPHeaders = [
                     "Content-Type": "application/json",

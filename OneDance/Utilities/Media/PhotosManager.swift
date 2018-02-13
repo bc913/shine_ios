@@ -127,7 +127,7 @@ final class PhotoManager {
         
     }
     
-    func uploadCreateEventImage(with data: Data, eventId: String, progressBlock: AWSS3TransferUtilityProgressBlock?, completionHandler: AWSS3TransferUtilityUploadCompletionHandlerBlock?, continueWithHandler : @escaping (AWSTask<AWSS3TransferUtilityUploadTask>) -> Any?){
+    func uploadCreateEventImage(with data: Data, eventId: String, progressBlock: AWSS3TransferUtilityProgressBlock?, completionHandler: AWSS3TransferUtilityUploadCompletionHandlerBlock?, shineCompletionHandler: @escaping(_ error: NSError) -> ()){
         print("#############################################################")
         print(" ---------  S3.uploadCreateEventImage() ---------------------")
         let transferUtility = AWSS3TransferUtility.default()
@@ -142,7 +142,7 @@ final class PhotoManager {
             expression: expression,
             completionHandler: completionHandler)
         
-        ShineNetworkService.API.Event.changeEventPhoto(eventId: eventId, uploadKeyName: Constants.AWS3.uploadKeyNameForEventImage)
+        ShineNetworkService.API.Event.changeEventPhoto(eventId: eventId, uploadKeyName: Constants.AWS3.uploadKeyNameForEventImage, mainThreadCompletionHandler: shineCompletionHandler)
     }
     
     
