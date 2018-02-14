@@ -432,17 +432,19 @@ class EventViewModel : EventViewModelType {
         let modelCompletionHandler = { (error: NSError?, eventId: String?) in
             //Make sure we are on the main thread
             DispatchQueue.main.async {
-                guard let error = error else {
-
+                
+                if let err = error {
+                    //self.errorMessage = error.localizedDescription
+                } else {
+                    
                     if self.imageData != nil && eventId != nil{
                         self.photoManager.uploadCreateEventImage(with: self.imageData!, eventId: eventId!, progressBlock: nil, completionHandler: nil, shineCompletionHandler: uploadPhotoCompletionHandler)
                     } else{
                         self.coordinatorDelegate?.viewModelDidFinishOperation(mode: self.mode)
+                        return
                     }
-                    
-                    return
                 }
-                //self.errorMessage = error.localizedDescription
+                
             }
         }
         

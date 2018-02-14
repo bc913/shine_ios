@@ -534,6 +534,7 @@ struct ContactInfoItem {
         contact.website = URL(string: self.website)
         contact.facebookUrl = URL(string: self.facebookUrl)
         contact.instagramUrl = URL(string: self.instagramUrl)
+        contact.locations = locLites
         return contact
     }
     

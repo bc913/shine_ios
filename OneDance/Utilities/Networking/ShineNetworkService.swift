@@ -41,6 +41,12 @@ struct ShineNetworkService {
         struct Organization {
             private static let base : String = baseUrl + "organizations"
             static let createUrl : String = base
+            static func getChangePhotoUrl(id: String) -> String {
+                
+                let url : String = Organization.base + "/\(id)" + "/photo"
+                return url
+                
+            }
         }
         
         struct Event {
@@ -112,7 +118,7 @@ struct ShineNetworkService {
         
         struct Organization {
             
-            static func create(model: OrganizationModel, mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()) {
+            static func create(model: OrganizationModel, mainThreadCompletionHandler: @escaping (_ error: NSError?, _ orgId: String?) ->()) {
                 
                 let headers: HTTPHeaders = [
                     "Content-Type": "application/json",
@@ -136,6 +142,78 @@ struct ShineNetworkService {
                             guard response.result.isSuccess else {
                                 
                                 error = ErrorFactory.createForAlamofireResponse(with: httpStatusCode!)
+                                mainThreadCompletionHandler(error, nil)
+                                print("Error 1")
+                                return
+                            }
+                            // serialized json response
+                            guard let jsonData = response.result.value, let jsonDict = jsonData as? [String:Any] else{
+                                error = ErrorFactory.createForResponseDataSerialization(with: httpStatusCode!)
+                                mainThreadCompletionHandler(error, nil)
+                                print("Error 2")
+                                return
+                            }
+                            
+                            guard let organizationModel = OrganizationModel(json: jsonDict) else {
+                                
+                                if let errorMessage = jsonDict["message"] as? String{
+                                    error = ErrorFactory.create(.User, .User, .User, description: errorMessage)
+                                    print("Error 3")
+                                    
+                                } else {
+                                    error = ErrorFactory.create(.Network, .Network, .DataJSONSerialization)
+                                    print("Error 4")
+                                    
+                                }
+                                
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                                
+                            }
+                            
+                            if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
+                                print("Data: \(utf8Text)") // original server data as UTF8 string
+                            }
+                            
+                            //
+                            // To update anything on the main thread, just jump back on like so.
+                            mainThreadCompletionHandler(error, organizationModel.id)
+                    }
+                )
+            } // createOrganization
+            
+            static func changeOrganizationPhoto(orgId: String, uploadKeyName: String, mainThreadCompletionHandler: @escaping(_ error: NSError?) -> ()){
+                
+                let parameters : Parameters = [
+                    "name" : uploadKeyName,
+                    "photo" : true
+                ]
+                
+                let headers: HTTPHeaders = [
+                    "Content-Type": "application/json",
+                    "USER-ID": PersistanceManager.User.userId!
+                ]
+                
+                let url = Constants.Organization.getChangePhotoUrl(id: orgId)
+                
+                
+                let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
+                Alamofire.request(url, method: .put,parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+                    .responseJSON(
+                        queue: queue,
+                        completionHandler: { response in
+                            
+                            // Debug
+                            Helper.debugResponse(methodName: "OrganizationImage.create()", response: response)
+                            
+                            // Check status code
+                            let httpStatusCode = response.response?.statusCode
+                            
+                            // Error
+                            var error : NSError? = nil
+                            guard response.result.isSuccess else {
+                                
+                                error = ErrorFactory.createForAlamofireResponse(with: httpStatusCode!)
                                 mainThreadCompletionHandler(error)
                                 print("Error 1")
                                 return
@@ -148,7 +226,7 @@ struct ShineNetworkService {
                                 return
                             }
                             
-                            guard let organizationModel = OrganizationModel(json: jsonDict) else {
+                            guard let imageModel = MediaImage(json: jsonDict) else {
                                 
                                 if let errorMessage = jsonDict["message"] as? String{
                                     error = ErrorFactory.create(.User, .User, .User, description: errorMessage)
@@ -169,12 +247,14 @@ struct ShineNetworkService {
                                 print("Data: \(utf8Text)") // original server data as UTF8 string
                             }
                             
+                            print("Event image created")
+                            
                             //
                             // To update anything on the main thread, just jump back on like so.
                             mainThreadCompletionHandler(error)
                     }
                 )
-            } // createOranization
+            } //changeEventPhoto
         }
         
         struct Event {
@@ -245,7 +325,7 @@ struct ShineNetworkService {
                 )
             } // createEvent
             
-            static func changeEventPhoto(eventId: String, uploadKeyName: String, mainThreadCompletionHandler: @escaping(_ error: NSError) -> ()){
+            static func changeEventPhoto(eventId: String, uploadKeyName: String, mainThreadCompletionHandler: @escaping(_ error: NSError?) -> ()){
                 
                 let parameters : Parameters = [
                     "name" : uploadKeyName,
@@ -277,14 +357,14 @@ struct ShineNetworkService {
                             guard response.result.isSuccess else {
                                 
                                 error = ErrorFactory.createForAlamofireResponse(with: httpStatusCode!)
-                                //mainThreadCompletionHandler(error)
+                                mainThreadCompletionHandler(error)
                                 print("Error 1")
                                 return
                             }
                             // serialized json response
                             guard let jsonData = response.result.value, let jsonDict = jsonData as? [String:Any] else{
                                 error = ErrorFactory.createForResponseDataSerialization(with: httpStatusCode!)
-                                //mainThreadCompletionHandler(error)
+                                mainThreadCompletionHandler(error)
                                 print("Error 2")
                                 return
                             }
@@ -301,7 +381,7 @@ struct ShineNetworkService {
                                     
                                 }
                                 
-                                //mainThreadCompletionHandler(error)
+                                mainThreadCompletionHandler(error)
                                 return
                                 
                             }
@@ -314,10 +394,10 @@ struct ShineNetworkService {
                             
                             //
                             // To update anything on the main thread, just jump back on like so.
-                            //mainThreadCompletionHandler(error)
+                            mainThreadCompletionHandler(error)
                     }
                 )
-            }
+            } //changeEventPhoto
         }
         
         struct User {

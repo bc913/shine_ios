@@ -401,12 +401,12 @@ class EditCreateOrganizationViewController: UIViewController, UINavigationContro
     }
     
     func cancelCreateOrganizationProfile(){
-        self.viewModel?.cancelEditCreateOrganization()
+        self.viewModel?.cancel()
     }
     
     func createOrganizationProfile() {
         print("create ORganization")
-        self.viewModel?.createOrganizationProfile()
+        self.viewModel?.create()
     }
 
 }
@@ -506,6 +506,7 @@ extension EditCreateOrganizationViewController : UIImagePickerControllerDelegate
             if let cell = self.cells[index] as? NameTitleWithImageCell {
                 cell.eventImageView.image = selectedImage
                 cell.imagePicked()
+                self.viewModel?.imageData = UIImagePNGRepresentation(selectedImage)
                 print("image picked")
             }
             

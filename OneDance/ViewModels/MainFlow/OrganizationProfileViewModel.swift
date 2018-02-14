@@ -35,8 +35,10 @@ protocol OrganizationViewModelType : class {
     var about :String? { get set }
     
     var danceTypes : [DanceTypeItem]? { get set }
-    
     var contactInfo : ContactInfoItem { get set }
+    
+    // Image
+    var imageData : Data? { get set }
 
     //var photo : ImageType? { get set }
     var instructors : [UserItem]? { get set }
@@ -46,11 +48,11 @@ protocol OrganizationViewModelType : class {
     var hasPrivateClass : Bool { get set }
     var hasWeddingPackage : Bool { get set }
     
-    var followers : Int? { get set }
-    var posts : Int? { get set }
+    var followers : Int { get set }
+    var posts : Int { get set }
     
-    func createOrganizationProfile()
-    func cancelEditCreateOrganization()
+    func create()
+    func cancel()
     func goBack()
     
     
@@ -67,11 +69,16 @@ class OrganizationViewModel : OrganizationViewModelType {
     var name : String?
     var about : String?
     
+    var photoManager = PhotoManager.instance()
+    
     // Dance types
     var danceTypes : [DanceTypeItem]?
     
     // Contact info
     var contactInfo : ContactInfoItem = ContactInfoItem()
+    
+    // Image
+    var imageData: Data?
     
     var instructors : [UserItem]?
     var djs : [UserItem]?
@@ -82,10 +89,10 @@ class OrganizationViewModel : OrganizationViewModelType {
     var hasWeddingPackage : Bool = false
     
     // Relationship
-    var followers : Int?
+    var followers : Int = 0
     
     // Feed
-    var posts : Int?
+    var posts : Int = 0
     
     init(mode: ShineMode, id: String = "") {
         self.mode = mode
@@ -193,10 +200,10 @@ class OrganizationViewModel : OrganizationViewModelType {
         self.hasWeddingPackage = self.model?.hasWeddingPackage ?? false
         
         // Relationship
-        self.followers = self.model?.followerCounter
+        self.followers = self.model?.followerCounter ?? 0
         
         // Feed
-        self.posts = self.model?.postsCounter
+        self.posts = self.model?.postsCounter ?? 0
         
     }
     
@@ -207,6 +214,12 @@ class OrganizationViewModel : OrganizationViewModelType {
         self.model?.about = self.about
 
         // Dance types
+        //TODO: Remove this code
+        var danceItem = DanceTypeItem()
+        danceItem.id = "0"
+        danceItem.name = "Salsa"
+        self.danceTypes?.append(danceItem)
+        
         if let selectedDances = self.danceTypes, !(selectedDances.isEmpty), self.model != nil {
             
             self.model!.danceTypes = nil
@@ -222,6 +235,10 @@ class OrganizationViewModel : OrganizationViewModelType {
         }
         
         // Contact
+        //TODO: Remove this code
+        var loc = LocationItem()
+        loc.id = "647fe149-815c-4a4b-92dd-2eaa307f5ce4"
+        loc.name = "name"
         self.model?.contact = self.contactInfo.mapToLiteModel()
         
         if let instructorList = self.instructors, !(instructorList.isEmpty), self.model != nil {
@@ -265,26 +282,47 @@ class OrganizationViewModel : OrganizationViewModelType {
     }
     
     
-    func createOrganizationProfile(){
+    func create(){
         self.updateModel()
         
-        let modelCompletionHandler = { (error: NSError?) in
+        let uploadPhotoCompletionHandler = { (error: NSError?) in
             //Make sure we are on the main thread
             DispatchQueue.main.async {
                 guard let error = error else {
                     // Update view
-                    self.coordinatorDelegate?.viewModelDidFinishOperation(mode: .create)
+                    
+                    self.coordinatorDelegate?.viewModelDidFinishOperation(mode: self.mode)
                     return
                 }
                 //self.errorMessage = error.localizedDescription
+            }
+            
+            
+        }
+        
+        let modelCompletionHandler = { (error: NSError?, orgId: String?) in
+            //Make sure we are on the main thread
+            DispatchQueue.main.async {
+                if let err = error {
+                    //self.errorMessage = error.localizedDescription
+                } else {
+                    
+                    if self.imageData != nil && orgId != nil{
+                        self.photoManager.uploadOrganizationImage(with: self.imageData!, orgId: orgId!, progressBlock: nil, completionHandler: nil, shineCompletionHandler: uploadPhotoCompletionHandler)
+                    } else{
+                        self.coordinatorDelegate?.viewModelDidFinishOperation(mode: self.mode)
+                        return
+                    }
+                }
             }
         }
         // Network request with model
         ShineNetworkService.API.Organization.create(model: self.model as! OrganizationModel, mainThreadCompletionHandler: modelCompletionHandler)
         
-    }
+        }
+        
     
-    func cancelEditCreateOrganization(){
+    func cancel(){
         self.coordinatorDelegate?.viewModelDidFinishOperation(mode: self.mode)
         //self.viewDelegate?.organizationCreationDidCancelled(viewModel: self)
     }
