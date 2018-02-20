@@ -422,6 +422,8 @@ class EventCoordinator : BaseChildCoordinator {
     override convenience init(host: UINavigationController, id: String) {
         self.init(host:host, id: id, mode: .viewOnly)
     }
+    
+
 }
 
 extension EventCoordinator : Coordinator {
@@ -454,5 +456,61 @@ extension EventCoordinator : Coordinator {
 
 extension EventCoordinator : EventViewModelCoordinatorDelegate{
     
+    func viewModelDidRequestLocation(){
+        let locCoordinator = LocationCoordinator(host: self.hostNavigationController, id: "")
+        locCoordinator.parentCoordinator = self
+        locCoordinator.start()
+    }
 }
+
+extension EventCoordinator : LocationCoordinatorDelegate{
+    func locationCoordinatorDidSelectLocation() {
+        // Pass location info to the view model
+        print("Lcoation selected")
+    }
+
+    
+}
+
+//===============================================================================================
+//MARK: LocationCoordinator
+//MARK:==========================
+class LocationCoordinator : BaseChildCoordinator{
+    
+    weak var parentCoordinator : LocationCoordinatorDelegate?
+}
+
+extension LocationCoordinator : Coordinator {
+    
+    func start() {
+        let vc = LocationViewController(nibName: "LocationViewController", bundle: nil)
+        let vm = LocationPickerViewModel()
+        vm.coordinatorDelegate = self
+        vm.viewDelegate = vc
+        let navigationController = UINavigationController(rootViewController: vc)
+        self.hostNavigationController.visibleViewController?.present(navigationController, animated:true)
+    }
+    
+}
+
+extension LocationCoordinator : LocationViewModelCoordinatorDelegate {
+    
+    func viewModelDidSelectLocation() {
+        self.parentCoordinator?.locationCoordinatorDidSelectLocation()
+        self.hostNavigationController.visibleViewController?.dismiss(animated: true, completion: nil)
+    }
+    
+    func viewModelDidCancelSelection(){
+        self.hostNavigationController.visibleViewController?.dismiss(animated: true, completion: nil)
+    }
+}
+
+protocol LocationCoordinatorDelegate : class {
+    func locationCoordinatorDidSelectLocation()
+}
+
+
+
+
+
 

@@ -10,6 +10,10 @@ import UIKit
 
 class TimeLineViewController: UIViewController {
 
+    @IBOutlet weak var tableView: UITableView!
+    
+    /// Test cells
+    var cells = [BaseFeedCell]()
     
     var viewModel : TimeLineViewModelType? {
         
@@ -18,14 +22,20 @@ class TimeLineViewController: UIViewController {
         }
         didSet{
             self.viewModel?.viewDelegate = self
-            //self.refreshDisplay()
+            self.refreshDisplay()
         }
         
+    }
+    
+    fileprivate func refreshDisplay(){
+        
+        self.viewModel?.refreshItems()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Shine"
+        self.configureTableView()
         self.configureNavigationBar()
 
         // Do any additional setup after loading the view.
@@ -40,6 +50,21 @@ class TimeLineViewController: UIViewController {
         
         // Add skip
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
+    }
+    
+    private func configureTableView(){
+        
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.register(FeedCell.self, forCellReuseIdentifier: FeedCell.identifier)
+        
+        // Hide empty unused cells
+        self.tableView.tableFooterView = UIView()
+        
+        // Disable selection
+        self.tableView.allowsSelection = false //this disables didSelectRowAt
+        
+        
     }
     
     func addTapped(){
@@ -79,6 +104,34 @@ class TimeLineViewController: UIViewController {
         self.viewModel?.createEvent()
     }
 
+}
+
+extension TimeLineViewController : UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        return 276.0
+    }
+    
+}
+
+extension TimeLineViewController : UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: FeedCell.identifier, for: indexPath) as! FeedCell
+        
+        return cell
+    }
+    
 }
 
 extension TimeLineViewController : TimeLineViewModelViewDelegate {

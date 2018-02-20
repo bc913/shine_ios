@@ -60,6 +60,10 @@ struct ShineNetworkService {
             }
         }
         
+        struct Feed {
+            static let myFeedUrl : String = baseUrl + "users/me/feed"
+        }
+        
         struct AWS3 {
             static let identityPoolId = "us-east-1:47270df4-2548-48b3-9625-25d30ee060ef"
             static let regionType = AWSRegionType.USEast1
@@ -999,7 +1003,76 @@ struct ShineNetworkService {
             
         } // User
         
-        
+        struct Feed {
+            static func getMyFeed(nextPageKey: String, mainThreadCompletionHandler: @escaping (_ error: NSError?, _ feedListModel: FeedListModel?) -> ()){
+                
+                let headers: HTTPHeaders = [
+                    "Content-Type": "application/json",
+                    "USER-ID": PersistanceManager.User.userId!
+                ]
+                
+                var url = Constants.Feed.myFeedUrl
+                if !nextPageKey.isEmpty {
+                    url += "?n=" + nextPageKey
+                }
+                
+                let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
+                Alamofire.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
+                    .responseJSON(
+                        queue: queue,
+                        completionHandler: { response in
+                            // Debug
+                            Helper.debugResponse(methodName: "getMyFeed()", response: response)
+                            
+                            // Check status code
+                            let httpStatusCode = response.response?.statusCode
+                            
+                            // Error
+                            var error : NSError? = nil
+                            guard response.result.isSuccess else {
+                                
+                                error = ErrorFactory.createForAlamofireResponse(with: httpStatusCode!)
+                                print("Error 1")
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                            }
+                            
+                            // serialized json response
+                            guard let jsonData = response.result.value, let jsonDict = jsonData as? [String:Any] else{
+                                error = ErrorFactory.createForResponseDataSerialization(with: httpStatusCode!)
+                                print("Error 2")
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                            }
+                            
+                            if let errorMessage = jsonDict["message"] as? String {
+                                error = ErrorFactory.create(.User, .User, .User, description: errorMessage)
+                                print("Error 3")
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                                
+                            }
+                            
+                            let feedModel = FeedListModel(json: jsonDict)
+                            
+                            if feedModel == nil {
+                                error = ErrorFactory.createForResponseDataSerialization(with: nil)
+                                print("Json data is not parsed successfully for the user profile model")
+                                
+                            }
+                            
+                            //
+                            // To update anything on the main thread, just jump back on like so.
+                            mainThreadCompletionHandler(error, feedModel)
+                            print("#############################################################")
+                            
+                    }
+                )
+                
+                
+                
+            }
+        }
         
         
         

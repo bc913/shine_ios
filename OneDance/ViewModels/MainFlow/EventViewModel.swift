@@ -17,7 +17,7 @@ protocol EventViewModelViewDelegate : class {
 }
 
 protocol EventViewModelCoordinatorDelegate : class {
-    
+    func viewModelDidRequestLocation()
 }
 
 typealias EventVMCoordinatorDelegate = EventViewModelCoordinatorDelegate & ChildViewModelCoordinatorDelegate
