@@ -30,6 +30,7 @@
 		650CB27C1F68DF020093F2FC /* MainAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650CB27A1F68DF020093F2FC /* MainAuthViewController.swift */; };
 		650CB27D1F68DF020093F2FC /* MainAuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 650CB27B1F68DF020093F2FC /* MainAuthViewController.xib */; };
 		650CB2821F68EBF20093F2FC /* MainAuthViewModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650CB2811F68EBF20093F2FC /* MainAuthViewModelInterface.swift */; };
+		650E16D9203D05DE001F90B0 /* ShineLocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650E16D8203D05DE001F90B0 /* ShineLocationCell.swift */; };
 		65100F1E20295A36006CEEA4 /* ShineSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65100F1D20295A36006CEEA4 /* ShineSwitchCell.swift */; };
 		65100F20202967E2006CEEA4 /* ShineTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65100F1F202967E2006CEEA4 /* ShineTextFieldCell.swift */; };
 		65100F22202AA096006CEEA4 /* ShineTextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65100F21202AA096006CEEA4 /* ShineTextViewCell.swift */; };
@@ -175,6 +176,7 @@
 		650CB27A1F68DF020093F2FC /* MainAuthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainAuthViewController.swift; path = Authentication/MainAuthViewController.swift; sourceTree = "<group>"; };
 		650CB27B1F68DF020093F2FC /* MainAuthViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainAuthViewController.xib; path = Authentication/MainAuthViewController.xib; sourceTree = "<group>"; };
 		650CB2811F68EBF20093F2FC /* MainAuthViewModelInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainAuthViewModelInterface.swift; path = ViewModels/Interfaces/MainAuthViewModelInterface.swift; sourceTree = "<group>"; };
+		650E16D8203D05DE001F90B0 /* ShineLocationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShineLocationCell.swift; path = ViewControllers/TableCells/Form/ShineLocationCell.swift; sourceTree = "<group>"; };
 		65100F1D20295A36006CEEA4 /* ShineSwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShineSwitchCell.swift; path = ViewControllers/TableCells/Form/ShineSwitchCell.swift; sourceTree = "<group>"; };
 		65100F1F202967E2006CEEA4 /* ShineTextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShineTextFieldCell.swift; path = ViewControllers/TableCells/Form/ShineTextFieldCell.swift; sourceTree = "<group>"; };
 		65100F21202AA096006CEEA4 /* ShineTextViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShineTextViewCell.swift; path = ViewControllers/TableCells/Form/ShineTextViewCell.swift; sourceTree = "<group>"; };
@@ -625,6 +627,7 @@
 				65100F1D20295A36006CEEA4 /* ShineSwitchCell.swift */,
 				65100F1F202967E2006CEEA4 /* ShineTextFieldCell.swift */,
 				65100F21202AA096006CEEA4 /* ShineTextViewCell.swift */,
+				650E16D8203D05DE001F90B0 /* ShineLocationCell.swift */,
 			);
 			name = Form;
 			sourceTree = "<group>";
@@ -1010,6 +1013,7 @@
 				65FD06F11F1D719F00932E5F /* LocationSearchTableViewController.swift in Sources */,
 				652A3D061FD50F0900376CB6 /* User.swift in Sources */,
 				65100F1E20295A36006CEEA4 /* ShineSwitchCell.swift in Sources */,
+				650E16D9203D05DE001F90B0 /* ShineLocationCell.swift in Sources */,
 				654479151FC7507200FE3B58 /* ShineError.swift in Sources */,
 				65427D2B1F905BA100407C5D /* InitialProfileSetupCoordinator.swift in Sources */,
 				656834D31F8C7F8300ADCBA2 /* EmailLoginViewModel.swift in Sources */,

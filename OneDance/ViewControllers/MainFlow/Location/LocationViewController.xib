@@ -28,18 +28,11 @@
                     </constraints>
                     <state key="normal" title="Button"/>
                 </button>
-                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="vR5-v1-tKR">
-                    <rect key="frame" x="0.0" y="143" width="375" height="381"/>
-                </mapView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="3Vu-lH-RWk" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="8XS-uj-tMH"/>
-                <constraint firstItem="vR5-v1-tKR" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="Cxc-Kg-5be"/>
                 <constraint firstAttribute="bottom" secondItem="3Vu-lH-RWk" secondAttribute="bottom" constant="40" id="IXZ-Eb-a3Y"/>
-                <constraint firstAttribute="trailing" secondItem="vR5-v1-tKR" secondAttribute="trailing" id="SeD-lS-qbL"/>
-                <constraint firstItem="3Vu-lH-RWk" firstAttribute="top" secondItem="vR5-v1-tKR" secondAttribute="bottom" constant="53" id="i09-M3-8Bf"/>
-                <constraint firstItem="vR5-v1-tKR" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="uJQ-Vn-tXJ"/>
             </constraints>
             <point key="canvasLocation" x="33.5" y="53.5"/>
         </view>

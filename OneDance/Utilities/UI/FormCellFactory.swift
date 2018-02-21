@@ -148,10 +148,10 @@ struct FormItemCellFactory {
             return cell
             
         case .location:
-            nibName = LocationFormCell.nib
-            identifier = LocationFormCell.identifier
-            tableView.register(nibName, forCellReuseIdentifier: identifier!)
-            if let cell = tableView.dequeueReusableCell(withIdentifier: identifier!) as? LocationFormCell {
+            nibName = nil
+            identifier = ShineLocationCell.identifier
+            tableView.register(ShineLocationCell.self, forCellReuseIdentifier: identifier!)
+            if let cell = tableView.dequeueReusableCell(withIdentifier: identifier!) as? ShineLocationCell {
                 cell.placeHolder = Helper.createPlaceHolderText(purpose: purpose, type: type)
                 return cell
             }

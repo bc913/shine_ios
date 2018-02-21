@@ -81,6 +81,8 @@ protocol EventViewModelType : class {
     func cancel()
     func goBack()
     
+    func requestLocation()
+    
     
 }
 
@@ -472,6 +474,10 @@ class EventViewModel : EventViewModelType {
         if self.mode != .create || self.mode != .edit {
             self.coordinatorDelegate?.viewModelDidSelectGoBack(mode: self.mode)
         }
+    }
+    
+    func requestLocation() {
+        self.coordinatorDelegate?.viewModelDidRequestLocation()
     }
     
 }

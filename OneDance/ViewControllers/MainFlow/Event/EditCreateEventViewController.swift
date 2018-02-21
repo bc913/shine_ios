@@ -174,18 +174,25 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
             
         }
         
-//        // Location cell
-//        if let locationCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .location, placeHolder: nil) as? LocationFormCell{
-//            
-//            locationCell.viewController = self
-//            locationCell.valueChanged = {
-//                print("Value change is not applicaple")
-//                
-//            }
-//            
-//            cells.append(locationCell)
-//            
-//        }
+        // Location cell
+        if let locationCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .location, placeHolder: nil) as? ShineLocationCell{
+            
+            if let vm = self.viewModel, vm.mode == .edit, vm.location != nil {
+                locationCell.displayedValue = vm.location!.name
+            }
+            
+            locationCell.selectionDelegate = self
+            locationCell.getIndexPath = {
+                return self.getIndexPathOfCell(locationCell)
+            }
+            
+            locationCell.valueChanged = {
+                self.viewModel?.location?.name = locationCell.rightLabel.text!
+            }
+            
+            cells.append(locationCell)
+            
+        }
         
         // URL
         if let urlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "Url") as? ShineTextFieldCell{
@@ -814,6 +821,10 @@ extension EditCreateEventViewController : CellSelectionDelegate{
             self.activeIndex = indexPath
         }
         
+    }
+    
+    func cellSelectedForLocation(){
+        self.viewModel?.requestLocation()
     }
 }
 

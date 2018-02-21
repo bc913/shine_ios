@@ -423,6 +423,8 @@ class EventCoordinator : BaseChildCoordinator {
         self.init(host:host, id: id, mode: .viewOnly)
     }
     
+    var locationCoordinator : LocationCoordinator?
+    
 
 }
 
@@ -457,9 +459,10 @@ extension EventCoordinator : Coordinator {
 extension EventCoordinator : EventViewModelCoordinatorDelegate{
     
     func viewModelDidRequestLocation(){
-        let locCoordinator = LocationCoordinator(host: self.hostNavigationController, id: "")
-        locCoordinator.parentCoordinator = self
-        locCoordinator.start()
+        print("EventCoordinator::vmDidRequestLocation")
+        self.locationCoordinator = LocationCoordinator(host: self.hostNavigationController, id: "")
+        self.locationCoordinator?.parentCoordinator = self
+        self.locationCoordinator?.start()
     }
 }
 
@@ -486,7 +489,7 @@ extension LocationCoordinator : Coordinator {
         let vc = LocationViewController(nibName: "LocationViewController", bundle: nil)
         let vm = LocationPickerViewModel()
         vm.coordinatorDelegate = self
-        vm.viewDelegate = vc
+        vc.viewModel = vm
         let navigationController = UINavigationController(rootViewController: vc)
         self.hostNavigationController.visibleViewController?.present(navigationController, animated:true)
     }

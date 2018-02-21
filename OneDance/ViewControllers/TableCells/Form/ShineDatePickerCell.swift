@@ -140,8 +140,8 @@ class ShineDatePickerCell: BaseFormCell {
                 attribute: NSLayoutAttribute.top,
                 multiplier: 1.0,
                 constant: 0
-            ),
-            ])
+            )
+        ])
         
         // Picker constraints.
         datePickerContainer.addConstraints([
@@ -171,8 +171,8 @@ class ShineDatePickerCell: BaseFormCell {
                 attribute: NSLayoutAttribute.top,
                 multiplier: 1.0,
                 constant: 0
-            ),
-            ])
+            )
+        ])
         
         
         // Right label
@@ -216,7 +216,7 @@ class ShineDatePickerCell: BaseFormCell {
                 attribute: NSLayoutAttribute.left,
                 multiplier: 1.0,
                 constant: 0
-            ),
+            )
         ])
         
         // Right label
@@ -247,8 +247,8 @@ class ShineDatePickerCell: BaseFormCell {
                 attribute: NSLayoutAttribute.right,
                 multiplier: 1.0,
                 constant: 0
-            ),
-            ])
+            )
+        ])
         
         // Container.
         self.contentView.addConstraints([
@@ -287,7 +287,7 @@ class ShineDatePickerCell: BaseFormCell {
                 attribute: NSLayoutAttribute.notAnAttribute,
                 multiplier: 1.0,
                 constant: 44.0
-            ),
+            )
         ])
         
         // Container.
@@ -327,8 +327,8 @@ class ShineDatePickerCell: BaseFormCell {
                 attribute: NSLayoutAttribute.bottom,
                 multiplier: 1.0,
                 constant: 1
-            ),
-            ])
+            )
+        ])
         
         
         datePicker.addTarget(self, action: #selector(datePicked), for: UIControlEvents.valueChanged)

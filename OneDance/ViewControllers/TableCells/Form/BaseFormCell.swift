@@ -28,6 +28,7 @@ protocol SelectableCell : class {
 
 protocol CellSelectionDelegate : class {
     func cellSelectionChanged(_ cell: BaseFormCell, state: SelectionState, indexPath: IndexPath?)
+    func cellSelectedForLocation()
 }
 
 protocol ExpandingCellDelegate : class {
@@ -101,6 +102,10 @@ extension BaseFormCell : SelectableCell {
         // Notify the table view
         let index = self.getIndexPath?()
         self.selectionDelegate?.cellSelectionChanged(self, state: selectionState, indexPath: index)
+    }
+    
+    func notifyForLocation(){
+        self.selectionDelegate?.cellSelectedForLocation()
     }
 }
 
