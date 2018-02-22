@@ -142,6 +142,25 @@ struct Feed {
         guard let postDetail = json["post"] as? [String:Any] else { return nil }
         self.post = PostDetail(json: postDetail)!
     }
+    
+    // Convenience properties
+    var username : String {
+        get{
+            return self.post.owner?.userName ?? "Undefined"
+        }
+    }
+    
+    var date : Date {
+        get{
+            return self.post.dateCreated ?? Date()
+        }
+    }
+    
+    var text : String {
+        get {
+            return self.post.text
+        }
+    }
 }
 
 extension Feed : JSONDecodable {
@@ -197,7 +216,7 @@ struct FeedListModel {
 typealias TimeLineVMCoordinatorDelegate = TimeLineViewModelCoordinatorDelegate & ChildViewModelCoordinatorDelegate
 
 protocol TimeLineViewModelViewDelegate : class {
-    
+    func viewModelDidFinishUpdate(viewModel: TimeLineViewModelType)
 }
 
 protocol TimeLineViewModelCoordinatorDelegate : class {
@@ -243,7 +262,11 @@ class TimeLineViewModel : TimeLineViewModelType {
     var errorMessage: String = ""
     
     // Model
-    var feedListModel = FeedListModel()
+    var feedListModel = FeedListModel() {
+        didSet{
+            print("listmodel set count: \(self.count)")
+        }
+    }
     var currentPage : Int = 1
     
     var shouldShowLoadingCell: Bool = false
@@ -265,6 +288,7 @@ class TimeLineViewModel : TimeLineViewModelType {
                     if let model = feedListModel, refresh {
                         self.feedListModel = model
                     }
+                    self.viewDelegate?.viewModelDidFinishUpdate(viewModel: self)
                     return
                 }
                 

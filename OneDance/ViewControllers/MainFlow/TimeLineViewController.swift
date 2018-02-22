@@ -122,12 +122,16 @@ extension TimeLineViewController : UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return (self.viewModel?.count)!
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = self.tableView.dequeueReusableCell(withIdentifier: FeedCell.identifier, for: indexPath) as! FeedCell
+        
+        if let feedItem = self.viewModel?.itemAtIndex(indexPath.row) {
+            cell.item = feedItem
+        }
         
         return cell
     }
@@ -135,5 +139,8 @@ extension TimeLineViewController : UITableViewDataSource {
 }
 
 extension TimeLineViewController : TimeLineViewModelViewDelegate {
-    
+    func viewModelDidFinishUpdate(viewModel: TimeLineViewModelType){
+        self.tableView.reloadData()
+        
+    }
 }

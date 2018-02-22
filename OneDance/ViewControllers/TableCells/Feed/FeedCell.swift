@@ -8,13 +8,6 @@
 
 import UIKit
 
-class FeedItem {
-    var username : String = ""
-    var timeStamp : Date = Date()
-    var description : String = "asdasdasdadasdasdasdasdad"
-    
-    
-}
 
 class BaseFeedCell: UITableViewCell {
     
@@ -27,11 +20,11 @@ class BaseFeedCell: UITableViewCell {
 class FeedCell: BaseFeedCell {
 
     
-    var item : FeedItem = FeedItem() {
+    var item : Feed = Feed() {
         didSet{
-            self.setUserNameAndDate(name: item.username, date: item.timeStamp)
+            self.setUserNameAndDate(name: item.username, date: item.date)
             // Desc
-            self.setDescriptionLabel(desc: item.description)
+            self.setDescriptionLabel(desc: item.text)
             
         }
     }
@@ -84,7 +77,6 @@ class FeedCell: BaseFeedCell {
     let postImageView = UIImageView()
     private func setPostImageView(){
         
-        self.postImageView.backgroundColor = UIColor.blue
         self.postImageView.contentMode = .scaleAspectFit
         
     }
