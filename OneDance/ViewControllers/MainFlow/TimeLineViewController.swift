@@ -8,9 +8,15 @@
 
 import UIKit
 
-class TimeLineViewController: UIViewController {
+final class TimeLineViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
+    
+    // Photo manager
+    var photoManager = PhotoManager.instance()
+    
+    // Refresh
+    let refreshControl = UIRefreshControl()
     
     /// Test cells
     var cells = [BaseFeedCell]()
@@ -25,11 +31,6 @@ class TimeLineViewController: UIViewController {
             self.refreshDisplay()
         }
         
-    }
-    
-    fileprivate func refreshDisplay(){
-        
-        self.viewModel?.refreshItems()
     }
     
     override func viewDidLoad() {
@@ -57,6 +58,7 @@ class TimeLineViewController: UIViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.register(FeedCell.self, forCellReuseIdentifier: FeedCell.identifier)
+        self.tableView.register(FeedWithMediaCell.self, forCellReuseIdentifier: FeedWithMediaCell.identifier)
         
         // Hide empty unused cells
         self.tableView.tableFooterView = UIView()
@@ -64,8 +66,46 @@ class TimeLineViewController: UIViewController {
         // Disable selection
         self.tableView.allowsSelection = false //this disables didSelectRowAt
         
+        // Row height
+        self.tableView.estimatedRowHeight = 200.0
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        
+        // refresh control
+        if #available(iOS 10.0, *){
+            self.tableView.refreshControl = self.refreshControl
+        } else {
+            self.tableView.addSubview(self.refreshControl)
+        }
+        
+        //refresh
+        self.refreshControl.addTarget(self, action: #selector(refreshItems), for: .valueChanged)
+
         
     }
+    
+    // MARK: REFRESH & FETCH
+    @objc
+    func refreshItems(){
+        self.viewModel?.refreshItems()
+    }
+    
+    fileprivate func refreshDisplay(){
+        
+        self.viewModel?.refreshItems()
+    }
+    
+    func fetchNextPage(){
+        self.viewModel?.fetchNextPage()
+    }
+    
+    fileprivate func isLoadingIndexPath(_ indexPath: IndexPath) -> Bool {
+        
+        guard let viewModel = self.viewModel, viewModel.shouldShowLoadingCell else {
+            return false
+        }
+        return indexPath.row == viewModel.count
+    }
+
     
     func addTapped(){
         self.showActionSheet()
@@ -108,10 +148,17 @@ class TimeLineViewController: UIViewController {
 
 extension TimeLineViewController : UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard self.isLoadingIndexPath(indexPath) else { return }
         
-        return 276.0
+        //self.fetchNextPage()
+        
     }
+    
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        
+//        return 276.0
+//    }
     
 }
 
@@ -122,24 +169,79 @@ extension TimeLineViewController : UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (self.viewModel?.count)!
+        return self.viewModel != nil && self.viewModel!.shouldShowLoadingCell ? self.viewModel!.count + 1 : self.viewModel!.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = self.tableView.dequeueReusableCell(withIdentifier: FeedCell.identifier, for: indexPath) as! FeedCell
-        
-        if let feedItem = self.viewModel?.itemAtIndex(indexPath.row) {
-            cell.item = feedItem
+        if isLoadingIndexPath(indexPath) {
+            return LoadingTableCell(style: .default, reuseIdentifier: LoadingTableCell.identifier)
+        } else {
+            
+            if let feedItem = self.viewModel?.itemAtIndex(indexPath.row) {
+                
+                if feedItem.hasPostMedia {
+                    let cell = self.tableView.dequeueReusableCell(withIdentifier: FeedWithMediaCell.identifier, for: indexPath) as! FeedWithMediaCell
+                    
+                    // Feed
+                    cell.item = feedItem
+                    
+                    // User photo
+                    self.assignUserThumbnailImage(cell: cell as FeedableCell, url: feedItem.profilePhotoUrl)
+                    
+                    // Post media
+                    self.assignPostMedia(cell: cell, url: feedItem.postMediaUrl)
+                    
+                    return cell
+                } else {
+                    
+                    let cell = self.tableView.dequeueReusableCell(withIdentifier: FeedCell.identifier, for: indexPath) as! FeedCell
+                    
+                    // Feed
+                    cell.item = feedItem
+                    
+                    // User photo
+                    self.assignUserThumbnailImage(cell: cell as FeedableCell, url: feedItem.profilePhotoUrl)
+                    
+                    
+                    return cell
+                }
+            }
+            
+            
+            return UITableViewCell()
         }
         
-        return cell
+        
+    }
+    
+    func assignUserThumbnailImage(cell: FeedableCell, url: String){
+        
+        if let image = self.photoManager.cachedImage(for: url) {
+            cell.setUserThumbnailImage(image: image)
+        } else {
+            photoManager.retrieveImage(for: url){ image in
+                cell.setUserThumbnailImage(image: image)
+            }
+        }
+    }
+    
+    func assignPostMedia(cell: FeedWithMediaCell, url: String){
+        
+        if let image = self.photoManager.cachedImage(for: url) {
+            cell.setPostImageView(image: image)
+        } else {
+            photoManager.retrieveImage(for: url){ image in
+                cell.setPostImageView(image: image)
+            }
+        }
     }
     
 }
 
 extension TimeLineViewController : TimeLineViewModelViewDelegate {
     func viewModelDidFinishUpdate(viewModel: TimeLineViewModelType){
+        self.refreshControl.endRefreshing() // to stop loading animation
         self.tableView.reloadData()
         
     }

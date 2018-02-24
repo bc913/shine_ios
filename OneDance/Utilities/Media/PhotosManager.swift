@@ -163,6 +163,22 @@ final class PhotoManager {
         
         ShineNetworkService.API.Organization.changeOrganizationPhoto(orgId: orgId, uploadKeyName: Constants.AWS3.uploadKeyNameForEventImage, mainThreadCompletionHandler: shineCompletionHandler)
     }
-    
-    
 }
+
+//class PendingOperations {
+//    lazy var downloadsInProgress = [IndexPath:ImageDownloadOperation]()
+//    lazy var downloadQueue:OperationQueue = {
+//        var queue = OperationQueue()
+//        queue.name = "Download queue"
+//        queue.maxConcurrentOperationCount = 1
+//        return queue
+//    }()
+//    
+//    lazy var decodingsInProgress = [IndexPath:Operation]()
+//    lazy var decodingQueue:OperationQueue = {
+//        var queue = OperationQueue()
+//        queue.name = "Decoding queue"
+//        queue.maxConcurrentOperationCount = 1
+//        return queue
+//    }()
+//}

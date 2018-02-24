@@ -161,6 +161,34 @@ struct Feed {
             return self.post.text
         }
     }
+    
+    var profilePhotoUrl : String {
+        get{
+            
+            let url = self.post.owner?.profilePhoto?.thumbnail?.url?.absoluteString
+            return url ?? ""
+        }
+    }
+    
+    var location : String {
+        get{
+            return self.post.location?.name ?? ""
+        }
+    }
+    
+    var hasPostMedia : Bool {
+        get{
+            
+            return self.post.media != nil && self.post.media!.id != nil && self.post.media!.id!.isEmpty
+        }
+    }
+    
+    var postMediaUrl : String {
+        get{
+            let url = self.post.media?.standard?.url?.absoluteString
+            return url ?? ""
+        }
+    }
 }
 
 extension Feed : JSONDecodable {
@@ -285,9 +313,13 @@ class TimeLineViewModel : TimeLineViewModelType {
             DispatchQueue.main.async {
                 guard let error = error else {
                     
-                    if let model = feedListModel, refresh {
+                    if let model = feedListModel, refresh { // Refresh
                         self.feedListModel = model
+                    } else { // Fetch
+                        
                     }
+                    
+                    self.shouldShowLoadingCell = self.feedListModel.nextPageKey.isEmpty ? false : true
                     self.viewDelegate?.viewModelDidFinishUpdate(viewModel: self)
                     return
                 }
@@ -296,7 +328,7 @@ class TimeLineViewModel : TimeLineViewModelType {
             }
         }
         
-        ShineNetworkService.API.Feed.getMyFeed(nextPageKey: self.feedListModel.nextPageKey, mainThreadCompletionHandler: modelCompletionHandler)
+        ShineNetworkService.API.Feed.getMyFeed(nextPageKey: self.feedListModel.nextPageKey, refresh: refresh, mainThreadCompletionHandler: modelCompletionHandler)
     }
     
     var count: Int {

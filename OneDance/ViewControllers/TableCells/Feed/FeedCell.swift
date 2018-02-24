@@ -15,34 +15,51 @@ class BaseFeedCell: UITableViewCell {
         return 276.0
     }
     
+    var item : Feed = Feed()
+}
+
+protocol FeedableCell {
+    
+    func setUserThumbnailImage(image:UIImage)
 }
 
 class FeedCell: BaseFeedCell {
 
     
-    var item : Feed = Feed() {
+    override var item : Feed {
         didSet{
             self.setUserNameAndDate(name: item.username, date: item.date)
             // Desc
             self.setDescriptionLabel(desc: item.text)
+            // Location
+            self.setLocationLabel(name: item.location)
+            
             
         }
     }
     
     // Dimensions
-    let postImageHeight : CGFloat = 150.0
-    let upperContainerHeight : CGFloat = 66.0
-    let cellTopMargin : CGFloat = 4.0
-    let likeCommentContainerHeight : CGFloat = 32.0
+    private let upperContainerHeight : CGFloat = 66.0
+    private let cellTopMargin : CGFloat = 4.0
+    private let likeCommentContainerHeight : CGFloat = 32.0
     
+    var didSetupConstraints = false
     
-    let profileImageHeight : CGFloat = 44.0
-    let profileImageWidth : CGFloat = 44.0
+    private let profileImageHeight : CGFloat = 44.0
+    private let profileImageWidth : CGFloat = 44.0
     
     
     
     //MARK: SUBVIEWS
-    let profileImageView = UIImageView(image:UIImage(named: "profile"))
+    
+    /// Upper Container
+    let upperContainer = UIView()
+    
+    private let profileImageView = UIImageView(image:UIImage(named: "profile"))
+    public func setUserThumbnailImage(image: UIImage){
+        self.profileImageView.image = image
+    }
+    
     
     let userNameAndDateLabel = UILabel()
     let dateFormatter = DateFormatter()
@@ -64,21 +81,10 @@ class FeedCell: BaseFeedCell {
     
     /// Location
     let locationLabel = UILabel()
-    private func setLocationLabel(){
+    private func setLocationLabel(name: String = ""){
         
-        let attributedText = NSMutableAttributedString(string: "Location", attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 12)])
+        let attributedText = NSMutableAttributedString(string: name, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 12)])
         self.locationLabel.attributedText = attributedText
-    }
-    
-    /// Upper Container
-    let upperContainer = UIView()
-    
-    /// Post image
-    let postImageView = UIImageView()
-    private func setPostImageView(){
-        
-        self.postImageView.contentMode = .scaleAspectFit
-        
     }
     
     // likeCommentContainer
@@ -94,20 +100,24 @@ class FeedCell: BaseFeedCell {
         
     }
     
+    /// Constraints
+    var upperToDescriptionConstraint = NSLayoutConstraint()
+    var descriptionToLikeContainerConstraint = NSLayoutConstraint()
+    var descriptionHeightConstraint = NSLayoutConstraint()
+    
     
     private func setupViews(){
         
         self.clipsToBounds = true
         
-        let views = [profileImageView, userNameAndDateLabel, locationLabel, upperContainer, postImageView, likeCommentContainer, likeImageView, commentImageView, descriptionLabel]
+        let views = [profileImageView, userNameAndDateLabel, locationLabel, upperContainer, likeCommentContainer, likeImageView, commentImageView, descriptionLabel]
         for view in views {
             self.contentView.addSubview(view)
             view.translatesAutoresizingMaskIntoConstraints = false // Activate auto layout
         }
         
         // Date
-        self.dateFormatter.dateStyle = .short
-        self.dateFormatter.timeStyle = .none
+        self.dateFormatter.dateFormat = "MMMM d, yyyy"
         
         // Thumbnail
         self.profileImageView.contentMode = .scaleAspectFit
@@ -119,23 +129,35 @@ class FeedCell: BaseFeedCell {
         // Location
         self.setLocationLabel()
         
-        // Post image
-        self.setPostImageView()
-        
         // Description
         self.descriptionLabel.numberOfLines = 0
         self.descriptionLabel.lineBreakMode = .byWordWrapping
-        self.setDescriptionLabel(desc: "lmalnamsndasd,asdmnalsjdkbabskdbasmdnasdfhsdfjshdfjsdjfhsjdfhvsjhdfvsdfsdfsdsd")
+        //self.setDescriptionLabel(desc: "lmalnamsndasd,asdmnalsjdkbabskdbasmdnasdfhsdfjshdfjsdjfhsjasdasdasdasdasdasdasdadasdadsasdadfhvsjhdfvsdfsdfsdsd")
         
         // Constraints
-        self.setupContraints()
-    }
-    
-    private func setupContraints(){
         
         self.upperContainer.addSubview(self.profileImageView)
         self.upperContainer.addSubview(userNameAndDateLabel)
         self.upperContainer.addSubview(locationLabel)
+        
+        self.likeCommentContainer.addSubview(likeImageView)
+        self.likeCommentContainer.addSubview(commentImageView)
+        
+        self.setupContraints()
+        self.didSetupConstraints = true
+    }
+    
+    override func updateConstraints() {
+        
+        if !self.didSetupConstraints {
+            self.setupContraints()
+            self.didSetupConstraints = true
+        }
+        
+        super.updateConstraints()
+    }
+    
+    private func setupContraints(){
         
         // thumbnail
        
@@ -239,7 +261,7 @@ class FeedCell: BaseFeedCell {
                 toItem: self.contentView,
                 attribute: NSLayoutAttribute.top,
                 multiplier: 1.0,
-                constant: self.cellTopMargin
+                constant: 0.0 //self.cellTopMargin
             ),
             NSLayoutConstraint(
                 item: upperContainer,
@@ -261,48 +283,59 @@ class FeedCell: BaseFeedCell {
             )
         ])
         
+        upperToDescriptionConstraint = NSLayoutConstraint(
+            item: descriptionLabel,
+            attribute: NSLayoutAttribute.top,
+            relatedBy: NSLayoutRelation.equal,
+            toItem: upperContainer,
+            attribute: NSLayoutAttribute.bottom,
+            multiplier: 1.0,
+            constant: 8.0
+        )
+        
+        descriptionToLikeContainerConstraint = NSLayoutConstraint(
+            item: descriptionLabel,
+            attribute: NSLayoutAttribute.bottom,
+            relatedBy: NSLayoutRelation.equal,
+            toItem: likeCommentContainer,
+            attribute: NSLayoutAttribute.top,
+            multiplier: 1.0,
+            constant: -8.0
+        )
+        
+        self.descriptionHeightConstraint = NSLayoutConstraint(
+            item: descriptionLabel,
+            attribute: NSLayoutAttribute.height,
+            relatedBy: NSLayoutRelation.greaterThanOrEqual,
+            toItem: nil,
+            attribute: NSLayoutAttribute.notAnAttribute,
+            multiplier: 1.0,
+            constant: 48.0
+        )
+        
         self.contentView.addConstraints([
             NSLayoutConstraint(
-                item: postImageView,
+                item: descriptionLabel,
                 attribute: NSLayoutAttribute.left,
                 relatedBy: NSLayoutRelation.equal,
                 toItem: self.contentView,
                 attribute: NSLayoutAttribute.left,
                 multiplier: 1.0,
-                constant: 0
+                constant: self.separatorInset.left
             ),
+            upperToDescriptionConstraint,
+            descriptionToLikeContainerConstraint,
             NSLayoutConstraint(
-                item: postImageView,
-                attribute: NSLayoutAttribute.top,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: upperContainer,
-                attribute: NSLayoutAttribute.bottom,
-                multiplier: 1.0,
-                constant: 0
-            ),
-            NSLayoutConstraint(
-                item: postImageView,
-                attribute: NSLayoutAttribute.height,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: nil,
-                attribute: NSLayoutAttribute.notAnAttribute,
-                multiplier: 1.0,
-                constant: self.postImageHeight
-            ),
-            NSLayoutConstraint(
-                item: postImageView,
+                item: descriptionLabel,
                 attribute: NSLayoutAttribute.right,
                 relatedBy: NSLayoutRelation.equal,
                 toItem: self.contentView,
                 attribute: NSLayoutAttribute.right,
                 multiplier: 1.0,
-                constant: 0
-            )
+                constant: -self.separatorInset.left
+            ),
+            descriptionHeightConstraint
         ])
-        
-        
-        self.likeCommentContainer.addSubview(likeImageView)
-        self.likeCommentContainer.addSubview(commentImageView)
         
         self.contentView.addConstraints([
             NSLayoutConstraint(
@@ -316,9 +349,9 @@ class FeedCell: BaseFeedCell {
             ),
             NSLayoutConstraint(
                 item: likeCommentContainer,
-                attribute: NSLayoutAttribute.top,
+                attribute: NSLayoutAttribute.bottom,
                 relatedBy: NSLayoutRelation.equal,
-                toItem: postImageView,
+                toItem: self.contentView,
                 attribute: NSLayoutAttribute.bottom,
                 multiplier: 1.0,
                 constant: 0
@@ -421,44 +454,6 @@ class FeedCell: BaseFeedCell {
             )
         ])
         
-        self.contentView.addConstraints([
-            NSLayoutConstraint(
-                item: descriptionLabel,
-                attribute: NSLayoutAttribute.left,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: self.contentView,
-                attribute: NSLayoutAttribute.left,
-                multiplier: 1.0,
-                constant: self.separatorInset.left
-            ),
-            NSLayoutConstraint(
-                item: descriptionLabel,
-                attribute: NSLayoutAttribute.top,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: likeCommentContainer,
-                attribute: NSLayoutAttribute.bottom,
-                multiplier: 1.0,
-                constant: 0
-            ),
-            NSLayoutConstraint(
-                item: descriptionLabel,
-                attribute: NSLayoutAttribute.bottom,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: self.contentView,
-                attribute: NSLayoutAttribute.bottom,
-                multiplier: 1.0,
-                constant: 0.0
-            ),
-            NSLayoutConstraint(
-                item: descriptionLabel,
-                attribute: NSLayoutAttribute.right,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: self.contentView,
-                attribute: NSLayoutAttribute.right,
-                multiplier: 1.0,
-                constant: -self.separatorInset.left
-            )
-        ])
         
         
     }
@@ -477,12 +472,10 @@ class FeedCell: BaseFeedCell {
         return UINib(nibName: self.identifier, bundle: nil)
     }
     
-    static var identifier : String {
+    class var identifier : String {
         return String(describing: self)
     }
-    
-   
-    
-    
 
 }
+
+extension FeedCell : FeedableCell{}

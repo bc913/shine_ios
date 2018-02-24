@@ -1004,7 +1004,7 @@ struct ShineNetworkService {
         } // User
         
         struct Feed {
-            static func getMyFeed(nextPageKey: String, mainThreadCompletionHandler: @escaping (_ error: NSError?, _ feedListModel: FeedListModel?) -> ()){
+            static func getMyFeed(nextPageKey: String, refresh: Bool, mainThreadCompletionHandler: @escaping (_ error: NSError?, _ feedListModel: FeedListModel?) -> ()){
                 
                 let headers: HTTPHeaders = [
                     "Content-Type": "application/json",
@@ -1012,7 +1012,7 @@ struct ShineNetworkService {
                 ]
                 
                 var url = Constants.Feed.myFeedUrl
-                if !nextPageKey.isEmpty {
+                if !nextPageKey.isEmpty && !refresh {
                     url += "?n=" + nextPageKey
                 }
                 
