@@ -33,7 +33,7 @@ protocol Modeable {
 //MARK: ChildCoordinators
 //MARK:=======================
 
-// Every parent coordinator shoul adopt this
+// Every parent coordinator shoul conform this
 protocol ChildCoordinatorDelegate : class {
     
     // LIST
@@ -56,7 +56,6 @@ protocol ChildCoordinatorDelegate : class {
     
     
     // EVENT
-    // User request an event's detail
     func childCoordinatorDidRequestEventDetail(sender: BaseChildCoordinator, id: String, mode: ShineMode)
     
     
@@ -72,7 +71,7 @@ protocol ChildCoordinatorDelegate : class {
     // POST
     // regular, uploadPhotoOnly, likes or follows
     // USer request a post's detail
-    func childCoordinatorDidRequestPostDetail(sender: BaseChildCoordinator, id: String)
+    func childCoordinatorDidRequestPostDetail(sender: BaseChildCoordinator, id: String, mode: ShineMode)
     
     
     // MEDIA
@@ -120,7 +119,7 @@ protocol ChildViewModelCoordinatorDelegate : class {
     func viewModelDidSelectOrganizationProfile(organizationID: String, requestedMode: ShineMode)
     func viewModelDidSelectEvent(eventID: String, requestedMode: ShineMode)
     func viewModelDidSelectList(id: String, listType: ListType)
-    func viewModelDidSelectPost(postID: String)
+    func viewModelDidSelectPost(postID: String, requestedMode: ShineMode)
     func viewModelDidFinishOperation(mode: ShineMode)
     func viewModelDidSelectGoBack(mode: ShineMode)
 }
@@ -145,8 +144,8 @@ extension BaseChildCoordinator : ChildViewModelCoordinatorDelegate {
         self.delegate?.childCoordinatorDidRequestList(sender: self, id: id, listType: listType)
     }
     // Post
-    func viewModelDidSelectPost(postID: String){
-        self.delegate?.childCoordinatorDidRequestPostDetail(sender: self, id: postID)
+    func viewModelDidSelectPost(postID: String, requestedMode: ShineMode){
+        self.delegate?.childCoordinatorDidRequestPostDetail(sender: self, id: postID, mode: requestedMode)
     }
     
     func viewModelDidFinishOperation(mode: ShineMode) {
@@ -228,12 +227,13 @@ extension HomeScreenContainerCoordinator : ChildCoordinatorDelegate {
 //        listCoordinator.start()
     }
     
-    func childCoordinatorDidRequestPostDetail(sender: BaseChildCoordinator, id: String){
+    func childCoordinatorDidRequestPostDetail(sender: BaseChildCoordinator, id: String, mode: ShineMode){
 //        self.updateChildCoordinators(sender: sender)
-//        let postCoordinator = PostCoordinator(host: self.containerNavigationController, id: id)
+        let postCoordinator = PostCoordinator(host: self.containerNavigationController, id: id, mode:mode)
 //        childCoordinators["POST"] = postCoordinator
-//        postCoordinator.delegate = self
-//        postCoordinator.start()
+        postCoordinator.delegate = self
+        self.coordinatorStack.push(postCoordinator)
+        postCoordinator.start()
     }
     
     func childCoordinatorNotifyTimeline(sender:BaseChildCoordinator, id: String, notification: NotificationType ){
@@ -474,6 +474,50 @@ extension EventCoordinator : LocationCoordinatorDelegate{
 
     
 }
+
+//===============================================================================================
+//MARK: PostCoordinator
+//MARK:==========================
+class PostCoordinator : BaseChildCoordinator{
+    
+    var mode : ShineMode
+    
+    init(host: UINavigationController, id: String, mode: ShineMode = .create) {
+        self.mode = mode
+        //self.viewModel = EventViewModel(mode: self.mode, id: id)
+        super.init(host:host, id: id)
+    }
+    
+    override convenience init(host: UINavigationController, id: String) {
+        self.init(host:host, id: id, mode: .viewOnly)
+    }
+    
+}
+
+extension PostCoordinator : Coordinator {
+    
+    func start() {
+        
+        startCreateEditPost()
+    }
+    
+    func startCreateEditPost(){
+        
+        let vc = EditCreatePostViewController(nibName: nil, bundle: nil)
+        let vm = PostViewModel(mode: .create, id: "")
+        vm.coordinatorDelegate = self
+        vc.viewModel = vm
+        
+        let navigationController = UINavigationController(rootViewController: vc)
+        self.hostNavigationController.topViewController?.present(navigationController, animated:true)
+    }
+    
+}
+
+extension PostCoordinator : PostViewModelCoordinatorDelegate {
+    
+}
+
 
 //===============================================================================================
 //MARK: LocationCoordinator

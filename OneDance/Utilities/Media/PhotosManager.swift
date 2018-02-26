@@ -98,6 +98,7 @@ final class PhotoManager {
             
             static let uploadKeyNameForEventImage : String = "event-image.png"
             static let uploadKeyNameForOrganizationImage : String = "org-image.png"
+            static let uploadKeyNameForPostImage : String = "post-image.png"
         }
     }
     
@@ -148,7 +149,7 @@ final class PhotoManager {
     
     func uploadOrganizationImage(with data: Data, orgId: String, progressBlock: AWSS3TransferUtilityProgressBlock?, completionHandler: AWSS3TransferUtilityUploadCompletionHandlerBlock?, shineCompletionHandler: @escaping(_ error: NSError?) -> ()){
         print("#############################################################")
-        print(" ---------  S3.uploadCreateEventImage() ---------------------")
+        print(" ---------  S3.uploadCreateOrganizationImage() ---------------------")
         let transferUtility = AWSS3TransferUtility.default()
         let expression = AWSS3TransferUtilityUploadExpression()
         expression.progressBlock = progressBlock
@@ -163,6 +164,38 @@ final class PhotoManager {
         
         ShineNetworkService.API.Organization.changeOrganizationPhoto(orgId: orgId, uploadKeyName: Constants.AWS3.uploadKeyNameForEventImage, mainThreadCompletionHandler: shineCompletionHandler)
     }
+    
+    func uploadPostImage(with data: Data, progressBlock: AWSS3TransferUtilityProgressBlock?, completionHandler: @escaping (NSError?, UploadedMediaType?) -> ()){
+        print("#############################################################")
+        print(" ---------  S3.uploadPostImage() ---------------------")
+        let transferUtility = AWSS3TransferUtility.default()
+        let expression = AWSS3TransferUtilityUploadExpression()
+        expression.progressBlock = progressBlock
+        
+        let awsCompletionHandler : AWSS3TransferUtilityUploadCompletionHandlerBlock = { (task, error) -> Void in
+            
+            DispatchQueue.main.async(execute: {
+                if let error = error {
+                    completionHandler(error as NSError, nil)
+                } else {
+                    let uploadedMedia = UploadedMedia(name: Constants.AWS3.uploadKeyNameForPostImage, type: .photo)
+                    completionHandler(nil, uploadedMedia)
+                }
+            
+            })
+            
+        }
+        
+        transferUtility.uploadData(
+            data,
+            bucket: Constants.AWS3.S3BucketName,
+            key: Constants.AWS3.uploadKeyNameForPostImage,
+            contentType: "image/png",
+            expression: expression,
+            completionHandler: awsCompletionHandler)
+    }
+    
+    
 }
 
 //class PendingOperations {

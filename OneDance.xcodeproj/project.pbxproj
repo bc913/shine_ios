@@ -68,6 +68,8 @@
 		6546A0461FBBC65500B23685 /* NameTitleFormCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6546A0441FBBC65500B23685 /* NameTitleFormCell.xib */; };
 		654873862041C31C00CAC92A /* FeedWithMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654873852041C31C00CAC92A /* FeedWithMediaCell.swift */; };
 		654873882041D6F500CAC92A /* Date+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654873872041D6F500CAC92A /* Date+Utilities.swift */; };
+		6548738A2042140900CAC92A /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654873892042140900CAC92A /* PostViewModel.swift */; };
+		6548738D204314D800CAC92A /* EditCreatePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6548738C204314D800CAC92A /* EditCreatePostViewController.swift */; };
 		6548EE5B1FB8BA170076EA4B /* OrganizationProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6548EE5A1FB8BA170076EA4B /* OrganizationProfileViewModel.swift */; };
 		6548EE681FB8CFE70076EA4B /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6548EE661FB8CFE70076EA4B /* TextFieldCell.swift */; };
 		6548EE691FB8CFE70076EA4B /* TextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6548EE671FB8CFE70076EA4B /* TextFieldCell.xib */; };
@@ -217,6 +219,8 @@
 		6546A0441FBBC65500B23685 /* NameTitleFormCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NameTitleFormCell.xib; path = ViewControllers/TableCells/Form/NameTitleFormCell.xib; sourceTree = "<group>"; };
 		654873852041C31C00CAC92A /* FeedWithMediaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FeedWithMediaCell.swift; path = ViewControllers/TableCells/Feed/FeedWithMediaCell.swift; sourceTree = "<group>"; };
 		654873872041D6F500CAC92A /* Date+Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Date+Utilities.swift"; path = "Utilities/Extensions/Date+Utilities.swift"; sourceTree = "<group>"; };
+		654873892042140900CAC92A /* PostViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PostViewModel.swift; path = ViewModels/MainFlow/PostViewModel.swift; sourceTree = "<group>"; };
+		6548738C204314D800CAC92A /* EditCreatePostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditCreatePostViewController.swift; path = ViewControllers/MainFlow/Post/EditCreatePostViewController.swift; sourceTree = "<group>"; };
 		6548EE5A1FB8BA170076EA4B /* OrganizationProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OrganizationProfileViewModel.swift; path = ViewModels/MainFlow/OrganizationProfileViewModel.swift; sourceTree = "<group>"; };
 		6548EE661FB8CFE70076EA4B /* TextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TextFieldCell.swift; path = ViewControllers/TableCells/Base/TextFieldCell.swift; sourceTree = "<group>"; };
 		6548EE671FB8CFE70076EA4B /* TextFieldCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TextFieldCell.xib; path = ViewControllers/TableCells/Base/TextFieldCell.xib; sourceTree = "<group>"; };
@@ -575,6 +579,7 @@
 		654424341FA6BAB100CC850D /* MainFlow */ = {
 			isa = PBXGroup;
 			children = (
+				6548738B2043027A00CAC92A /* Post */,
 				652285D3203BC9BB0082A551 /* Location */,
 				650415E21FF0CF7000D19A89 /* User */,
 				650415DD1FF038D000D19A89 /* Organization */,
@@ -637,6 +642,14 @@
 				650E16D8203D05DE001F90B0 /* ShineLocationCell.swift */,
 			);
 			name = Form;
+			sourceTree = "<group>";
+		};
+		6548738B2043027A00CAC92A /* Post */ = {
+			isa = PBXGroup;
+			children = (
+				6548738C204314D800CAC92A /* EditCreatePostViewController.swift */,
+			);
+			name = Post;
 			sourceTree = "<group>";
 		};
 		6548EE611FB8CF290076EA4B /* Base */ = {
@@ -717,6 +730,7 @@
 				65714CFD1FE600B7001FAB44 /* EventViewModel.swift */,
 				6509345C1FEA2023001AB8EB /* UserViewModel.swift */,
 				650C6B031FF34B560008597C /* TimeLineViewModel.swift */,
+				654873892042140900CAC92A /* PostViewModel.swift */,
 			);
 			name = MainFlow;
 			sourceTree = "<group>";
@@ -1040,6 +1054,7 @@
 				650AF5A41F89836200DE46E1 /* ShineNetworkService.swift in Sources */,
 				6558EB4520263EB500D184D2 /* ShineDatePickerCell.swift in Sources */,
 				6548EE5B1FB8BA170076EA4B /* OrganizationProfileViewModel.swift in Sources */,
+				6548738A2042140900CAC92A /* PostViewModel.swift in Sources */,
 				65640E021F9C423E006C2E21 /* ProfileImageSelectionVMInterface.swift in Sources */,
 				6548EE6F1FB918C30076EA4B /* FormCellFactory.swift in Sources */,
 				65134F1D1F1B19C40017C930 /* MapViewController.swift in Sources */,
@@ -1080,6 +1095,7 @@
 				65439CF01FFA0A3D00EDE435 /* UserTableCell.swift in Sources */,
 				650C6B071FF35F500008597C /* TimeLineViewController.swift in Sources */,
 				654672711FA02A7A002DDC40 /* ProfileInfoSetupViewModelInterface.swift in Sources */,
+				6548738D204314D800CAC92A /* EditCreatePostViewController.swift in Sources */,
 				65F538D51FA811B20034DAFA /* UserProfileViewController.swift in Sources */,
 				650C6B001FF32D790008597C /* HomeScreenCoordinator.swift in Sources */,
 				650905DF1FDF8B00004E272D /* Authentication.swift in Sources */,

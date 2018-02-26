@@ -122,6 +122,10 @@ final class TimeLineViewController: UIViewController {
             self.createEventAction()
         }))
         
+        actionSheet.addAction(UIAlertAction(title: "Create Post", style: UIAlertActionStyle.default, handler: { (alert:UIAlertAction!) -> Void in
+            self.createPostAction()
+        }))
+        
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
         
         self.navigationController?.present(actionSheet, animated: true, completion: nil)
@@ -143,6 +147,10 @@ final class TimeLineViewController: UIViewController {
         
         self.viewModel?.createEvent()
     }
+    
+    private func createPostAction(){
+        self.viewModel?.createPost()
+    }
 
 }
 
@@ -151,7 +159,8 @@ extension TimeLineViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard self.isLoadingIndexPath(indexPath) else { return }
         
-        //self.fetchNextPage()
+        print("willDisplay")
+        self.fetchNextPage()
         
     }
     

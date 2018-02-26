@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 //==================
 // Post Detail
 //==================
@@ -189,6 +190,13 @@ struct Feed {
             return url ?? ""
         }
     }
+    
+    var id : String {
+        get{
+            return self.post.id
+        }
+        
+    }
 }
 
 extension Feed : JSONDecodable {
@@ -263,6 +271,7 @@ protocol TimeLineViewModelType : class {
     
     func createOrganization()
     func createEvent()
+    func createPost()
     
     var errorMessage : String { get set }
     
@@ -296,10 +305,11 @@ class TimeLineViewModel : TimeLineViewModelType {
         }
     }
     var currentPage : Int = 1
-    
     var shouldShowLoadingCell: Bool = false
+    
     func refreshItems() {
         self.currentPage = 1
+        self.feedListModel.nextPageKey = ""
         self.loadItems(refresh: true)
     }
     
@@ -313,10 +323,28 @@ class TimeLineViewModel : TimeLineViewModelType {
             DispatchQueue.main.async {
                 guard let error = error else {
                     
-                    if let model = feedListModel, refresh { // Refresh
-                        self.feedListModel = model
-                    } else { // Fetch
+                    if let model = feedListModel {
                         
+                        if refresh {// Refresh
+                            self.feedListModel = model
+                        }else { // Fetch
+                            
+                            
+                            for feed in model.feedItems{
+                                let hasIt = self.feedListModel.feedItems.contains { item in
+                                    
+                                    if feed.id == item.id { return true }
+                                    else { return false }
+                                }
+                                
+                                if !hasIt {
+                                    self.feedListModel.feedItems.append(feed)
+                                }
+                            }
+                            
+                            self.feedListModel.nextPageKey = model.nextPageKey
+                            
+                        }
                     }
                     
                     self.shouldShowLoadingCell = self.feedListModel.nextPageKey.isEmpty ? false : true
@@ -350,6 +378,10 @@ class TimeLineViewModel : TimeLineViewModelType {
     
     func createEvent() {
         self.coordinatorDelegate?.viewModelDidSelectEvent(eventID: "", requestedMode: .create)
+    }
+    
+    func createPost(){
+        self.coordinatorDelegate?.viewModelDidSelectPost(postID: "", requestedMode: .create)
     }
     
     

@@ -62,6 +62,7 @@ struct ShineNetworkService {
         
         struct Feed {
             static let myFeedUrl : String = baseUrl + "users/me/feed"
+            static let createPostUrl : String = baseUrl + "posts"
         }
         
         struct AWS3 {
@@ -1006,18 +1007,20 @@ struct ShineNetworkService {
         struct Feed {
             static func getMyFeed(nextPageKey: String, refresh: Bool, mainThreadCompletionHandler: @escaping (_ error: NSError?, _ feedListModel: FeedListModel?) -> ()){
                 
+                //https://stackoverflow.com/questions/43282281/how-to-add-alamofire-url-parameters
+                
                 let headers: HTTPHeaders = [
                     "Content-Type": "application/json",
                     "USER-ID": PersistanceManager.User.userId!
                 ]
                 
-                var url = Constants.Feed.myFeedUrl
-                if !nextPageKey.isEmpty && !refresh {
-                    url += "?n=" + nextPageKey
-                }
+                let parameters : Parameters = [
+                    "n" : nextPageKey
+                ]
+                
                 
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
-                Alamofire.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
+                Alamofire.request(Constants.Feed.myFeedUrl, method: .get, parameters: nextPageKey.isEmpty ? nil : parameters, encoding: URLEncoding.queryString, headers: headers)
                     .responseJSON(
                         queue: queue,
                         completionHandler: { response in
@@ -1071,7 +1074,73 @@ struct ShineNetworkService {
                 
                 
                 
+            }//GetMyFeed
+         
+            static func createPost(model: NewPost, mainThreadCompletionHandler: @escaping (_ error: NSError?, _ postDetailModel: PostDetailType?) -> ()){
+                
+                let headers: HTTPHeaders = [
+                    "Content-Type": "application/json",
+                    "USER-ID": PersistanceManager.User.userId!
+                ]
+
+                let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
+                Alamofire.request(Constants.Feed.createPostUrl, method: .post, parameters: model.jsonData, encoding: JSONEncoding.default, headers: headers)
+                    .responseJSON(
+                        queue: queue,
+                        completionHandler: { response in
+                            // Debug
+                            Helper.debugResponse(methodName: "createPost()", response: response)
+                            
+                            // Check status code
+                            let httpStatusCode = response.response?.statusCode
+                            
+                            // Error
+                            var error : NSError? = nil
+                            guard response.result.isSuccess else {
+                                
+                                error = ErrorFactory.createForAlamofireResponse(with: httpStatusCode!)
+                                print("Error 1")
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                            }
+                            
+                            // serialized json response
+                            guard let jsonData = response.result.value, let jsonDict = jsonData as? [String:Any] else{
+                                error = ErrorFactory.createForResponseDataSerialization(with: httpStatusCode!)
+                                print("Error 2")
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                            }
+                            
+                            if let errorMessage = jsonDict["message"] as? String {
+                                error = ErrorFactory.create(.User, .User, .User, description: errorMessage)
+                                print("Error 3")
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                                
+                            }
+                            
+                            let postDetailModel = PostDetail(json: jsonDict)
+                            
+                            if postDetailModel == nil {
+                                error = ErrorFactory.createForResponseDataSerialization(with: nil)
+                                print("Json data is not parsed successfully for the user profile model")
+                                print("Error 4")
+                                
+                            }
+                            
+                            //
+                            // To update anything on the main thread, just jump back on like so.
+                            mainThreadCompletionHandler(error, postDetailModel)
+                            print("#############################################################")
+                            
+                    }
+                )
+                
+                
+                
             }
+            
         }
         
         

@@ -145,3 +145,31 @@ extension MediaImage : JSONDecodable {
         ]
     }
 }
+
+
+enum MediaType {
+    case photo
+    case video
+}
+
+protocol UploadedMediaType {
+    var name : String { get set }
+    var type : MediaType { get set }
+}
+
+struct UploadedMedia : UploadedMediaType{
+    
+    var name : String = "post-photo.png"
+    var type : MediaType = .photo
+    
+}
+
+extension UploadedMedia : JSONDecodable {
+    var jsonData : [String:Any] {
+        
+        return [
+            "name" : self.name,
+            "photo" : self.type == .photo ? true : false
+        ]
+    }
+}

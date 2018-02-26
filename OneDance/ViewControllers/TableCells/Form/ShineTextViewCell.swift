@@ -172,6 +172,7 @@ extension ShineTextViewCell : UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         let height = calculateTextViewHeight(textView)
+        self.valueChanged?()
         
         if height > self.actualHeight, let indexPath = getIndexPath?() {
             self.actualHeight = height + 10
