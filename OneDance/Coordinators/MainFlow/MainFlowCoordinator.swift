@@ -50,7 +50,7 @@ class MainFlowCoordinator: Coordinator {
         // Profile
         
         
-        let profileVC = UserProfileViewController(nibName: "UserProfileViewController", bundle: nil)
+        let profileVC = UserViewController(nibName: "UserViewController", bundle: nil)
         let userProfileViewModel = UserViewModel(mode: .viewOnly, id: "", isMyProfile: true)
         profileVC.viewModel = userProfileViewModel
         
