@@ -96,6 +96,8 @@
 		654E02011FC139060095C4D1 /* DatePickerFormCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 654E01FF1FC139060095C4D1 /* DatePickerFormCell.xib */; };
 		654FE85D2022D5FF002D1D23 /* DatePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654FE85B2022D5FF002D1D23 /* DatePickerCell.swift */; };
 		654FE85E2022D5FF002D1D23 /* DatePickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 654FE85C2022D5FF002D1D23 /* DatePickerCell.xib */; };
+		6551DF5B204909FE00B3FC58 /* BasicCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6551DF5A204909FE00B3FC58 /* BasicCollectionCell.swift */; };
+		6551DF5D2049168A00B3FC58 /* BasicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6551DF5C2049168A00B3FC58 /* BasicView.swift */; };
 		6555751720479C320045CE8E /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6555751520479C320045CE8E /* UserViewController.swift */; };
 		6555751820479C320045CE8E /* UserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6555751620479C320045CE8E /* UserViewController.xib */; };
 		6558EB4520263EB500D184D2 /* ShineDatePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558EB4420263EB500D184D2 /* ShineDatePickerCell.swift */; };
@@ -249,6 +251,8 @@
 		654E01FF1FC139060095C4D1 /* DatePickerFormCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DatePickerFormCell.xib; path = ViewControllers/TableCells/Form/DatePickerFormCell.xib; sourceTree = "<group>"; };
 		654FE85B2022D5FF002D1D23 /* DatePickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DatePickerCell.swift; path = ViewControllers/TableCells/Form/DatePickerCell.swift; sourceTree = "<group>"; };
 		654FE85C2022D5FF002D1D23 /* DatePickerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DatePickerCell.xib; path = ViewControllers/TableCells/Form/DatePickerCell.xib; sourceTree = "<group>"; };
+		6551DF5A204909FE00B3FC58 /* BasicCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BasicCollectionCell.swift; path = ViewControllers/CollectionCells/BasicCollectionCell.swift; sourceTree = "<group>"; };
+		6551DF5C2049168A00B3FC58 /* BasicView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BasicView.swift; path = ViewControllers/CustomViews/BasicView.swift; sourceTree = "<group>"; };
 		6555751520479C320045CE8E /* UserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserViewController.swift; path = ViewControllers/MainFlow/User/UserViewController.swift; sourceTree = "<group>"; };
 		6555751620479C320045CE8E /* UserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = UserViewController.xib; path = ViewControllers/MainFlow/User/UserViewController.xib; sourceTree = "<group>"; };
 		6558EB4420263EB500D184D2 /* ShineDatePickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShineDatePickerCell.swift; path = ViewControllers/TableCells/Form/ShineDatePickerCell.swift; sourceTree = "<group>"; };
@@ -511,6 +515,7 @@
 		65134F171F1B17EB0017C930 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				6551DF59204907C300B3FC58 /* CollectionCells */,
 				6548738E2043BF2300CAC92A /* CustomViews */,
 				654424341FA6BAB100CC850D /* MainFlow */,
 				654B1D191F91B13A00B13925 /* ProfileSetup */,
@@ -662,6 +667,7 @@
 		6548738E2043BF2300CAC92A /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				6551DF5C2049168A00B3FC58 /* BasicView.swift */,
 			);
 			name = CustomViews;
 			sourceTree = "<group>";
@@ -714,6 +720,14 @@
 				6548EE6E1FB918C30076EA4B /* FormCellFactory.swift */,
 			);
 			name = UI;
+			sourceTree = "<group>";
+		};
+		6551DF59204907C300B3FC58 /* CollectionCells */ = {
+			isa = PBXGroup;
+			children = (
+				6551DF5A204909FE00B3FC58 /* BasicCollectionCell.swift */,
+			);
+			name = CollectionCells;
 			sourceTree = "<group>";
 		};
 		65640E031F9C4325006C2E21 /* ProfileSetup */ = {
@@ -1063,9 +1077,11 @@
 				65FC55E31F67933000E02503 /* AppCoordinator.swift in Sources */,
 				650AF5A71F89846B00DE46E1 /* CommandInterface.swift in Sources */,
 				654938B61F98578D00B6D60C /* PersistanceManager.swift in Sources */,
+				6551DF5D2049168A00B3FC58 /* BasicView.swift in Sources */,
 				650CB27C1F68DF020093F2FC /* MainAuthViewController.swift in Sources */,
 				65FC6D411F132BBD00B33C09 /* ODUserManager.swift in Sources */,
 				65427D281F90508300407C5D /* DanceTypeTableViewCell.swift in Sources */,
+				6551DF5B204909FE00B3FC58 /* BasicCollectionCell.swift in Sources */,
 				655CE7551FA17423005B0774 /* ProfileInfoSetupViewModel.swift in Sources */,
 				650AF5A41F89836200DE46E1 /* ShineNetworkService.swift in Sources */,
 				6558EB4520263EB500D184D2 /* ShineDatePickerCell.swift in Sources */,
