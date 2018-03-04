@@ -107,7 +107,7 @@ class EditUserProfileViewController: UIViewController {
     private func constructCells(){
         
         // Text
-        if let bioCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextView, placeHolder: "Tell us about your event details") as? ShineTextViewCell{
+        if let bioCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextView, placeHolder: nil) as? ShineTextViewCell{
             
             // Initialize the form if it is in edit mode
             if let vm = self.viewModel, vm.mode == .edit {
@@ -121,6 +121,7 @@ class EditUserProfileViewController: UIViewController {
             }
             
             bioCell.valueChanged = {
+                
                 self.viewModel?.bio = bioCell.textView.text
             }
             

@@ -8,6 +8,66 @@
 
 import Foundation
 
+protocol UpdatedProfileModelType : JSONDecodable{
+    var fullname : String? { get set }
+    var password : String? { get set }
+    var bio : String? { get set }
+    var webUrl : String? { get set }
+    var isPrivateAccount : Bool? { get set }
+    
+    var hasData : Bool { get }
+}
+
+struct UpdatedProfileModel : UpdatedProfileModelType{
+    
+    var fullname : String?
+    var password : String?
+    var bio : String?
+    var webUrl : String?
+    var isPrivateAccount : Bool?
+    
+    var hasData : Bool {
+        get{
+            return fullname != nil || password != nil || bio != nil || webUrl != nil || isPrivateAccount != nil
+        }
+    }
+
+}
+
+extension UpdatedProfileModel : JSONDecodable {
+    var jsonData : [String:Any]{
+        
+        var json = [String : Any]()
+        
+        
+        // TODO: Update this code for better checks
+        if self.fullname != nil{
+            json["fullname"] = self.fullname!
+        }
+        
+        if self.password != nil {
+            json["password"] = self.password!
+        }
+        
+        if self.bio != nil {
+            json["bio"] = self.bio!
+            
+        }
+        
+        if self.webUrl != nil {
+            json["website"] = self.webUrl!
+        }
+        
+        if self.isPrivateAccount != nil {
+            json["privateAccount"] = self.isPrivateAccount!
+        }
+        
+        return json
+    }
+}
+
+
+
 protocol UserViewModelCoordinatorDelegate : class {
     
 }
@@ -24,6 +84,7 @@ protocol UserViewModelType : class {
     weak var coordinatorDelegate : UserVMCoordinatorDelegate? { get set }
     weak var viewDelegate : UserViewModelViewDelegate? { get set }
     var isMyProfile : Bool { get }
+    var updatedUserModel : UpdatedProfileModelType? { get set }
     
     var mode : ShineMode { get set }
     var model : UserModelType? { get set }
@@ -66,6 +127,7 @@ class UserViewModel : UserViewModelType{
         }
     }
     
+    var updatedUserModel : UpdatedProfileModelType?
     
     var mode : ShineMode = .viewOnly
     var model : UserModelType?
@@ -73,7 +135,13 @@ class UserViewModel : UserViewModelType{
     // Properties
     var id : String
     var username : String = ""
-    var fullname : String = ""
+    var fullname : String = "" {
+        didSet{
+            if oldValue != fullname {
+                self.updatedUserModel?.fullname = fullname
+            }
+        }
+    }
     
     var email : String = ""
     var postsCounter : Int?
@@ -96,6 +164,10 @@ class UserViewModel : UserViewModelType{
         self.id = id
         
         self.fetchModelData()
+        
+        if mode == .edit {
+            self.updatedUserModel = UpdatedProfileModel()
+        }
     }
     
     
@@ -191,9 +263,31 @@ class UserViewModel : UserViewModelType{
     
     func doneEditing() {
         
+        if (self.updatedUserModel != nil && self.updatedUserModel!.hasData) {
+            
+            let modelCompletionHandler = { (error: NSError?) in
+                //Make sure we are on the main thread
+                DispatchQueue.main.async {
+                    print("Am I back on the main thread: \(Thread.isMainThread)")
+                    guard let error = error else {
+                        self.coordinatorDelegate?.viewModelDidFinishOperation(mode: self.mode)
+                        return
+                    }
+                    
+                    //self.errorMessage = error.localizedDescription
+                    
+                }
+                
+            }
+            
+            ShineNetworkService.API.User.updateMyProfile(updatedProfile: self.updatedUserModel!, mainThreadCompletionHandler: modelCompletionHandler)
+            
+            
+        } else {
+            self.coordinatorDelegate?.viewModelDidFinishOperation(mode: self.mode)
+        }
         
         
-        self.coordinatorDelegate?.viewModelDidFinishOperation(mode: self.mode)
     }
     
     func cancelEditing() {

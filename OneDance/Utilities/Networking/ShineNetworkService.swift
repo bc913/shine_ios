@@ -38,6 +38,8 @@ struct ShineNetworkService {
         static let updateUserProfileUrl : String = getMyProfileUrl
         static let changeProfilePhotoUrl : String = userUrl + "/me" + "/profile" + "/photo"
         
+        static let updateMyProfileUrl : String = baseUrl + "users/me/profile"
+        
         struct Organization {
             private static let base : String = baseUrl + "organizations"
             static let createUrl : String = base
@@ -919,7 +921,52 @@ struct ShineNetworkService {
                             
                     }
                 )
-            }//GetUserProfile
+            }//GetMyProfile
+            
+            static func updateMyProfile(updatedProfile: UpdatedProfileModelType, mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()) {
+                
+                let headers: HTTPHeaders = [
+                    "Content-Type": "application/json",
+                    "USER-ID": PersistanceManager.User.userId!
+                ]
+                
+                
+                let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
+                Alamofire.request(Constants.updateMyProfileUrl, method: .put, parameters: updatedProfile.jsonData, encoding: JSONEncoding.default, headers: headers)
+                    .responseJSON(
+                        queue: queue,
+                        completionHandler: { response in
+                            // Debug
+                            Helper.debugResponse(methodName: "updateMyProfile()", response: response)
+                            
+                            // Check status code
+                            let httpStatusCode = response.response?.statusCode
+                            
+                            // Error
+                            var error : NSError? = nil
+                            
+                            
+                            // No response is expected for this API. Only check for the status code
+                            
+                            // Check status code
+                            if let httpStatusCode = response.response?.statusCode, httpStatusCode > 299 {
+                                
+                                error = ErrorFactory.createForAlamofireResponse(with: httpStatusCode)
+                                print("Error 1")
+                                mainThreadCompletionHandler(error)
+                                return
+                            }
+                            
+                            
+                            
+                            //
+                            // To update anything on the main thread, just jump back on like so.
+                            mainThreadCompletionHandler(error)
+                            print("#############################################################")
+                            
+                    }
+                )
+            }//updateMyProfile
             
             static func getUserProfileImage(with url: String, mainThreadCompletionHandler: @escaping (_ error: NSError?, _ profileImage: UIImage?) ->()) {
                 
