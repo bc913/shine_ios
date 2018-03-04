@@ -18,6 +18,8 @@
 		650415DC1FF038B700D19A89 /* EditCreateEventViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 650415DA1FF038B700D19A89 /* EditCreateEventViewController.xib */; };
 		650415E01FF03A4900D19A89 /* EditCreateOrganizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650415DE1FF03A4900D19A89 /* EditCreateOrganizationViewController.swift */; };
 		650415E11FF03A4900D19A89 /* EditCreateOrganizationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 650415DF1FF03A4900D19A89 /* EditCreateOrganizationViewController.xib */; };
+		65063E8F204BA6CE00D8721B /* ProfileTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65063E8E204BA6CE00D8721B /* ProfileTabCoordinator.swift */; };
+		65063E91204BC8F800D8721B /* EditUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65063E90204BC8F800D8721B /* EditUserProfileViewController.swift */; };
 		650905DF1FDF8B00004E272D /* Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650905DE1FDF8B00004E272D /* Authentication.swift */; };
 		6509345D1FEA2023001AB8EB /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6509345C1FEA2023001AB8EB /* UserViewModel.swift */; };
 		650AF5A41F89836200DE46E1 /* ShineNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650AF5A31F89836200DE46E1 /* ShineNetworkService.swift */; };
@@ -173,6 +175,8 @@
 		650415DA1FF038B700D19A89 /* EditCreateEventViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditCreateEventViewController.xib; path = ViewControllers/MainFlow/Event/EditCreateEventViewController.xib; sourceTree = "<group>"; };
 		650415DE1FF03A4900D19A89 /* EditCreateOrganizationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditCreateOrganizationViewController.swift; path = ViewControllers/MainFlow/Organization/EditCreateOrganizationViewController.swift; sourceTree = "<group>"; };
 		650415DF1FF03A4900D19A89 /* EditCreateOrganizationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditCreateOrganizationViewController.xib; path = ViewControllers/MainFlow/Organization/EditCreateOrganizationViewController.xib; sourceTree = "<group>"; };
+		65063E8E204BA6CE00D8721B /* ProfileTabCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileTabCoordinator.swift; path = Coordinators/MainFlow/ProfileTabCoordinator.swift; sourceTree = "<group>"; };
+		65063E90204BC8F800D8721B /* EditUserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditUserProfileViewController.swift; path = ViewControllers/MainFlow/User/EditUserProfileViewController.swift; sourceTree = "<group>"; };
 		650905DE1FDF8B00004E272D /* Authentication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Authentication.swift; path = Models/Core/Authentication.swift; sourceTree = "<group>"; };
 		6509345C1FEA2023001AB8EB /* UserViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserViewModel.swift; path = ViewModels/MainFlow/UserViewModel.swift; sourceTree = "<group>"; };
 		650AF5A31F89836200DE46E1 /* ShineNetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShineNetworkService.swift; path = Utilities/Networking/ShineNetworkService.swift; sourceTree = "<group>"; };
@@ -410,6 +414,7 @@
 			children = (
 				6555751520479C320045CE8E /* UserViewController.swift */,
 				6555751620479C320045CE8E /* UserViewController.xib */,
+				65063E90204BC8F800D8721B /* EditUserProfileViewController.swift */,
 			);
 			name = User;
 			sourceTree = "<group>";
@@ -467,6 +472,7 @@
 			children = (
 				650C6AFF1FF32D790008597C /* HomeScreenCoordinator.swift */,
 				650C6B011FF34AA50008597C /* MainFlowCoordinator.swift */,
+				65063E8E204BA6CE00D8721B /* ProfileTabCoordinator.swift */,
 			);
 			name = MainFlow;
 			sourceTree = "<group>";
@@ -1088,6 +1094,7 @@
 				6548EE5B1FB8BA170076EA4B /* OrganizationProfileViewModel.swift in Sources */,
 				6548738A2042140900CAC92A /* PostViewModel.swift in Sources */,
 				65640E021F9C423E006C2E21 /* ProfileImageSelectionVMInterface.swift in Sources */,
+				65063E8F204BA6CE00D8721B /* ProfileTabCoordinator.swift in Sources */,
 				6548EE6F1FB918C30076EA4B /* FormCellFactory.swift in Sources */,
 				65134F1D1F1B19C40017C930 /* MapViewController.swift in Sources */,
 				656A1B3320392364008F3523 /* FeedCell.swift in Sources */,
@@ -1107,6 +1114,7 @@
 				654E02001FC139060095C4D1 /* DatePickerFormCell.swift in Sources */,
 				6561CED51FDE38FD008EC9A3 /* Helper.swift in Sources */,
 				6502E9EC2027B7AF00333BD4 /* PickerFormCell.swift in Sources */,
+				65063E91204BC8F800D8721B /* EditUserProfileViewController.swift in Sources */,
 				652285D6203BCA460082A551 /* LocationViewController.swift in Sources */,
 				652A3D001FD50DC000376CB6 /* Location.swift in Sources */,
 				65714CFE1FE600B7001FAB44 /* EventViewModel.swift in Sources */,

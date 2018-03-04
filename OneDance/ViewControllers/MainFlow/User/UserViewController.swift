@@ -19,6 +19,7 @@ class UserViewController: UIViewController {
     @IBOutlet weak var bioLabel: UILabel!
     @IBOutlet weak var urlLabel: UILabel!
     
+    @IBOutlet weak var editProfileImageView: UIImageView!
     
     @IBOutlet weak var followerFollowingContainer: UIView!
     
@@ -61,6 +62,13 @@ class UserViewController: UIViewController {
             setLabel(self.followerCounterLabel, with: String(viewModel.followerCounter ?? 0), ofSize: 24)
             setLabel(self.followingCounterLabel, with: String(viewModel.followingCounter ?? 0), ofSize: 24)
             
+            if (self.viewModel?.isMyProfile)! {
+                self.editProfileImageView.isHidden = false
+            } else {
+                self.editProfileImageView.isHidden = true
+            }
+            
+            
         } else {
             
             setLabel(self.fullNameLabel, with: "", ofSize: 18)
@@ -68,12 +76,12 @@ class UserViewController: UIViewController {
             setLabel(self.urlLabel, with: "", ofSize: 14)
             setLabel(self.followerCounterLabel, with: "", ofSize: 24)
             setLabel(self.followingCounterLabel, with: "", ofSize: 24)
+            
+            self.editProfileImageView.isHidden = false
         }
     }
     
     private func configureMainInfoContainer(){
-        
-        
         
         //self.mainInfoContainer.backgroundColor = UIColor(red: 44.0/255.0, green: 43.0/255.0, blue: 64.0/255.0, alpha: 0.95)
         
@@ -97,6 +105,24 @@ class UserViewController: UIViewController {
         setLabel(self.bioLabel, with: "", ofSize: 14)
         setLabel(self.urlLabel, with: "", ofSize: 14)
         
+        // Edit
+        let editImage : UIImage = UIImage(named: "edit")!
+        self.editProfileImageView.image = editImage
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(editProfileTapped(tapGestureRecognizer:)))
+        
+        self.editProfileImageView.isUserInteractionEnabled = true
+        self.editProfileImageView.addGestureRecognizer(tapGestureRecognizer)
+        
+    }
+    
+    @objc
+    fileprivate func editProfileTapped(tapGestureRecognizer: UIGestureRecognizer){
+        
+        if (tapGestureRecognizer.view as? UIImageView) != nil {
+            print("EventImage tapped")
+            self.viewModel?.requestEditing()
+            
+        }
     }
     
     private func configureFollowContainer(){

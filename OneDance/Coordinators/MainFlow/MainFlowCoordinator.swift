@@ -48,13 +48,11 @@ class MainFlowCoordinator: Coordinator {
         mapSearchNavigationController.tabBarItem = mapSearchTabBarItem
         
         // Profile
+        let profileNavigationVC = UINavigationController()
+        let profileScreenCoordinator = ProfileTabCoordinator(containerNavController: profileNavigationVC)
+        childCoordinators[PROFILE_TAB_KEY] = profileScreenCoordinator
+        profileScreenCoordinator.start()
         
-        
-        let profileVC = UserViewController(nibName: "UserViewController", bundle: nil)
-        let userProfileViewModel = UserViewModel(mode: .viewOnly, id: "", isMyProfile: true)
-        profileVC.viewModel = userProfileViewModel
-        
-        let profileNavigationVC = UINavigationController(rootViewController: profileVC)
         let profileTabrBarItem = UITabBarItem(title: "Profile", image: UIImage(named: "converter-tabbar.png"), tag: 3)
         profileNavigationVC.tabBarItem = profileTabrBarItem
         

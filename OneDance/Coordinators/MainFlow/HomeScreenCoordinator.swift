@@ -156,12 +156,13 @@ extension BaseChildCoordinator : ChildViewModelCoordinatorDelegate {
         self.delegate?.childCoordinatorDidRequestGoBack(sender: self, mode: mode)
     }
 }
+
 //===============================================================================================
 //MARK: ContainerCoordinator
 //===============================================================================================
 
-class HomeScreenContainerCoordinator : Coordinator{
-  
+class BaseContainerCoordinator {
+    
     var childCoordinators = [String: BaseChildCoordinator]()
     var containerNavigationController: UINavigationController
     
@@ -170,41 +171,32 @@ class HomeScreenContainerCoordinator : Coordinator{
     init(containerNavController: UINavigationController) {
         self.containerNavigationController = containerNavController
     }
-    
-    func start() {
-        self.showTimeLine()
-    }
-    
-    func updateChildCoordinators(sender: BaseChildCoordinator){
-        
-        if sender is TimeLineCoordinator {
-            self.childCoordinators[CoordinatorKeyName.TIMELINE] = nil
-        }
-        
-    }
 }
 
-extension HomeScreenContainerCoordinator{
+extension BaseContainerCoordinator {
     
     var activeCoordinator : BaseChildCoordinator? {
         return self.coordinatorStack.top
     }
 }
 
-extension HomeScreenContainerCoordinator : ChildCoordinatorDelegate {
+extension BaseContainerCoordinator : ChildCoordinatorDelegate {
     
     func childCoordinatorDidRequestUserDetail(sender: BaseChildCoordinator, id: String, mode: ShineMode){
         
-//        self.updateChildCoordinators(sender: sender)
-//        let userCoordinator = UserProfileCoordinator(host: self.containerNavigationController, id: id,mode: mode)
-//        childCoordinators["USER"] = userCoordinator
-//        userCoordinator.delegate = self
-//        userCoordinator.start()
+        //        let userCoordinator = UserProfileCoordinator(host: self.containerNavigationController, id: id,mode: mode)
+        //        childCoordinators["USER"] = userCoordinator
+        //        userCoordinator.delegate = self
+        //        userCoordinator.start()
+        
+        let userProfileCoordinator = UserProfileCoordinator(host: self.containerNavigationController, id: id,mode: mode)
+        userProfileCoordinator.delegate = self
+        self.coordinatorStack.push(userProfileCoordinator)
+        userProfileCoordinator.start()
     }
     
     func childCoordinatorDidRequestOrganizationDetail(sender: BaseChildCoordinator, id: String, mode: ShineMode){
-//        self.updateChildCoordinators(sender: sender)
-        let orgCoordinator = OrganizationCoordinator(host: self.containerNavigationController, id: id, mode: mode)        
+        let orgCoordinator = OrganizationCoordinator(host: self.containerNavigationController, id: id, mode: mode)
         orgCoordinator.delegate = self
         self.coordinatorStack.push(orgCoordinator)
         orgCoordinator.start()
@@ -212,7 +204,6 @@ extension HomeScreenContainerCoordinator : ChildCoordinatorDelegate {
     }
     
     func childCoordinatorDidRequestEventDetail(sender: BaseChildCoordinator, id: String, mode: ShineMode){
-//        self.updateChildCoordinators(sender: sender)
         let eventCoordinator = EventCoordinator(host: self.containerNavigationController, id: id, mode: mode)
         eventCoordinator.delegate = self
         self.coordinatorStack.push(eventCoordinator)
@@ -220,25 +211,18 @@ extension HomeScreenContainerCoordinator : ChildCoordinatorDelegate {
     }
     
     func childCoordinatorDidRequestList(sender: BaseChildCoordinator, id: String, listType: ListType ){
-//        self.updateChildCoordinators(sender: sender)
-//        let listCoordinator = ListCoordinator(host: self.containerNavigationController, id: id, listType: listType)
-//        childCoordinators["LIST"] = listCoordinator
-//        listCoordinator.delegate = self
-//        listCoordinator.start()
+        //        let listCoordinator = ListCoordinator(host: self.containerNavigationController, id: id, listType: listType)
+        //        childCoordinators["LIST"] = listCoordinator
+        //        listCoordinator.delegate = self
+        //        listCoordinator.start()
     }
     
     func childCoordinatorDidRequestPostDetail(sender: BaseChildCoordinator, id: String, mode: ShineMode){
-//        self.updateChildCoordinators(sender: sender)
         let postCoordinator = PostCoordinator(host: self.containerNavigationController, id: id, mode:mode)
-//        childCoordinators["POST"] = postCoordinator
+        //        childCoordinators["POST"] = postCoordinator
         postCoordinator.delegate = self
         self.coordinatorStack.push(postCoordinator)
         postCoordinator.start()
-    }
-    
-    func childCoordinatorNotifyTimeline(sender:BaseChildCoordinator, id: String, notification: NotificationType ){
-        // This is to refresh timeline after create an event or organization
-        self.showTimeLine()
     }
     
     // Notify container when delete, edit and create operations are done
@@ -253,6 +237,19 @@ extension HomeScreenContainerCoordinator : ChildCoordinatorDelegate {
         self.coordinatorStack.pop()
     }
     
+    
+}
+
+//===============================================================================================
+//MARK: HomeScreenCoordinator
+//===============================================================================================
+
+class HomeScreenContainerCoordinator : BaseContainerCoordinator, Coordinator{
+  
+    
+    func start() {
+        self.showTimeLine()
+    }
     
 }
     

@@ -13,10 +13,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EmailSignUpViewController" customModule="OneDance" customModuleProvider="target">
             <connections>
                 <outlet property="containerViewForFields" destination="aGa-2R-d4H" id="bud-GI-fYq"/>
-                <outlet property="contentView" destination="gc9-O2-zbV" id="kO5-eT-dbZ"/>
+                <outlet property="contentView" destination="gc9-O2-zbV" id="Eje-Jn-HYW"/>
                 <outlet property="createAccountButton" destination="VyP-BA-czg" id="Izk-gk-axd"/>
                 <outlet property="emailTextField" destination="PVg-LV-baz" id="pMD-Uj-XOj"/>
-                <outlet property="mainScrollView" destination="DUU-xj-LPV" id="kgT-Jd-yDk"/>
+                <outlet property="mainScrollView" destination="DUU-xj-LPV" id="haF-Uo-Y1g"/>
                 <outlet property="nameTextField" destination="X1J-Nd-Y9O" id="b6W-Vi-G9i"/>
                 <outlet property="passwordTextField" destination="jiE-WK-cCu" id="l3V-x2-n1D"/>
                 <outlet property="userNameTextField" destination="l2Z-gx-pPr" id="l2I-bT-n1o"/>
@@ -65,7 +65,6 @@
                                             <textInputTraits key="textInputTraits"/>
                                         </textField>
                                     </subviews>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="X1J-Nd-Y9O" firstAttribute="centerX" secondItem="aGa-2R-d4H" secondAttribute="centerX" id="5eK-5x-arE"/>
                                         <constraint firstItem="l2Z-gx-pPr" firstAttribute="width" secondItem="X1J-Nd-Y9O" secondAttribute="width" id="Anh-j7-OMz"/>

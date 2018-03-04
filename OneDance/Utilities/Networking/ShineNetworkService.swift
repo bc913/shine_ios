@@ -785,6 +785,7 @@ struct ShineNetworkService {
                 
             }// UpdateProfileWith
             
+                        
             static func getUserProfile(otherUserId: String, mainThreadCompletionHandler: @escaping (_ error: NSError?, _ userModel:UserModelType?) ->()) {
                 
                 let otherUserUrl = Constants.getUserProfileUrl(otherUserID: otherUserId)

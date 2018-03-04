@@ -37,12 +37,7 @@ class EmailSignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
-        self.mainScrollView.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
-        self.contentView.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
-        self.containerViewForFields.backgroundColor = UIColor(red: 0, green: 0.17, blue: 0.21, alpha: 1.0)
-        
-        
+        self.title = "Sign up"
         
         self.isLoaded = true
         self.configureCreateAccountButton()
@@ -59,12 +54,29 @@ class EmailSignUpViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
+        
+        // Gradient layer is problematic with auto layout
+        // Use custom views
+        //https://medium.com/@marcosantadev/calayer-and-auto-layout-with-swift-21b2d2b8b9d1
+        let gradTopColor = UIColor(red: 15.0/255.0, green: 12.0/255.0, blue: 41.0/255.0, alpha: 0.95)
+        let gradMidColor = UIColor(red: 48.0/255.0, green: 43.0/255.0, blue: 99.0/255.0, alpha: 0.95)
+        let gradBottomColor = UIColor(red: 36.0/255.0, green: 36.0/255.0, blue: 62.0/255.0, alpha: 0.95)
+        
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [gradTopColor.cgColor, gradMidColor.cgColor, gradBottomColor.cgColor]
+        gradientLayer.transform = CATransform3DMakeRotation(CGFloat.pi / 2.0, 0.0, 0.0, 1.0)
+        gradientLayer.frame = self.view.bounds
+        
+        self.contentView.layer.insertSublayer(gradientLayer, at: 0)
+        
         // This method is being called after all the layout is loaded
         // The default implementation does nothing.
         self.configureAllTextFields()
-        self.configureNavigationBar()
+        
+        
+        
     }
-
+    
     // Actions
     func userNameFieldDidChange(_ textField: UITextField)
     {
@@ -142,9 +154,11 @@ class EmailSignUpViewController: UIViewController {
             navigationBar.setBackgroundImage(UIImage(), for: .default)
             navigationBar.shadowImage = UIImage()
             navigationBar.isTranslucent = true
+            self.navigationController?.view.backgroundColor = .clear
         }       
         
     }
+    
 
     
 }

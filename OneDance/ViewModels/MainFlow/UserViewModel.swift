@@ -17,11 +17,13 @@ protocol UserViewModelViewDelegate : class {
     func viewModelDidFetchUserProfile(viewModel: UserViewModelType)
 }
 
+typealias UserVMCoordinatorDelegate = UserViewModelCoordinatorDelegate & ChildViewModelCoordinatorDelegate
 
 protocol UserViewModelType : class {
     
-    weak var coordinatorDelegate : UserViewModelCoordinatorDelegate? { get set }
+    weak var coordinatorDelegate : UserVMCoordinatorDelegate? { get set }
     weak var viewDelegate : UserViewModelViewDelegate? { get set }
+    var isMyProfile : Bool { get }
     
     var mode : ShineMode { get set }
     var model : UserModelType? { get set }
@@ -44,15 +46,25 @@ protocol UserViewModelType : class {
     var djProfile : DJProfileItem? { get set }
     var instructorProfile : InstructorProfileItem? { get set }
     
+    // Actions
+    func doneEditing()
+    func cancelEditing()
+    func requestEditing()
+    
 }
 
 class UserViewModel : UserViewModelType{
     
     // UserViewModel can only be in view only mode.
     
-    weak var coordinatorDelegate : UserViewModelCoordinatorDelegate?
+    weak var coordinatorDelegate : UserVMCoordinatorDelegate?
     weak var viewDelegate : UserViewModelViewDelegate?
-    private var isMyProfile : Bool
+    
+    var isMyProfile : Bool {
+        get{
+            return id == PersistanceManager.User.userId!
+        }
+    }
     
     
     var mode : ShineMode = .viewOnly
@@ -79,10 +91,9 @@ class UserViewModel : UserViewModelType{
     var instructorProfile : InstructorProfileItem?
     
     // Ctors
-    init(mode: ShineMode, id: String = "", isMyProfile: Bool = false) {
+    init(mode: ShineMode, id: String = "") {
         self.mode = mode
         self.id = id
-        self.isMyProfile = isMyProfile
         
         self.fetchModelData()
     }
@@ -177,6 +188,21 @@ class UserViewModel : UserViewModelType{
     }
     
     // Actions
+    
+    func doneEditing() {
+        
+        
+        
+        self.coordinatorDelegate?.viewModelDidFinishOperation(mode: self.mode)
+    }
+    
+    func cancelEditing() {
+        self.coordinatorDelegate?.viewModelDidFinishOperation(mode: self.mode)
+    }
+    
+    func requestEditing(){
+        self.coordinatorDelegate?.viewModelDidSelectUserProfile(userID: self.id, requestedMode: .edit)
+    }
     
     func updateProfile(){
         // Check if the user tries the edit his/her profile
