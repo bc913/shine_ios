@@ -12,8 +12,13 @@ class BasicCollectionCell: UICollectionViewCell {
     
     // MARK: - Subviews
     private var containerView : BasicView
-    
     private var label = UILabel()
+    
+    override var isSelected: Bool {
+        didSet{
+            self.containerView.layer.borderWidth = isSelected ? 4.0 : 0.0
+        }
+    }
     
     
     override init(frame: CGRect) {
@@ -112,8 +117,12 @@ class BasicCollectionCell: UICollectionViewCell {
         
     }
     
-    private func setupLabel(_ text: String){
+    private func setLabel(text: String){
         
+        let attributedText = NSAttributedString(string: text, attributes: [NSFontAttributeName: UIFont(name: "ChalkboardSE-Regular", size: 14) ?? UIFont.boldSystemFont(ofSize: 14),
+                                                                           NSForegroundColorAttributeName: UIColor.white])
+        
+        self.label.attributedText = attributedText
     }
     
     private func setupContainerView(){
@@ -121,6 +130,7 @@ class BasicCollectionCell: UICollectionViewCell {
     }
     
     public func configure(text: String){
+        self.setLabel(text: text)
         
     }
     

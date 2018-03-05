@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class ProfileTabCoordinator: BaseContainerCoordinator, Coordinator {
     
     func start() {
@@ -33,6 +32,7 @@ class ProfileTabCoordinator: BaseContainerCoordinator, Coordinator {
 class UserProfileCoordinator : BaseChildCoordinator {
     
     var mode : ShineMode
+    var danceTypesSelectionCoordinator : DanceTypesSelectionCoordinator?
     
     init(host: UINavigationController, id: String, mode: ShineMode = .viewOnly) {
         self.mode = mode
@@ -76,5 +76,81 @@ extension UserProfileCoordinator : Coordinator {
 }
 
 extension UserProfileCoordinator : UserViewModelCoordinatorDelegate{
+    
+    func viewModelDidRequestDanceTypeSelection(){
+        //self.danceTypesSelectionCoordinator?.ownerCoordinatorRequestDanceTypesSelection()
+        
+        danceTypesSelectionCoordinator = DanceTypesSelectionCoordinator(host: self.hostNavigationController, id: self.id, owner: self)
+        self.danceTypesSelectionCoordinator?.start()
+    }
+    
+}
+
+protocol DanceTypeSelectionCoordinatorOwnerType : class{
+    
+    func updateViewModelWithSelectedDanceTypes(dances: [IDanceType])
+    
+}
+
+extension UserProfileCoordinator : DanceTypeSelectionCoordinatorOwnerType{
+    func updateViewModelWithSelectedDanceTypes(dances: [IDanceType]) {
+        
+        
+        if let vc = self.hostNavigationController.topViewController as? UserViewController, let vm = vc.viewModel as? Refreshable{
+            vm.refresh()
+        }
+        
+        self.danceTypesSelectionCoordinator = nil
+        
+        
+        
+    }
+}
+
+//===============================================================================================
+//MARK: DanceTypesCoordinator
+//===============================================================================================
+
+protocol DanceTypesSelectionViewModelCoordinatorDelegate : class{
+    func viewModelDidSelectDanceTypes(dances: [IDanceType])
+    func viewModelDidCancelSelection()
+    
+}
+
+class DanceTypesSelectionCoordinator : BaseChildCoordinator{
+    
+    unowned let parentCoordinator : DanceTypeSelectionCoordinatorOwnerType
+    
+    init(host: UINavigationController, id: String, owner: DanceTypeSelectionCoordinatorOwnerType) {        
+        self.parentCoordinator = owner
+        super.init(host: host, id: id)
+        
+    }
+    
+}
+
+extension DanceTypesSelectionCoordinator : Coordinator {
+    
+    func start() {
+        let vc = DanceTypeSelectionViewController(nibName: "DanceTypeSelectionViewController", bundle: nil)
+        let vm = DanceTypesViewModel()
+        vc.viewModel = vm
+        vm.coordinatorDelegate = self
+        let navigationController = UINavigationController(rootViewController: vc)
+        self.hostNavigationController.visibleViewController?.present(navigationController, animated:true)
+        
+    }
+}
+
+extension DanceTypesSelectionCoordinator : DanceTypesViewModelCoordinatorDelegate{
+    
+    func userDidFinishDanceTypesSelection(viewModel: DanceTypesViewModelType) {
+        self.parentCoordinator.updateViewModelWithSelectedDanceTypes(dances: [DanceType]())
+        self.hostNavigationController.visibleViewController?.dismiss(animated: true, completion: nil)
+    }
+    
+    func danceTypesViewModelDidSelect(data: IDanceType, _ viewModel: DanceTypesViewModelType) {
+        //
+    }
     
 }

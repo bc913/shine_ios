@@ -32,5 +32,9 @@ protocol DanceTypesViewModelType : class {
     var errorMessage : String { get }
     
     var selectedItems : [IDanceType]? { get set }
+    
     func submit()
+    func cancelSelection()
+    func doneSelecting()
+    
 }

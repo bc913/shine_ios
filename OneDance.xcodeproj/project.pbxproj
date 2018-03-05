@@ -22,6 +22,8 @@
 		65063E91204BC8F800D8721B /* EditUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65063E90204BC8F800D8721B /* EditUserProfileViewController.swift */; };
 		650905DF1FDF8B00004E272D /* Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650905DE1FDF8B00004E272D /* Authentication.swift */; };
 		6509345D1FEA2023001AB8EB /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6509345C1FEA2023001AB8EB /* UserViewModel.swift */; };
+		6509F252204C93B9001AD9FB /* DanceTypeSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6509F250204C93B9001AD9FB /* DanceTypeSelectionViewController.swift */; };
+		6509F253204C93B9001AD9FB /* DanceTypeSelectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6509F251204C93B9001AD9FB /* DanceTypeSelectionViewController.xib */; };
 		650AF5A41F89836200DE46E1 /* ShineNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650AF5A31F89836200DE46E1 /* ShineNetworkService.swift */; };
 		650AF5A71F89846B00DE46E1 /* CommandInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650AF5A61F89846B00DE46E1 /* CommandInterface.swift */; };
 		650C6B001FF32D790008597C /* HomeScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650C6AFF1FF32D790008597C /* HomeScreenCoordinator.swift */; };
@@ -179,6 +181,8 @@
 		65063E90204BC8F800D8721B /* EditUserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditUserProfileViewController.swift; path = ViewControllers/MainFlow/User/EditUserProfileViewController.swift; sourceTree = "<group>"; };
 		650905DE1FDF8B00004E272D /* Authentication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Authentication.swift; path = Models/Core/Authentication.swift; sourceTree = "<group>"; };
 		6509345C1FEA2023001AB8EB /* UserViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserViewModel.swift; path = ViewModels/MainFlow/UserViewModel.swift; sourceTree = "<group>"; };
+		6509F250204C93B9001AD9FB /* DanceTypeSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceTypeSelectionViewController.swift; path = ViewControllers/MainFlow/DanceTypes/DanceTypeSelectionViewController.swift; sourceTree = "<group>"; };
+		6509F251204C93B9001AD9FB /* DanceTypeSelectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DanceTypeSelectionViewController.xib; path = ViewControllers/MainFlow/DanceTypes/DanceTypeSelectionViewController.xib; sourceTree = "<group>"; };
 		650AF5A31F89836200DE46E1 /* ShineNetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShineNetworkService.swift; path = Utilities/Networking/ShineNetworkService.swift; sourceTree = "<group>"; };
 		650AF5A61F89846B00DE46E1 /* CommandInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommandInterface.swift; path = Commands/CommandInterface.swift; sourceTree = "<group>"; };
 		650C6AFF1FF32D790008597C /* HomeScreenCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeScreenCoordinator.swift; path = Coordinators/MainFlow/HomeScreenCoordinator.swift; sourceTree = "<group>"; };
@@ -439,6 +443,15 @@
 			name = Authentication;
 			sourceTree = "<group>";
 		};
+		6509F24F204C9342001AD9FB /* DanceTypes */ = {
+			isa = PBXGroup;
+			children = (
+				6509F250204C93B9001AD9FB /* DanceTypeSelectionViewController.swift */,
+				6509F251204C93B9001AD9FB /* DanceTypeSelectionViewController.xib */,
+			);
+			name = DanceTypes;
+			sourceTree = "<group>";
+		};
 		650AF5A11F89818000DE46E1 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -597,6 +610,7 @@
 		654424341FA6BAB100CC850D /* MainFlow */ = {
 			isa = PBXGroup;
 			children = (
+				6509F24F204C9342001AD9FB /* DanceTypes */,
 				6548738B2043027A00CAC92A /* Post */,
 				652285D3203BC9BB0082A551 /* Location */,
 				650415E21FF0CF7000D19A89 /* User */,
@@ -935,6 +949,7 @@
 				650CB27D1F68DF020093F2FC /* MainAuthViewController.xib in Resources */,
 				6564BE2F1F85D3F4005AF655 /* LoginViewController.xib in Resources */,
 				65427D291F90508300407C5D /* DanceTypeTableViewCell.xib in Resources */,
+				6509F253204C93B9001AD9FB /* DanceTypeSelectionViewController.xib in Resources */,
 				65BC8BF01F8166D700F5AF94 /* EmailSignUpViewController.xib in Resources */,
 				650415E11FF03A4900D19A89 /* EditCreateOrganizationViewController.xib in Resources */,
 				654E01F51FC0B4EE0095C4D1 /* LocationFormCell.xib in Resources */,
@@ -1079,6 +1094,7 @@
 				656834D31F8C7F8300ADCBA2 /* EmailLoginViewModel.swift in Sources */,
 				654B1D241F942A1900B13925 /* DanceTypesViewController.swift in Sources */,
 				65640E081F9CF123006C2E21 /* ProfileImageSelectionViewController.swift in Sources */,
+				6509F252204C93B9001AD9FB /* DanceTypeSelectionViewController.swift in Sources */,
 				6503EC381F075CA900D56AB5 /* OneDance.xcdatamodeld in Sources */,
 				65FC55E31F67933000E02503 /* AppCoordinator.swift in Sources */,
 				650AF5A71F89846B00DE46E1 /* CommandInterface.swift in Sources */,

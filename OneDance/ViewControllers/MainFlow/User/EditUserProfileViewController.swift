@@ -101,7 +101,7 @@ class EditUserProfileViewController: UIViewController {
         // title
         self.title = "Edit Profile"
         
-        
+        self.constructCells()
     }
     
     private func constructCells(){
@@ -111,7 +111,7 @@ class EditUserProfileViewController: UIViewController {
             
             // Initialize the form if it is in edit mode
             if let vm = self.viewModel, vm.mode == .edit {
-                bioCell.displayedValue = vm.bio ?? ""
+                bioCell.textView.text = vm.bio ?? ""
             }
             
             bioCell.expandDelegate = self // Expanding cell delegate
@@ -148,7 +148,7 @@ class EditUserProfileViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.configureNavigationBar()
         
-        self.constructCells()
+        
     }
     
     private func configureNavigationBar(){

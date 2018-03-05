@@ -22,12 +22,18 @@ class UserViewController: UIViewController {
     @IBOutlet weak var editProfileImageView: UIImageView!
     
     @IBOutlet weak var followerFollowingContainer: UIView!
-    
     @IBOutlet weak var followerLabel: UILabel!
     @IBOutlet weak var followingLabel: UILabel!
-    
     @IBOutlet weak var followerCounterLabel: UILabel!
     @IBOutlet weak var followingCounterLabel: UILabel!
+    
+    
+    
+    @IBOutlet weak var danceTypeLabelContainer: UIView!
+    @IBOutlet weak var danceTypesHeaderLabel: UILabel!
+    
+    @IBOutlet weak var updateDanceTypesLabel: UILabel!
+    
     
     @IBOutlet weak var danceTypesCollectionView: UICollectionView!
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
@@ -37,10 +43,10 @@ class UserViewController: UIViewController {
     // MARK: - PROPERTIES
     var isLoaded : Bool = false
     var viewModel : UserViewModelType?{
-        didSet{
+        willSet{
             self.viewModel?.viewDelegate = nil
         }
-        willSet{
+        didSet{
             self.viewModel?.viewDelegate = self
             self.refreshDisplay()
         }
@@ -62,10 +68,14 @@ class UserViewController: UIViewController {
             setLabel(self.followerCounterLabel, with: String(viewModel.followerCounter ?? 0), ofSize: 24)
             setLabel(self.followingCounterLabel, with: String(viewModel.followingCounter ?? 0), ofSize: 24)
             
+            self.danceTypesCollectionView.reloadData()
+            
             if (self.viewModel?.isMyProfile)! {
                 self.editProfileImageView.isHidden = false
+                self.updateDanceTypesLabel.isHidden = false
             } else {
                 self.editProfileImageView.isHidden = true
+                self.updateDanceTypesLabel.isHidden = true
             }
             
             
@@ -77,7 +87,8 @@ class UserViewController: UIViewController {
             setLabel(self.followerCounterLabel, with: "", ofSize: 24)
             setLabel(self.followingCounterLabel, with: "", ofSize: 24)
             
-            self.editProfileImageView.isHidden = false
+            self.editProfileImageView.isHidden = true
+            self.updateDanceTypesLabel.isHidden = true
         }
     }
     
@@ -113,6 +124,8 @@ class UserViewController: UIViewController {
         self.editProfileImageView.isUserInteractionEnabled = true
         self.editProfileImageView.addGestureRecognizer(tapGestureRecognizer)
         
+        
+        
     }
     
     @objc
@@ -125,28 +138,50 @@ class UserViewController: UIViewController {
         }
     }
     
+    @objc
+    fileprivate func updateDanceTypesTapped(tapGestureRecognizer: UIGestureRecognizer){
+        if (tapGestureRecognizer.view as? UILabel) != nil {
+            print("Update tapped")
+            self.viewModel?.requestUpdateForDanceTypes()
+            
+        }
+    }
+    
     private func configureFollowContainer(){
         
         self.followerFollowingContainer.backgroundColor = UIColor(red: 241.0/255.0, green: 92.0/255.0, blue: 83.0/255.0, alpha: 0.9)
         
         self.followerLabel.textAlignment = .center
-        setLabel(self.followerLabel, with: "Followers", ofSize: 16)
+        setLabel(self.followerLabel, with: "Followers", ofSize: 12)
         
         
         self.followingLabel.textAlignment = .center
-        setLabel(self.followingLabel, with: "Following", ofSize: 16)
+        setLabel(self.followingLabel, with: "Following", ofSize: 12)
         
         // Counters
         self.followerCounterLabel.textAlignment = .center
-        setLabel(self.followerCounterLabel, with: "", ofSize: 22)
+        setLabel(self.followerCounterLabel, with: "", ofSize: 18)
         
         self.followingCounterLabel.textAlignment = .center
-        setLabel(self.followingCounterLabel, with: "", ofSize: 22)
+        setLabel(self.followingCounterLabel, with: "", ofSize: 18)
         
         
     }
     
     private func configureDanceTypesCollection(){
+        
+        self.setLabel(self.danceTypesHeaderLabel, with: "Favorite Dance Types", ofSize: 12.0, color: UIColor.black)
+        
+        let attributedText = NSMutableAttributedString(string: "Update", attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 8),
+                                                                                  NSForegroundColorAttributeName : UIColor(red: 6.0/255.0, green: 69.0/255.0, blue: 173.0/255.0, alpha: 0.9)])
+        
+        self.updateDanceTypesLabel.attributedText = attributedText
+        // Update dance types
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(updateDanceTypesTapped(tapGestureRecognizer:)))
+        
+        self.updateDanceTypesLabel.isUserInteractionEnabled = true
+        self.updateDanceTypesLabel.addGestureRecognizer(tapGestureRecognizer)
+        
         
         self.flowLayout.scrollDirection = .horizontal
         self.danceTypesCollectionView.delegate = self
@@ -155,9 +190,9 @@ class UserViewController: UIViewController {
         
     }
     
-    private func setLabel(_ label:UILabel, with text: String, ofSize size: CGFloat){
+    private func setLabel(_ label:UILabel, with text: String, ofSize size: CGFloat, color: UIColor = .white){
         let attributedText = NSMutableAttributedString(string: text, attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: size),
-                                                                                  NSForegroundColorAttributeName : UIColor.white])
+                                                                                  NSForegroundColorAttributeName : color])
         
         label.attributedText = attributedText
     }
@@ -211,12 +246,20 @@ extension UserViewController : UICollectionViewDataSource{
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 100
+        
+        if self.viewModel != nil && self.viewModel!.danceTypes != nil && !self.viewModel!.danceTypes!.isEmpty {
+            return self.viewModel!.danceTypes!.count
+        }
+        
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BasicCollectionCell.identifier, for: indexPath) as! BasicCollectionCell
         
+        let item = self.viewModel?.danceTypes?[indexPath.row]
+        
+        cell.configure(text: item?.name ?? "")
         
         return cell
     }

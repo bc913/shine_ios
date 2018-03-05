@@ -69,7 +69,7 @@ extension UpdatedProfileModel : JSONDecodable {
 
 
 protocol UserViewModelCoordinatorDelegate : class {
-    
+    func viewModelDidRequestDanceTypeSelection()
 }
 
 protocol UserViewModelViewDelegate : class {
@@ -111,6 +111,7 @@ protocol UserViewModelType : class {
     func doneEditing()
     func cancelEditing()
     func requestEditing()
+    func requestUpdateForDanceTypes()
     
 }
 
@@ -137,22 +138,33 @@ class UserViewModel : UserViewModelType{
     var username : String = ""
     var fullname : String = "" {
         didSet{
-            if oldValue != fullname {
-                self.updatedUserModel?.fullname = fullname
-            }
+            self.updatedUserModel?.fullname = fullname
         }
     }
     
     var email : String = ""
     var postsCounter : Int?
-    var isAccountPrivate : Bool = false
+    var isAccountPrivate : Bool = false {
+        didSet{
+            self.updatedUserModel?.isPrivateAccount = isAccountPrivate
+
+        }
+    }
     
     var followerCounter : Int?
     var followingCounter : Int?
     
     // TODO :Image
-    var bio : String?
-    var websiteUrl : String?
+    var bio : String? {
+        didSet{
+            self.updatedUserModel?.bio = bio
+        }
+    }
+    var websiteUrl : String?{
+        didSet{
+            self.updatedUserModel?.webUrl = websiteUrl
+        }
+    }
     
     var danceTypes : [DanceTypeItem]?
     var djProfile : DJProfileItem?
@@ -232,7 +244,7 @@ class UserViewModel : UserViewModelType{
     
     
     // Fetch model data
-    private func fetchModelData(){
+    fileprivate func fetchModelData(){
         
         let modelCompletionHandler = { (error: NSError?, model:UserModelType?) in
             //Make sure we are on the main thread
@@ -298,6 +310,10 @@ class UserViewModel : UserViewModelType{
         self.coordinatorDelegate?.viewModelDidSelectUserProfile(userID: self.id, requestedMode: .edit)
     }
     
+    func requestUpdateForDanceTypes() {
+        self.coordinatorDelegate?.viewModelDidRequestDanceTypeSelection()
+    }
+    
     func updateProfile(){
         // Check if the user tries the edit his/her profile
     }
@@ -317,4 +333,11 @@ class UserViewModel : UserViewModelType{
     
     
     
+}
+
+extension UserViewModel: Refreshable{
+    
+    func refresh() {
+        self.fetchModelData()
+    }
 }

@@ -105,4 +105,14 @@ class DanceTypesViewModel: DanceTypesViewModelType {
         ShineNetworkService.API.User.update(danceTypes: self.selectedItems!, mainThreadCompletionHandler: modelCompletionHandler)
         
     }
+    
+    func cancelSelection() {
+        self.coordinatorDelegate?.userDidFinishDanceTypesSelection(viewModel: self)
+    }
+    
+    func doneSelecting() {
+        //
+        self.submit()        
+        
+    }
 }
