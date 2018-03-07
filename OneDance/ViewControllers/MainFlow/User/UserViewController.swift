@@ -184,6 +184,7 @@ class UserViewController: UIViewController {
         
         
         self.flowLayout.scrollDirection = .horizontal
+        self.danceTypesCollectionView.allowsSelection = false
         self.danceTypesCollectionView.delegate = self
         self.danceTypesCollectionView.dataSource = self
         self.danceTypesCollectionView.register(BasicCollectionCell.self, forCellWithReuseIdentifier: BasicCollectionCell.identifier)

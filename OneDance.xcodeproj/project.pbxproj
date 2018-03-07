@@ -61,8 +61,6 @@
 		65439CE81FF9FA9600EDE435 /* ImageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65439CE71FF9FA9600EDE435 /* ImageRequest.swift */; };
 		65439CEB1FF9FCD300EDE435 /* DanceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65439CE91FF9FCD300EDE435 /* DanceType.swift */; };
 		65439CEC1FF9FCD300EDE435 /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65439CEA1FF9FCD300EDE435 /* Media.swift */; };
-		65439CF01FFA0A3D00EDE435 /* UserTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65439CEE1FFA0A3D00EDE435 /* UserTableCell.swift */; };
-		65439CF11FFA0A3D00EDE435 /* UserTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65439CEF1FFA0A3D00EDE435 /* UserTableCell.xib */; };
 		654479151FC7507200FE3B58 /* ShineError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654479141FC7507200FE3B58 /* ShineError.swift */; };
 		654479181FC7995400FE3B58 /* UIDevice+ModelName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654479171FC7995400FE3B58 /* UIDevice+ModelName.swift */; };
 		654672711FA02A7A002DDC40 /* ProfileInfoSetupViewModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654672701FA02A7A002DDC40 /* ProfileInfoSetupViewModelInterface.swift */; };
@@ -98,6 +96,7 @@
 		654E01FD1FC120DA0095C4D1 /* DateFormCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 654E01FB1FC120DA0095C4D1 /* DateFormCell.xib */; };
 		654E02001FC139060095C4D1 /* DatePickerFormCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654E01FE1FC139060095C4D1 /* DatePickerFormCell.swift */; };
 		654E02011FC139060095C4D1 /* DatePickerFormCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 654E01FF1FC139060095C4D1 /* DatePickerFormCell.xib */; };
+		654E0E4B204E4589006512B8 /* ShineListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654E0E4A204E4589006512B8 /* ShineListViewController.swift */; };
 		654FE85D2022D5FF002D1D23 /* DatePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654FE85B2022D5FF002D1D23 /* DatePickerCell.swift */; };
 		654FE85E2022D5FF002D1D23 /* DatePickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 654FE85C2022D5FF002D1D23 /* DatePickerCell.xib */; };
 		6551DF5B204909FE00B3FC58 /* BasicCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6551DF5A204909FE00B3FC58 /* BasicCollectionCell.swift */; };
@@ -220,8 +219,6 @@
 		65439CE71FF9FA9600EDE435 /* ImageRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageRequest.swift; path = Utilities/Media/Decoding/ImageRequest.swift; sourceTree = "<group>"; };
 		65439CE91FF9FCD300EDE435 /* DanceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceType.swift; path = Models/Core/DanceType.swift; sourceTree = "<group>"; };
 		65439CEA1FF9FCD300EDE435 /* Media.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Media.swift; path = Models/Core/Media.swift; sourceTree = "<group>"; };
-		65439CEE1FFA0A3D00EDE435 /* UserTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserTableCell.swift; path = ViewControllers/TableCells/List/UserTableCell.swift; sourceTree = "<group>"; };
-		65439CEF1FFA0A3D00EDE435 /* UserTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = UserTableCell.xib; path = ViewControllers/TableCells/List/UserTableCell.xib; sourceTree = "<group>"; };
 		654479141FC7507200FE3B58 /* ShineError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShineError.swift; path = Utilities/Error/ShineError.swift; sourceTree = "<group>"; };
 		654479171FC7995400FE3B58 /* UIDevice+ModelName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIDevice+ModelName.swift"; path = "Utilities/Extensions/UIDevice+ModelName.swift"; sourceTree = "<group>"; };
 		654672701FA02A7A002DDC40 /* ProfileInfoSetupViewModelInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileInfoSetupViewModelInterface.swift; path = ViewModels/Interfaces/ProfileInfoSetupViewModelInterface.swift; sourceTree = "<group>"; };
@@ -257,6 +254,7 @@
 		654E01FB1FC120DA0095C4D1 /* DateFormCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DateFormCell.xib; path = ViewControllers/TableCells/Form/DateFormCell.xib; sourceTree = "<group>"; };
 		654E01FE1FC139060095C4D1 /* DatePickerFormCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DatePickerFormCell.swift; path = ViewControllers/TableCells/Form/DatePickerFormCell.swift; sourceTree = "<group>"; };
 		654E01FF1FC139060095C4D1 /* DatePickerFormCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DatePickerFormCell.xib; path = ViewControllers/TableCells/Form/DatePickerFormCell.xib; sourceTree = "<group>"; };
+		654E0E4A204E4589006512B8 /* ShineListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShineListViewController.swift; path = ViewControllers/ListControllers/ShineListViewController.swift; sourceTree = "<group>"; };
 		654FE85B2022D5FF002D1D23 /* DatePickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DatePickerCell.swift; path = ViewControllers/TableCells/Form/DatePickerCell.swift; sourceTree = "<group>"; };
 		654FE85C2022D5FF002D1D23 /* DatePickerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DatePickerCell.xib; path = ViewControllers/TableCells/Form/DatePickerCell.xib; sourceTree = "<group>"; };
 		6551DF5A204909FE00B3FC58 /* BasicCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BasicCollectionCell.swift; path = ViewControllers/CollectionCells/BasicCollectionCell.swift; sourceTree = "<group>"; };
@@ -534,6 +532,7 @@
 		65134F171F1B17EB0017C930 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				654E0E49204E31FB006512B8 /* ListControllers */,
 				6551DF59204907C300B3FC58 /* CollectionCells */,
 				6548738E2043BF2300CAC92A /* CustomViews */,
 				654424341FA6BAB100CC850D /* MainFlow */,
@@ -601,8 +600,6 @@
 		65439CED1FFA092600EDE435 /* List */ = {
 			isa = PBXGroup;
 			children = (
-				65439CEE1FFA0A3D00EDE435 /* UserTableCell.swift */,
-				65439CEF1FFA0A3D00EDE435 /* UserTableCell.xib */,
 			);
 			name = List;
 			sourceTree = "<group>";
@@ -742,6 +739,21 @@
 			name = UI;
 			sourceTree = "<group>";
 		};
+		654E0E49204E31FB006512B8 /* ListControllers */ = {
+			isa = PBXGroup;
+			children = (
+				654E0E4A204E4589006512B8 /* ShineListViewController.swift */,
+			);
+			name = ListControllers;
+			sourceTree = "<group>";
+		};
+		654E0E4C204E4C9E006512B8 /* List */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = List;
+			sourceTree = "<group>";
+		};
 		6551DF59204907C300B3FC58 /* CollectionCells */ = {
 			isa = PBXGroup;
 			children = (
@@ -786,6 +798,7 @@
 		65FC55DE1F6791CD00E02503 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				654E0E4C204E4C9E006512B8 /* List */,
 				6504E9F21FCA16BE00A29B97 /* Authentication */,
 				65F538D71FA81D050034DAFA /* MainFlow */,
 				65640E031F9C4325006C2E21 /* ProfileSetup */,
@@ -963,7 +976,6 @@
 				65BEE2D91FBA82B5009FB690 /* FeedViewController.xib in Resources */,
 				6525BD3E1FC1DD3800249AFC /* TextFieldFormCell.xib in Resources */,
 				6549E7841F8B2DF7000C475E /* danceTypes.json in Resources */,
-				65439CF11FFA0A3D00EDE435 /* UserTableCell.xib in Resources */,
 				65F538D61FA811B20034DAFA /* UserProfileViewController.xib in Resources */,
 				65134F1E1F1B19C40017C930 /* MapViewController.xib in Resources */,
 				65640E091F9CF123006C2E21 /* ProfileImageSelectionViewController.xib in Resources */,
@@ -1142,13 +1154,13 @@
 				6509345D1FEA2023001AB8EB /* UserViewModel.swift in Sources */,
 				65C045291F6E37B9003824E0 /* MainAuthenticationCoordinator.swift in Sources */,
 				650CB2821F68EBF20093F2FC /* MainAuthViewModelInterface.swift in Sources */,
+				654E0E4B204E4589006512B8 /* ShineListViewController.swift in Sources */,
 				650C6B021FF34AA50008597C /* MainFlowCoordinator.swift in Sources */,
 				654672741FA030A1002DDC40 /* ProfileInfoSetupViewController.swift in Sources */,
 				6549871D1F8F1747002DFB0C /* DanceTypesViewModel.swift in Sources */,
 				654FE85D2022D5FF002D1D23 /* DatePickerCell.swift in Sources */,
 				6588B008201E69110046C7A0 /* NameTitleWithImageCell.swift in Sources */,
 				6569B1FC203FA76A00D7B4B4 /* LoadingTableCell.swift in Sources */,
-				65439CF01FFA0A3D00EDE435 /* UserTableCell.swift in Sources */,
 				650C6B071FF35F500008597C /* TimeLineViewController.swift in Sources */,
 				654672711FA02A7A002DDC40 /* ProfileInfoSetupViewModelInterface.swift in Sources */,
 				6548738D204314D800CAC92A /* EditCreatePostViewController.swift in Sources */,

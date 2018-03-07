@@ -195,6 +195,23 @@ extension TimeLineViewController : UITableViewDataSource {
                     // Feed
                     cell.item = feedItem
                     
+                    // Comment Handler
+                    
+                    cell.commentHandler = { [weak self] in
+                        guard let strongSelf = self  else {
+                            return
+                        }
+                        
+                        strongSelf.viewModel?.requestList(of: .comment, source: .post, id: feedItem.id)
+                    }
+                    
+                    cell.likeListHandler = { [weak self] in
+                        guard let strongSelf = self  else {
+                            return
+                        }
+                        
+                        strongSelf.viewModel?.requestList(of: .like, source: .post, id: feedItem.id)
+                    }
                     // User photo
                     self.assignUserThumbnailImage(cell: cell as FeedableCell, url: feedItem.profilePhotoUrl)
                     
@@ -208,6 +225,22 @@ extension TimeLineViewController : UITableViewDataSource {
                     
                     // Feed
                     cell.item = feedItem
+                    
+                    cell.commentHandler = { [weak self] in
+                        guard let strongSelf = self  else {
+                            return
+                        }
+                        
+                        strongSelf.viewModel?.requestList(of: .comment, source: .post, id: feedItem.id)
+                    }
+                    
+                    cell.likeListHandler = { [weak self] in
+                        guard let strongSelf = self  else {
+                            return
+                        }
+                        
+                        strongSelf.viewModel?.requestList(of: .like, source: .post, id: feedItem.id)
+                    }
                     
                     // User photo
                     self.assignUserThumbnailImage(cell: cell as FeedableCell, url: feedItem.profilePhotoUrl)

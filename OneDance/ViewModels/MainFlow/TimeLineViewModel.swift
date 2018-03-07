@@ -264,7 +264,11 @@ protocol TimeLineViewModelCoordinatorDelegate : class {
     // Handle the refresh inside viewModel and update viewDelegate
 }
 
-protocol TimeLineViewModelType : class {
+protocol ListableViewModel {
+    func requestList(of type: ListType, source: ListSource, id: String)
+}
+
+protocol TimeLineViewModelType : class, ListableViewModel {
     
     weak var coordinatorDelegate : TimeLineVMCoordinatorDelegate? { get set }
     weak var viewDelegate : TimeLineViewModelViewDelegate? { get set }
@@ -382,6 +386,11 @@ class TimeLineViewModel : TimeLineViewModelType {
     
     func createPost(){
         self.coordinatorDelegate?.viewModelDidSelectPost(postID: "", requestedMode: .create)
+    }
+    
+    func requestList(of type: ListType, source: ListSource,  id: String) {
+        print("Comment tapped for id: \(id)")
+        self.coordinatorDelegate?.viewModelDidSelectList(id: id, type: type, source: source)
     }
     
     

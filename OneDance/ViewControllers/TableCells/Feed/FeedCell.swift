@@ -48,6 +48,13 @@ class FeedCell: BaseFeedCell {
     private let profileImageHeight : CGFloat = 44.0
     private let profileImageWidth : CGFloat = 44.0
     
+    // Handlers
+    
+    /// The block to handle comment action
+    var commentHandler: ((Void) -> Void)?
+    
+    /// The block to handle like list action
+    var likeListHandler:((Void) -> Void)?
     
     
     //MARK: SUBVIEWS
@@ -92,6 +99,22 @@ class FeedCell: BaseFeedCell {
     let likeImageView = UIImageView(image: UIImage(named: "like"))
     let commentImageView = UIImageView(image: UIImage(named: "comment"))
     
+    @objc
+    private func commentTapped(tapGestureRecognizer: UIGestureRecognizer){
+        if (tapGestureRecognizer.view) != nil{
+            self.commentHandler?()
+        }
+        
+    }
+    
+    @objc
+    private func likeTapped(tapGestureRecognizer: UIGestureRecognizer){
+        if (tapGestureRecognizer.view) != nil{
+            self.likeListHandler?()
+        }
+        
+    }
+    
     /// Description
     let descriptionLabel = UILabel()
     public func setDescriptionLabel(desc: String){
@@ -134,8 +157,17 @@ class FeedCell: BaseFeedCell {
         self.descriptionLabel.lineBreakMode = .byWordWrapping
         //self.setDescriptionLabel(desc: "lmalnamsndasd,asdmnalsjdkbabskdbasmdnasdfhsdfjshdfjsdjfhsjasdasdasdasdasdasdasdadasdadsasdadfhvsjhdfvsdfsdfsdsd")
         
-        // Constraints
         
+        // Comment
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(commentTapped(tapGestureRecognizer:)))
+        self.commentImageView.isUserInteractionEnabled = true
+        self.commentImageView.addGestureRecognizer(tapGestureRecognizer)
+        
+        let tapGestureRecognizer2 = UITapGestureRecognizer(target: self, action: #selector(likeTapped(tapGestureRecognizer:)))
+        self.likeImageView.isUserInteractionEnabled = true
+        self.likeImageView.addGestureRecognizer(tapGestureRecognizer2)
+        
+        // Constraints
         self.upperContainer.addSubview(self.profileImageView)
         self.upperContainer.addSubview(userNameAndDateLabel)
         self.upperContainer.addSubview(locationLabel)

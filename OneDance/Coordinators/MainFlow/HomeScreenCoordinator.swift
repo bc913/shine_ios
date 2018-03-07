@@ -9,14 +9,25 @@
 import Foundation
 import UIKit
 
-enum ListType {
+enum ListSource {
     
     case user
     case organization
     case post
     case event
+}
+
+enum ListType{
+    
+    case like
+    case eventAttendance
+    case interested
+    case notGoing
+    case going
     case comment
-    case attendanceInterestGoing
+    
+    case follower
+    case following
 }
 
 enum NotificationType{
@@ -43,7 +54,7 @@ protocol ChildCoordinatorDelegate : class {
     // User request a post's liker list
     // User request event attendance/interested/not going list
     
-    func childCoordinatorDidRequestList(sender: BaseChildCoordinator, id: String, listType: ListType )
+    func childCoordinatorDidRequestList(sender: BaseChildCoordinator, id: String, type: ListType, source: ListSource )
     
     // User request an organization's post list
     // User request another user's post list
@@ -118,7 +129,7 @@ protocol ChildViewModelCoordinatorDelegate : class {
     func viewModelDidSelectUserProfile(userID: String, requestedMode: ShineMode )
     func viewModelDidSelectOrganizationProfile(organizationID: String, requestedMode: ShineMode)
     func viewModelDidSelectEvent(eventID: String, requestedMode: ShineMode)
-    func viewModelDidSelectList(id: String, listType: ListType)
+    func viewModelDidSelectList(id: String, type: ListType, source: ListSource)
     func viewModelDidSelectPost(postID: String, requestedMode: ShineMode)
     func viewModelDidFinishOperation(mode: ShineMode)
     func viewModelDidSelectGoBack(mode: ShineMode)
@@ -140,8 +151,8 @@ extension BaseChildCoordinator : ChildViewModelCoordinatorDelegate {
         self.delegate?.childCoordinatorDidRequestEventDetail(sender: self, id: eventID, mode: requestedMode)
     }
     // List
-    func viewModelDidSelectList(id: String, listType: ListType){
-        self.delegate?.childCoordinatorDidRequestList(sender: self, id: id, listType: listType)
+    func viewModelDidSelectList(id: String, type: ListType, source: ListSource){
+        self.delegate?.childCoordinatorDidRequestList(sender: self, id: id, type: type, source: source)
     }
     // Post
     func viewModelDidSelectPost(postID: String, requestedMode: ShineMode){
@@ -210,11 +221,11 @@ extension BaseContainerCoordinator : ChildCoordinatorDelegate {
         eventCoordinator.start()
     }
     
-    func childCoordinatorDidRequestList(sender: BaseChildCoordinator, id: String, listType: ListType ){
-        //        let listCoordinator = ListCoordinator(host: self.containerNavigationController, id: id, listType: listType)
-        //        childCoordinators["LIST"] = listCoordinator
-        //        listCoordinator.delegate = self
-        //        listCoordinator.start()
+    func childCoordinatorDidRequestList(sender: BaseChildCoordinator, id: String, type: ListType, source: ListSource ){
+        let listCoordinator = ListCoordinator(host: self.containerNavigationController, id: id, type: type, source:source)
+        listCoordinator.delegate = self
+        self.coordinatorStack.push(listCoordinator)
+        listCoordinator.start()
     }
     
     func childCoordinatorDidRequestPostDetail(sender: BaseChildCoordinator, id: String, mode: ShineMode){
@@ -471,6 +482,41 @@ extension EventCoordinator : LocationCoordinatorDelegate{
 
     
 }
+
+//===============================================================================================
+//MARK: ListCoordinator
+//MARK:==========================
+
+class ListCoordinator : BaseChildCoordinator{
+    
+    fileprivate var type : ListType
+    fileprivate var source :ListSource
+    
+    init(host: UINavigationController, id: String, type:ListType, source: ListSource) {
+        self.type = type
+        self.source = source
+        super.init(host:host, id: id)
+    }
+    
+}
+
+extension ListCoordinator : Coordinator{
+    func start() {
+        let vc = ShineUserListViewController(nibName: nil, bundle: nil)
+        let viewModel = UserListViewModel(type: self.type, source: self.source)
+        viewModel.coordinatorDelegate = self
+        
+        //vc.viewModel = viewModel
+        self.hostNavigationController.pushViewController(vc, animated: true)
+        
+        
+    }
+}
+
+extension ListCoordinator : UserListViewModelCoordinatorDelegate {
+    
+}
+
 
 //===============================================================================================
 //MARK: PostCoordinator
