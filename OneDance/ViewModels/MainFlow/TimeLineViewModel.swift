@@ -197,6 +197,24 @@ struct Feed {
         }
         
     }
+    
+    var commentCounter : Int {
+        get{
+            return self.post.commentCounter
+        }
+    }
+    
+    var likeCounter : Int {
+        get {
+            return self.post.likeCounter
+        }
+    }
+    
+    var ownerId : String{
+        get {
+            return self.post.owner?.userId ?? self.post.organization?.id ?? ""
+        }
+    }
 }
 
 extension Feed : JSONDecodable {
@@ -286,6 +304,9 @@ protocol TimeLineViewModelType : class, ListableViewModel {
     var shouldShowLoadingCell : Bool { get set }
     func refreshItems()
     func fetchNextPage()
+    
+    func requestUserProfile(id: String)
+    func requestOrganizationProfile(id: String)
     
     
 }
@@ -391,6 +412,15 @@ class TimeLineViewModel : TimeLineViewModelType {
     func requestList(of type: ListType, source: ListSource,  id: String) {
         print("Comment tapped for id: \(id)")
         self.coordinatorDelegate?.viewModelDidSelectList(id: id, type: type, source: source)
+        return
+    }
+    
+    func requestUserProfile(id: String) {
+        self.coordinatorDelegate?.viewModelDidSelectUserProfile(userID: id, requestedMode: .viewOnly)
+    }
+    
+    func requestOrganizationProfile(id: String) {
+        self.coordinatorDelegate?.viewModelDidSelectOrganizationProfile(organizationID: id, requestedMode: .viewOnly)
     }
     
     

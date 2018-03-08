@@ -112,6 +112,8 @@ protocol UserViewModelType : class {
     func cancelEditing()
     func requestEditing()
     func requestUpdateForDanceTypes()
+    func requestList(of type: ListType, source: ListSource,  id: String)
+    func goBack()
     
 }
 
@@ -312,6 +314,16 @@ class UserViewModel : UserViewModelType{
     
     func requestUpdateForDanceTypes() {
         self.coordinatorDelegate?.viewModelDidRequestDanceTypeSelection()
+    }
+    
+    func requestList(of type: ListType, source: ListSource, id: String) {
+        
+        self.coordinatorDelegate?.viewModelDidSelectList(id: id.isEmpty ? self.id : id, type: type, source: source)
+        return
+    }
+    
+    func goBack() {
+        self.coordinatorDelegate?.viewModelDidSelectGoBack(mode: self.mode)
     }
     
     func updateProfile(){

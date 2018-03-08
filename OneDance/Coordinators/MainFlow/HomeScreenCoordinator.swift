@@ -503,10 +503,10 @@ class ListCoordinator : BaseChildCoordinator{
 extension ListCoordinator : Coordinator{
     func start() {
         let vc = ShineUserListViewController(nibName: nil, bundle: nil)
-        let viewModel = UserListViewModel(type: self.type, source: self.source)
+        let viewModel = UserListViewModel(type: self.type, source: self.source, sourceId: self.id)
         viewModel.coordinatorDelegate = self
         
-        //vc.viewModel = viewModel
+        vc.viewModel = viewModel
         self.hostNavigationController.pushViewController(vc, animated: true)
         
         

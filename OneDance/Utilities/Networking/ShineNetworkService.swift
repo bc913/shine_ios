@@ -20,39 +20,54 @@ struct ShineNetworkService {
         
         static let baseUrl : String = "https://cczx1tdm50.execute-api.us-east-1.amazonaws.com/PROD/"
         
-        // User
-        static let deviceUrl : String = baseUrl + "devices"
-        static let userUrl : String = baseUrl + "users"
-        static let registerUserUrl : String = userUrl
-        static let emailLoginUrl : String = userUrl + "/login"
-        
-        static let getDanceTypesUrl : String = baseUrl + "dancetypes"
-        static let updateDanceTypesUrl : String = userUrl + "/me" + "/dancetypes"
-        //static let updateDanceTypesUrl : String = userUrl + PersistanceManager.User.userId! + "/dancetypes"
-        
-        
-        static func getUserProfileUrl(otherUserID: String) -> String {
-            return userUrl + "/" + otherUserID + "/profile"
+        enum AttandanceType : Int {
+            case interested = 0
+            case going = 1
+            case notGoing = 2
+            
         }
-        static let getMyProfileUrl : String = userUrl + "/me" + "/profile"
-        static let updateUserProfileUrl : String = getMyProfileUrl
-        static let changeProfilePhotoUrl : String = userUrl + "/me" + "/profile" + "/photo"
         
-        static let updateMyProfileUrl : String = baseUrl + "users/me/profile"
+        struct User {
+            // User
+            static let deviceUrl : String = Constants.baseUrl + "devices"
+            
+            static let baseUrl : String = Constants.baseUrl + "users"
+            
+            static let registerUserUrl : String = baseUrl
+            static let emailLoginUrl : String = baseUrl + "/login"
+            
+            static let getDanceTypesUrl : String = Constants.baseUrl + "dancetypes"
+            static let updateDanceTypesUrl : String = baseUrl + "/me" + "/dancetypes"
+            //static let updateDanceTypesUrl : String = userUrl + PersistanceManager.User.userId! + "/dancetypes"
+            
+            
+            static func getUserProfileUrl(otherUserID: String) -> String {
+                return baseUrl + "/" + otherUserID + "/profile"
+            }
+            
+            static let getMyProfileUrl : String = baseUrl + "/me" + "/profile"
+            static let updateUserProfileUrl : String = getMyProfileUrl
+            static let changeProfilePhotoUrl : String = baseUrl + "/me" + "/profile" + "/photo"
+            
+            static let updateMyProfileUrl : String = baseUrl + "/me/profile"
+        }
+        
         
         struct Organization {
-            private static let base : String = baseUrl + "organizations"
-            static let createUrl : String = base
+            static let baseUrl : String = Constants.baseUrl + "organizations"
+            static let createUrl : String = baseUrl
             static func getChangePhotoUrl(id: String) -> String {
                 
-                let url : String = Organization.base + "/\(id)" + "/photo"
+                let url : String = Organization.baseUrl + "/\(id)" + "/photo"
                 return url
                 
             }
         }
         
+        
         struct Event {
-            private static let base : String = baseUrl + "events"
+            static let base : String = Constants.baseUrl + "events"
+            
             static let createUrl : String = base
             static func getChangePhotoUrl(id: String) -> String {
                 
@@ -60,11 +75,60 @@ struct ShineNetworkService {
                 return url
             
             }
+            
+            static func getEventAttendersUrl(eventId: String) -> String {
+                
+                let url : String = Event.base + "/\(eventId)" + "/attenders"
+                return url
+            }
+        }
+        
+        struct Relationship {
+            
+            static func getOrganizationFollowersUrl(organizationId: String) -> String {
+                
+                let url = Organization.baseUrl + "/\(organizationId)" + "/followers"
+                return url
+            }
+            
+            static func getUserFollowersUrl(userId: String) -> String {
+                
+                let url = User.baseUrl + "/\(userId)" + "/followers"
+                return url
+            }
+            
+            static func getUserFollowingsUrl(userId: String) -> String {
+                
+                let url = User.baseUrl + "/\(userId)" + "/followings"
+                return url
+            }
+            
         }
         
         struct Feed {
-            static let myFeedUrl : String = baseUrl + "users/me/feed"
-            static let createPostUrl : String = baseUrl + "posts"
+            static let myFeedUrl : String = User.baseUrl + "/me/feed"
+            
+            /// baseUrl/posts
+            static let basePostUrl : String = Constants.baseUrl + "posts"
+            
+            static func getPostIdUrl(postId: String) -> String{
+                
+                let url = Feed.basePostUrl + "/\(postId)"
+                return url
+            }
+            
+            static func getPostLikesUrl(postId: String) -> String{
+                
+                let url : String = Feed.getPostIdUrl(postId: postId) + "/likes"
+                return url
+            }
+            
+            static func getPostCommentsUrl(postId: String) -> String {
+                let url : String = Feed.getPostIdUrl(postId: postId) + "/comments"
+                return url
+            }
+            
+            
         }
         
         struct AWS3 {
@@ -421,10 +485,10 @@ struct ShineNetworkService {
 //                    "appVersion": PersistanceManager.Device.appVersion
 //                ]
                 
-                var info = device.jsonData
+                let info = device.jsonData
                 
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
-                Alamofire.request(Constants.deviceUrl, method: .post,parameters: device.jsonData, encoding: JSONEncoding.default)
+                Alamofire.request(Constants.User.deviceUrl, method: .post,parameters: device.jsonData, encoding: JSONEncoding.default)
                     .responseJSON(
                         queue: queue,
                         completionHandler: { response in
@@ -480,10 +544,10 @@ struct ShineNetworkService {
             
             static func createAccountWithEmail(model:RegistrationModel, mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()){
                 
-                var parameters = model.jsonData
+                let parameters = model.jsonData
                 
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
-                Alamofire.request(Constants.registerUserUrl, method: .post,parameters: parameters, encoding: JSONEncoding.default)
+                Alamofire.request(Constants.User.registerUserUrl, method: .post,parameters: parameters, encoding: JSONEncoding.default)
                     .responseJSON(
                         queue: queue,
                         completionHandler: { response in
@@ -545,10 +609,10 @@ struct ShineNetworkService {
             
             static func loginUserWith(model: LoginModel, mainThreadCompletionHandler: @escaping (_ error: NSError?) ->()){
                
-                var parameters = model.jsonData
+                let parameters = model.jsonData
                 
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
-                Alamofire.request(Constants.emailLoginUrl, method: .post,parameters: model.jsonData, encoding: JSONEncoding.default)
+                Alamofire.request(Constants.User.emailLoginUrl, method: .post,parameters: model.jsonData, encoding: JSONEncoding.default)
                     .responseJSON(
                         queue: queue,
                         completionHandler: { response in
@@ -617,7 +681,7 @@ struct ShineNetworkService {
                 ]
                 
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
-                Alamofire.request(Constants.getDanceTypesUrl, method: .get, encoding: JSONEncoding.default, headers: headers)
+                Alamofire.request(Constants.User.getDanceTypesUrl, method: .get, encoding: JSONEncoding.default, headers: headers)
                     .responseJSON(
                         queue: queue,
                         completionHandler: { response in
@@ -702,7 +766,7 @@ struct ShineNetworkService {
                 print(parameters)
                 
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
-                Alamofire.request(Constants.updateDanceTypesUrl, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+                Alamofire.request(Constants.User.updateDanceTypesUrl, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
                     .responseJSON(
                         queue: queue,
                         completionHandler: { response in
@@ -752,7 +816,7 @@ struct ShineNetworkService {
                 ]
                 
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
-                Alamofire.request(Constants.updateUserProfileUrl, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+                Alamofire.request(Constants.User.updateUserProfileUrl, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
                     .responseJSON(
                         queue: queue,
                         completionHandler: { response in
@@ -790,7 +854,7 @@ struct ShineNetworkService {
                         
             static func getUserProfile(otherUserId: String, mainThreadCompletionHandler: @escaping (_ error: NSError?, _ userModel:UserModelType?) ->()) {
                 
-                let otherUserUrl = Constants.getUserProfileUrl(otherUserID: otherUserId)
+                let otherUserUrl = Constants.User.getUserProfileUrl(otherUserID: otherUserId)
                 
                 let headers: HTTPHeaders = [
                     "Content-Type": "application/json",
@@ -865,7 +929,7 @@ struct ShineNetworkService {
 
                 
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
-                Alamofire.request(Constants.getMyProfileUrl, method: .get, encoding: JSONEncoding.default, headers: headers)
+                Alamofire.request(Constants.User.getMyProfileUrl, method: .get, encoding: JSONEncoding.default, headers: headers)
                     .responseJSON(
                         queue: queue,
                         completionHandler: { response in
@@ -932,7 +996,7 @@ struct ShineNetworkService {
                 
                 
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
-                Alamofire.request(Constants.updateMyProfileUrl, method: .put, parameters: updatedProfile.jsonData, encoding: JSONEncoding.default, headers: headers)
+                Alamofire.request(Constants.User.updateMyProfileUrl, method: .put, parameters: updatedProfile.jsonData, encoding: JSONEncoding.default, headers: headers)
                     .responseJSON(
                         queue: queue,
                         completionHandler: { response in
@@ -1013,7 +1077,7 @@ struct ShineNetworkService {
                 ]
                 
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
-                Alamofire.request(Constants.changeProfilePhotoUrl, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+                Alamofire.request(Constants.User.changeProfilePhotoUrl, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
                     .responseJSON(
                         queue: queue,
                         completionHandler: { response in
@@ -1132,7 +1196,7 @@ struct ShineNetworkService {
                 ]
 
                 let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
-                Alamofire.request(Constants.Feed.createPostUrl, method: .post, parameters: model.jsonData, encoding: JSONEncoding.default, headers: headers)
+                Alamofire.request(Constants.Feed.basePostUrl, method: .post, parameters: model.jsonData, encoding: JSONEncoding.default, headers: headers)
                     .responseJSON(
                         queue: queue,
                         completionHandler: { response in
@@ -1185,18 +1249,186 @@ struct ShineNetworkService {
                     }
                 )
                 
-                
-                
-            }
+            }//createPost
             
-        }
+            static func getPostLikerList(postId: String, nextPageKey: String, mainThreadCompletionHandler: @escaping (_ error: NSError?, _ userListModel: PageableUserListModelType?) -> ()){
+                
+                let headers: HTTPHeaders = [
+                    "Content-Type": "application/json",
+                    "USER-ID": PersistanceManager.User.userId!
+                ]
+                
+                let parameters : Parameters = [
+                    "n" : nextPageKey
+                ]
+                
+                let url : String = Constants.Feed.getPostLikesUrl(postId: postId)
+                
+                let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
+                Alamofire.request(url, method: .get, parameters: nextPageKey.isEmpty ? nil : parameters, encoding: URLEncoding.queryString, headers: headers)
+                    .responseJSON(
+                        queue: queue,
+                        completionHandler: { response in
+                            // Debug
+                            Helper.debugResponse(methodName: "createPost()", response: response)
+                            
+                            // Check status code
+                            let httpStatusCode = response.response?.statusCode
+                            
+                            // Error
+                            var error : NSError? = nil
+                            guard response.result.isSuccess else {
+                                
+                                error = ErrorFactory.createForAlamofireResponse(with: httpStatusCode!)
+                                print("Error 1")
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                            }
+                            
+                            // serialized json response
+                            guard let jsonData = response.result.value, let jsonDict = jsonData as? [String:Any] else{
+                                error = ErrorFactory.createForResponseDataSerialization(with: httpStatusCode!)
+                                print("Error 2")
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                            }
+                            
+                            if let errorMessage = jsonDict["message"] as? String {
+                                error = ErrorFactory.create(.User, .User, .User, description: errorMessage)
+                                print("Error 3")
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                                
+                            }
+                            
+                            let userListModel = UserListModel(json: jsonDict)
+                            print("UserListModel.count = \(userListModel?.count)")
+                            
+                            if userListModel == nil {
+                                error = ErrorFactory.createForResponseDataSerialization(with: nil)
+                                print("Json data is not parsed successfully for the user profile model")
+                                print("Error 4")
+                                
+                            }
+                            
+                            //
+                            // To update anything on the main thread, just jump back on like so.
+                            mainThreadCompletionHandler(error, userListModel)
+                            print("#############################################################")
+                            
+                    }
+                )
+                
+            }//createPost
+            
+            
+        } // Feed
+        
+        /// Common API used by all components
+        struct Common {
+            
+            /// To get the user list for like, follower, following
+            static func getUserList(source: ListSource, type: ListType, sourceId: String, nextPageKey: String, mainThreadCompletionHandler: @escaping (_ error: NSError?, _ userListModel: PageableUserListModelType?) -> ()){
+                
+                let headers: HTTPHeaders = [
+                    "Content-Type": "application/json",
+                    "USER-ID": PersistanceManager.User.userId!
+                ]
+                
+                var parameters : Parameters = [
+                    "n" : nextPageKey
+                ]
+                
+                var url : String = ""
+                
+                if type == .like && source == .post {
+                    url = Constants.Feed.getPostLikesUrl(postId: sourceId)
+                } else if type == .follower && source == .user{
+                    url = Constants.Relationship.getUserFollowersUrl(userId: sourceId)
+                } else if type == .following && source == .user {
+                    url = Constants.Relationship.getUserFollowingsUrl(userId: sourceId)
+                } else if type == .follower && source == .organization {
+                    url = Constants.Relationship.getOrganizationFollowersUrl(organizationId: sourceId)
+                } else if source == .event {
+                    var tQueryParameter = 0
+                    
+                    if type == .interested { tQueryParameter = Constants.AttandanceType.interested.rawValue }
+                    else if type == .going { tQueryParameter = Constants.AttandanceType.going.rawValue }
+                    else if type == .notGoing { tQueryParameter = Constants.AttandanceType.going.rawValue }
+                    
+                    url = Constants.Event.getEventAttendersUrl(eventId: sourceId)
+                    parameters["t"] = tQueryParameter
+                    
+                } else {
+                    fatalError("ShineNetworkService::getUserList - Invalid source-type pair")
+                }
+                
+                
+                
+                
+                let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
+                Alamofire.request(url, method: .get, parameters: nextPageKey.isEmpty ? nil : parameters, encoding: URLEncoding.queryString, headers: headers)
+                    .responseJSON(
+                        queue: queue,
+                        completionHandler: { response in
+                            // Debug
+                            Helper.debugResponse(methodName: "createPost()", response: response)
+                            
+                            // Check status code
+                            let httpStatusCode = response.response?.statusCode
+                            
+                            // Error
+                            var error : NSError? = nil
+                            guard response.result.isSuccess else {
+                                
+                                error = ErrorFactory.createForAlamofireResponse(with: httpStatusCode!)
+                                print("Error 1")
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                            }
+                            
+                            // serialized json response
+                            guard let jsonData = response.result.value, let jsonDict = jsonData as? [String:Any] else{
+                                error = ErrorFactory.createForResponseDataSerialization(with: httpStatusCode!)
+                                print("Error 2")
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                            }
+                            
+                            if let errorMessage = jsonDict["message"] as? String {
+                                error = ErrorFactory.create(.User, .User, .User, description: errorMessage)
+                                print("Error 3")
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                                
+                            }
+                            
+                            let userListModel = UserListModel(json: jsonDict)
+                            print("UserListModel.count = \(userListModel?.count)")
+                            
+                            if userListModel == nil {
+                                error = ErrorFactory.createForResponseDataSerialization(with: nil)
+                                print("Json data is not parsed successfully for the user profile model")
+                                print("Error 4")
+                                
+                            }
+                            
+                            //
+                            // To update anything on the main thread, just jump back on like so.
+                            mainThreadCompletionHandler(error, userListModel)
+                            print("#############################################################")
+                            
+                    }
+                )
+                
+            }//getUserList
+
+        }// Common
         
         
         
         
         
-        
-        
-    }
+    }//API
     
 }

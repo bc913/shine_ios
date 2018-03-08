@@ -165,7 +165,29 @@ class UserViewController: UIViewController {
         self.followingCounterLabel.textAlignment = .center
         setLabel(self.followingCounterLabel, with: "", ofSize: 18)
         
+        // Actions
+        let tapGestureRecognizerFollower = UITapGestureRecognizer(target: self, action: #selector(followersTapped(tapGestureRecognizer:)))
+        self.followerLabel.isUserInteractionEnabled = true
+        self.followerLabel.addGestureRecognizer(tapGestureRecognizerFollower)
         
+        let tapGestureRecognizerFollowing = UITapGestureRecognizer(target: self, action: #selector(followingTapped(tapGestureRecognizer:)))
+        self.followingLabel.isUserInteractionEnabled = true
+        self.followingLabel.addGestureRecognizer(tapGestureRecognizerFollowing)
+        
+    }
+    
+    @objc
+    func followersTapped(tapGestureRecognizer:UITapGestureRecognizer){
+        if (tapGestureRecognizer.view as? UILabel) != nil {
+            self.viewModel?.requestList(of: .follower, source: .user, id: self.viewModel?.id ?? "")
+        }
+    }
+    
+    @objc
+    func followingTapped(tapGestureRecognizer:UITapGestureRecognizer){
+        if (tapGestureRecognizer.view as? UILabel) != nil {
+            self.viewModel?.requestList(of: .following, source: .user, id: self.viewModel?.id ?? "")
+        }
     }
     
     private func configureDanceTypesCollection(){
@@ -203,9 +225,9 @@ class UserViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
         self.edgesForExtendedLayout = .bottom// avoid view to escape under navigation bar
+        
+        self.configureNavigationBar()
         
         self.configureMainInfoContainer()
         self.configureFollowContainer()
@@ -233,6 +255,38 @@ class UserViewController: UIViewController {
         gradientLayer.frame = self.mainInfoContainer.bounds
         
         self.mainInfoContainer.layer.insertSublayer(gradientLayer, at: 0)
+    }
+    
+    private func configureNavigationBar(){
+        
+        if !self.isFirstViewController {
+            
+            // Customize navigation for back
+            self.navigationItem.hidesBackButton = true
+            
+            let newBackButton = UIBarButtonItem(image: UIImage(named:"back_white"), style: .plain, target: self, action: #selector(goBack(sender:)))
+            self.navigationItem.leftBarButtonItem = newBackButton
+        }
+        
+        
+    }
+    
+    @objc
+    func goBack(sender: UIBarButtonItem){
+        self.viewModel?.goBack()
+    }
+    
+    var isFirstViewController : Bool {
+        get{
+            
+            let vcList = self.navigationController?.viewControllers
+            if let vcSelf = vcList?[0], vcSelf === self{
+                return true
+            }
+            
+            return false
+            
+        }
     }
 
 

@@ -34,8 +34,11 @@ class UserProfileCoordinator : BaseChildCoordinator {
     var mode : ShineMode
     var danceTypesSelectionCoordinator : DanceTypesSelectionCoordinator?
     
-    init(host: UINavigationController, id: String, mode: ShineMode = .viewOnly) {
+    var isHomeCoordinator : Bool = false
+    
+    init(host: UINavigationController, id: String, mode: ShineMode = .viewOnly, isHome: Bool = false) {
         self.mode = mode
+        self.isHomeCoordinator = isHome
         //self.viewModel = EventViewModel(mode: self.mode, id: id)
         super.init(host:host, id: id)
     }
@@ -61,7 +64,14 @@ extension UserProfileCoordinator : Coordinator {
         let viewModel = UserViewModel(mode: .viewOnly, id: self.id)
         viewModel.coordinatorDelegate = self
         vc.viewModel = viewModel
-        self.hostNavigationController.setViewControllers([vc], animated: false) // It is always root controller
+        
+        
+        if isHomeCoordinator {
+            self.hostNavigationController.setViewControllers([vc], animated: false) // It is always root controller
+        } else {
+            self.hostNavigationController.pushViewController(vc, animated: true)
+        }
+        
     }
     
     fileprivate func startEdit(){

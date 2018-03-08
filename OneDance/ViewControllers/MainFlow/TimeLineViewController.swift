@@ -212,6 +212,15 @@ extension TimeLineViewController : UITableViewDataSource {
                         
                         strongSelf.viewModel?.requestList(of: .like, source: .post, id: feedItem.id)
                     }
+                    
+                    cell.feedOwnerHandler = { [weak self] in
+                        guard let strongSelf = self else {
+                            return
+                        }
+                        
+                        strongSelf.viewModel?.requestUserProfile(id: feedItem.ownerId)
+                    }
+                    
                     // User photo
                     self.assignUserThumbnailImage(cell: cell as FeedableCell, url: feedItem.profilePhotoUrl)
                     
@@ -240,6 +249,14 @@ extension TimeLineViewController : UITableViewDataSource {
                         }
                         
                         strongSelf.viewModel?.requestList(of: .like, source: .post, id: feedItem.id)
+                    }
+                    
+                    cell.feedOwnerHandler = { [weak self] in
+                        guard let strongSelf = self else {
+                            return
+                        }
+                        
+                        strongSelf.viewModel?.requestUserProfile(id: feedItem.ownerId)
                     }
                     
                     // User photo

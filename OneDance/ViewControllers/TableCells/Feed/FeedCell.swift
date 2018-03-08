@@ -56,6 +56,9 @@ class FeedCell: BaseFeedCell {
     /// The block to handle like list action
     var likeListHandler:((Void) -> Void)?
     
+    /// the block to handle user 0r organization name tapped
+    var feedOwnerHandler:((Void) -> Void)?
+    
     
     //MARK: SUBVIEWS
     
@@ -86,6 +89,13 @@ class FeedCell: BaseFeedCell {
         
     }
     
+    @objc
+    func usernameTapped(tapGestureRecognizer: UIGestureRecognizer){
+        if (tapGestureRecognizer.view) != nil{
+            self.feedOwnerHandler?()
+        }
+    }
+    
     /// Location
     let locationLabel = UILabel()
     private func setLocationLabel(name: String = ""){
@@ -102,7 +112,12 @@ class FeedCell: BaseFeedCell {
     @objc
     private func commentTapped(tapGestureRecognizer: UIGestureRecognizer){
         if (tapGestureRecognizer.view) != nil{
-            self.commentHandler?()
+            print("CommentCounter = \(self.item.commentCounter)")
+            if self.item.commentCounter > 0 {
+                
+                self.commentHandler?()
+            }
+            
         }
         
     }
@@ -110,7 +125,12 @@ class FeedCell: BaseFeedCell {
     @objc
     private func likeTapped(tapGestureRecognizer: UIGestureRecognizer){
         if (tapGestureRecognizer.view) != nil{
-            self.likeListHandler?()
+            
+            print("likeCounter = \(self.item.likeCounter)")
+            if self.item.likeCounter > 0 {
+                self.likeListHandler?()
+            }
+            
         }
         
     }
@@ -163,9 +183,15 @@ class FeedCell: BaseFeedCell {
         self.commentImageView.isUserInteractionEnabled = true
         self.commentImageView.addGestureRecognizer(tapGestureRecognizer)
         
+        // Like
         let tapGestureRecognizer2 = UITapGestureRecognizer(target: self, action: #selector(likeTapped(tapGestureRecognizer:)))
         self.likeImageView.isUserInteractionEnabled = true
         self.likeImageView.addGestureRecognizer(tapGestureRecognizer2)
+        
+        // Owner
+        let ownerTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(usernameTapped(tapGestureRecognizer:)))
+        self.userNameAndDateLabel.isUserInteractionEnabled = true
+        self.userNameAndDateLabel.addGestureRecognizer(ownerTapRecognizer)
         
         // Constraints
         self.upperContainer.addSubview(self.profileImageView)

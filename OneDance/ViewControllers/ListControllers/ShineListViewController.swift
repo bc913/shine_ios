@@ -65,6 +65,16 @@ struct UserListModel: PageableUserListModelType{
 // Viewmodel
 // ============
 
+protocol UserListViewModelViewDelegate : class {
+    func viewModelDidFinishUpdate(viewModel: UserListViewModelType)
+}
+
+protocol UserListViewModelCoordinatorDelegate : class {
+    
+}
+
+typealias UserListVMCoordinatorDelegate = UserListViewModelCoordinatorDelegate & ChildViewModelCoordinatorDelegate
+
 
 
 protocol PageableViewModel {
@@ -81,25 +91,20 @@ protocol UserListViewModelType {
     var model : PageableUserListModelType? { get set }
     var type : ListType { get set }
     var source : ListSource { get set }
-    var id : String { get set }
+    var sourceId : String { get set }
     
     var count : Int { get }
     func itemAtIndex(_ index: Int) -> UserLiteType?
+    
+    var title : String { get set }
+    
+    
+    func goBack()
     
 }
 
 
 protocol PageableUserListViewModel : class, UserListViewModelType, PageableViewModel, Refreshable {}
-
-protocol UserListViewModelViewDelegate : class {
-    func viewModelDidFinishUpdate(viewModel: UserListViewModelType)
-}
-
-protocol UserListViewModelCoordinatorDelegate : class {
-    
-}
-
-typealias UserListVMCoordinatorDelegate = UserListViewModelCoordinatorDelegate & ChildViewModelCoordinatorDelegate
 
 
 class UserListViewModel : PageableUserListViewModel{
@@ -115,12 +120,33 @@ class UserListViewModel : PageableUserListViewModel{
     
     /// Id based on source
     /// source == postLike ==> postId
-    var id : String = ""
+    var sourceId : String
+    
+    var title: String
     
     
-    init(type: ListType, source: ListSource) {
+    init(type: ListType, source: ListSource, sourceId: String) {
         self.type = type
         self.source = source
+        self.sourceId = sourceId
+        
+        if type == .comment {
+            self.title = "Comments"
+        } else if type == .like {
+            self.title = "Likes"
+        } else if type == .follower {
+            self.title = "Followers"
+        } else if type == .following {
+            self.title = "Following"
+        } else if type == .interested {
+            self.title = "Interested"
+        } else if type == .going {
+            self.title = "Going"
+        } else if type == .notGoing{
+            self.title = "Not Going"
+        } else {
+            self.title = "List"
+        }
     }
     
     var shouldShowLoadingCell: Bool = false
@@ -195,27 +221,13 @@ class UserListViewModel : PageableUserListViewModel{
             
         }
         
-        if type == .like {
-            // Get post likers
-            return
-        }
-        
-        if type == .going || type == .notGoing || type == .interested {
-            //Get event attendance
-            return
-        }
-        
-        if type == .follower {
-            // Get user follower
-            return
-        }
-        
-        if type == .following {
-            // get user following
-            return
-        }
+        ShineNetworkService.API.Common.getUserList(source: self.source, type: self.type, sourceId: self.sourceId, nextPageKey: self.model?.nextPageKey ?? "", mainThreadCompletionHandler: completionHandler)
         
         
+    }
+    
+    func goBack(){
+        self.coordinatorDelegate?.viewModelDidSelectGoBack(mode: .viewOnly)
     }
     
     
@@ -375,18 +387,20 @@ class ShineUserListViewController: UIViewController {
         }
         didSet{
             viewModel?.viewDelegate = self
+            self.refreshDisplay()
             
         }
+    }
+    
+    fileprivate func refreshDisplay(){
+        
+        self.title = self.viewModel?.title
+        self.viewModel?.refresh()
     }
     
     // MARK: REFRESH & FETCH
     @objc
     func refreshItems(){
-        self.viewModel?.refresh()
-    }
-    
-    fileprivate func refreshDisplay(){
-        
         self.viewModel?.refresh()
     }
     
@@ -477,10 +491,17 @@ class ShineUserListViewController: UIViewController {
         //refresh
         self.refreshControl.addTarget(self, action: #selector(refreshItems), for: .valueChanged)
         
-        // title
-        self.title = "Users"
-
+        
+        // Customize navigation for back
+        self.navigationItem.hidesBackButton = true
+        let newBackButton = UIBarButtonItem(image: UIImage(named:"back_white"), style: .plain, target: self, action: #selector(goBack(sender:)))
+        self.navigationItem.leftBarButtonItem = newBackButton
     
+    }
+    
+    @objc
+    func goBack(sender: UIBarButtonItem){
+        self.viewModel?.goBack()
     }
 
 }
