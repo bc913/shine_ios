@@ -295,7 +295,7 @@ class UserTableCell: UITableViewCell {
                 toItem: self.contentView,
                 attribute: NSLayoutAttribute.left,
                 multiplier: 1.0,
-                constant: 0
+                constant: self.separatorInset.left
             ),
             NSLayoutConstraint(
                 item: profileImageView,
@@ -324,10 +324,10 @@ class UserTableCell: UITableViewCell {
                 multiplier: 1.0,
                 constant: profileImageWidth
             )
-            ])
+        ])
         
         // Username - Date
-        self.self.contentView.addConstraints([
+        self.contentView.addConstraints([
             NSLayoutConstraint(
                 item: fullAndUserNameLabel,
                 attribute: NSLayoutAttribute.left,
@@ -351,7 +351,7 @@ class UserTableCell: UITableViewCell {
     }
     
     override public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: FeedCell.identifier)
+        super.init(style: style, reuseIdentifier: UserTableCell.identifier)
         self.setupViews()
     }
     
@@ -362,6 +362,10 @@ class UserTableCell: UITableViewCell {
     
     class var identifier : String {
         return String(describing: self)
+    }
+    
+    override var designatedHeight: CGFloat{
+        return 64.0
     }
     
 }
@@ -376,6 +380,9 @@ class ShineUserListViewController: UIViewController {
 //        self.type = type
 //        super.init(nibName: nil, bundle: nil)
 //    }
+    
+    // Photo manager
+    var photoManager = PhotoManager.instance()
     
     weak var tableView : UITableView!
     // Refresh
@@ -471,15 +478,20 @@ class ShineUserListViewController: UIViewController {
         // Hide empty unused cells
         self.tableView.tableFooterView = UIView()
         
-        //self.tableView.delegate = self
-        //self.tableView.dataSource = self
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
         
         self.tableView.allowsSelection = false //this disables didSelectRowAt
         self.tableView.register(UserTableCell.self, forCellReuseIdentifier: UserTableCell.identifier)
         
-        self.tableView.estimatedRowHeight = 64.0
-        self.tableView.rowHeight = UITableViewAutomaticDimension
         
+        // In order to work with self sizing cells, thecontent view's item should have constraints to top and bottom
+        // estimatedrowheight & UITableviewAutomaticDimension
+        //https://stackoverflow.com/questions/37021236/warning-while-setting-table-row-height-for-a-tableview-cell-ios-9
+        
+        
+        // Eger, self sizing yoksa yukaridaki kullanmak zorunda degilsin
+        self.tableView.rowHeight = 64.0
         
         // refresh control
         if #available(iOS 10.0, *){
@@ -535,6 +547,15 @@ extension ShineUserListViewController : UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: UserTableCell.identifier, for: indexPath) as! UserTableCell
                 
                 cell.item = userItem
+                
+                // Image
+                if let image = self.photoManager.cachedImage(for: userItem.profilePhoto?.thumbnail?.url?.absoluteString ?? "") {
+                    cell.setUserThumbnailImage(image: image)
+                } else {
+                    photoManager.retrieveImage(for: userItem.profilePhoto?.thumbnail?.url?.absoluteString ?? ""){ image in
+                        cell.setUserThumbnailImage(image: image)
+                    }
+                }
                 
                 return cell
                 

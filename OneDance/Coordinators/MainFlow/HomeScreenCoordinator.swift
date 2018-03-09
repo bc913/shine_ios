@@ -502,14 +502,28 @@ class ListCoordinator : BaseChildCoordinator{
 
 extension ListCoordinator : Coordinator{
     func start() {
+        
+        if self.type == .like || self.type == .follower || self.type == .following {
+            startUserList()
+        } else if self.type == .comment && self.source == .post {
+            startPostComments()
+        }       
+    }
+    
+    private func startPostComments(){
+        
+        let vc = CommentListViewController(nibName: nil, bundle: nil)
+        self.hostNavigationController.pushViewController(vc, animated: true)
+        
+    }
+    
+    private func startUserList(){
         let vc = ShineUserListViewController(nibName: nil, bundle: nil)
         let viewModel = UserListViewModel(type: self.type, source: self.source, sourceId: self.id)
         viewModel.coordinatorDelegate = self
         
         vc.viewModel = viewModel
         self.hostNavigationController.pushViewController(vc, animated: true)
-        
-        
     }
 }
 

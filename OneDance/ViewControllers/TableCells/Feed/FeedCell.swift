@@ -113,11 +113,7 @@ class FeedCell: BaseFeedCell {
     private func commentTapped(tapGestureRecognizer: UIGestureRecognizer){
         if (tapGestureRecognizer.view) != nil{
             print("CommentCounter = \(self.item.commentCounter)")
-            if self.item.commentCounter > 0 {
-                
-                self.commentHandler?()
-            }
-            
+                self.commentHandler?()            
         }
         
     }
