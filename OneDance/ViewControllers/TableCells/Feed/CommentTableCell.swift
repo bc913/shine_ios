@@ -8,7 +8,15 @@
 
 import UIKit
 
-class CommentTableCell : UITableViewCell {
+class CommentTableCell : UITableViewCell, UserNameTappableCell {
+    
+    var item : PostCommentType? {
+        didSet{
+            
+            self.setUserNameAndDate(name: (item?.commenter?.userName)!, date: (item?.commentDate)!)
+            self.setCommentText(text: item?.text ?? "")
+        }
+    }
     
     /// Profile image
     private let profileImageView = UIImageView(image:UIImage(named: "profile"))
@@ -31,6 +39,16 @@ class CommentTableCell : UITableViewCell {
         
         self.userNameAndDateLabel.attributedText = attributedText
         
+    }
+    
+    /// the block to handle user or organization name tapped
+    var ownerHandler: ((Void) -> (Void))?
+    
+    @objc
+    func usernameTapped(tapGestureRecognizer: UIGestureRecognizer){
+        if (tapGestureRecognizer.view) != nil{
+            self.ownerHandler?()
+        }
     }
     
     // Comment text
@@ -59,6 +77,11 @@ class CommentTableCell : UITableViewCell {
         // 
         self.userNameAndDateLabel.numberOfLines = 1
         self.userNameAndDateLabel.lineBreakMode = .byTruncatingTail
+        
+        let ownerTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(usernameTapped(tapGestureRecognizer:)))
+        self.userNameAndDateLabel.isUserInteractionEnabled = true
+        self.userNameAndDateLabel.addGestureRecognizer(ownerTapRecognizer)
+        
         
         // Comment
         self.commentLabel.numberOfLines = 0
@@ -204,7 +227,7 @@ class CommentTableCell : UITableViewCell {
             ),
             
         ])
-        
+                
         
     }
     

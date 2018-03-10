@@ -23,7 +23,7 @@ protocol FeedableCell {
     func setUserThumbnailImage(image:UIImage)
 }
 
-class FeedCell: BaseFeedCell {
+class FeedCell: BaseFeedCell, UserNameTappableCell {
 
     
     override var item : Feed {
@@ -56,8 +56,8 @@ class FeedCell: BaseFeedCell {
     /// The block to handle like list action
     var likeListHandler:((Void) -> Void)?
     
-    /// the block to handle user 0r organization name tapped
-    var feedOwnerHandler:((Void) -> Void)?
+    /// the block to handle user or organization name tapped
+    var ownerHandler: ((Void) -> (Void))?
     
     
     //MARK: SUBVIEWS
@@ -92,7 +92,7 @@ class FeedCell: BaseFeedCell {
     @objc
     func usernameTapped(tapGestureRecognizer: UIGestureRecognizer){
         if (tapGestureRecognizer.view) != nil{
-            self.feedOwnerHandler?()
+            self.ownerHandler?()
         }
     }
     

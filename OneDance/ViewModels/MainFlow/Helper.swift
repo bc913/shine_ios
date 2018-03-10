@@ -10,16 +10,7 @@
 
 import Foundation
 
-enum ShineMode {
-    case edit
-    case viewOnly
-    case create
-    case delete
-}
 
-protocol Refreshable : class {
-    func refresh()
-}
 //============
 // AttendeesQuantityItem
 //============

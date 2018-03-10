@@ -512,8 +512,23 @@ extension ListCoordinator : Coordinator{
     
     private func startPostComments(){
         
-        let vc = CommentListViewController(nibName: nil, bundle: nil)
+        let vc = ShineCommentListViewController(nibName: "ShineCommentListViewController", bundle: nil)
+        let viewModel = CommentListViewModel(sourceId: self.id)
+        viewModel.coordinatorDelegate = self
+        vc.viewModel = viewModel
+        
+        
+        if self.hostNavigationController.topViewController != nil {
+            self.hostNavigationController.topViewController!.hidesBottomBarWhenPushed = true
+        }
+        
         self.hostNavigationController.pushViewController(vc, animated: true)
+        
+        // HACK: After pushing comment list, change the hidetabbar property for the presenter here
+        let vcCounter = self.hostNavigationController.viewControllers.count
+        if vcCounter > 1 {
+            self.hostNavigationController.viewControllers[vcCounter - 2].hidesBottomBarWhenPushed = false
+        }
         
     }
     
@@ -527,9 +542,9 @@ extension ListCoordinator : Coordinator{
     }
 }
 
-extension ListCoordinator : UserListViewModelCoordinatorDelegate {
-    
-}
+extension ListCoordinator : UserListViewModelCoordinatorDelegate {}
+
+extension ListCoordinator : CommentListViewModelCoordinatorDelegate {}
 
 
 //===============================================================================================

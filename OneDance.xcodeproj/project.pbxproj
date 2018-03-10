@@ -70,6 +70,11 @@
 		654672751FA030A1002DDC40 /* ProfileInfoSetupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 654672731FA030A1002DDC40 /* ProfileInfoSetupViewController.xib */; };
 		6546A0451FBBC65500B23685 /* NameTitleFormCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6546A0431FBBC65500B23685 /* NameTitleFormCell.swift */; };
 		6546A0461FBBC65500B23685 /* NameTitleFormCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6546A0441FBBC65500B23685 /* NameTitleFormCell.xib */; };
+		654792CF2053621D00A844EC /* ShineCommentListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654792CD2053621D00A844EC /* ShineCommentListViewController.swift */; };
+		654792D02053621D00A844EC /* ShineCommentListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 654792CE2053621D00A844EC /* ShineCommentListViewController.xib */; };
+		654792D220536A6100A844EC /* ViewInterfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654792D120536A6100A844EC /* ViewInterfaces.swift */; };
+		654792D52053A85B00A844EC /* CommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654792D42053A85B00A844EC /* CommentViewModel.swift */; };
+		654792D72053B49900A844EC /* Interfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654792D62053B49900A844EC /* Interfaces.swift */; };
 		654873862041C31C00CAC92A /* FeedWithMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654873852041C31C00CAC92A /* FeedWithMediaCell.swift */; };
 		654873882041D6F500CAC92A /* Date+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654873872041D6F500CAC92A /* Date+Utilities.swift */; };
 		6548738A2042140900CAC92A /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654873892042140900CAC92A /* PostViewModel.swift */; };
@@ -228,6 +233,11 @@
 		654672731FA030A1002DDC40 /* ProfileInfoSetupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ProfileInfoSetupViewController.xib; path = ViewControllers/ProfileSetup/ProfileInfoSetupViewController.xib; sourceTree = "<group>"; };
 		6546A0431FBBC65500B23685 /* NameTitleFormCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NameTitleFormCell.swift; path = ViewControllers/TableCells/Form/NameTitleFormCell.swift; sourceTree = "<group>"; };
 		6546A0441FBBC65500B23685 /* NameTitleFormCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NameTitleFormCell.xib; path = ViewControllers/TableCells/Form/NameTitleFormCell.xib; sourceTree = "<group>"; };
+		654792CD2053621D00A844EC /* ShineCommentListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShineCommentListViewController.swift; path = ViewControllers/ListControllers/ShineCommentListViewController.swift; sourceTree = "<group>"; };
+		654792CE2053621D00A844EC /* ShineCommentListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ShineCommentListViewController.xib; path = ViewControllers/ListControllers/ShineCommentListViewController.xib; sourceTree = "<group>"; };
+		654792D120536A6100A844EC /* ViewInterfaces.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewInterfaces.swift; path = ViewControllers/ViewInterfaces.swift; sourceTree = "<group>"; };
+		654792D42053A85B00A844EC /* CommentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentViewModel.swift; path = ViewModels/Feed/CommentViewModel.swift; sourceTree = "<group>"; };
+		654792D62053B49900A844EC /* Interfaces.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Interfaces.swift; sourceTree = "<group>"; };
 		654873852041C31C00CAC92A /* FeedWithMediaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FeedWithMediaCell.swift; path = ViewControllers/TableCells/Feed/FeedWithMediaCell.swift; sourceTree = "<group>"; };
 		654873872041D6F500CAC92A /* Date+Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Date+Utilities.swift"; path = "Utilities/Extensions/Date+Utilities.swift"; sourceTree = "<group>"; };
 		654873892042140900CAC92A /* PostViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PostViewModel.swift; path = ViewModels/MainFlow/PostViewModel.swift; sourceTree = "<group>"; };
@@ -510,6 +520,7 @@
 				654BB8D01F8DCBE80044A555 /* DanceTypesViewModelInterface.swift */,
 				65640E011F9C423E006C2E21 /* ProfileImageSelectionVMInterface.swift */,
 				654672701FA02A7A002DDC40 /* ProfileInfoSetupViewModelInterface.swift */,
+				654792D62053B49900A844EC /* Interfaces.swift */,
 			);
 			name = Interfaces;
 			sourceTree = "<group>";
@@ -544,6 +555,7 @@
 				65FD06F01F1D719F00932E5F /* LocationSearchTableViewController.swift */,
 				65FD06F21F1D726C00932E5F /* LocationSearchTableViewCell.swift */,
 				65FD06F31F1D726C00932E5F /* LocationSearchTableViewCell.xib */,
+				654792D120536A6100A844EC /* ViewInterfaces.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -671,6 +683,14 @@
 			name = Form;
 			sourceTree = "<group>";
 		};
+		654792D32053A82900A844EC /* Feed */ = {
+			isa = PBXGroup;
+			children = (
+				654792D42053A85B00A844EC /* CommentViewModel.swift */,
+			);
+			name = Feed;
+			sourceTree = "<group>";
+		};
 		6548738B2043027A00CAC92A /* Post */ = {
 			isa = PBXGroup;
 			children = (
@@ -742,6 +762,8 @@
 			children = (
 				654E0E4A204E4589006512B8 /* ShineListViewController.swift */,
 				654259E020524C53006DB4A4 /* CommentListViewController.swift */,
+				654792CD2053621D00A844EC /* ShineCommentListViewController.swift */,
+				654792CE2053621D00A844EC /* ShineCommentListViewController.xib */,
 			);
 			name = ListControllers;
 			sourceTree = "<group>";
@@ -798,6 +820,7 @@
 		65FC55DE1F6791CD00E02503 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				654792D32053A82900A844EC /* Feed */,
 				654E0E4C204E4C9E006512B8 /* List */,
 				6504E9F21FCA16BE00A29B97 /* Authentication */,
 				65F538D71FA81D050034DAFA /* MainFlow */,
@@ -973,6 +996,7 @@
 				654B1D251F942A1900B13925 /* DanceTypesViewController.xib in Resources */,
 				6503EC3A1F075CA900D56AB5 /* Assets.xcassets in Resources */,
 				650415DC1FF038B700D19A89 /* EditCreateEventViewController.xib in Resources */,
+				654792D02053621D00A844EC /* ShineCommentListViewController.xib in Resources */,
 				6525BD3E1FC1DD3800249AFC /* TextFieldFormCell.xib in Resources */,
 				6549E7841F8B2DF7000C475E /* danceTypes.json in Resources */,
 				65F538D61FA811B20034DAFA /* UserProfileViewController.xib in Resources */,
@@ -1098,6 +1122,7 @@
 				65FD06F11F1D719F00932E5F /* LocationSearchTableViewController.swift in Sources */,
 				652A3D061FD50F0900376CB6 /* User.swift in Sources */,
 				65100F1E20295A36006CEEA4 /* ShineSwitchCell.swift in Sources */,
+				654792D52053A85B00A844EC /* CommentViewModel.swift in Sources */,
 				6555751720479C320045CE8E /* UserViewController.swift in Sources */,
 				650E16D9203D05DE001F90B0 /* ShineLocationCell.swift in Sources */,
 				654479151FC7507200FE3B58 /* ShineError.swift in Sources */,
@@ -1126,6 +1151,7 @@
 				65134F1D1F1B19C40017C930 /* MapViewController.swift in Sources */,
 				656A1B3320392364008F3523 /* FeedCell.swift in Sources */,
 				6549871B1F8F0F31002DFB0C /* DanceTypesModel.swift in Sources */,
+				654792CF2053621D00A844EC /* ShineCommentListViewController.swift in Sources */,
 				652A3CFE1FD4F44A00376CB6 /* JSON.swift in Sources */,
 				6561CED71FDE4022008EC9A3 /* Common.swift in Sources */,
 				652A3D041FD50E5600376CB6 /* EventBase.swift in Sources */,
@@ -1145,11 +1171,13 @@
 				652285D6203BCA460082A551 /* LocationViewController.swift in Sources */,
 				652A3D001FD50DC000376CB6 /* Location.swift in Sources */,
 				65714CFE1FE600B7001FAB44 /* EventViewModel.swift in Sources */,
+				654792D220536A6100A844EC /* ViewInterfaces.swift in Sources */,
 				654873862041C31C00CAC92A /* FeedWithMediaCell.swift in Sources */,
 				65640E051F9C43E5006C2E21 /* ProfileImageSelectionViewModel.swift in Sources */,
 				654259DF20524479006DB4A4 /* CommentTableCell.swift in Sources */,
 				656834D11F8C6B5F00ADCBA2 /* EmailLoginViewModelInterface.swift in Sources */,
 				65BC8BF81F819F6800F5AF94 /* SignUpViewModelInterface.swift in Sources */,
+				654792D72053B49900A844EC /* Interfaces.swift in Sources */,
 				65BC8BFC1F81D87400F5AF94 /* SignUpCoordinator.swift in Sources */,
 				6509345D1FEA2023001AB8EB /* UserViewModel.swift in Sources */,
 				65C045291F6E37B9003824E0 /* MainAuthenticationCoordinator.swift in Sources */,

@@ -8,26 +8,11 @@
 
 import UIKit
 
-
-// ============
-// Interfaces
-// ============
-
-protocol PageableModel {
-    var nextPageKey : String { get set }
-}
-
-protocol UserListModelType {
-    var items : [UserLiteType] { get set }
-    var count : Int { get }
-}
-
-protocol PageableUserListModelType: UserListModelType, PageableModel { }
-
 // ============
 // MODEL
 // ============
 
+protocol PageableUserListModelType: UserListModelType, PageableModel { }
 
 struct UserListModel: PageableUserListModelType{
     
@@ -75,14 +60,6 @@ protocol UserListViewModelCoordinatorDelegate : class {
 
 typealias UserListVMCoordinatorDelegate = UserListViewModelCoordinatorDelegate & ChildViewModelCoordinatorDelegate
 
-
-
-protocol PageableViewModel {
-    func fetchNextPage()
-    var shouldShowLoadingCell : Bool { get set }
-    
-}
-
 protocol UserListViewModelType {
     
     weak var coordinatorDelegate : UserListVMCoordinatorDelegate? { get set }
@@ -98,14 +75,13 @@ protocol UserListViewModelType {
     
     var title : String { get set }
     
-    
-    func goBack()
+    func requestUserProfile(id: String)
+    func requestOrganizationProfile(id: String)
+
     
 }
 
-
-protocol PageableUserListViewModel : class, UserListViewModelType, PageableViewModel, Refreshable {}
-
+protocol PageableUserListViewModel : class, UserListViewModelType, PageableViewModel, Refreshable, NavigationalViewModel {}
 
 class UserListViewModel : PageableUserListViewModel{
     
@@ -149,7 +125,7 @@ class UserListViewModel : PageableUserListViewModel{
         }
     }
     
-    var shouldShowLoadingCell: Bool = false
+    
     
     // Error
     var errorMessage: String = ""
@@ -173,6 +149,7 @@ class UserListViewModel : PageableUserListViewModel{
         self.model?.nextPageKey = ""
         self.loadItems(refresh: true)
     }
+    var shouldShowLoadingCell: Bool = false
     
     func fetchNextPage() {
         self.loadItems()
@@ -230,10 +207,17 @@ class UserListViewModel : PageableUserListViewModel{
         self.coordinatorDelegate?.viewModelDidSelectGoBack(mode: .viewOnly)
     }
     
+    func requestUserProfile(id: String) {
+        self.coordinatorDelegate?.viewModelDidSelectUserProfile(userID: id, requestedMode: .viewOnly)
+    }
+    
+    func requestOrganizationProfile(id: String) {
+        self.coordinatorDelegate?.viewModelDidSelectOrganizationProfile(organizationID: id, requestedMode: .viewOnly)
+    }
     
 }
 
-class UserTableCell: UITableViewCell {
+class UserTableCell: UITableViewCell, UserNameTappableCell {
     
     var item : UserLiteType? {
         didSet{
@@ -268,6 +252,17 @@ class UserTableCell: UITableViewCell {
         
     }
     
+    /// the block to handle user or organization name tapped
+    var ownerHandler: ((Void) -> (Void))?
+    
+    @objc
+    func usernameTapped(tapGestureRecognizer: UIGestureRecognizer){
+        if (tapGestureRecognizer.view) != nil{
+            self.ownerHandler?()
+        }
+    }
+
+    
     private func setupViews(){
         self.clipsToBounds = true
         let views = [profileImageView, fullAndUserNameLabel]
@@ -279,8 +274,18 @@ class UserTableCell: UITableViewCell {
        
         // Thumbnail
         self.profileImageView.contentMode = .scaleAspectFit
+        let imageTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(usernameTapped(tapGestureRecognizer:)))
+        self.profileImageView.isUserInteractionEnabled = true
+        self.profileImageView.addGestureRecognizer(imageTapRecognizer)
         
+        
+        // Username
         self.fullAndUserNameLabel.numberOfLines = 2
+        let ownerTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(usernameTapped(tapGestureRecognizer:)))
+        self.fullAndUserNameLabel.isUserInteractionEnabled = true
+        self.fullAndUserNameLabel.addGestureRecognizer(ownerTapRecognizer)
+        
+        
         
         self.setupConstraints()
     }
@@ -556,6 +561,15 @@ extension ShineUserListViewController : UITableViewDataSource {
                         cell.setUserThumbnailImage(image: image)
                     }
                 }
+                
+                cell.ownerHandler = { [weak self] in
+                    guard let strongSelf = self else {
+                        return
+                    }
+                    
+                    strongSelf.viewModel?.requestUserProfile(id: userItem.userId ?? "")
+                }
+                
                 
                 return cell
                 

@@ -213,7 +213,7 @@ extension TimeLineViewController : UITableViewDataSource {
                         strongSelf.viewModel?.requestList(of: .like, source: .post, id: feedItem.id)
                     }
                     
-                    cell.feedOwnerHandler = { [weak self] in
+                    cell.ownerHandler = { [weak self] in
                         guard let strongSelf = self else {
                             return
                         }
@@ -251,7 +251,7 @@ extension TimeLineViewController : UITableViewDataSource {
                         strongSelf.viewModel?.requestList(of: .like, source: .post, id: feedItem.id)
                     }
                     
-                    cell.feedOwnerHandler = { [weak self] in
+                    cell.ownerHandler = { [weak self] in
                         guard let strongSelf = self else {
                             return
                         }
@@ -305,3 +305,5 @@ extension TimeLineViewController : TimeLineViewModelViewDelegate {
         
     }
 }
+
+extension TimeLineViewController : CommentableViewController{}

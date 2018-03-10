@@ -12,9 +12,9 @@ class CommentListViewController: UIViewController {
 
     weak var tableView : UITableView!
     
-    var sendCommentContainerView = UIView()
-    var textView : UITextView = UITextView()
-    var sendImageView : UIImageView = UIImageView(image: UIImage(named: "paper-plane-black"))
+    weak var sendCommentContainerView : UIView!
+    weak var textView : UITextView!
+    weak var sendImageView : UIImageView!
     
     override func loadView() {
         
@@ -22,25 +22,34 @@ class CommentListViewController: UIViewController {
         
         // Configure views and layouts
         
+        
         let tableView = UITableView()
         self.view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         self.tableView = tableView
         
-        self.view.addSubview(self.sendCommentContainerView)
-        self.view.addSubview(textView)
-        self.view.addSubview(self.sendImageView)
-
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(containerView)
+        self.sendCommentContainerView = containerView
+        self.sendCommentContainerView.backgroundColor = UIColor.clear
         
-        self.sendCommentContainerView.translatesAutoresizingMaskIntoConstraints = false
         
+        let sendImage = UIImageView(image: UIImage(named: "paper-plane-white"))
+        sendImage.frame = CGRect(x: 0, y: 0, width: 24.0, height: 24.0)
+        sendImage.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(sendImage)
+        self.sendImageView = sendImage
+        self.sendImageView.contentMode = .scaleAspectFit
         
-        self.sendCommentContainerView.addSubview(self.textView)
+        let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(textView)
+        self.textView = textView
+
+        sendCommentContainerView.addSubview(sendImageView)
+        sendCommentContainerView.addSubview(self.textView)
         
-        
-        self.sendCommentContainerView.addSubview(self.sendImageView)
-        self.sendImageView.translatesAutoresizingMaskIntoConstraints = false
         
         
         // Hide empty unused cells
@@ -70,7 +79,7 @@ class CommentListViewController: UIViewController {
                 toItem: self.sendCommentContainerView,
                 attribute: NSLayoutAttribute.trailing,
                 multiplier: 1.0,
-                constant: 0.0
+                constant: -8.0
             ),
             NSLayoutConstraint(
                 item: sendImageView,
@@ -79,7 +88,7 @@ class CommentListViewController: UIViewController {
                 toItem: nil,
                 attribute: NSLayoutAttribute.notAnAttribute,
                 multiplier: 1.0,
-                constant: 24.0
+                constant: 48.0
             ),
             NSLayoutConstraint(
                 item: sendImageView,
@@ -88,7 +97,7 @@ class CommentListViewController: UIViewController {
                 toItem: nil,
                 attribute: NSLayoutAttribute.notAnAttribute,
                 multiplier: 1.0,
-                constant: 24.0
+                constant: 48.0
             ),
             NSLayoutConstraint(
                 item: sendImageView,
@@ -103,7 +112,7 @@ class CommentListViewController: UIViewController {
         
         self.sendCommentContainerView.addConstraints([
             NSLayoutConstraint(
-                item: textView,
+                item: self.textView,
                 attribute: NSLayoutAttribute.trailing,
                 relatedBy: NSLayoutRelation.equal,
                 toItem: self.sendImageView,
@@ -112,7 +121,7 @@ class CommentListViewController: UIViewController {
                 constant: 0.0
             ),
             NSLayoutConstraint(
-                item: textView,
+                item: self.textView,
                 attribute: NSLayoutAttribute.top,
                 relatedBy: NSLayoutRelation.equal,
                 toItem: self.sendCommentContainerView,
@@ -121,7 +130,7 @@ class CommentListViewController: UIViewController {
                 constant: 0.0
             ),
             NSLayoutConstraint(
-                item: textView,
+                item: self.textView,
                 attribute: NSLayoutAttribute.bottom,
                 relatedBy: NSLayoutRelation.equal,
                 toItem: self.sendCommentContainerView,
@@ -130,11 +139,11 @@ class CommentListViewController: UIViewController {
                 constant: 0.0
             ),
             NSLayoutConstraint(
-                item: textView,
+                item: self.textView,
                 attribute: NSLayoutAttribute.leading,
                 relatedBy: NSLayoutRelation.equal,
                 toItem: self.sendCommentContainerView,
-                attribute: NSLayoutAttribute.leadingMargin,
+                attribute: NSLayoutAttribute.leading,
                 multiplier: 1.0,
                 constant: 0.0
             )
@@ -176,7 +185,7 @@ class CommentListViewController: UIViewController {
                 toItem: nil,
                 attribute: NSLayoutAttribute.notAnAttribute,
                 multiplier: 1.0,
-                constant: 40.0
+                constant: 64.0
             )
         ])
         
@@ -219,8 +228,6 @@ class CommentListViewController: UIViewController {
                 constant: 0.0
             )
         ])
-
-        
         
         // Customize navigation for back
         self.navigationItem.hidesBackButton = true
