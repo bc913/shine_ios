@@ -214,7 +214,8 @@ struct Feed {
         get {
             return self.post.owner?.userId ?? self.post.organization?.id ?? ""
         }
-    }
+    }    
+    
 }
 
 extension Feed : JSONDecodable {
@@ -307,6 +308,9 @@ protocol TimeLineViewModelType : class, ListableViewModel {
     
     func requestUserProfile(id: String)
     func requestOrganizationProfile(id: String)
+    
+    func likePost(id: String)
+    func removeLikeFromPost(id:String)
     
     
 }
@@ -421,6 +425,14 @@ class TimeLineViewModel : TimeLineViewModelType {
     
     func requestOrganizationProfile(id: String) {
         self.coordinatorDelegate?.viewModelDidSelectOrganizationProfile(organizationID: id, requestedMode: .viewOnly)
+    }
+    
+    func likePost(id: String){
+        ShineNetworkService.API.Feed.likePost(postId: id)
+    }
+    
+    func removeLikeFromPost(id: String) {
+        ShineNetworkService.API.Feed.removeLikeFromPost(postId: id)
     }
     
     

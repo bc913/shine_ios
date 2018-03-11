@@ -1270,7 +1270,7 @@ struct ShineNetworkService {
                         queue: queue,
                         completionHandler: { response in
                             // Debug
-                            Helper.debugResponse(methodName: "createPost()", response: response)
+                            Helper.debugResponse(methodName: "getPosterLikerList()", response: response)
                             
                             // Check status code
                             let httpStatusCode = response.response?.statusCode
@@ -1319,7 +1319,200 @@ struct ShineNetworkService {
                     }
                 )
                 
-            }//createPost
+            }//getPostLikerList
+            
+            static func getPostComments(postID: String, nextPageKey: String, mainThreadCompletionHandler: @escaping (_ error: NSError?, _ commentListModel: PageableCommentListModelType?) -> ()){
+                
+                if postID.isEmpty {
+                    fatalError("Post ID required for getPostComments")
+                }
+                
+                let headers: HTTPHeaders = [
+                    "Content-Type": "application/json",
+                    "USER-ID": PersistanceManager.User.userId!
+                ]
+                
+                let url = Constants.Feed.getPostCommentsUrl(postId: postID)
+                
+                let parameters : Parameters = [
+                    "n" : nextPageKey
+                ]
+                
+                let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
+                Alamofire.request(url, method: .get, parameters: nextPageKey.isEmpty ? nil : parameters, encoding: URLEncoding.queryString, headers: headers)
+                    .responseJSON(
+                        queue: queue,
+                        completionHandler: { response in
+                            // Debug
+                            Helper.debugResponse(methodName: "getPostComments()", response: response)
+                            
+                            // Check status code
+                            let httpStatusCode = response.response?.statusCode
+                            
+                            // Error
+                            var error : NSError? = nil
+                            guard response.result.isSuccess else {
+                                
+                                error = ErrorFactory.createForAlamofireResponse(with: httpStatusCode!)
+                                print("Error 1")
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                            }
+                            
+                            // serialized json response
+                            guard let jsonData = response.result.value, let jsonDict = jsonData as? [String:Any] else{
+                                error = ErrorFactory.createForResponseDataSerialization(with: httpStatusCode!)
+                                print("Error 2")
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                            }
+                            
+                            if let errorMessage = jsonDict["message"] as? String {
+                                error = ErrorFactory.create(.User, .User, .User, description: errorMessage)
+                                print("Error 3")
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                                
+                            }
+                            
+                            let commentListModel = CommentListModel(json: jsonDict)
+                            print("UserListModel.count = \(commentListModel?.count)")
+                            
+                            if commentListModel == nil {
+                                error = ErrorFactory.createForResponseDataSerialization(with: nil)
+                                print("Json data is not parsed successfully for the user profile model")
+                                print("Error 4")
+                                mainThreadCompletionHandler(nil, nil)
+                                return
+                            }
+                            
+                            if commentListModel?.count == 0 {
+                                mainThreadCompletionHandler(nil, nil)
+                                return
+                            }
+                            
+                            
+                            //
+                            // To update anything on the main thread, just jump back on like so.
+                            mainThreadCompletionHandler(nil, commentListModel)
+                            print("#############################################################")
+                            
+                    }
+                )
+                
+            }
+            
+            static func likePost(postId: String){
+                
+                let headers: HTTPHeaders = [
+                    "Content-Type": "application/json",
+                    "USER-ID": PersistanceManager.User.userId!
+                ]
+                
+                let url = Constants.Feed.getPostLikesUrl(postId: postId)
+                
+                let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
+                Alamofire.request(url, method: .post, encoding: JSONEncoding.default, headers: headers)
+                    .responseJSON(
+                        queue: queue,
+                        completionHandler: { response in
+                            // Debug
+                            Helper.debugResponse(methodName: "likePost(id:\(postId))", response: response)
+                            
+                            // Check status code
+                            let httpStatusCode = response.response?.statusCode
+                            
+                            if httpStatusCode != nil, 200 ... 299 ~= httpStatusCode!  {
+                                print("success like Post")
+                                return
+                            }
+                            
+                            // Error
+                            var error : NSError? = nil
+                            guard response.result.isSuccess else {
+                                
+                                error = ErrorFactory.createForAlamofireResponse(with: httpStatusCode!)
+                                print("Error 1")
+                                return
+                            }
+                            
+                            // serialized json response
+                            guard let jsonData = response.result.value, let jsonDict = jsonData as? [String:Any] else{
+                                error = ErrorFactory.createForResponseDataSerialization(with: httpStatusCode!)
+                                print("Error 2")
+                                return
+                            }
+                            
+                            if let errorMessage = jsonDict["message"] as? String {
+                                error = ErrorFactory.create(.User, .User, .User, description: errorMessage)
+                                print("Error 3")
+                                return
+                                
+                            }
+                            
+                            //
+                            print("#############################################################")
+                            
+                    }
+                )
+                
+            } // LikePost
+            
+            static func removeLikeFromPost(postId: String){
+                
+                let headers: HTTPHeaders = [
+                    "Content-Type": "application/json",
+                    "USER-ID": PersistanceManager.User.userId!
+                ]
+                
+                let url = Constants.Feed.getPostLikesUrl(postId: postId)
+                
+                let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
+                Alamofire.request(url, method: .delete, encoding: JSONEncoding.default, headers: headers)
+                    .responseJSON(
+                        queue: queue,
+                        completionHandler: { response in
+                            // Debug
+                            Helper.debugResponse(methodName: "removeLikeFromPost(id:\(postId))", response: response)
+                            
+                            // Check status code
+                            let httpStatusCode = response.response?.statusCode
+                            
+                            if httpStatusCode != nil, 200 ... 299 ~= httpStatusCode!  {
+                                print("success remove like from Post")
+                                return
+                            }
+                            
+                            // Error
+                            var error : NSError? = nil
+                            guard response.result.isSuccess else {
+                                
+                                error = ErrorFactory.createForAlamofireResponse(with: httpStatusCode!)
+                                print("Error 1")
+                                return
+                            }
+                            
+                            // serialized json response
+                            guard let jsonData = response.result.value, let jsonDict = jsonData as? [String:Any] else{
+                                error = ErrorFactory.createForResponseDataSerialization(with: httpStatusCode!)
+                                print("Error 2")
+                                return
+                            }
+                            
+                            if let errorMessage = jsonDict["message"] as? String {
+                                error = ErrorFactory.create(.User, .User, .User, description: errorMessage)
+                                print("Error 3")
+                                return
+                                
+                            }
+                            
+                            //
+                            print("#############################################################")
+                            
+                    }
+                )
+                
+            } // removeLike
             
             
         } // Feed
@@ -1372,7 +1565,7 @@ struct ShineNetworkService {
                         queue: queue,
                         completionHandler: { response in
                             // Debug
-                            Helper.debugResponse(methodName: "createPost()", response: response)
+                            Helper.debugResponse(methodName: "getUserList()", response: response)
                             
                             // Check status code
                             let httpStatusCode = response.response?.statusCode
@@ -1404,7 +1597,7 @@ struct ShineNetworkService {
                             }
                             
                             let userListModel = UserListModel(json: jsonDict)
-                            print("UserListModel.count = \(userListModel?.count)")
+                            print("UserListModel.count = \(String(describing: userListModel?.count))")
                             
                             if userListModel == nil {
                                 error = ErrorFactory.createForResponseDataSerialization(with: nil)

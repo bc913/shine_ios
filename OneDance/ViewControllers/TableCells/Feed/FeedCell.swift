@@ -23,7 +23,7 @@ protocol FeedableCell {
     func setUserThumbnailImage(image:UIImage)
 }
 
-class FeedCell: BaseFeedCell, UserNameTappableCell {
+class FeedCell: BaseFeedCell, UserNameTappableCell, LikeableView {
 
     
     override var item : Feed {
@@ -34,7 +34,30 @@ class FeedCell: BaseFeedCell, UserNameTappableCell {
             // Location
             self.setLocationLabel(name: item.location)
             
+            // Likes - Comments counter
+            self.setLikeCommentCounter(likeCounter: item.likeCounter, commentCounter: item.commentCounter)
             
+            // Like state
+            self.isLikedPost = false
+            
+        }
+    }
+    
+    var isLikedPost = false {
+        didSet{
+            if oldValue == false && isLikedPost {
+                self.likeImageView.image = UIImage(named: "like_red")
+                self.setLikeCommentCounter(likeCounter: self.item.likeCounter + 1, commentCounter: self.item.commentCounter)
+                self.likeHandler?()
+                return
+            }
+            
+            if oldValue == true && !isLikedPost {
+                self.likeImageView.image = UIImage(named: "like_empty")
+                self.setLikeCommentCounter(likeCounter: self.item.likeCounter - 1, commentCounter: self.item.commentCounter)
+                self.reomoveLikeHandler?()
+                return
+            }
         }
     }
     
@@ -48,8 +71,7 @@ class FeedCell: BaseFeedCell, UserNameTappableCell {
     private let profileImageHeight : CGFloat = 44.0
     private let profileImageWidth : CGFloat = 44.0
     
-    // Handlers
-    
+    // Handlers    
     /// The block to handle comment action
     var commentHandler: ((Void) -> Void)?
     
@@ -58,6 +80,10 @@ class FeedCell: BaseFeedCell, UserNameTappableCell {
     
     /// the block to handle user or organization name tapped
     var ownerHandler: ((Void) -> (Void))?
+    
+    /// Like action handlers
+    var likeHandler: ((Void) -> (Void))?
+    var reomoveLikeHandler: ((Void) -> (Void))?
     
     
     //MARK: SUBVIEWS
@@ -106,20 +132,24 @@ class FeedCell: BaseFeedCell, UserNameTappableCell {
     
     // likeCommentContainer
     let likeCommentContainer = UIView()
-    let likeImageView = UIImageView(image: UIImage(named: "like"))
-    let commentImageView = UIImageView(image: UIImage(named: "comment"))
+    
+    // Like
+    let likeImageView = UIImageView(image: UIImage(named: "like_empty"))
+    let likeCounterLabel = UILabel()
     
     @objc
-    private func commentTapped(tapGestureRecognizer: UIGestureRecognizer){
-        if (tapGestureRecognizer.view) != nil{
-            print("CommentCounter = \(self.item.commentCounter)")
-                self.commentHandler?()            
+    func likeTapped(tapGestureRecognizer: UIGestureRecognizer){
+        if (tapGestureRecognizer.view as? UIImageView) != nil{
+            
+            self.isLikedPost = !self.isLikedPost
+            
         }
+
         
     }
     
     @objc
-    private func likeTapped(tapGestureRecognizer: UIGestureRecognizer){
+    private func likeCounterTapped(tapGestureRecognizer: UIGestureRecognizer){
         if (tapGestureRecognizer.view) != nil{
             
             print("likeCounter = \(self.item.likeCounter)")
@@ -130,6 +160,35 @@ class FeedCell: BaseFeedCell, UserNameTappableCell {
         }
         
     }
+    
+    // Comment
+    let commentImageView = UIImageView(image: UIImage(named: "comment"))
+    let commentCounterLabel = UILabel()
+    
+    private func setLikeCommentCounter(likeCounter: Int, commentCounter: Int){
+        
+        //TODO: Apply different formatting for different ranges
+        
+        let likeCounterAttrText = NSAttributedString(string: String(likeCounter), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12), NSForegroundColorAttributeName: UIColor(red: 155/255, green: 161/255, blue: 171/255, alpha: 1)])
+        
+        
+        let commentCounterAttrText = NSAttributedString(string: String(commentCounter), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12), NSForegroundColorAttributeName: UIColor(red: 155/255, green: 161/255, blue: 171/255, alpha: 1)])
+        
+        self.likeCounterLabel.attributedText = likeCounterAttrText
+        self.commentCounterLabel.attributedText = commentCounterAttrText
+        
+    }
+    
+    @objc
+    private func commentTapped(tapGestureRecognizer: UIGestureRecognizer){
+        if (tapGestureRecognizer.view) != nil{
+            print("CommentCounter = \(self.item.commentCounter)")
+                self.commentHandler?()            
+        }
+        
+    }
+    
+    
     
     /// Description
     let descriptionLabel = UILabel()
@@ -149,7 +208,11 @@ class FeedCell: BaseFeedCell, UserNameTappableCell {
         
         self.clipsToBounds = true
         
-        let views = [profileImageView, userNameAndDateLabel, locationLabel, upperContainer, likeCommentContainer, likeImageView, commentImageView, descriptionLabel]
+        let views = [
+            profileImageView, userNameAndDateLabel, locationLabel, upperContainer,
+            likeCommentContainer, likeImageView, likeCounterLabel, commentImageView, commentCounterLabel,
+            descriptionLabel
+        ]
         for view in views {
             self.contentView.addSubview(view)
             view.translatesAutoresizingMaskIntoConstraints = false // Activate auto layout
@@ -179,15 +242,26 @@ class FeedCell: BaseFeedCell, UserNameTappableCell {
         self.commentImageView.isUserInteractionEnabled = true
         self.commentImageView.addGestureRecognizer(tapGestureRecognizer)
         
+        self.commentCounterLabel.numberOfLines = 1
+        
         // Like
-        let tapGestureRecognizer2 = UITapGestureRecognizer(target: self, action: #selector(likeTapped(tapGestureRecognizer:)))
+        let tapGestureRecognizer2 = UITapGestureRecognizer(target: self, action: #selector(likeCounterTapped(tapGestureRecognizer:)))
+        self.likeCounterLabel.isUserInteractionEnabled = true
+        self.likeCounterLabel.addGestureRecognizer(tapGestureRecognizer2)
+        
+        self.likeCounterLabel.numberOfLines = 1
+        
+        let likeImageTapGesture = UITapGestureRecognizer(target: self, action: #selector(likeTapped(tapGestureRecognizer:)))
         self.likeImageView.isUserInteractionEnabled = true
-        self.likeImageView.addGestureRecognizer(tapGestureRecognizer2)
+        self.likeImageView.addGestureRecognizer(likeImageTapGesture)
+        
+        self.setLikeCommentCounter(likeCounter: 0, commentCounter: 0)
         
         // Owner
         let ownerTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(usernameTapped(tapGestureRecognizer:)))
         self.userNameAndDateLabel.isUserInteractionEnabled = true
         self.userNameAndDateLabel.addGestureRecognizer(ownerTapRecognizer)
+        
         
         // Constraints
         self.upperContainer.addSubview(self.profileImageView)
@@ -196,6 +270,8 @@ class FeedCell: BaseFeedCell, UserNameTappableCell {
         
         self.likeCommentContainer.addSubview(likeImageView)
         self.likeCommentContainer.addSubview(commentImageView)
+        self.likeCommentContainer.addSubview(likeCounterLabel)
+        self.likeCommentContainer.addSubview(commentCounterLabel)
         
         self.setupContraints()
         self.didSetupConstraints = true
@@ -394,10 +470,10 @@ class FeedCell: BaseFeedCell, UserNameTappableCell {
         self.contentView.addConstraints([
             NSLayoutConstraint(
                 item: likeCommentContainer,
-                attribute: NSLayoutAttribute.left,
+                attribute: NSLayoutAttribute.leading,
                 relatedBy: NSLayoutRelation.equal,
                 toItem: self.contentView,
-                attribute: NSLayoutAttribute.left,
+                attribute: NSLayoutAttribute.leading,
                 multiplier: 1.0,
                 constant: 0.0
             ),
@@ -421,24 +497,55 @@ class FeedCell: BaseFeedCell, UserNameTappableCell {
             ),
             NSLayoutConstraint(
                 item: likeCommentContainer,
-                attribute: NSLayoutAttribute.right,
+                attribute: NSLayoutAttribute.trailing,
                 relatedBy: NSLayoutRelation.equal,
                 toItem: self.contentView,
-                attribute: NSLayoutAttribute.right,
+                attribute: NSLayoutAttribute.trailing,
                 multiplier: 1.0,
                 constant: 0.0
+            )
+        ])
+        
+        // Like
+        self.likeCommentContainer.addConstraints([
+            NSLayoutConstraint(
+                item: likeCounterLabel,
+                attribute: NSLayoutAttribute.leading,
+                relatedBy: NSLayoutRelation.equal,
+                toItem: likeCommentContainer,
+                attribute: NSLayoutAttribute.leading,
+                multiplier: 1.0,
+                constant: self.separatorInset.left
+            ),
+            NSLayoutConstraint(
+                item: likeCounterLabel,
+                attribute: NSLayoutAttribute.centerY,
+                relatedBy: NSLayoutRelation.equal,
+                toItem: likeCommentContainer,
+                attribute: NSLayoutAttribute.centerY,
+                multiplier: 1.0,
+                constant: 0
+            ),
+            NSLayoutConstraint(
+                item: likeCounterLabel,
+                attribute: NSLayoutAttribute.height,
+                relatedBy: NSLayoutRelation.equal,
+                toItem: nil,
+                attribute: NSLayoutAttribute.notAnAttribute,
+                multiplier: 1.0,
+                constant: 24.0
             )
         ])
         
         self.likeCommentContainer.addConstraints([
             NSLayoutConstraint(
                 item: likeImageView,
-                attribute: NSLayoutAttribute.left,
+                attribute: NSLayoutAttribute.leading,
                 relatedBy: NSLayoutRelation.equal,
-                toItem: likeCommentContainer,
-                attribute: NSLayoutAttribute.left,
+                toItem: likeCounterLabel,
+                attribute: NSLayoutAttribute.trailing,
                 multiplier: 1.0,
-                constant: self.separatorInset.left
+                constant: 4.0
             ),
             NSLayoutConstraint(
                 item: likeImageView,
@@ -469,15 +576,47 @@ class FeedCell: BaseFeedCell, UserNameTappableCell {
             )
         ])
         
+        // Comment
+        
+        self.likeCommentContainer.addConstraints([
+            NSLayoutConstraint(
+                item: commentCounterLabel,
+                attribute: NSLayoutAttribute.leading,
+                relatedBy: NSLayoutRelation.equal,
+                toItem: likeImageView,
+                attribute: NSLayoutAttribute.trailing,
+                multiplier: 1.0,
+                constant: 8.0
+            ),
+            NSLayoutConstraint(
+                item: commentCounterLabel,
+                attribute: NSLayoutAttribute.centerY,
+                relatedBy: NSLayoutRelation.equal,
+                toItem: likeCommentContainer,
+                attribute: NSLayoutAttribute.centerY,
+                multiplier: 1.0,
+                constant: 0
+            ),
+            NSLayoutConstraint(
+                item: commentCounterLabel,
+                attribute: NSLayoutAttribute.height,
+                relatedBy: NSLayoutRelation.equal,
+                toItem: nil,
+                attribute: NSLayoutAttribute.notAnAttribute,
+                multiplier: 1.0,
+                constant: 24.0
+            )
+         ])
+        
         self.likeCommentContainer.addConstraints([
             NSLayoutConstraint(
                 item: commentImageView,
-                attribute: NSLayoutAttribute.left,
+                attribute: NSLayoutAttribute.leading,
                 relatedBy: NSLayoutRelation.equal,
-                toItem: likeImageView,
-                attribute: NSLayoutAttribute.right,
+                toItem: commentCounterLabel,
+                attribute: NSLayoutAttribute.trailing,
                 multiplier: 1.0,
-                constant: 16.0
+                constant: 4.0
             ),
             NSLayoutConstraint(
                 item: commentImageView,

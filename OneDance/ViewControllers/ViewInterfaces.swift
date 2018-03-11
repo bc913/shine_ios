@@ -16,6 +16,12 @@ protocol UserNameTappableCell {
     var ownerHandler : ((Void) -> (Void))? { get set }
 }
 
+protocol LikeableView{
+    //var determineLikeCounter : ((Void) -> (Void))? { get set }
+    var likeHandler : ((Void) -> (Void))? { get set }
+    var reomoveLikeHandler : ((Void) -> (Void))? {get set }
+}
+
 
 protocol CommentableViewController {
     

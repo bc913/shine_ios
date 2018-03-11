@@ -218,12 +218,12 @@ class CommentListViewModel : PageableCommentListViewModelType{
     
     func loadItems(refresh: Bool = false){
         
-        let completionHandler = {(error: NSError?, userListModel: PageableCommentListModelType?) in
+        let completionHandler = {(error: NSError?, commentListModel: PageableCommentListModelType?) in
             
             DispatchQueue.main.async {
                 guard let error = error else {
                     
-                    if let model = userListModel {
+                    if let model = commentListModel, model.count > 0 {
                         
                         if refresh { self.model = model } //Refresh
                         else { // Fetch
@@ -243,6 +243,8 @@ class CommentListViewModel : PageableCommentListViewModelType{
                             self.model?.nextPageKey = model.nextPageKey
                         }
                         
+                    } else {
+                        self.model = nil
                     }
                     
                     let hasKey = self.model == nil || (self.model != nil && self.model!.nextPageKey.isEmpty) ? false : true
@@ -259,8 +261,8 @@ class CommentListViewModel : PageableCommentListViewModelType{
             
         }
         
-        //ShineNetworkService.API.Common.getUserList(source: self.source, type: self.type, sourceId: self.sourceId, nextPageKey: self.model?.nextPageKey ?? "", mainThreadCompletionHandler: completionHandler)
-        
+        ShineNetworkService.API.Feed.getPostComments(postID: self.source == .post && self.type == .comment ? self.sourceId : "", nextPageKey: self.model?.nextPageKey ?? "", mainThreadCompletionHandler: completionHandler)
+                
         
     }
     
