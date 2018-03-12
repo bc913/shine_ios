@@ -1376,7 +1376,7 @@ struct ShineNetworkService {
                             }
                             
                             let commentListModel = CommentListModel(json: jsonDict)
-                            print("UserListModel.count = \(commentListModel?.count)")
+                            print("commentListModel = \(commentListModel?.count)")
                             
                             if commentListModel == nil {
                                 error = ErrorFactory.createForResponseDataSerialization(with: nil)
@@ -1513,6 +1513,86 @@ struct ShineNetworkService {
                 )
                 
             } // removeLike
+            
+            static func addCommentForPost(id: String, comment: String,  mainThreadCompletionHandler: @escaping (_ error: NSError?, _ addedComment: PostCommentType?) -> ()){
+                
+                let headers: HTTPHeaders = [
+                    "Content-Type": "application/json",
+                    "USER-ID": PersistanceManager.User.userId!
+                ]
+                
+                let parameters : Parameters = [
+                    "comment" : comment
+                ]
+                
+                let url = Constants.Feed.getPostCommentsUrl(postId: id)
+                
+                let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
+                Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+                    .responseJSON(
+                        queue: queue,
+                        completionHandler: { response in
+                            // Debug
+                            Helper.debugResponse(methodName: "addCommentForPost(id:\(id))", response: response)
+                            
+                            // Check status code
+                            let httpStatusCode = response.response?.statusCode
+                            
+                            
+                            // Error
+                            var error : NSError? = nil
+                            guard response.result.isSuccess else {
+                                
+                                error = ErrorFactory.createForAlamofireResponse(with: httpStatusCode!)
+                                print("Error 1")
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                            }
+                            
+                            // serialized json response
+                            guard let jsonData = response.result.value, let jsonDict = jsonData as? [String:Any] else{
+                                error = ErrorFactory.createForResponseDataSerialization(with: httpStatusCode!)
+                                print("Error 2")
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                            }
+                            
+                            if let errorMessage = jsonDict["message"] as? String {
+                                error = ErrorFactory.create(.User, .User, .User, description: errorMessage)
+                                print("Error 3")
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                                
+                            }
+                            
+                            if httpStatusCode != nil, httpStatusCode! > 299  {
+                                error = ErrorFactory.createForAlamofireResponse(with: httpStatusCode!)
+                                print("Error 4")
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                            }
+                            
+                            //
+                            let newComment = PostComment(json: jsonDict)
+                            
+                            if newComment != nil {
+                                mainThreadCompletionHandler(nil, newComment)
+                                
+                            } else{
+                                print("Json serialization error")
+                                print("Error 5")
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                            }
+                            
+                            
+                            print("#############################################################")
+                            
+                    }
+                )
+                
+                
+            }
             
             
         } // Feed

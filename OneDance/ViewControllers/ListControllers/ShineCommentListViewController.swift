@@ -16,6 +16,10 @@ class ShineCommentListViewController: UIViewController {
     @IBOutlet weak var sendImageView: UIImageView!
     @IBOutlet weak var inputTextView: UITextView!
     
+    @IBOutlet weak var inputContainerBottomConstraint: NSLayoutConstraint!
+    
+    let inputPlaceHolderString : String = "Add a comment"
+    
     // Refresh
     let refreshControl = UIRefreshControl()
     
@@ -47,14 +51,50 @@ class ShineCommentListViewController: UIViewController {
         self.configureInputContainer()
         self.configureNavigationBar()
         
+        self.view.bringSubview(toFront: self.inputContainer)
         
+        //https://stackoverflow.com/questions/24126678/close-ios-keyboard-by-touching-anywhere-using-swift
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ShineCommentListViewController.dismissKeyboard))
+        
+        //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
+        //tap.cancelsTouchesInView = false
+        
+        self.tableView.addGestureRecognizer(tap)
+    }
+    
+    @objc
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
     }
     
     private func configureInputContainer(){
         
-        self.sendImageView.image = UIImage(named: "paper-plane-black")
+        self.sendImageView.image = UIImage(named: "paper-plane-white")
         self.sendImageView.contentMode = .scaleAspectFit
+        let sendCommentTapGesture = UITapGestureRecognizer(target: self, action: #selector(addComment(tapGestureRecognizer:)))
+        self.sendImageView.isUserInteractionEnabled = true
+        self.sendImageView.addGestureRecognizer(sendCommentTapGesture)
+        
+        
+        self.inputContainer.backgroundColor = UIColor(red: 44.0/255.0, green: 43.0/255.0, blue: 64.0/255.0, alpha: 1)
+        
+        self.inputTextView.delegate = self
+        self.inputTextView.textColor = UIColor.lightGray
+        self.inputTextView.text = inputPlaceHolderString
+        let radius = self.sendImageView.bounds.size.height
+        self.inputTextView.layer.cornerRadius = radius * 0.5
+        
     }
+    @objc
+    func addComment(tapGestureRecognizer: UIGestureRecognizer){
+        if (tapGestureRecognizer.view as? UIImageView) != nil {
+            self.viewModel?.addNewComment(commentText: self.inputTextView.text!)
+        }
+        
+    }
+    
+    
     
     private func configureTableView(){
         
@@ -122,6 +162,11 @@ extension ShineCommentListViewController : CommentListViewModelViewDelegate{
         self.refreshControl.endRefreshing() // to stop loading animation
         self.tableView.reloadData()
     }
+    
+    func viewModelDidFinishAddingNewComment(viewModel: CommentListViewModelType) {
+        self.dismissKeyboard()
+        self.tableView.reloadData()
+    }
 }
 
 
@@ -178,8 +223,12 @@ fileprivate extension ShineCommentListViewController {
     
     fileprivate func registerKeyboardNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: .UIKeyboardWillHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: .UIKeyboardWillChangeFrame, object: nil)
     }
+    
+    //http://kingscocoa.com/tutorials/keyboard-content-offset/
+    
     
     @objc func keyboardWillShow(notification: NSNotification) {
         
@@ -192,5 +241,42 @@ fileprivate extension ShineCommentListViewController {
         let keyboardHeight = keyBoardValueEnd.height
         
         self.tableView.contentInset.bottom = keyboardHeight
+        self.inputContainerBottomConstraint.constant = -keyboardHeight
+        self.view.layoutIfNeeded()
     }
+    
+    @objc
+    func keyboardWillHide(notification: NSNotification){
+        
+        self.tableView.contentInset = UIEdgeInsets.zero
+        self.inputContainerBottomConstraint.constant = 0
+        self.view.layoutIfNeeded()
+        
+//        UIView.animate(withDuration: 0.3, animations: {
+//            self.view.layoutIfNeeded()
+//        })
+    }
+}
+
+extension ShineCommentListViewController : UITextViewDelegate {
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        
+        print("TextView user started typing")
+        if textView.textColor == UIColor.lightGray {
+            textView.text = nil
+            textView.textColor = UIColor.black
+        }
+    }
+    
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = inputPlaceHolderString
+            textView.textColor = UIColor.lightGray
+        }
+        
+        print("TextView user stopped typing")
+    }
+    
 }

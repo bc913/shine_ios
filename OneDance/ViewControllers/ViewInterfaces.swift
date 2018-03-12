@@ -10,6 +10,9 @@ import Foundation
 
 // Cells
 
+protocol RefreshableCell {
+    var refreshHandler : ((Void) -> (Void))? { get set }
+}
 
 /// If the cell will respond when username (owner) is tapped
 protocol UserNameTappableCell {

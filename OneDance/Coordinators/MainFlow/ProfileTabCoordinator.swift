@@ -96,6 +96,15 @@ extension UserProfileCoordinator : UserViewModelCoordinatorDelegate{
     
 }
 
+extension UserProfileCoordinator : Refreshable{
+    
+    func refresh() {        
+        if let vc = self.hostNavigationController.topViewController as? UserViewController, let vm = vc.viewModel as? Refreshable{
+            vm.refresh()
+        }
+    }
+}
+
 protocol DanceTypeSelectionCoordinatorOwnerType : class{
     
     func updateViewModelWithSelectedDanceTypes(dances: [IDanceType])
@@ -111,9 +120,6 @@ extension UserProfileCoordinator : DanceTypeSelectionCoordinatorOwnerType{
         }
         
         self.danceTypesSelectionCoordinator = nil
-        
-        
-        
     }
 }
 

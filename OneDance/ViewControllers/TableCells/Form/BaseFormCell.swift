@@ -42,7 +42,7 @@ protocol ExpandingCellDelegate : class {
  - Parameter osman: OSman toptur
  
  */
-class BaseFormCell: UITableViewCell {
+class BaseFormCell: UITableViewCell, RefreshableCell {
 
     override var designatedHeight: CGFloat{
         return 44.0
@@ -63,6 +63,9 @@ class BaseFormCell: UITableViewCell {
             self.updateCellSelection()
         }
     }
+    
+    /// Refresh it when it needs
+    var refreshHandler: ((Void) -> (Void))?
     
     /// Set this as true in subclasses if the cell is collapsible
     var isCollapsible : Bool?

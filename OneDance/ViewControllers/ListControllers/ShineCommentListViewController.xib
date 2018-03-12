@@ -12,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShineCommentListViewController" customModule="OneDance" customModuleProvider="target">
             <connections>
                 <outlet property="inputContainer" destination="qfH-qf-IBp" id="dyt-h7-P2n"/>
+                <outlet property="inputContainerBottomConstraint" destination="yj4-lt-zLy" id="azN-GA-F0q"/>
                 <outlet property="inputTextView" destination="lSd-d8-wwq" id="tSl-Uk-ddk"/>
                 <outlet property="sendImageView" destination="ubW-Ho-qwt" id="JSC-Hy-sMy"/>
                 <outlet property="tableView" destination="jAh-Df-uuS" id="2oR-p7-san"/>
@@ -24,14 +25,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="jAh-Df-uuS">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qfH-qf-IBp">
                     <rect key="frame" x="0.0" y="603" width="375" height="64"/>
                     <subviews>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="lSd-d8-wwq">
-                            <rect key="frame" x="0.0" y="0.0" width="319" height="64"/>
+                            <rect key="frame" x="8" y="8" width="303" height="48"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -47,24 +48,24 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="64" id="6Ef-kd-4Jl"/>
-                        <constraint firstItem="lSd-d8-wwq" firstAttribute="top" secondItem="qfH-qf-IBp" secondAttribute="top" id="9Qr-qd-LpB"/>
-                        <constraint firstItem="lSd-d8-wwq" firstAttribute="leading" secondItem="qfH-qf-IBp" secondAttribute="leading" id="LE6-sg-Mce"/>
+                        <constraint firstItem="lSd-d8-wwq" firstAttribute="leading" secondItem="qfH-qf-IBp" secondAttribute="leading" constant="8" id="LE6-sg-Mce"/>
                         <constraint firstAttribute="trailing" secondItem="ubW-Ho-qwt" secondAttribute="trailing" constant="8" id="LUn-Ba-MsL"/>
-                        <constraint firstAttribute="bottom" secondItem="lSd-d8-wwq" secondAttribute="bottom" id="Mr9-Bl-ot7"/>
                         <constraint firstItem="ubW-Ho-qwt" firstAttribute="centerY" secondItem="qfH-qf-IBp" secondAttribute="centerY" id="aVi-vG-hZT"/>
-                        <constraint firstItem="ubW-Ho-qwt" firstAttribute="leading" secondItem="lSd-d8-wwq" secondAttribute="trailing" id="wDJ-2j-G7E"/>
+                        <constraint firstItem="lSd-d8-wwq" firstAttribute="top" secondItem="ubW-Ho-qwt" secondAttribute="top" id="gTr-jo-hmP"/>
+                        <constraint firstItem="lSd-d8-wwq" firstAttribute="bottom" secondItem="ubW-Ho-qwt" secondAttribute="bottom" id="lQX-fx-Qi0"/>
+                        <constraint firstItem="ubW-Ho-qwt" firstAttribute="leading" secondItem="lSd-d8-wwq" secondAttribute="trailing" constant="8" id="wDJ-2j-G7E"/>
                     </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="qfH-qf-IBp" secondAttribute="trailing" id="OCe-3F-XgH"/>
-                <constraint firstAttribute="bottom" secondItem="qfH-qf-IBp" secondAttribute="bottom" id="T0z-p5-Bgm"/>
                 <constraint firstItem="qfH-qf-IBp" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="VZM-7A-6AT"/>
-                <constraint firstItem="qfH-qf-IBp" firstAttribute="top" secondItem="jAh-Df-uuS" secondAttribute="bottom" id="Vsw-2l-oQJ"/>
                 <constraint firstAttribute="trailing" secondItem="jAh-Df-uuS" secondAttribute="trailing" id="ZlL-8a-LBX"/>
+                <constraint firstAttribute="bottom" secondItem="jAh-Df-uuS" secondAttribute="bottom" id="czW-0E-qbo"/>
                 <constraint firstItem="jAh-Df-uuS" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="gIW-dq-Z3g"/>
                 <constraint firstItem="jAh-Df-uuS" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ije-q9-fec"/>
+                <constraint firstItem="qfH-qf-IBp" firstAttribute="bottom" secondItem="jAh-Df-uuS" secondAttribute="bottom" id="yj4-lt-zLy"/>
             </constraints>
             <point key="canvasLocation" x="34.5" y="54.5"/>
         </view>

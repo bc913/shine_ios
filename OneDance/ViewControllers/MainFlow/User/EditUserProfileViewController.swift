@@ -25,6 +25,14 @@ class EditUserProfileViewController: UIViewController {
     }
     
     fileprivate func refreshDisplay(){
+        // Update the contents
+        for cell in self.cells {
+            if let refreshableCell = cell as? RefreshableCell {
+                refreshableCell.refreshHandler?()
+            }
+        }
+        
+        
         self.tableView.reloadData()
     }
     
@@ -106,13 +114,54 @@ class EditUserProfileViewController: UIViewController {
     
     private func constructCells(){
         
-        // Text
+        
+        // Fullname
+        if let sessionsCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .editUserProfile, type: .shineTextField, placeHolder: nil) as? ShineTextFieldCell{
+            
+            if let vm = self.viewModel {
+                sessionsCell.displayedValue = vm.fullname
+            }
+            
+            
+            sessionsCell.refreshHandler = { [weak self, unowned sessionsCell] in
+                guard let strongSelf = self else { return }
+                
+                if let vm = strongSelf.viewModel, vm.mode == .edit {
+                    sessionsCell.displayedValue = vm.fullname
+                }
+                
+            }
+            
+            sessionsCell.selectionDelegate = self
+            sessionsCell.getIndexPath = {
+                return self.getIndexPathOfCell(sessionsCell)
+            }
+            
+            sessionsCell.changeKeyboardType(.numberPad)
+            sessionsCell.valueChanged = {
+                self.viewModel?.fullname = sessionsCell.textField.text!
+            }
+            
+            self.cells.append(sessionsCell)
+            
+        }
+        
+        // Bio
         if let bioCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextView, placeHolder: nil) as? ShineTextViewCell{
             
             // Initialize the form if it is in edit mode
             if let vm = self.viewModel, vm.mode == .edit {
                 bioCell.textView.text = vm.bio ?? ""
             }
+            
+            bioCell.refreshHandler = { [weak self, unowned bioCell] in
+                guard let strongSelf = self else { return }
+                
+                if let vm = strongSelf.viewModel, vm.mode == .edit {
+                    bioCell.displayedValue = vm.bio ?? ""
+                }
+            }
+            
             
             bioCell.expandDelegate = self // Expanding cell delegate
             bioCell.selectionDelegate = self
@@ -128,6 +177,67 @@ class EditUserProfileViewController: UIViewController {
             self.cells.append(bioCell)
             
         }
+        
+        // Private account
+        if let privateAccountCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .editUserProfile, type: .switchType, placeHolder: "Private Account") as? ShineSwitchCell {
+            
+            if self.viewModel != nil {
+                privateAccountCell.displayedValue = self.viewModel!.isAccountPrivate
+            }
+            
+            privateAccountCell.refreshHandler = { [weak self, unowned privateAccountCell] in
+                guard let strongSelf = self else { return }
+                
+                if let vm = strongSelf.viewModel, vm.mode == .edit {
+                    privateAccountCell.displayedValue = vm.isAccountPrivate
+                }
+            }
+            
+            
+            privateAccountCell.selectionDelegate = self
+            privateAccountCell.getIndexPath = {
+                return self.getIndexPathOfCell(privateAccountCell)
+            }
+            
+            privateAccountCell.valueChanged = {
+                self.viewModel?.isAccountPrivate = privateAccountCell.isOn
+            }
+            
+            self.cells.append(privateAccountCell)
+            
+        }
+        
+        // URL
+        if let urlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .editUserProfile, type: .shineTextField, placeHolder: "Url") as? ShineTextFieldCell{
+            
+            // Initialize if it is edit mode
+            if self.viewModel != nil, let url = self.viewModel!.websiteUrl, self.viewModel!.mode == .edit {
+                urlCell.displayedValue = url
+            }
+            
+            urlCell.refreshHandler = { [weak self, unowned urlCell] in
+                
+                guard let strongSelf = self else { return }
+                
+                if strongSelf.viewModel != nil, strongSelf.viewModel!.mode == .edit , let url = strongSelf.viewModel!.websiteUrl{
+                    urlCell.displayedValue = url
+                }
+            }
+            
+            urlCell.selectionDelegate = self
+            urlCell.getIndexPath = {
+                return self.getIndexPathOfCell(urlCell)
+            }
+            
+            urlCell.changeKeyboardType(.URL)
+            urlCell.valueChanged = {
+                self.viewModel?.websiteUrl = urlCell.textField.text!
+            }
+            
+            self.cells.append(urlCell)
+        }
+        
+        
         
     }
     

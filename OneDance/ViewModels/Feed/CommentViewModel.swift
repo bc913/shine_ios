@@ -96,6 +96,10 @@ struct CommentListModel : PageableCommentListModelType{
     var items : [PostCommentType] = [PostComment]()
     var nextPageKey : String = ""
     
+    init() {
+        
+    }
+    
     init?(json:[String:Any]) {
         
         if let comments = json["postComments"] as? [[String:Any]], !comments.isEmpty{
@@ -128,6 +132,7 @@ struct CommentListModel : PageableCommentListModelType{
 
 protocol CommentListViewModelViewDelegate : class {
     func viewModelDidFinishUpdate(viewModel:CommentListViewModelType)
+    func viewModelDidFinishAddingNewComment(viewModel: CommentListViewModelType)
 }
 
 protocol CommentListViewModelCoordinatorDelegate : class{
@@ -160,6 +165,8 @@ protocol CommentListViewModelType {
     
     func requestUserProfile(id: String)
     func requestOrganizationProfile(id: String)
+    
+    func addNewComment(commentText: String)
     
 }
 
@@ -216,7 +223,7 @@ class CommentListViewModel : PageableCommentListViewModelType{
     }
     
     
-    func loadItems(refresh: Bool = false){
+    func loadItems(refresh: Bool = false, newCommentAdded: Bool = false){
         
         let completionHandler = {(error: NSError?, commentListModel: PageableCommentListModelType?) in
             
@@ -236,7 +243,13 @@ class CommentListViewModel : PageableCommentListViewModelType{
                                     
                                 }
                                 
-                                if hasIt != nil && !hasIt!{ self.model?.items.append(comment) }
+                                if hasIt != nil && !hasIt!{
+                                    if newCommentAdded {
+                                        self.model?.items.insert(comment, at: 0)
+                                    } else {
+                                        self.model?.items.append(comment)
+                                    }
+                                }
                                 
                             }//for
                             
@@ -276,6 +289,53 @@ class CommentListViewModel : PageableCommentListViewModelType{
     
     func requestOrganizationProfile(id: String) {
         self.coordinatorDelegate?.viewModelDidSelectOrganizationProfile(organizationID: id, requestedMode: .viewOnly)
+    }
+    
+    func addNewComment(commentText: String) {
+        
+        let modelCompletionHandler = {(error: NSError?, addedComment: PostCommentType?) in
+            
+            DispatchQueue.main.async {
+                guard let error = error else {
+                    
+                    self.loadItems(refresh: false, newCommentAdded: true)
+                    self.viewDelegate?.viewModelDidFinishAddingNewComment(viewModel: self)
+                    return
+                    
+//                    if self.model != nil && addedComment != nil{
+//                        
+//                        for comment in self.model!.items {
+//                            
+//                            let hasIt = self.model?.items.contains { item in
+//                                
+//                                if addedComment!.id == item.id { return true }
+//                                else { return false }
+//                            }
+//                            
+//                            if hasIt != nil && !hasIt!{ self.model?.items.append(comment) }
+//                        }
+//                        
+//                        self.viewDelegate?.viewModelDidFinishAddingNewComment(viewModel: self)
+//                        return
+//                    } else if self.model == nil && addedComment != nil {
+//                        
+//                        self.model = CommentListModel()
+//                        self.model?.items.append(addedComment!)
+//                        self.viewDelegate?.viewModelDidFinishAddingNewComment(viewModel: self)
+//                        return
+//                    } else { return }
+                }
+                
+                self.errorMessage = error.localizedDescription
+                
+            }
+            
+        }
+        
+        if !commentText.isEmpty {
+            ShineNetworkService.API.Feed.addCommentForPost(id: self.source == .post && self.type == .comment ? self.sourceId : "", comment: commentText, mainThreadCompletionHandler: modelCompletionHandler)
+        }
+        
     }
 
     

@@ -46,6 +46,8 @@ class BasicCollectionCell: UICollectionViewCell {
             view.translatesAutoresizingMaskIntoConstraints = false
         }
         
+        self.label.numberOfLines = 2
+        self.label.lineBreakMode = .byWordWrapping
         
         // Constraints
         self.setupConstraints()

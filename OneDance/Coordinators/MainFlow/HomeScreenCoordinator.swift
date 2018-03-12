@@ -240,6 +240,11 @@ extension BaseContainerCoordinator : ChildCoordinatorDelegate {
     func childCoordinatorDidFinishOperation(from: BaseChildCoordinator, for: ShineMode){
         self.containerNavigationController.topViewController?.dismiss(animated: true, completion: nil)
         self.coordinatorStack.pop()
+        
+        // Make refresh if needed
+        if let activeCoord = self.activeCoordinator as? Refreshable {
+            activeCoord.refresh()
+        }
     }
     
     //GO BACK

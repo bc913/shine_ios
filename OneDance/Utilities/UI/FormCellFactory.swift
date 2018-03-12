@@ -49,6 +49,11 @@ enum FormPurpose {
     
     case createDanceEvent
     case createDanceOrganization
+    
+    case editDanceEvent
+    case editDanceOrganization
+    
+    case editUserProfile
 }
 
 

@@ -18,6 +18,7 @@ class ShineTextViewCell: BaseFormCell {
     var placeHolder : String?{
         didSet{
             self.textView.text = placeHolder
+            self.textView.textColor = UIColor.lightGray
         }
     }
     
@@ -25,6 +26,7 @@ class ShineTextViewCell: BaseFormCell {
     var displayedValue : String = "" {
         didSet{
             self.textView.text = displayedValue
+            self.textView.textColor = UIColor.black
         }
     }
     

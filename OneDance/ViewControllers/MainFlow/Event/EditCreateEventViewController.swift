@@ -373,7 +373,7 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
         }
         
         // Dresscode
-        if let dressCodeCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .switchType, placeHolder: "Dress Code?") as? ShineSwitchCell {
+        if let dressCodeCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .switchType, placeHolder: "Dress Code") as? ShineSwitchCell {
             
             if self.viewModel != nil {
                 dressCodeCell.displayedValue = self.viewModel!.hasDressCode
@@ -393,7 +393,7 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
         }
         
         // partner Required
-        if let partnerReqCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .switchType, placeHolder: "Partner required?") as? ShineSwitchCell {
+        if let partnerReqCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .switchType, placeHolder: "Partner required") as? ShineSwitchCell {
             
             if self.viewModel != nil {
                 partnerReqCell.displayedValue = self.viewModel!.partnerRequired
