@@ -249,8 +249,17 @@ extension BaseContainerCoordinator : ChildCoordinatorDelegate {
     
     //GO BACK
     func childCoordinatorDidRequestGoBack(sender: BaseChildCoordinator, mode: ShineMode) {
+        
+        let vcCount = self.containerNavigationController.viewControllers.count
+        
+        if vcCount > 1, let commentListVc = self.containerNavigationController.viewControllers[vcCount - 2] as? ShineCommentListViewController {
+            commentListVc.hidesBottomBarWhenPushed = true
+        }
+        
         self.containerNavigationController.popViewController(animated: true)
         self.coordinatorStack.pop()
+        
+        
     }
     
     

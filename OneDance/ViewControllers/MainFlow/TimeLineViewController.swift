@@ -192,53 +192,15 @@ extension TimeLineViewController : UITableViewDataSource {
                 if feedItem.hasPostMedia {
                     let cell = self.tableView.dequeueReusableCell(withIdentifier: FeedWithMediaCell.identifier, for: indexPath) as! FeedWithMediaCell
                     
-                    // Feed
-                    cell.item = feedItem
+                    // Properties
+                    cell.setLocationLabel(name: feedItem.location)
+                    cell.setUserNameAndDate(name: feedItem.username, date: feedItem.date)
+                    cell.setLikeCommentCounter(likeCounter: feedItem.likeCounter, commentCounter: feedItem.commentCounter)
+                    cell.isLikedPost = false
+                    cell.setDescriptionLabel(desc: feedItem.text)
                     
-                    // Comment Handler
+                    cell.delegate = self
                     
-                    cell.commentHandler = { [weak self] in
-                        guard let strongSelf = self  else {
-                            return
-                        }
-                        
-                        strongSelf.viewModel?.requestList(of: .comment, source: .post, id: feedItem.id)
-                    }
-                    
-                    cell.likeListHandler = { [weak self] in
-                        guard let strongSelf = self  else {
-                            return
-                        }
-                        
-                        strongSelf.viewModel?.requestList(of: .like, source: .post, id: feedItem.id)
-                    }
-                    
-                    cell.ownerHandler = { [weak self] in
-                        guard let strongSelf = self else {
-                            return
-                        }
-                        
-                        strongSelf.viewModel?.requestUserProfile(id: feedItem.ownerId)
-                    }
-                    
-                    cell.likeHandler = { [weak self] in
-                        
-                        guard  let strongSelf = self else {
-                            return
-                        }
-                        
-                        strongSelf.viewModel?.likePost(id: feedItem.id)
-                    }
-                    
-                    cell.reomoveLikeHandler = { [weak self] in
-                        
-                        guard  let strongSelf = self else {
-                            return
-                        }
-                        
-                        strongSelf.viewModel?.removeLikeFromPost(id: feedItem.id)
-                        
-                    }
                     
                     // User photo
                     self.assignUserThumbnailImage(cell: cell as FeedableCell, url: feedItem.profilePhotoUrl)
@@ -251,53 +213,14 @@ extension TimeLineViewController : UITableViewDataSource {
                     
                     let cell = self.tableView.dequeueReusableCell(withIdentifier: FeedCell.identifier, for: indexPath) as! FeedCell
                     
-                    // Feed
-                    cell.item = feedItem
+                    // Properties
+                    cell.setLocationLabel(name: feedItem.location)
+                    cell.setUserNameAndDate(name: feedItem.username, date: feedItem.date)
+                    cell.setLikeCommentCounter(likeCounter: feedItem.likeCounter, commentCounter: feedItem.commentCounter)
+                    cell.isLikedPost = false
+                    cell.setDescriptionLabel(desc: feedItem.text)
                     
-                    cell.commentHandler = { [weak self] in
-                        guard let strongSelf = self  else {
-                            return
-                        }
-                        
-                        strongSelf.viewModel?.requestList(of: .comment, source: .post, id: feedItem.id)
-                    }
-                    
-                    cell.likeListHandler = { [weak self] in
-                        guard let strongSelf = self  else {
-                            return
-                        }
-                        
-                        strongSelf.viewModel?.requestList(of: .like, source: .post, id: feedItem.id)
-                    }
-                    
-                    cell.ownerHandler = { [weak self] in
-                        guard let strongSelf = self else {
-                            return
-                        }
-                        
-                        strongSelf.viewModel?.requestUserProfile(id: feedItem.ownerId)
-                    }
-                    
-                    cell.likeHandler = { [weak self] in
-                        
-                        guard  let strongSelf = self else {
-                            return
-                        }
-                        
-                        strongSelf.viewModel?.likePost(id: feedItem.id)
-                        
-                    }
-                    
-                    cell.reomoveLikeHandler = { [weak self] in
-                        
-                        guard  let strongSelf = self else {
-                            return
-                        }
-                        
-                        strongSelf.viewModel?.removeLikeFromPost(id: feedItem.id)
-                        
-                    }
-
+                    cell.delegate = self
                     
                     // User photo
                     self.assignUserThumbnailImage(cell: cell as FeedableCell, url: feedItem.profilePhotoUrl)
@@ -347,3 +270,51 @@ extension TimeLineViewController : TimeLineViewModelViewDelegate {
 }
 
 extension TimeLineViewController : CommentableViewController{}
+
+extension TimeLineViewController : FeedCellDelegate {
+    
+    func addCommentTapped(_ cell: UITableViewCell) {
+        
+        guard let tappedIndexPath = tableView.indexPath(for: cell) else { return }
+        print("Add comment tapped indexpath: \(tappedIndexPath.row)")
+        
+        if let feed = self.viewModel?.itemAtIndex(tappedIndexPath.row) {
+            self.viewModel?.requestList(of: .comment, source: .post, id: feed.id)
+        }
+    }
+    
+    func viewLikeListTapped(_ cell: UITableViewCell) {
+        
+        guard let tappedIndexPath = tableView.indexPath(for: cell) else { return }
+        
+        if let feed = self.viewModel?.itemAtIndex(tappedIndexPath.row) {
+            self.viewModel?.requestList(of: .like, source: .post, id: feed.id)
+        }
+    }
+    
+    func postOwnerTapped(_ cell: UITableViewCell) {
+        
+        guard let tappedIndexPath = tableView.indexPath(for: cell) else { return }
+        
+        if let feed = self.viewModel?.itemAtIndex(tappedIndexPath.row) {
+            self.viewModel?.requestUserProfile(id: feed.ownerId)
+        }
+    }
+    
+    func likeTapped(_ cell: UITableViewCell, isLiked: Bool) {
+        
+        guard let tappedIndexPath = tableView.indexPath(for: cell) else { return }
+        
+        if let feed = self.viewModel?.itemAtIndex(tappedIndexPath.row) {
+            
+            switch isLiked {
+            case true:
+                self.viewModel?.likePost(id: feed.id)
+            default:
+                self.viewModel?.removeLikeFromPost(id: feed.id)
+            }
+            
+        }
+    }
+    
+}

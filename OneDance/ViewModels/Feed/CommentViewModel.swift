@@ -234,6 +234,11 @@ class CommentListViewModel : PageableCommentListViewModelType{
                         
                         if refresh { self.model = model } //Refresh
                         else { // Fetch
+                            
+                            if self.model == nil {
+                                self.model = model
+                            }
+                            
                             for comment in model.items {
                                 
                                 let hasIt = self.model?.items.contains { item in

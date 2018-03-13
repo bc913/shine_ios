@@ -165,7 +165,20 @@ extension ShineCommentListViewController : CommentListViewModelViewDelegate{
     
     func viewModelDidFinishAddingNewComment(viewModel: CommentListViewModelType) {
         self.dismissKeyboard()
-        self.tableView.reloadData()
+        //self.tableView.reloadData()
+    }
+}
+
+extension ShineCommentListViewController : CommentCellDelegate {
+    func commentOwnerTapped(_ cell: UITableViewCell) {
+        
+        guard let tappedIndexPath = tableView.indexPath(for: cell) else { return }
+        
+        if let comment = self.viewModel?.itemAtIndex(tappedIndexPath.row) {
+            self.dismissKeyboard()
+            self.viewModel?.requestUserProfile(id: (comment.commenter?.userId)!)
+            
+        }
     }
 }
 
@@ -191,8 +204,10 @@ extension ShineCommentListViewController : UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: CommentTableCell.identifier, for: indexPath) as! CommentTableCell
             
             if let commentItem = self.viewModel?.itemAtIndex(indexPath.row) {
-
-                cell.item = commentItem
+                
+                cell.setUserNameAndDate(name: (commentItem.commenter?.userName)!, date: commentItem.commentDate)
+                cell.setCommentText(text: commentItem.text)
+                cell.delegate = self
 
                 // Image
                 if let image = self.photoManager.cachedImage(for: commentItem.commenter?.profilePhoto?.thumbnail?.url?.absoluteString ?? "") {
@@ -201,14 +216,6 @@ extension ShineCommentListViewController : UITableViewDataSource {
                     photoManager.retrieveImage(for: commentItem.commenter?.profilePhoto?.thumbnail?.url?.absoluteString ?? ""){ image in
                         cell.setUserThumbnailImage(image: image)
                     }
-                }
-                
-                cell.ownerHandler = { [weak self] in
-                    guard let strongSelf = self else {
-                        return
-                    }
-                    
-                    strongSelf.viewModel?.requestUserProfile(id: commentItem.commenter?.userId ?? "")
                 }
 
             }

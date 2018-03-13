@@ -1344,7 +1344,7 @@ struct ShineNetworkService {
                         queue: queue,
                         completionHandler: { response in
                             // Debug
-                            Helper.debugResponse(methodName: "getPostComments()", response: response)
+                            Helper.debugResponse(methodName: "getPostComments(\(postID))", response: response)
                             
                             // Check status code
                             let httpStatusCode = response.response?.statusCode

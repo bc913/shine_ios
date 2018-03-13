@@ -8,15 +8,13 @@
 
 import UIKit
 
-class CommentTableCell : UITableViewCell, UserNameTappableCell {
+protocol CommentCellDelegate : class {
+    func commentOwnerTapped(_ cell: UITableViewCell)
+}
+
+class CommentTableCell : UITableViewCell {
     
-    var item : PostCommentType? {
-        didSet{
-            
-            self.setUserNameAndDate(name: (item?.commenter?.userName)!, date: (item?.commentDate)!)
-            self.setCommentText(text: item?.text ?? "")
-        }
-    }
+    weak var delegate : CommentCellDelegate?
     
     /// Profile image
     private let profileImageView = UIImageView(image:UIImage(named: "profile"))
@@ -31,7 +29,7 @@ class CommentTableCell : UITableViewCell, UserNameTappableCell {
     let userNameAndDateLabel = UILabel()
     let dateFormatter = DateFormatter()
     
-    private func setUserNameAndDate(name: String, date: Date){
+    public func setUserNameAndDate(name: String, date: Date){
         
         let attributedText = NSMutableAttributedString(string: name.isEmpty ? "User\n" : name+"\n", attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 14)])
         
@@ -41,19 +39,16 @@ class CommentTableCell : UITableViewCell, UserNameTappableCell {
         
     }
     
-    /// the block to handle user or organization name tapped
-    var ownerHandler: ((Void) -> (Void))?
-    
     @objc
     func usernameTapped(tapGestureRecognizer: UIGestureRecognizer){
         if (tapGestureRecognizer.view) != nil{
-            self.ownerHandler?()
+            self.delegate?.commentOwnerTapped(self)
         }
     }
     
     // Comment text
     private var commentLabel = UILabel()
-    func setCommentText(text: String){
+    public func setCommentText(text: String){
         
         let attributedText = NSAttributedString(string: text, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)])
         

@@ -9,6 +9,16 @@
 import UIKit
 
 
+protocol FeedCellDelegate : class {
+    
+    func likeTapped(_ cell: UITableViewCell, isLiked: Bool)
+    func viewLikeListTapped(_ cell: UITableViewCell)
+    
+    func addCommentTapped(_ cell: UITableViewCell)
+    func postOwnerTapped(_ cell: UITableViewCell) 
+    
+}
+
 class BaseFeedCell: UITableViewCell {
     
     override var designatedHeight: CGFloat {
@@ -23,39 +33,22 @@ protocol FeedableCell {
     func setUserThumbnailImage(image:UIImage)
 }
 
-class FeedCell: BaseFeedCell, UserNameTappableCell, LikeableView {
+class FeedCell: BaseFeedCell {
 
     
-    override var item : Feed {
-        didSet{
-            self.setUserNameAndDate(name: item.username, date: item.date)
-            // Desc
-            self.setDescriptionLabel(desc: item.text)
-            // Location
-            self.setLocationLabel(name: item.location)
-            
-            // Likes - Comments counter
-            self.setLikeCommentCounter(likeCounter: item.likeCounter, commentCounter: item.commentCounter)
-            
-            // Like state
-            self.isLikedPost = false
-            
-        }
-    }
+    weak var delegate : FeedCellDelegate?
     
     var isLikedPost = false {
         didSet{
             if oldValue == false && isLikedPost {
                 self.likeImageView.image = UIImage(named: "like_red")
                 self.setLikeCommentCounter(likeCounter: self.item.likeCounter + 1, commentCounter: self.item.commentCounter)
-                self.likeHandler?()
                 return
             }
             
             if oldValue == true && !isLikedPost {
                 self.likeImageView.image = UIImage(named: "like_empty")
                 self.setLikeCommentCounter(likeCounter: self.item.likeCounter - 1, commentCounter: self.item.commentCounter)
-                self.reomoveLikeHandler?()
                 return
             }
         }
@@ -70,20 +63,6 @@ class FeedCell: BaseFeedCell, UserNameTappableCell, LikeableView {
     
     private let profileImageHeight : CGFloat = 44.0
     private let profileImageWidth : CGFloat = 44.0
-    
-    // Handlers    
-    /// The block to handle comment action
-    var commentHandler: ((Void) -> Void)?
-    
-    /// The block to handle like list action
-    var likeListHandler:((Void) -> Void)?
-    
-    /// the block to handle user or organization name tapped
-    var ownerHandler: ((Void) -> (Void))?
-    
-    /// Like action handlers
-    var likeHandler: ((Void) -> (Void))?
-    var reomoveLikeHandler: ((Void) -> (Void))?
     
     
     //MARK: SUBVIEWS
@@ -100,7 +79,7 @@ class FeedCell: BaseFeedCell, UserNameTappableCell, LikeableView {
     let userNameAndDateLabel = UILabel()
     let dateFormatter = DateFormatter()
     
-    private func setUserNameAndDate(name: String, date: Date){
+    func setUserNameAndDate(name: String, date: Date){
         
         let attributedText = NSMutableAttributedString(string: name.isEmpty ? "User\n" : name+"\n", attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 14)])
         
@@ -116,15 +95,15 @@ class FeedCell: BaseFeedCell, UserNameTappableCell, LikeableView {
     }
     
     @objc
-    func usernameTapped(tapGestureRecognizer: UIGestureRecognizer){
+    private func usernameTapped(tapGestureRecognizer: UIGestureRecognizer){
         if (tapGestureRecognizer.view) != nil{
-            self.ownerHandler?()
+            self.delegate?.postOwnerTapped(self)
         }
     }
     
     /// Location
     let locationLabel = UILabel()
-    private func setLocationLabel(name: String = ""){
+    func setLocationLabel(name: String = ""){
         
         let attributedText = NSMutableAttributedString(string: name, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 12)])
         self.locationLabel.attributedText = attributedText
@@ -138,10 +117,11 @@ class FeedCell: BaseFeedCell, UserNameTappableCell, LikeableView {
     let likeCounterLabel = UILabel()
     
     @objc
-    func likeTapped(tapGestureRecognizer: UIGestureRecognizer){
+    private func likeTapped(tapGestureRecognizer: UIGestureRecognizer){
         if (tapGestureRecognizer.view as? UIImageView) != nil{
             
             self.isLikedPost = !self.isLikedPost
+            self.delegate?.likeTapped(self, isLiked: self.isLikedPost)
             
         }
 
@@ -154,7 +134,7 @@ class FeedCell: BaseFeedCell, UserNameTappableCell, LikeableView {
             
             print("likeCounter = \(self.item.likeCounter)")
             if self.item.likeCounter > 0 {
-                self.likeListHandler?()
+                self.delegate?.viewLikeListTapped(self)
             }
             
         }
@@ -165,7 +145,7 @@ class FeedCell: BaseFeedCell, UserNameTappableCell, LikeableView {
     let commentImageView = UIImageView(image: UIImage(named: "comment"))
     let commentCounterLabel = UILabel()
     
-    private func setLikeCommentCounter(likeCounter: Int, commentCounter: Int){
+    public func setLikeCommentCounter(likeCounter: Int, commentCounter: Int){
         
         //TODO: Apply different formatting for different ranges
         
@@ -183,7 +163,7 @@ class FeedCell: BaseFeedCell, UserNameTappableCell, LikeableView {
     private func commentTapped(tapGestureRecognizer: UIGestureRecognizer){
         if (tapGestureRecognizer.view) != nil{
             print("CommentCounter = \(self.item.commentCounter)")
-                self.commentHandler?()            
+            self.delegate?.addCommentTapped(self)
         }
         
     }
