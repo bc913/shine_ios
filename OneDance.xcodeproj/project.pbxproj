@@ -41,8 +41,6 @@
 		65134F1A1F1B18CC0017C930 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65134F191F1B18CC0017C930 /* MapKit.framework */; };
 		65134F1D1F1B19C40017C930 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65134F1B1F1B19C40017C930 /* MapViewController.swift */; };
 		65134F1E1F1B19C40017C930 /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65134F1C1F1B19C40017C930 /* MapViewController.xib */; };
-		652285D6203BCA460082A551 /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652285D4203BCA460082A551 /* LocationViewController.swift */; };
-		652285D7203BCA460082A551 /* LocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 652285D5203BCA460082A551 /* LocationViewController.xib */; };
 		6525BD3D1FC1DD3800249AFC /* TextFieldFormCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6525BD3B1FC1DD3800249AFC /* TextFieldFormCell.swift */; };
 		6525BD3E1FC1DD3800249AFC /* TextFieldFormCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6525BD3C1FC1DD3800249AFC /* TextFieldFormCell.xib */; };
 		6525BD411FC1E57400249AFC /* TextViewFormCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6525BD3F1FC1E57400249AFC /* TextViewFormCell.swift */; };
@@ -55,6 +53,14 @@
 		652F007D1F6B83F80085C5F5 /* MainAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652F007C1F6B83F80085C5F5 /* MainAuthViewModel.swift */; };
 		654259DF20524479006DB4A4 /* CommentTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654259DE20524479006DB4A4 /* CommentTableCell.swift */; };
 		654259E120524C53006DB4A4 /* CommentListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654259E020524C53006DB4A4 /* CommentListViewController.swift */; };
+		654271142058B610009F3640 /* LocationViewModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654271132058B610009F3640 /* LocationViewModels.swift */; };
+		654271172058C185009F3640 /* LocationSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654271152058C185009F3640 /* LocationSelectionViewController.swift */; };
+		654271182058C185009F3640 /* LocationSelectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 654271162058C185009F3640 /* LocationSelectionViewController.xib */; };
+		6542711B2058C4CD009F3640 /* LocationWithResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654271192058C4CD009F3640 /* LocationWithResultsViewController.swift */; };
+		6542711C2058C4CD009F3640 /* LocationWithResultsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6542711A2058C4CD009F3640 /* LocationWithResultsViewController.xib */; };
+		6542711F2058CBC9009F3640 /* LocationMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6542711D2058CBC9009F3640 /* LocationMapViewController.swift */; };
+		654271202058CBC9009F3640 /* LocationMapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6542711E2058CBC9009F3640 /* LocationMapViewController.xib */; };
+		654271222058D4A0009F3640 /* UIViewController+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654271212058D4A0009F3640 /* UIViewController+Helper.swift */; };
 		65427D281F90508300407C5D /* DanceTypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65427D261F90508300407C5D /* DanceTypeTableViewCell.swift */; };
 		65427D291F90508300407C5D /* DanceTypeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65427D271F90508300407C5D /* DanceTypeTableViewCell.xib */; };
 		65427D2B1F905BA100407C5D /* InitialProfileSetupCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65427D2A1F905BA100407C5D /* InitialProfileSetupCoordinator.swift */; };
@@ -204,8 +210,6 @@
 		65134F191F1B18CC0017C930 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		65134F1B1F1B19C40017C930 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = UI/ViewControllers/MapViewController.swift; sourceTree = "<group>"; };
 		65134F1C1F1B19C40017C930 /* MapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MapViewController.xib; path = UI/ViewControllers/MapViewController.xib; sourceTree = "<group>"; };
-		652285D4203BCA460082A551 /* LocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationViewController.swift; path = ViewControllers/MainFlow/Location/LocationViewController.swift; sourceTree = "<group>"; };
-		652285D5203BCA460082A551 /* LocationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LocationViewController.xib; path = ViewControllers/MainFlow/Location/LocationViewController.xib; sourceTree = "<group>"; };
 		6525BD3B1FC1DD3800249AFC /* TextFieldFormCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TextFieldFormCell.swift; path = ViewControllers/TableCells/Form/TextFieldFormCell.swift; sourceTree = "<group>"; };
 		6525BD3C1FC1DD3800249AFC /* TextFieldFormCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TextFieldFormCell.xib; path = ViewControllers/TableCells/Form/TextFieldFormCell.xib; sourceTree = "<group>"; };
 		6525BD3F1FC1E57400249AFC /* TextViewFormCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TextViewFormCell.swift; path = ViewControllers/TableCells/Form/TextViewFormCell.swift; sourceTree = "<group>"; };
@@ -218,6 +222,14 @@
 		652F007C1F6B83F80085C5F5 /* MainAuthViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainAuthViewModel.swift; path = ViewModels/MainAuthViewModel.swift; sourceTree = "<group>"; };
 		654259DE20524479006DB4A4 /* CommentTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentTableCell.swift; path = ViewControllers/TableCells/Feed/CommentTableCell.swift; sourceTree = "<group>"; };
 		654259E020524C53006DB4A4 /* CommentListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentListViewController.swift; path = ViewControllers/ListControllers/CommentListViewController.swift; sourceTree = "<group>"; };
+		654271132058B610009F3640 /* LocationViewModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationViewModels.swift; path = ViewModels/MainFlow/Location/LocationViewModels.swift; sourceTree = "<group>"; };
+		654271152058C185009F3640 /* LocationSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationSelectionViewController.swift; path = ViewControllers/MainFlow/Location/LocationSelectionViewController.swift; sourceTree = "<group>"; };
+		654271162058C185009F3640 /* LocationSelectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LocationSelectionViewController.xib; path = ViewControllers/MainFlow/Location/LocationSelectionViewController.xib; sourceTree = "<group>"; };
+		654271192058C4CD009F3640 /* LocationWithResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationWithResultsViewController.swift; path = ViewControllers/MainFlow/Location/LocationWithResultsViewController.swift; sourceTree = "<group>"; };
+		6542711A2058C4CD009F3640 /* LocationWithResultsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LocationWithResultsViewController.xib; path = ViewControllers/MainFlow/Location/LocationWithResultsViewController.xib; sourceTree = "<group>"; };
+		6542711D2058CBC9009F3640 /* LocationMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationMapViewController.swift; path = ViewControllers/MainFlow/Location/LocationMapViewController.swift; sourceTree = "<group>"; };
+		6542711E2058CBC9009F3640 /* LocationMapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LocationMapViewController.xib; path = ViewControllers/MainFlow/Location/LocationMapViewController.xib; sourceTree = "<group>"; };
+		654271212058D4A0009F3640 /* UIViewController+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIViewController+Helper.swift"; path = "Utilities/UI/UIViewController+Helper.swift"; sourceTree = "<group>"; };
 		65427D261F90508300407C5D /* DanceTypeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceTypeTableViewCell.swift; path = ViewControllers/TableCells/DanceTypeTableViewCell.swift; sourceTree = "<group>"; };
 		65427D271F90508300407C5D /* DanceTypeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DanceTypeTableViewCell.xib; path = ViewControllers/TableCells/DanceTypeTableViewCell.xib; sourceTree = "<group>"; };
 		65427D2A1F905BA100407C5D /* InitialProfileSetupCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InitialProfileSetupCoordinator.swift; path = Coordinators/InitialProfileSetupCoordinator.swift; sourceTree = "<group>"; };
@@ -572,8 +584,20 @@
 		652285D3203BC9BB0082A551 /* Location */ = {
 			isa = PBXGroup;
 			children = (
-				652285D4203BCA460082A551 /* LocationViewController.swift */,
-				652285D5203BCA460082A551 /* LocationViewController.xib */,
+				654271152058C185009F3640 /* LocationSelectionViewController.swift */,
+				654271162058C185009F3640 /* LocationSelectionViewController.xib */,
+				654271192058C4CD009F3640 /* LocationWithResultsViewController.swift */,
+				6542711A2058C4CD009F3640 /* LocationWithResultsViewController.xib */,
+				6542711D2058CBC9009F3640 /* LocationMapViewController.swift */,
+				6542711E2058CBC9009F3640 /* LocationMapViewController.xib */,
+			);
+			name = Location;
+			sourceTree = "<group>";
+		};
+		654271122058B52F009F3640 /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				654271132058B610009F3640 /* LocationViewModels.swift */,
 			);
 			name = Location;
 			sourceTree = "<group>";
@@ -753,6 +777,7 @@
 				654BB8CC1F8DA8950044A555 /* UITextField+Configure.swift */,
 				654BB8CE1F8DB0CC0044A555 /* UIButton+Configure.swift */,
 				6548EE6E1FB918C30076EA4B /* FormCellFactory.swift */,
+				654271212058D4A0009F3640 /* UIViewController+Helper.swift */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -807,6 +832,7 @@
 		65F538D71FA81D050034DAFA /* MainFlow */ = {
 			isa = PBXGroup;
 			children = (
+				654271122058B52F009F3640 /* Location */,
 				6548EE5A1FB8BA170076EA4B /* OrganizationProfileViewModel.swift */,
 				6561CED41FDE38FD008EC9A3 /* Helper.swift */,
 				65714CFD1FE600B7001FAB44 /* EventViewModel.swift */,
@@ -980,6 +1006,7 @@
 				6555751820479C320045CE8E /* UserViewController.xib in Resources */,
 				65FD06F51F1D726C00932E5F /* LocationSearchTableViewCell.xib in Resources */,
 				6525BD421FC1E57400249AFC /* TextViewFormCell.xib in Resources */,
+				654271202058CBC9009F3640 /* LocationMapViewController.xib in Resources */,
 				654FE85E2022D5FF002D1D23 /* DatePickerCell.xib in Resources */,
 				6548EE691FB8CFE70076EA4B /* TextFieldCell.xib in Resources */,
 				650CB27D1F68DF020093F2FC /* MainAuthViewController.xib in Resources */,
@@ -994,6 +1021,7 @@
 				654E01F11FBFEDDC0095C4D1 /* SwitchFormCell.xib in Resources */,
 				6546A0461FBBC65500B23685 /* NameTitleFormCell.xib in Resources */,
 				654B1D251F942A1900B13925 /* DanceTypesViewController.xib in Resources */,
+				654271182058C185009F3640 /* LocationSelectionViewController.xib in Resources */,
 				6503EC3A1F075CA900D56AB5 /* Assets.xcassets in Resources */,
 				650415DC1FF038B700D19A89 /* EditCreateEventViewController.xib in Resources */,
 				654792D02053621D00A844EC /* ShineCommentListViewController.xib in Resources */,
@@ -1002,10 +1030,10 @@
 				65F538D61FA811B20034DAFA /* UserProfileViewController.xib in Resources */,
 				65134F1E1F1B19C40017C930 /* MapViewController.xib in Resources */,
 				65640E091F9CF123006C2E21 /* ProfileImageSelectionViewController.xib in Resources */,
+				6542711C2058C4CD009F3640 /* LocationWithResultsViewController.xib in Resources */,
 				6548EE6D1FB8D00E0076EA4B /* SwitchCell.xib in Resources */,
 				654E01FD1FC120DA0095C4D1 /* DateFormCell.xib in Resources */,
 				650C6B081FF35F500008597C /* TimeLineViewController.xib in Resources */,
-				652285D7203BCA460082A551 /* LocationViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1102,6 +1130,7 @@
 				6525BD411FC1E57400249AFC /* TextViewFormCell.swift in Sources */,
 				656834D51F8C8A7600ADCBA2 /* EmailLoginCoordinator.swift in Sources */,
 				65439CE61FF9FA6100EDE435 /* DecodeOperation.swift in Sources */,
+				6542711F2058CBC9009F3640 /* LocationMapViewController.swift in Sources */,
 				65FC55E11F67921C00E02503 /* Coordinator.swift in Sources */,
 				65439CE81FF9FA9600EDE435 /* ImageRequest.swift in Sources */,
 				6548EE681FB8CFE70076EA4B /* TextFieldCell.swift in Sources */,
@@ -1118,6 +1147,7 @@
 				652A3CFC1FD4B96200376CB6 /* Organization.swift in Sources */,
 				65100F20202967E2006CEEA4 /* ShineTextFieldCell.swift in Sources */,
 				650415E01FF03A4900D19A89 /* EditCreateOrganizationViewController.swift in Sources */,
+				654271222058D4A0009F3640 /* UIViewController+Helper.swift in Sources */,
 				6548EE6C1FB8D00E0076EA4B /* SwitchCell.swift in Sources */,
 				65FD06F11F1D719F00932E5F /* LocationSearchTableViewController.swift in Sources */,
 				652A3D061FD50F0900376CB6 /* User.swift in Sources */,
@@ -1143,6 +1173,7 @@
 				655CE7551FA17423005B0774 /* ProfileInfoSetupViewModel.swift in Sources */,
 				650AF5A41F89836200DE46E1 /* ShineNetworkService.swift in Sources */,
 				6558EB4520263EB500D184D2 /* ShineDatePickerCell.swift in Sources */,
+				6542711B2058C4CD009F3640 /* LocationWithResultsViewController.swift in Sources */,
 				6548EE5B1FB8BA170076EA4B /* OrganizationProfileViewModel.swift in Sources */,
 				6548738A2042140900CAC92A /* PostViewModel.swift in Sources */,
 				65640E021F9C423E006C2E21 /* ProfileImageSelectionVMInterface.swift in Sources */,
@@ -1168,13 +1199,13 @@
 				6561CED51FDE38FD008EC9A3 /* Helper.swift in Sources */,
 				6502E9EC2027B7AF00333BD4 /* PickerFormCell.swift in Sources */,
 				65063E91204BC8F800D8721B /* EditUserProfileViewController.swift in Sources */,
-				652285D6203BCA460082A551 /* LocationViewController.swift in Sources */,
 				652A3D001FD50DC000376CB6 /* Location.swift in Sources */,
 				65714CFE1FE600B7001FAB44 /* EventViewModel.swift in Sources */,
 				654792D220536A6100A844EC /* ViewInterfaces.swift in Sources */,
 				654873862041C31C00CAC92A /* FeedWithMediaCell.swift in Sources */,
 				65640E051F9C43E5006C2E21 /* ProfileImageSelectionViewModel.swift in Sources */,
 				654259DF20524479006DB4A4 /* CommentTableCell.swift in Sources */,
+				654271142058B610009F3640 /* LocationViewModels.swift in Sources */,
 				656834D11F8C6B5F00ADCBA2 /* EmailLoginViewModelInterface.swift in Sources */,
 				65BC8BF81F819F6800F5AF94 /* SignUpViewModelInterface.swift in Sources */,
 				654792D72053B49900A844EC /* Interfaces.swift in Sources */,
@@ -1194,6 +1225,7 @@
 				6548738D204314D800CAC92A /* EditCreatePostViewController.swift in Sources */,
 				65F538D51FA811B20034DAFA /* UserProfileViewController.swift in Sources */,
 				650C6B001FF32D790008597C /* HomeScreenCoordinator.swift in Sources */,
+				654271172058C185009F3640 /* LocationSelectionViewController.swift in Sources */,
 				650905DF1FDF8B00004E272D /* Authentication.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

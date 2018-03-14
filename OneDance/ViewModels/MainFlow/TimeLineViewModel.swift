@@ -171,9 +171,15 @@ struct Feed {
         }
     }
     
-    var location : String {
+    var locationName : String {
         get{
             return self.post.location?.name ?? ""
+        }
+    }
+    
+    var location : LocationLite?{
+        get{
+            return self.post.location as? LocationLite
         }
     }
     
@@ -308,6 +314,7 @@ protocol TimeLineViewModelType : class, ListableViewModel {
     
     func requestUserProfile(id: String)
     func requestOrganizationProfile(id: String)
+    func requestLocationDetail(id: String, type: ShineLocationDetailType)
     
     func likePost(id: String)
     func removeLikeFromPost(id:String)
@@ -425,6 +432,10 @@ class TimeLineViewModel : TimeLineViewModelType {
     
     func requestOrganizationProfile(id: String) {
         self.coordinatorDelegate?.viewModelDidSelectOrganizationProfile(organizationID: id, requestedMode: .viewOnly)
+    }
+    
+    func requestLocationDetail(id: String, type: ShineLocationDetailType) {
+        self.coordinatorDelegate?.viewModelDidSelectLocation(locId: id, detailType: type, requestedMode: .viewOnly)
     }
     
     func likePost(id: String){

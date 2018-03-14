@@ -276,18 +276,7 @@ class UserViewController: UIViewController {
         self.viewModel?.goBack()
     }
     
-    var isFirstViewController : Bool {
-        get{
-            
-            let vcList = self.navigationController?.viewControllers
-            if let vcSelf = vcList?[0], vcSelf === self{
-                return true
-            }
-            
-            return false
-            
-        }
-    }
+    
 
 
     

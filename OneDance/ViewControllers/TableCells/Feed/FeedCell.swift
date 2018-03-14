@@ -15,7 +15,9 @@ protocol FeedCellDelegate : class {
     func viewLikeListTapped(_ cell: UITableViewCell)
     
     func addCommentTapped(_ cell: UITableViewCell)
-    func postOwnerTapped(_ cell: UITableViewCell) 
+    func postOwnerTapped(_ cell: UITableViewCell)
+    
+    func locationTapped(_ cell: UITableViewCell)
     
 }
 
@@ -107,6 +109,14 @@ class FeedCell: BaseFeedCell {
         
         let attributedText = NSMutableAttributedString(string: name, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 12)])
         self.locationLabel.attributedText = attributedText
+    }
+    @objc
+    private func locationNameTapped(tapGestureRecognizer: UIGestureRecognizer){
+        if (tapGestureRecognizer.view as? UILabel) != nil {
+            self.delegate?.locationTapped(self)
+        }
+        
+        
     }
     
     // likeCommentContainer
@@ -210,6 +220,10 @@ class FeedCell: BaseFeedCell {
         
         // Location
         self.setLocationLabel()
+        let locTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(locationNameTapped(tapGestureRecognizer:)))
+        self.locationLabel.isUserInteractionEnabled = true
+        self.locationLabel.addGestureRecognizer(locTapGestureRecognizer)
+        
         
         // Description
         self.descriptionLabel.numberOfLines = 0

@@ -9,9 +9,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LocationViewController" customModule="OneDance" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LocationMapViewController" customModule="OneDance" customModuleProvider="target">
             <connections>
-                <outlet property="selectButton" destination="3Vu-lH-RWk" id="yeQ-ny-s2L"/>
+                <outlet property="mapView" destination="8UW-Xb-JOi" id="lSj-t7-2Qs"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -20,21 +20,17 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Vu-lH-RWk">
-                    <rect key="frame" x="62" y="577" width="250" height="50"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="50" id="TuL-g7-aAP"/>
-                        <constraint firstAttribute="width" constant="250" id="mXN-Bh-Nb9"/>
-                    </constraints>
-                    <state key="normal" title="Button"/>
-                </button>
+                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="8UW-Xb-JOi">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                </mapView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="3Vu-lH-RWk" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="8XS-uj-tMH"/>
-                <constraint firstAttribute="bottom" secondItem="3Vu-lH-RWk" secondAttribute="bottom" constant="40" id="IXZ-Eb-a3Y"/>
+                <constraint firstAttribute="bottom" secondItem="8UW-Xb-JOi" secondAttribute="bottom" id="Bzx-Uw-hWs"/>
+                <constraint firstItem="8UW-Xb-JOi" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="MRG-jA-pKU"/>
+                <constraint firstItem="8UW-Xb-JOi" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="WVW-hw-nKx"/>
+                <constraint firstAttribute="trailing" secondItem="8UW-Xb-JOi" secondAttribute="trailing" id="jpS-47-ll1"/>
             </constraints>
-            <point key="canvasLocation" x="33.5" y="53.5"/>
         </view>
     </objects>
 </document>

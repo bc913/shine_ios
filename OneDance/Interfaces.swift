@@ -20,6 +20,7 @@ enum ShineMode {
     case viewOnly
     case create
     case delete
+    case select
 }
 
 protocol Refreshable : class {

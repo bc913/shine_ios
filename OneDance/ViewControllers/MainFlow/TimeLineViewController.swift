@@ -193,7 +193,7 @@ extension TimeLineViewController : UITableViewDataSource {
                     let cell = self.tableView.dequeueReusableCell(withIdentifier: FeedWithMediaCell.identifier, for: indexPath) as! FeedWithMediaCell
                     
                     // Properties
-                    cell.setLocationLabel(name: feedItem.location)
+                    cell.setLocationLabel(name: feedItem.locationName)
                     cell.setUserNameAndDate(name: feedItem.username, date: feedItem.date)
                     cell.setLikeCommentCounter(likeCounter: feedItem.likeCounter, commentCounter: feedItem.commentCounter)
                     cell.isLikedPost = false
@@ -214,7 +214,7 @@ extension TimeLineViewController : UITableViewDataSource {
                     let cell = self.tableView.dequeueReusableCell(withIdentifier: FeedCell.identifier, for: indexPath) as! FeedCell
                     
                     // Properties
-                    cell.setLocationLabel(name: feedItem.location)
+                    cell.setLocationLabel(name: feedItem.locationName)
                     cell.setUserNameAndDate(name: feedItem.username, date: feedItem.date)
                     cell.setLikeCommentCounter(likeCounter: feedItem.likeCounter, commentCounter: feedItem.commentCounter)
                     cell.isLikedPost = false
@@ -315,6 +315,17 @@ extension TimeLineViewController : FeedCellDelegate {
             }
             
         }
+    }
+    
+    func locationTapped(_ cell: UITableViewCell){
+        guard let tappedIndexPath = tableView.indexPath(for: cell) else { return }
+        
+        if let feed = self.viewModel?.itemAtIndex(tappedIndexPath.row), let loc = feed.location, let id = loc.id {
+            
+            self.viewModel?.requestLocationDetail(id: id, type: .withResults)
+            
+        }
+        
     }
     
 }

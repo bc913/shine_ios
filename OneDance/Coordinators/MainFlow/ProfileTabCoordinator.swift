@@ -105,13 +105,8 @@ extension UserProfileCoordinator : Refreshable{
     }
 }
 
-protocol DanceTypeSelectionCoordinatorOwnerType : class{
-    
-    func updateViewModelWithSelectedDanceTypes(dances: [IDanceType])
-    
-}
 
-extension UserProfileCoordinator : DanceTypeSelectionCoordinatorOwnerType{
+extension UserProfileCoordinator : DanceTypeSelectionParentCoordinatorType{
     func updateViewModelWithSelectedDanceTypes(dances: [IDanceType]) {
         
         
@@ -127,17 +122,19 @@ extension UserProfileCoordinator : DanceTypeSelectionCoordinatorOwnerType{
 //MARK: DanceTypesCoordinator
 //===============================================================================================
 
-protocol DanceTypesSelectionViewModelCoordinatorDelegate : class{
-    func viewModelDidSelectDanceTypes(dances: [IDanceType])
-    func viewModelDidCancelSelection()
+
+protocol DanceTypeSelectionParentCoordinatorType : class{
+    
+    func updateViewModelWithSelectedDanceTypes(dances: [IDanceType])
     
 }
 
+
 class DanceTypesSelectionCoordinator : BaseChildCoordinator{
     
-    unowned let parentCoordinator : DanceTypeSelectionCoordinatorOwnerType
+    unowned let parentCoordinator : DanceTypeSelectionParentCoordinatorType
     
-    init(host: UINavigationController, id: String, owner: DanceTypeSelectionCoordinatorOwnerType) {        
+    init(host: UINavigationController, id: String, owner: DanceTypeSelectionParentCoordinatorType) {
         self.parentCoordinator = owner
         super.init(host: host, id: id)
         

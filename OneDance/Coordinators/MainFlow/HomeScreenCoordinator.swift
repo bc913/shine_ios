@@ -30,6 +30,18 @@ enum ListType{
     case following
 }
 
+enum ShineType{
+    case event
+    case organization
+    case user
+}
+
+
+enum ShineLocationDetailType {
+    case withResults
+    case mapViewOnly
+}
+
 enum NotificationType{
     
     case updateEvent
@@ -97,6 +109,9 @@ protocol ChildCoordinatorDelegate : class {
     // GO BACK
     func childCoordinatorDidRequestGoBack(sender: BaseChildCoordinator, mode: ShineMode)
     
+    // LOCATION
+    func childCoordinatorDidRequestLocationDetail(sender: BaseChildCoordinator, id: String, detailType: ShineLocationDetailType, mode: ShineMode)
+    
 }
 
 /// Base class definitions for all child coordinators under container coordinator.
@@ -133,6 +148,7 @@ protocol ChildViewModelCoordinatorDelegate : class {
     func viewModelDidSelectPost(postID: String, requestedMode: ShineMode)
     func viewModelDidFinishOperation(mode: ShineMode)
     func viewModelDidSelectGoBack(mode: ShineMode)
+    func viewModelDidSelectLocation(locId: String, detailType: ShineLocationDetailType, requestedMode: ShineMode)
 }
 
 /// coordinator delegate of every child view model has this
@@ -165,6 +181,10 @@ extension BaseChildCoordinator : ChildViewModelCoordinatorDelegate {
     
     func viewModelDidSelectGoBack(mode: ShineMode) {
         self.delegate?.childCoordinatorDidRequestGoBack(sender: self, mode: mode)
+    }
+    
+    func viewModelDidSelectLocation(locId: String, detailType: ShineLocationDetailType, requestedMode: ShineMode) {
+        self.delegate?.childCoordinatorDidRequestLocationDetail(sender: self, id: locId, detailType: detailType, mode: requestedMode)
     }
 }
 
@@ -260,6 +280,14 @@ extension BaseContainerCoordinator : ChildCoordinatorDelegate {
         self.coordinatorStack.pop()
         
         
+    }
+    
+    //LOCATION
+    func childCoordinatorDidRequestLocationDetail(sender: BaseChildCoordinator, id: String, detailType: ShineLocationDetailType, mode: ShineMode) {
+        let locCoordinator = LocationCoordinator(host: self.containerNavigationController, id: id, detailType: detailType)
+        locCoordinator.delegate = self
+        self.coordinatorStack.push(locCoordinator)
+        locCoordinator.start()
     }
     
     
@@ -435,6 +463,8 @@ extension OrganizationCoordinator : OrganizationViewModelCoordinatorDelegate {
 class EventCoordinator : BaseChildCoordinator {
     var mode : ShineMode
     
+    var locationPickerCoordinator : LocationSelectionCoordinator?
+    
     init(host: UINavigationController, id: String, mode: ShineMode = .viewOnly) {
         self.mode = mode
         //self.viewModel = EventViewModel(mode: self.mode, id: id)
@@ -444,9 +474,6 @@ class EventCoordinator : BaseChildCoordinator {
     override convenience init(host: UINavigationController, id: String) {
         self.init(host:host, id: id, mode: .viewOnly)
     }
-    
-    var locationCoordinator : LocationCoordinator?
-    
 
 }
 
@@ -481,20 +508,16 @@ extension EventCoordinator : Coordinator {
 extension EventCoordinator : EventViewModelCoordinatorDelegate{
     
     func viewModelDidRequestLocation(){
-        print("EventCoordinator::vmDidRequestLocation")
-        self.locationCoordinator = LocationCoordinator(host: self.hostNavigationController, id: "")
-        self.locationCoordinator?.parentCoordinator = self
-        self.locationCoordinator?.start()
+        locationPickerCoordinator = LocationSelectionCoordinator(host: self.hostNavigationController, id: id, owner: self)
+        self.locationPickerCoordinator?.start()
+
     }
 }
 
-extension EventCoordinator : LocationCoordinatorDelegate{
-    func locationCoordinatorDidSelectLocation() {
-        // Pass location info to the view model
-        print("Lcoation selected")
+extension EventCoordinator : LocationSelectionParentCoordinatorType{
+    func updateViewModelWithSelectedLocation(_ location: LocationLite) {
+        //
     }
-
-    
 }
 
 //===============================================================================================
@@ -600,24 +623,33 @@ extension PostCoordinator : Coordinator {
     
 }
 
-extension PostCoordinator : PostViewModelCoordinatorDelegate {
-    
-}
+extension PostCoordinator : PostViewModelCoordinatorDelegate {}
 
 
 //===============================================================================================
-//MARK: LocationCoordinator
+//MARK: LocationCoordinators
 //MARK:==========================
-class LocationCoordinator : BaseChildCoordinator{
-    
-    weak var parentCoordinator : LocationCoordinatorDelegate?
+
+protocol LocationSelectionParentCoordinatorType : class {
+    func updateViewModelWithSelectedLocation(_ location: LocationLite)
 }
 
-extension LocationCoordinator : Coordinator {
+class LocationSelectionCoordinator : BaseChildCoordinator{
+    
+    unowned let parentCoordinator : LocationSelectionParentCoordinatorType
+    
+    init(host: UINavigationController, id: String, owner: LocationSelectionParentCoordinatorType) {
+        self.parentCoordinator = owner
+        super.init(host: host, id: id)
+        
+    }
+}
+
+extension LocationSelectionCoordinator : Coordinator {
     
     func start() {
-        let vc = LocationViewController(nibName: "LocationViewController", bundle: nil)
-        let vm = LocationPickerViewModel()
+        let vc = LocationSelectionViewController(nibName: "LocationSelectionViewController", bundle: nil)
+        let vm = LocationSelectionViewModel()
         vm.coordinatorDelegate = self
         vc.viewModel = vm
         let navigationController = UINavigationController(rootViewController: vc)
@@ -626,10 +658,10 @@ extension LocationCoordinator : Coordinator {
     
 }
 
-extension LocationCoordinator : LocationViewModelCoordinatorDelegate {
+extension LocationSelectionCoordinator : LocationSelectionViewModelCoordinatorDelegate {
     
-    func viewModelDidSelectLocation() {
-        self.parentCoordinator?.locationCoordinatorDidSelectLocation()
+    func viewModelDidSelectLocation(_ location: LocationLite) {
+        //self.parentCoordinator?.locationCoordinatorDidSelectLocation()
         self.hostNavigationController.visibleViewController?.dismiss(animated: true, completion: nil)
     }
     
@@ -638,11 +670,54 @@ extension LocationCoordinator : LocationViewModelCoordinatorDelegate {
     }
 }
 
-protocol LocationCoordinatorDelegate : class {
-    func locationCoordinatorDidSelectLocation()
+//==============
+
+class LocationCoordinator : BaseChildCoordinator {
+    
+    let mode : ShineMode = .viewOnly
+    let detailType : ShineLocationDetailType
+    
+    init(host: UINavigationController, id: String, detailType: ShineLocationDetailType) {
+        self.detailType = detailType
+        super.init(host: host, id: id)
+    }
+    
+    override convenience init(host: UINavigationController, id: String) {
+        self.init(host: host, id: id, detailType: .withResults)
+    }
+    
+}
+
+extension LocationCoordinator : Coordinator {
+    
+    func start() {
+        if self.detailType == .withResults {
+            startDetailWithResults()
+        } else {
+            startMap()
+        }
+    }
+    
+    private func startDetailWithResults(){
+        
+        let vc = LocationWithResultsViewController(nibName: "LocationWithResultsViewController", bundle: nil)
+        let vm = LocationDetailViewModel()
+        vm.coordinatorDelegate = self
+        vc.viewModel = vm
+        
+        self.hostNavigationController.pushViewController(vc, animated: true)
+    
+    }
+    
+    private func startMap(){
+    
+    }
 }
 
 
+extension LocationCoordinator : LocationDetailViewModelCoordinatorDelegate{
+    
+}
 
 
 
