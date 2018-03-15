@@ -9,6 +9,9 @@ PODS:
   - AWSCore (2.6.2)
   - AWSS3 (2.6.2):
     - AWSCore (= 2.6.2)
+  - GoogleMaps/Base (2.4.0)
+  - GooglePlaces (2.4.0):
+    - GoogleMaps/Base (= 2.4.0)
 
 DEPENDENCIES:
   - Alamofire (~> 4.5)
@@ -16,6 +19,7 @@ DEPENDENCIES:
   - AWSCognito
   - AWSCognitoIdentityProvider
   - AWSS3
+  - GooglePlaces (~> 2.4.0)
 
 SPEC CHECKSUMS:
   Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
@@ -24,7 +28,9 @@ SPEC CHECKSUMS:
   AWSCognitoIdentityProvider: 8d2e86a00ca828ceaf6513b96ee3a45b70518631
   AWSCore: 8f458961a4967be219162108f5be7df1c935639a
   AWSS3: b3e2c4aca868cae06b5b88337ceabee25709fcc5
+  GoogleMaps: 8436ab5d1c25e36915b2f7416d0c8e3fa2e76c61
+  GooglePlaces: aafe5990fa7951e98e078761bbdaaf236d7e0c65
 
-PODFILE CHECKSUM: 22819af123e44d2fbfd771fdf8a84832ac009cdb
+PODFILE CHECKSUM: 24371f69850d90a125d45021f10e7bf26259f5a7
 
 COCOAPODS: 1.3.1

@@ -95,7 +95,7 @@ class EditUserProfileViewController: UIViewController {
                 multiplier: 1.0,
                 constant: 0.0
             )
-            ])
+        ])
         
         self.tableView = tableView
         // Hide empty unused cells

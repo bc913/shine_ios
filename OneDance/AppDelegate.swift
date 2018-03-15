@@ -10,11 +10,14 @@ import UIKit
 import CoreData
 import AWSS3
 
+import GooglePlaces
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var appCoordinator : AppCoordinator!
+    fileprivate let GOOGLE_MAPS_API_KEY = "AIzaSyChg0cMEnb0xK0DbTqImDeIKkha6N84HJI"
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -41,6 +44,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             ShineNetworkService.API.User.addDevice()
         }
         
+        // Google maps
+        //GMSServices.provideAPIKey(GOOGLE_MAPS_API_KEY)
+        GMSPlacesClient.provideAPIKey(GOOGLE_MAPS_API_KEY)
         
         // AWS configuration
         ShineNetworkService.S3.configureAWS()

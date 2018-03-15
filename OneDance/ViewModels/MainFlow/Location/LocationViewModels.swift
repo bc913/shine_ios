@@ -14,7 +14,7 @@ import Foundation
 
 
 protocol LocationSelectionViewModelCoordinatorDelegate : class {
-    func viewModelDidSelectLocation(_ location: LocationLite)
+    func viewModelDidSelectLocation(_ location: Location)
     func viewModelDidCancelSelection()
 }
 
@@ -27,6 +27,10 @@ protocol LocationSelectionViewModelType : class {
     weak var viewDelegate : LocationSelectionViewModelViewDelegate? { get set }
     
     //
+    
+    var model : Location? { get set }
+    
+    func locationPicked(name: String, address: String, city: String, country: String, lat: Double, lon: Double)
     func cancel()
 }
 
@@ -34,6 +38,15 @@ class LocationSelectionViewModel : LocationSelectionViewModelType {
     
     weak var coordinatorDelegate: LocationSelectionViewModelCoordinatorDelegate?
     weak var viewDelegate: LocationSelectionViewModelViewDelegate?
+    
+    // It might not be there initially and can be set later
+    var model : Location?
+    
+    func locationPicked(name: String, address: String, city: String, country: String, lat: Double, lon: Double) {
+        self.model = Location(id: "", name: name, address: address, city: city, country: country, lat: lat, lon: lon)
+        
+        self.coordinatorDelegate?.viewModelDidSelectLocation(self.model!)
+    }
     
     func cancel() {
         self.coordinatorDelegate?.viewModelDidCancelSelection()

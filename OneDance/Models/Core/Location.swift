@@ -86,3 +86,81 @@ extension LocationLite : JSONDecodable {
         ]
     }
 }
+
+//=============
+// Location
+//=============
+
+struct Location {
+    
+    let id : String
+    let name : String
+    
+    let address : String
+    let city : String
+    let country : String
+    
+    let latitude : Double
+    let longitude : Double
+    
+    var media : MediaImage?
+    
+    init(id: String, name: String, address: String, city: String, country: String, lat: Double, lon: Double) {
+        self.id = id
+        self.name = name
+        
+        self.address = address
+        self.city = city
+        self.country = country
+        self.latitude = lat
+        self.longitude = lon
+        
+        self.media = nil
+    }
+    
+    init?(json: [String:Any]){
+        
+        guard let id = json["id"] as? String, let name = json["name"] as? String,
+            let addr = json["address"] as? String, let city = json["city"] as? String,
+            let country = json["country"] as? String, let lat = json["latitude"] as? Double,
+            let lon = json["longitude"] as? Double
+            else {
+                return nil
+        }
+        
+        self.id = id
+        self.name = name
+        
+        self.address = addr
+        self.city = city
+        self.country = country
+        self.latitude = lat
+        self.longitude = lon
+        
+        if let media = json["media"] as? [String:Any] {
+            self.media = MediaImage(json: media)
+        }
+        
+    }
+    
+}
+
+extension Location : JSONDecodable {
+    var jsonData : [String:Any]{
+        
+        let media = self.media
+        
+        return [
+            "id" : self.id,
+            "name" : self.name,
+            "address" : self.address,
+            "city" : self.city,
+            "country" : self.country,
+            "latitude" : self.latitude,
+            "longitude" : self.longitude,
+            "media": media?.jsonData ?? [String:Any]()
+        ]
+        
+    
+    }
+}

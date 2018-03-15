@@ -8,4 +8,5 @@ target 'OneDance' do
     pod 'AWSS3'
     pod 'AWSCognito'
     pod 'AWSCognitoIdentityProvider'
+    pod 'GooglePlaces', '~> 2.4.0'
 end
