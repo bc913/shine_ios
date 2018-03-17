@@ -92,34 +92,32 @@ protocol FormItem {
 
 struct FormItemCellFactory {
     
-    static func create(tableView: UITableView, purpose: FormPurpose, type: FormCellType, placeHolder: String?) -> BaseFormCell?{
+    static func create(tableView: UITableView, purpose: FormPurpose, type: FormCellType, placeHolder: String?) -> BaseFormCell{
         
         var nibName : UINib?
         var identifier : String?
         
         
         switch type {
-        case .nameTitle:
-            nibName = NameTitleFormCell.nib
-            identifier = NameTitleFormCell.identifier
-            
-            tableView.register(nibName, forCellReuseIdentifier: identifier!)
-            if let cell = tableView.dequeueReusableCell(withIdentifier: identifier!) as? NameTitleFormCell {
-                cell.placeHolder = Helper.createPlaceHolderText(purpose: purpose, type: type)
-                return cell
-            }
         case .nameTitleWithImage:
             
-            nibName = NameTitleWithImageCell.nib
-            identifier = NameTitleWithImageCell.identifier
+            let nib : UINib = NameTitleWithImageCell.nib
+            tableView.register(nib, forCellReuseIdentifier: NameTitleWithImageCell.identifier)
             
-            tableView.register(nibName, forCellReuseIdentifier: identifier!)
-            if let cell = tableView.dequeueReusableCell(withIdentifier: identifier!) as? NameTitleWithImageCell {
-                cell.placeHolder = Helper.createPlaceHolderText(purpose: purpose, type: type)
+            if let cell = tableView.dequeueReusableCell(withIdentifier: NameTitleWithImageCell.identifier) as? NameTitleWithImageCell{
+            
+                if placeHolder != nil {
+                    cell.placeHolder = placeHolder
+                } else {
+                    cell.placeHolder = Helper.createPlaceHolderText(purpose: purpose, type: type)
+                }
                 return cell
+            } else {
+                fallthrough
             }
+
             
-        case .shineTextField:
+        case .shineTextField, .email, .phoneNumber, .url:
             identifier = ShineTextFieldCell.identifier
             tableView.register(ShineTextFieldCell.self, forCellReuseIdentifier: identifier!)
             let cell = ShineTextFieldCell(style: .default, reuseIdentifier: identifier)
@@ -130,7 +128,7 @@ struct FormItemCellFactory {
             }
             return cell
             
-        case .shineTextView:
+        case .shineTextView, .info, .about, .description:
             identifier = ShineTextViewCell.identifier
             tableView.register(ShineTextViewCell.self, forCellReuseIdentifier: identifier!)
             let cell = ShineTextViewCell(style: .default, reuseIdentifier: identifier)
@@ -156,19 +154,25 @@ struct FormItemCellFactory {
             nibName = nil
             identifier = ShineLocationCell.identifier
             tableView.register(ShineLocationCell.self, forCellReuseIdentifier: identifier!)
-            if let cell = tableView.dequeueReusableCell(withIdentifier: identifier!) as? ShineLocationCell {
+            let cell = ShineLocationCell(style: .default, reuseIdentifier: identifier)
+            if placeHolder != nil {
+                cell.placeHolder = placeHolder
+            } else {
                 cell.placeHolder = Helper.createPlaceHolderText(purpose: purpose, type: type)
-                return cell
             }
+            return cell
             
         case .date:
             nibName = DateFormCell.nib
             identifier = DateFormCell.identifier
             tableView.register(nibName, forCellReuseIdentifier: identifier!)
-            if let cell = tableView.dequeueReusableCell(withIdentifier: identifier!) as? DateFormCell {
+            let cell = DateFormCell(style: .default, reuseIdentifier: identifier)
+            if placeHolder != nil {
+                cell.placeHolder = placeHolder
+            } else {
                 cell.placeHolder = Helper.createPlaceHolderText(purpose: purpose, type: type)
-                return cell
             }
+            return cell
             
         case .datePicker:
             nibName = ShineDatePickerCell.nib
@@ -187,58 +191,19 @@ struct FormItemCellFactory {
             identifier = PickerFormCell.identifier
             tableView.register(PickerFormCell.self, forCellReuseIdentifier: identifier!)
             let cell = PickerFormCell(style: .default, reuseIdentifier: identifier)
-            cell.placeHolder = placeHolder
-            return cell            
-            
-        case .info, .about, .description:
-            nibName = TextViewFormCell.nib
-            identifier = TextViewFormCell.identifier
-            tableView.register(nibName, forCellReuseIdentifier: identifier!)
-            if let cell = tableView.dequeueReusableCell(withIdentifier: identifier!) as? TextViewFormCell {
+            if placeHolder != nil {
+                cell.placeHolder = placeHolder
+            } else {
                 cell.placeHolder = Helper.createPlaceHolderText(purpose: purpose, type: type)
-                return cell
             }
-            
-        case .email, .phoneNumber:
-            nibName = TextFieldFormCell.nib
-            identifier = TextFieldFormCell.identifier
-            tableView.register(nibName, forCellReuseIdentifier: identifier!)
-            if let cell = tableView.dequeueReusableCell(withIdentifier: identifier!) as? TextFieldFormCell {
-                cell.placeHolder = Helper.createPlaceHolderText(purpose: purpose, type: type)
-                return cell
-            }
-            
-        case .url:
-            nibName = TextFieldFormCell.nib
-            identifier = TextFieldFormCell.identifier
-            tableView.register(nibName, forCellReuseIdentifier: identifier!)
-            if let cell = tableView.dequeueReusableCell(withIdentifier: identifier!) as? TextFieldFormCell {
-                if placeHolder == nil {
-                    cell.placeHolder = Helper.createPlaceHolderText(purpose: purpose, type: type)
-                } else {
-                    cell.placeHolder = placeHolder
-                }
-                
-                return cell
-            }
+            return cell
             
         default:
-            nibName = TextFieldFormCell.nib
-            identifier = TextFieldFormCell.identifier
             
-            tableView.register(nibName, forCellReuseIdentifier: identifier!)
-            if let cell = tableView.dequeueReusableCell(withIdentifier: identifier!) as? TextFieldFormCell {
-                if placeHolder == nil {
-                    cell.placeHolder = Helper.createPlaceHolderText(purpose: purpose, type: type)
-                } else {
-                    cell.placeHolder = placeHolder
-                }
-                
-                return cell
-            }
+            tableView.register(BaseFormCell.self, forCellReuseIdentifier: "BaseFormCell")
+            return BaseFormCell(style: .default, reuseIdentifier: "BaseFormCell")
         }
         
-        return nil
         
     }
     

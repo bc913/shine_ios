@@ -87,6 +87,14 @@ class BaseFormCell: UITableViewCell, RefreshableCell {
     
     // Selection
     weak var selectionDelegate : CellSelectionDelegate?
+    
+    deinit {
+        self.expandDelegate = nil
+        self.selectionDelegate = nil
+        self.refreshHandler = nil
+        self.dependentCells.removeAll()
+        print("BaseFormCell")
+    }
 
 }
 

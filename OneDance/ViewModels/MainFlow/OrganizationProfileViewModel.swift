@@ -67,8 +67,11 @@ class OrganizationViewModel : OrganizationViewModelType {
     
     var id : String
     var name : String?
-    var about : String?
-    
+    var about : String? {
+        didSet{
+            print("vm.about: \(self.about!)")
+        }
+    }
     var photoManager = PhotoManager.instance()
     
     // Dance types

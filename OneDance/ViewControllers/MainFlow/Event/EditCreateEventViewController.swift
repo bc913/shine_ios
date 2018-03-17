@@ -62,499 +62,606 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
     
     /// The cells to display in the table.
     var cells = [BaseFormCell]()
+    weak var nameCell : NameTitleWithImageCell!
+    weak var startDateCell : ShineDatePickerCell!
+    weak var endDateCell : ShineDatePickerCell!
+    weak var aboutCell : ShineTextViewCell!
+    weak var locationCell : ShineLocationCell!
+    
+    weak var urlCell : ShineTextFieldCell!
+    
+    weak var eventTypeCell : PickerFormCell!
+    weak var danceLevelCell : PickerFormCell!
+    
+    weak var feePolicyCell : ShineSwitchCell!
+    weak var feeTypeCell : ShineTextFieldCell!
+    weak var feeValueCell : ShineTextFieldCell!
+    weak var sessionsCell : ShineTextFieldCell!
+    weak var feeDescCell : ShineTextViewCell!
+    
+    weak var dressCodeCell : ShineSwitchCell!
+    weak var partnerReqCell : ShineSwitchCell!
+    weak var hasPerfCell : ShineSwitchCell!
+    weak var hasWorkshopCell : ShineSwitchCell!
+    
+    weak var contactPersonCell : ShineSwitchCell!
+    weak var contactPersonNameCell : ShineTextFieldCell!
+    weak var contactPersonEmailCell : ShineTextFieldCell!
+    weak var contactPersonPhoneCell : ShineTextFieldCell!
     
     private func constructCells(){
         
         // title with image cell
-        if let nameWithImageCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .nameTitleWithImage, placeHolder: nil) as? NameTitleWithImageCell {
+        let nameWithImageCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .nameTitleWithImage, placeHolder: nil) as! NameTitleWithImageCell
+        self.nameCell = nameWithImageCell
             
-            // Initialize the form if it is in edit mode
-            if let vm = self.viewModel, vm.mode == .edit {
-                nameWithImageCell.displayedValue = vm.title
-            }
-            
-            nameWithImageCell.expandDelegate = self
-            nameWithImageCell.imageSelectionDelegate = self
-            nameWithImageCell.selectionDelegate = self
-            
-            nameWithImageCell.valueChanged = {
-                self.viewModel?.title = nameWithImageCell.nameTextField.text!
-            }
-            
-            self.cells.append(nameWithImageCell)
+        // Initialize the form if it is in edit mode
+        if let vm = self.viewModel, vm.mode == .edit {
+            self.nameCell.displayedValue = vm.title
         }
+        
+        self.nameCell.expandDelegate = self
+        self.nameCell.imageSelectionDelegate = self
+        self.nameCell.selectionDelegate = self
+        
+        self.nameCell.valueChanged = {[weak self] in
+            
+            guard let strongSelf = self else { return }
+
+            strongSelf.viewModel?.title = strongSelf.nameCell.nameTextField.text!
+        }
+        
+        self.cells.append(self.nameCell)
+        
         
         // Start Date cell
-        if let dateCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .datePicker, placeHolder: "Start Time") as? ShineDatePickerCell {
-            
-            // Initialize the form if it is in edit mode
-            if let vm = self.viewModel, vm.mode == .edit {
-                dateCell.date = vm.startTime
-            }
-            
-            dateCell.expandDelegate = self
-            dateCell.selectionDelegate = self
-            dateCell.getIndexPath = {
-                return self.getIndexPathOfCell(dateCell)
-            }
-            
-            dateCell.valueChanged = {
-                self.viewModel?.startTime = dateCell.date
-            }
-            
-            cells.append(dateCell)
+        let dateCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .datePicker, placeHolder: "Start Time") as! ShineDatePickerCell
+        self.startDateCell = dateCell
+        
+        // Initialize the form if it is in edit mode
+        if let vm = self.viewModel, vm.mode == .edit {
+            startDateCell.date = vm.startTime
         }
+        
+        startDateCell.expandDelegate = self
+        startDateCell.selectionDelegate = self
+        startDateCell.getIndexPath = {[weak self] in
+            
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.startDateCell)
+        }
+        
+        startDateCell.valueChanged = {[weak self] in
+            
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.startTime = strongSelf.startDateCell.date
+        }
+        
+        cells.append(startDateCell)
+        
         
         // End Date cell
-        if let endDateCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .datePicker, placeHolder: "End Time") as? ShineDatePickerCell {
-            
-            // Initialize the form if it is in edit mode
-            if let vm = self.viewModel, vm.mode == .edit {
-                endDateCell.date = vm.endTime
-            }
-            
-            endDateCell.expandDelegate = self
-            endDateCell.selectionDelegate = self
-            endDateCell.getIndexPath = {
-                return self.getIndexPathOfCell(endDateCell)
-            }
-            
-            endDateCell.valueChanged = {
-                self.viewModel?.endTime = endDateCell.date
-            }
-            
-            cells.append(endDateCell)
+        let eventEndDateCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .datePicker, placeHolder: "End Time") as! ShineDatePickerCell
+        self.endDateCell = eventEndDateCell
+        
+        // Initialize the form if it is in edit mode
+        if let vm = self.viewModel, vm.mode == .edit {
+            endDateCell.date = vm.endTime
         }
         
-//        if let dateCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .datePicker, placeHolder: nil) as? DatePickerCell{
-//            
-//            dateCell.expandDelegate = self
-//            
-////            dateCell.viewController = self
-////            dateCell.tableView = self.tableView
-////            
-////            if let dependentCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .datePicker, placeHolder: nil) as? DatePickerFormCell {
-////                
-////                dependentCell.parentCell = dateCell
-////                dateCell.dependentCells = [dependentCell]
-////                dateCell.getIndexPath = {
-////                    return self.getIndexPathOfCell(dateCell)
-////                }
-////            }
-////            
-////            dateCell.valueChanged = {
-////                self.updateCellsWithDependentsOfCell(dateCell)
-////                print("DAteCell change is not applicaple")
-////                
-////            }
-//            
-//            cells.append(dateCell)
-//            
-//        }
+        endDateCell.expandDelegate = self
+        endDateCell.selectionDelegate = self
+        endDateCell.getIndexPath = {[weak self] in
+            
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.endDateCell)
+        }
+        
+        endDateCell.valueChanged = {[weak self] in
+            
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.endTime = strongSelf.endDateCell.date
+        }
+        
+        cells.append(endDateCell)
+        
         
         // Description
-        if let aboutCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextView, placeHolder: "Tell us about your event details") as? ShineTextViewCell{
-            
-            // Initialize the form if it is in edit mode
-            if let vm = self.viewModel, vm.mode == .edit {
-                aboutCell.displayedValue = vm.description
-            }
-            
-            aboutCell.expandDelegate = self // Expanding cell delegate
-            aboutCell.selectionDelegate = self
-            aboutCell.getIndexPath = {
-                return self.getIndexPathOfCell(aboutCell)
-            }           
-            
-            aboutCell.valueChanged = {
-                self.viewModel?.description = aboutCell.textView.text
-            }
-            
-            self.cells.append(aboutCell)
-            
+        let eventAboutCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextView, placeHolder: "Tell us about your event details") as! ShineTextViewCell
+        self.aboutCell = eventAboutCell
+        
+        // Initialize the form if it is in edit mode
+        if let vm = self.viewModel, vm.mode == .edit {
+            aboutCell.displayedValue = vm.description
         }
+        
+        aboutCell.expandDelegate = self // Expanding cell delegate
+        aboutCell.selectionDelegate = self
+        aboutCell.getIndexPath = {[weak self] in
+            
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.aboutCell)
+        }           
+        
+        aboutCell.valueChanged = {[weak self] in
+            
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.description = strongSelf.aboutCell.textView.text
+        }
+        
+        self.cells.append(aboutCell)
+            
+        
         
         // Location cell
-        if let locationCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .location, placeHolder: nil) as? ShineLocationCell{
-            
-            if let vm = self.viewModel, vm.mode == .edit, vm.location != nil {
-                locationCell.displayedValue = vm.location!.name
-            }
-            
-            locationCell.selectionDelegate = self
-            locationCell.getIndexPath = {
-                return self.getIndexPathOfCell(locationCell)
-            }
-            
-            locationCell.valueChanged = {
-                self.viewModel?.location?.name = locationCell.rightLabel.text!
-            }
-            
-            cells.append(locationCell)
-            
+        let eventLocationCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .location, placeHolder: nil) as! ShineLocationCell
+        self.locationCell = eventLocationCell
+        
+        
+        if let vm = self.viewModel, vm.mode == .edit, vm.location != nil {
+            locationCell.displayedValue = vm.location!.name
         }
+        
+        locationCell.selectionDelegate = self
+        locationCell.getIndexPath = {[weak self] in
+            
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.locationCell)
+        }
+        
+        locationCell.valueChanged = {[weak self] in
+            
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.location?.name = strongSelf.locationCell.rightLabel.text!
+        }
+        
+        cells.append(locationCell)
+            
+        
         
         // URL
-        if let urlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "Url") as? ShineTextFieldCell{
-            
-            // Initialize if it is edit mode
-            if self.viewModel != nil {
-                urlCell.displayedValue = self.viewModel!.webUrl
-            }
-            
-            urlCell.selectionDelegate = self
-            urlCell.getIndexPath = {
-                return self.getIndexPathOfCell(urlCell)
-            }
-            
-            urlCell.changeKeyboardType(.URL)
-            urlCell.valueChanged = {
-                self.viewModel?.webUrl = urlCell.textField.text!
-            }
-            
-            self.cells.append(urlCell)
+        let eventUrlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "Url") as! ShineTextFieldCell
+        self.urlCell = eventUrlCell
+        
+        // Initialize if it is edit mode
+        if self.viewModel != nil {
+            urlCell.displayedValue = self.viewModel!.webUrl
         }
+        
+        urlCell.selectionDelegate = self
+        urlCell.getIndexPath = {[weak self] in
+            
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.urlCell)
+        }
+        
+        urlCell.changeKeyboardType(.URL)
+        urlCell.valueChanged = {[weak self] in
+            
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.webUrl = strongSelf.urlCell.textField.text!
+        }
+        
+        self.cells.append(urlCell)
+        
         
         // Event type
-        if let eventTypeCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .picker, placeHolder: "Event Type") as? PickerFormCell {
-            
-            if let vm = self.viewModel, let type = vm.eventType {
-                eventTypeCell.selectedValue = type.rawValue
-            }
-            
-            eventTypeCell.expandDelegate = self
-            eventTypeCell.selectionDelegate = self
-            eventTypeCell.items = EventType.allCases()
-            eventTypeCell.valueChanged = {
-                self.viewModel?.eventType = EventType(rawValue: eventTypeCell.selectedValue)
-            }
-            
-            eventTypeCell.getIndexPath = {
-                return self.getIndexPathOfCell(eventTypeCell)
-            }
-            
-            self.cells.append(eventTypeCell)
+        let evEventTypeCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .picker, placeHolder: "Event Type") as! PickerFormCell
+        self.eventTypeCell = evEventTypeCell
+        
+        if let vm = self.viewModel, let type = vm.eventType {
+            eventTypeCell.selectedValue = type.rawValue
         }
         
-        // Dance level
-        if let danceLevelCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .picker, placeHolder: "Dance Level") as? PickerFormCell {
+        eventTypeCell.expandDelegate = self
+        eventTypeCell.selectionDelegate = self
+        eventTypeCell.items = EventType.allCases()
+        
+        eventTypeCell.getIndexPath = {[weak self] in
             
-            if let vm = self.viewModel, let level = vm.danceLevel {
-                danceLevelCell.selectedValue = level.rawValue
-            }
-            
-            danceLevelCell.expandDelegate = self
-            danceLevelCell.selectionDelegate = self
-            danceLevelCell.items = DanceLevel.allCases()
-            danceLevelCell.valueChanged = {
-                self.viewModel?.danceLevel = DanceLevel(rawValue: danceLevelCell.selectedValue)
-            }
-            
-            danceLevelCell.getIndexPath = {
-                return self.getIndexPathOfCell(danceLevelCell)
-            }
-            
-            self.cells.append(danceLevelCell)
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.eventTypeCell)
         }
+        
+        eventTypeCell.valueChanged = {[weak self] in
+            
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.eventType = EventType(rawValue: strongSelf.eventTypeCell.selectedValue)
+        }
+        self.cells.append(eventTypeCell)
+        
+        
+        // Dance level
+        let eventDanceLevelCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .picker, placeHolder: "Dance Level") as! PickerFormCell
+        self.danceLevelCell = eventDanceLevelCell
+        
+        if let vm = self.viewModel, let level = vm.danceLevel {
+            danceLevelCell.selectedValue = level.rawValue
+        }
+        
+        danceLevelCell.expandDelegate = self
+        danceLevelCell.selectionDelegate = self
+        danceLevelCell.items = DanceLevel.allCases()
+        danceLevelCell.getIndexPath = {[weak self] in
+            
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.danceLevelCell)
+        }
+        
+        danceLevelCell.valueChanged = {[weak self] in
+            
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.danceLevel = DanceLevel(rawValue: strongSelf.danceLevelCell.selectedValue)
+        }
+        self.cells.append(danceLevelCell)
+        
         
         
         // Fee policy
-        if let feePolicyCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .switchType, placeHolder: "Fee") as? ShineSwitchCell {
+        let evFeePolicyCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .switchType, placeHolder: "Fee") as! ShineSwitchCell
+        self.feePolicyCell = evFeePolicyCell
+        
+        //
+        if let vm = self.viewModel, let feePolicy = vm.feePolicy {
+            feePolicyCell.displayedValue = true
+        }
+        
+        feePolicyCell.getIndexPath = {[weak self] in
             
-            //
-            if let vm = self.viewModel, let feePolicy = vm.feePolicy {
-                feePolicyCell.displayedValue = true
-            }
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.feePolicyCell)
+        }
+        
+        
+        var dependentCells = [BaseFormCell]()
+        
+        // Fee type
+        let evFeeTypeCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "Type") as! ShineTextFieldCell
+        self.feeTypeCell = evFeeTypeCell
+        
+        if let vm = self.viewModel, vm.mode == .edit, let feePolicy = vm.feePolicy {
+            feeTypeCell.displayedValue = feePolicy.options[0].type
+        }
+        
+        feeTypeCell.selectionDelegate = self
+        
+        feeTypeCell.getIndexPath = {[weak self] in
             
-            feePolicyCell.getIndexPath = {
-                return self.getIndexPathOfCell(feePolicyCell)
-            }
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.feeTypeCell)
+        }
+        
+        feeTypeCell.valueChanged = {[weak self] in
             
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.feePolicy?.options[0].type = strongSelf.feeTypeCell.textField.text!
+        }
+        
+        dependentCells.append(feeTypeCell)
             
-            var dependentCells = [BaseFormCell]()
-            if let feeTypeCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "Type") as? ShineTextFieldCell{
-                
-                if let vm = self.viewModel, vm.mode == .edit, let feePolicy = vm.feePolicy {
-                    feeTypeCell.displayedValue = feePolicy.options[0].type
-                }
-                
-                feeTypeCell.selectionDelegate = self
-                
-                feeTypeCell.getIndexPath = {
-                    return self.getIndexPathOfCell(feeTypeCell)
-                }
-                
-                feeTypeCell.valueChanged = {
-                    self.viewModel?.feePolicy?.options[0].type = feeTypeCell.textField.text!
-                }
-                
-                dependentCells.append(feeTypeCell)
-                
-            }
+        
+        // Fee Value
+        let evFeeValueCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "Cover") as! ShineTextFieldCell
+        self.feeValueCell = evFeeValueCell
+        
+        if let vm = self.viewModel, let feePolicy = vm.feePolicy {
+            feeValueCell.displayedValue = String(describing: feePolicy.options[0].value)
+        }
+        
+        feeValueCell.selectionDelegate = self
+        
+        feeValueCell.getIndexPath = {[weak self] in
             
-            if let feeValueCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "Cover") as? ShineTextFieldCell{
-                
-                if let vm = self.viewModel, let feePolicy = vm.feePolicy {
-                    feeValueCell.displayedValue = String(describing: feePolicy.options[0].value)
-                }
-                
-                feeValueCell.selectionDelegate = self
-                
-                feeValueCell.getIndexPath = {
-                    return self.getIndexPathOfCell(feeValueCell)
-                }
-                
-                feeValueCell.valueChanged = {
-                    self.viewModel?.feePolicy?.options[0].value = Double(feeValueCell.textField.text!) ?? 0.0
-                }
-                
-                feeValueCell.changeKeyboardType(.decimalPad)
-                
-                dependentCells.append(feeValueCell)
-                
-            }
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.feeValueCell)
+        }
+        
+        feeValueCell.valueChanged = {[weak self] in
             
-            if let sessionsCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "Sessions") as? ShineTextFieldCell{
-                
-                if let vm = self.viewModel, let feePolicy = vm.feePolicy {
-                    sessionsCell.displayedValue = String(describing: feePolicy.options[0].numberOfSessions)
-                }
-                
-                sessionsCell.selectionDelegate = self
-                
-                sessionsCell.getIndexPath = {
-                    return self.getIndexPathOfCell(sessionsCell)
-                }
-                
-                sessionsCell.changeKeyboardType(.numberPad)
-                sessionsCell.valueChanged = {
-                    self.viewModel?.feePolicy?.options[0].numberOfSessions = Int(sessionsCell.textField.text!)
-                }
-                
-                dependentCells.append(sessionsCell)
-                
-            }
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.feePolicy?.options[0].value = Double(strongSelf.feeValueCell.textField.text!) ?? 0.0
+        }
+        
+        feeValueCell.changeKeyboardType(.decimalPad)
+        
+        dependentCells.append(feeValueCell)
             
-            // Description
-            if let descCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextView, placeHolder: "Tell about the event's fee policy") as? ShineTextViewCell{
-                
-                // Initialize the form if it is in edit mode
-                if let vm = self.viewModel, vm.mode == .edit, let feePolicy = vm.feePolicy {
-                    descCell.displayedValue = feePolicy.description ?? ""
-                }
-                
-                descCell.expandDelegate = self // Expanding cell delegate
-                descCell.selectionDelegate = self
-                descCell.getIndexPath = {
-                    return self.getIndexPathOfCell(descCell)
-                }
-                
-                descCell.valueChanged = {
-                    self.viewModel?.feePolicy?.description = descCell.textView.text
-                    
-                }
-                
-                dependentCells.append(descCell)
-                
-            }
+        // Number of sessions
+        
+        let evSessionsCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "Sessions") as! ShineTextFieldCell
+        self.sessionsCell = evSessionsCell
+        
+        if let vm = self.viewModel, let feePolicy = vm.feePolicy {
+            sessionsCell.displayedValue = String(describing: feePolicy.options[0].numberOfSessions)
+        }
+        
+        sessionsCell.selectionDelegate = self
+        
+        sessionsCell.getIndexPath = {[weak self] in
             
-            feePolicyCell.selectionDelegate = self
-            feePolicyCell.dependentCells = dependentCells
-            feePolicyCell.valueChanged = {
-                
-                self.updateCellsWithDependentsOfCell(feePolicyCell)
-                if feePolicyCell.isOn {
-                    self.viewModel?.feePolicy = FeePolicyItem()
-                }
-            }
-            feePolicyCell.tableView = self.tableView
-            self.cells.append(feePolicyCell)
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.sessionsCell)
+        }
+        
+        sessionsCell.changeKeyboardType(.numberPad)
+        sessionsCell.valueChanged = {[weak self] in
+            
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.feePolicy?.options[0].numberOfSessions = Int(strongSelf.sessionsCell.textField.text!)
+        }
+        
+        dependentCells.append(sessionsCell)
+            
+        
+        
+        // Description
+        let descCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextView, placeHolder: "Tell about the event's fee policy") as! ShineTextViewCell
+        self.feeDescCell = descCell
+            
+        // Initialize the form if it is in edit mode
+        if let vm = self.viewModel, vm.mode == .edit, let feePolicy = vm.feePolicy {
+            feeDescCell.displayedValue = feePolicy.description ?? ""
+        }
+        
+        feeDescCell.expandDelegate = self // Expanding cell delegate
+        feeDescCell.selectionDelegate = self
+        feeDescCell.getIndexPath = {[weak self] in
+            
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.feeDescCell)
+        }
+        
+        feeDescCell.valueChanged = {[weak self] in
+            
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.feePolicy?.description = strongSelf.feeDescCell.textView.text
             
         }
+        
+        dependentCells.append(feeDescCell)
+            
+        
+        
+        feePolicyCell.selectionDelegate = self
+        feePolicyCell.dependentCells = dependentCells
+        feePolicyCell.valueChanged = {[weak self] in
+            
+            guard let strongSelf = self else { return }
+            
+            strongSelf.updateCellsWithDependentsOfCell(strongSelf.feePolicyCell)
+            if strongSelf.feePolicyCell.isOn {
+                strongSelf.viewModel?.feePolicy = FeePolicyItem()
+            }
+        }
+        
+        feePolicyCell.tableView = self.tableView
+        self.cells.append(feePolicyCell)
+            
+        
         
         // Dresscode
-        if let dressCodeCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .switchType, placeHolder: "Dress Code") as? ShineSwitchCell {
-            
-            if self.viewModel != nil {
-                dressCodeCell.displayedValue = self.viewModel!.hasDressCode
-            }
-            
-            dressCodeCell.selectionDelegate = self
-            dressCodeCell.getIndexPath = {
-                return self.getIndexPathOfCell(dressCodeCell)
-            }
-            
-            dressCodeCell.valueChanged = {
-                self.viewModel?.hasDressCode = dressCodeCell.isOn
-            }
-            
-            self.cells.append(dressCodeCell)
-            
+        let evDressCodeCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .switchType, placeHolder: "Dress Code") as! ShineSwitchCell
+        self.dressCodeCell = evDressCodeCell
+        
+        if self.viewModel != nil {
+            dressCodeCell.displayedValue = self.viewModel!.hasDressCode
         }
+        
+        dressCodeCell.selectionDelegate = self
+        dressCodeCell.getIndexPath = {[weak self] in
+            
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.dressCodeCell)
+        }
+        
+        dressCodeCell.valueChanged = {[weak self] in
+            
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.hasDressCode = strongSelf.dressCodeCell.isOn
+        }
+        
+        self.cells.append(dressCodeCell)
+            
+        
         
         // partner Required
-        if let partnerReqCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .switchType, placeHolder: "Partner required") as? ShineSwitchCell {
-            
-            if self.viewModel != nil {
-                partnerReqCell.displayedValue = self.viewModel!.partnerRequired
-            }
-            
-            partnerReqCell.selectionDelegate = self
-            partnerReqCell.getIndexPath = {
-                return self.getIndexPathOfCell(partnerReqCell)
-            }
-            
-            partnerReqCell.valueChanged = {
-                self.viewModel?.partnerRequired = partnerReqCell.isOn
-            }
-            
-            self.cells.append(partnerReqCell)
-            
+        let evPartnerReqCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .switchType, placeHolder: "Partner required") as! ShineSwitchCell
+        self.partnerReqCell = evPartnerReqCell
+        
+        if self.viewModel != nil {
+            partnerReqCell.displayedValue = self.viewModel!.partnerRequired
         }
+        
+        partnerReqCell.selectionDelegate = self
+        partnerReqCell.getIndexPath = {[weak self] in
+            
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.partnerReqCell)
+        }
+        
+        partnerReqCell.valueChanged = {[weak self] in
+            
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.partnerRequired = strongSelf.partnerReqCell.isOn
+        }
+        
+        self.cells.append(partnerReqCell)
+            
+        
         
         // HasPerformance
-        if let hasPerfCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .switchType, placeHolder: "Performance") as? ShineSwitchCell {
-            
-            if self.viewModel != nil {
-                hasPerfCell.displayedValue = self.viewModel!.hasPerformance
-            }
-            
-            hasPerfCell.selectionDelegate = self
-            hasPerfCell.getIndexPath = {
-                return self.getIndexPathOfCell(hasPerfCell)
-            }
-            
-            hasPerfCell.valueChanged = {
-                self.viewModel?.hasPerformance = hasPerfCell.isOn
-            }
-            
-            self.cells.append(hasPerfCell)
-            
+        let evHasPerfCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .switchType, placeHolder: "Performance") as! ShineSwitchCell
+        self.hasPerfCell = evHasPerfCell
+        
+        if self.viewModel != nil {
+            hasPerfCell.displayedValue = self.viewModel!.hasPerformance
         }
+        
+        hasPerfCell.selectionDelegate = self
+        hasPerfCell.getIndexPath = {[weak self] in
+            
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.hasPerfCell)
+        }
+        
+        hasPerfCell.valueChanged = {[weak self] in
+            
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.hasPerformance = strongSelf.hasPerfCell.isOn
+        }
+        
+        self.cells.append(hasPerfCell)
+            
+        
         
         // hasWorkshop
-        if let hasWSCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .switchType, placeHolder: "Workshop") as? ShineSwitchCell {
-            
-            if self.viewModel != nil {
-                hasWSCell.displayedValue = self.viewModel!.hasWorkshop
-            }
-            
-            hasWSCell.selectionDelegate = self
-            hasWSCell.getIndexPath = {
-                return self.getIndexPathOfCell(hasWSCell)
-            }
-            
-            hasWSCell.valueChanged = {
-                self.viewModel?.hasWorkshop = hasWSCell.isOn
-            }
-            
-            self.cells.append(hasWSCell)
-            
+        let hasWSCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .switchType, placeHolder: "Workshop") as! ShineSwitchCell
+        self.hasWorkshopCell = hasWSCell
+        
+        if self.viewModel != nil {
+            hasWorkshopCell.displayedValue = self.viewModel!.hasWorkshop
         }
+        
+        hasWorkshopCell.selectionDelegate = self
+        hasWorkshopCell.getIndexPath = {[weak self] in
+            
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.hasWorkshopCell)
+        }
+        
+        hasWorkshopCell.valueChanged = {[weak self] in
+            
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.hasWorkshop = strongSelf.hasWorkshopCell.isOn
+        }
+        
+        self.cells.append(hasWorkshopCell)
+            
+        
         
         // Contact Person
-        if let contactPersonCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .switchType, placeHolder: "Contact Person") as? ShineSwitchCell {
+        
+        // Define dependent cells
+        var contactDependentCells = [BaseFormCell]()
+        
+        
+        // Contact person name
+        let contactNameCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "Name") as! ShineTextFieldCell
+        self.contactPersonNameCell = contactNameCell
             
-            //
-            if self.viewModel != nil && self.viewModel!.contactPerson != nil {
-                contactPersonCell.displayedValue = true
-            }
+        if let vm = self.viewModel, let contactPerson = vm.contactPerson {
+            contactPersonNameCell.displayedValue = contactPerson.name
+        }
+        
+        contactPersonNameCell.selectionDelegate = self
+        
+        contactPersonNameCell.getIndexPath = {[weak self] in
             
-            // Define dependent cells
-            var dependentCells = [BaseFormCell]()
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.contactPersonNameCell)
+        }
+        
+        contactPersonNameCell.valueChanged = {[weak self] in
             
-            if let nameCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "Name") as? ShineTextFieldCell{
-                
-                
-                if let vm = self.viewModel, let contactPerson = vm.contactPerson {
-                    nameCell.displayedValue = contactPerson.name
-                }
-                
-                nameCell.selectionDelegate = self
-                
-                nameCell.getIndexPath = {
-                    return self.getIndexPathOfCell(nameCell)
-                }
-                
-                nameCell.valueChanged = {
-                    self.viewModel?.contactPerson?.name = nameCell.textField.text!
-                }
-                
-                dependentCells.append(nameCell)
-                
-            }
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.contactPerson?.name = strongSelf.contactPersonNameCell.textField.text!
+        }
+        
+        contactDependentCells.append(contactPersonNameCell)
             
-            if let emailCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "E-mail") as? ShineTextFieldCell{
-                
-                if let vm = self.viewModel, let contactPerson = vm.contactPerson {
-                    emailCell.displayedValue = contactPerson.email
-                }
-                
-                emailCell.selectionDelegate = self
-                
-                emailCell.getIndexPath = {
-                    return self.getIndexPathOfCell(emailCell)
-                }
-                
-                emailCell.valueChanged = {
-                    self.viewModel?.contactPerson?.email = emailCell.textField.text!
-                }
-                
-                emailCell.changeKeyboardType(.emailAddress)
-                
-                dependentCells.append(emailCell)
-                
-            }
+        // Contact person email
+        
+        let emailCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "E-mail") as! ShineTextFieldCell
+        self.contactPersonEmailCell = emailCell
+        
+        if let vm = self.viewModel, let contactPerson = vm.contactPerson {
+            contactPersonEmailCell.displayedValue = contactPerson.email
+        }
+        
+        contactPersonEmailCell.selectionDelegate = self
+        
+        contactPersonEmailCell.getIndexPath = {[weak self] in
             
-            if let phoneCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "Phone") as? ShineTextFieldCell{
-                
-                if let vm = self.viewModel, let contactPerson = vm.contactPerson {
-                    phoneCell.displayedValue = contactPerson.phone
-                }
-                
-                phoneCell.selectionDelegate = self
-                
-                phoneCell.getIndexPath = {
-                    return self.getIndexPathOfCell(phoneCell)
-                }
-                
-                phoneCell.changeKeyboardType(.phonePad)
-                phoneCell.valueChanged = {
-                    self.viewModel?.contactPerson?.phone = phoneCell.textField.text!
-                }
-                
-                dependentCells.append(phoneCell)
-                
-            }
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.contactPersonEmailCell)
+        }
+        
+        contactPersonEmailCell.valueChanged = {[weak self] in
             
-            contactPersonCell.getIndexPath = {
-                return self.getIndexPathOfCell(contactPersonCell)
-            }
-            contactPersonCell.selectionDelegate = self
-            contactPersonCell.dependentCells = dependentCells
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.contactPerson?.email = strongSelf.contactPersonEmailCell.textField.text!
+        }
+        
+        contactPersonEmailCell.changeKeyboardType(.emailAddress)
+        contactDependentCells.append(contactPersonEmailCell)
             
-            contactPersonCell.valueChanged = {
-                if let vm = self.viewModel {
-                    if contactPersonCell.isOn {
-                        if vm.contactPerson == nil {
-                            self.viewModel!.contactPerson = ContactPersonItem()
-                        } else{
-                            self.viewModel!.contactPerson!.clear()
-                        }
-                    } else { //!isOn
-                        self.viewModel!.contactPerson = nil
+        // Contact person phone
+        
+        let phoneCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "Phone") as! ShineTextFieldCell
+        self.contactPersonPhoneCell = phoneCell
+        
+        if let vm = self.viewModel, let contactPerson = vm.contactPerson {
+            contactPersonPhoneCell.displayedValue = contactPerson.phone
+        }
+        
+        contactPersonPhoneCell.selectionDelegate = self
+        
+        contactPersonPhoneCell.getIndexPath = {[weak self] in
+            
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.contactPersonPhoneCell)
+        }
+        
+        contactPersonPhoneCell.changeKeyboardType(.phonePad)
+        
+        contactPersonPhoneCell.valueChanged = {[weak self] in
+            
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.contactPerson?.phone = strongSelf.contactPersonPhoneCell.textField.text!
+        }
+        
+        contactDependentCells.append(contactPersonPhoneCell)
+            
+        
+        // Contact person container
+        let evContactPersonCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .switchType, placeHolder: "Contact Person") as! ShineSwitchCell
+        self.contactPersonCell = evContactPersonCell
+        //
+        if self.viewModel != nil && self.viewModel!.contactPerson != nil {
+            contactPersonCell.displayedValue = true
+        }
+
+        contactPersonCell.getIndexPath = {[weak self] in
+            
+            guard let strongSelf = self else { return nil }
+
+            return strongSelf.getIndexPathOfCell(strongSelf.contactPersonCell)
+        }
+        contactPersonCell.selectionDelegate = self
+        contactPersonCell.dependentCells = contactDependentCells
+        
+        contactPersonCell.valueChanged = {[weak self] in
+            
+            guard let strongSelf = self else { return }
+            
+
+            if let vm = strongSelf.viewModel {
+                if strongSelf.contactPersonCell.isOn {
+                    if vm.contactPerson == nil {
+                        strongSelf.viewModel!.contactPerson = ContactPersonItem()
+                    } else{
+                        strongSelf.viewModel!.contactPerson!.clear()
                     }
+                } else { //!isOn
+                    strongSelf.viewModel!.contactPerson = nil
                 }
-                self.updateCellsWithDependentsOfCell(contactPersonCell)
             }
-            contactPersonCell.tableView = self.tableView
-            self.cells.append(contactPersonCell)
-            
+            strongSelf.updateCellsWithDependentsOfCell(strongSelf.contactPersonCell)
         }
         
         
-        
-        
+        contactPersonCell.tableView = self.tableView
+        self.cells.append(contactPersonCell)
     }
     
     /// Insert or remove cells into the cells list per the current value of a SwitchCell object.

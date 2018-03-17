@@ -145,6 +145,12 @@ class ShineTextViewCell: BaseFormCell {
         super.clearCellState()
     }
     
+    deinit {
+        self.getIndexPath = nil
+        self.valueChanged = nil
+        print("UItableviewCEll")
+    }
+    
 }
 
 

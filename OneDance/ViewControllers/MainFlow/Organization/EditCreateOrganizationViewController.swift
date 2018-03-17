@@ -64,6 +64,18 @@ class EditCreateOrganizationViewController: UIViewController, UINavigationContro
     /// The cells to display in the table.
     var cells = [BaseFormCell]()
     
+    weak var nameCell : NameTitleWithImageCell!
+    weak var aboutCell : ShineTextViewCell!
+    weak var emailCell : ShineTextFieldCell!
+    weak var phoneCell : ShineTextFieldCell!
+    weak var linkCell : ShineTextFieldCell!
+    weak var facebookUrlCell : ShineTextFieldCell!
+    weak var instagramUrlCell : ShineTextFieldCell!
+    
+    weak var hasClassForKidsCell : ShineSwitchCell!
+    weak var hasPrivateClassCell : ShineSwitchCell!
+    weak var hasWeddingPackageCell : ShineSwitchCell!
+    
     
     // Sections
     var formSections = [FormSectionItem]()
@@ -77,215 +89,268 @@ class EditCreateOrganizationViewController: UIViewController, UINavigationContro
         nameSection.title = "Name"
         nameSection.sectionIndex = 0
         
-        if let nameWithImageCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .nameTitleWithImage, placeHolder: nil) as? NameTitleWithImageCell {
-            
-            // Initialize the form if it is in edit mode
-            if let vm = self.viewModel, vm.mode == .edit {
-                nameWithImageCell.displayedValue = vm.name!
-            }
-            
-            nameWithImageCell.expandDelegate = self
-            nameWithImageCell.imageSelectionDelegate = self
-            nameWithImageCell.selectionDelegate = self
-            
-            nameWithImageCell.valueChanged = {
-                self.viewModel?.name = nameWithImageCell.nameTextField.text!
-            }
-            
-            self.cells.append(nameWithImageCell)
+        self.nameCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .nameTitleWithImage, placeHolder: nil) as! NameTitleWithImageCell
+        // Initialize the form if it is in edit mode
+        
+        if let vm = self.viewModel, vm.mode == .edit {
+            self.nameCell.displayedValue = vm.name!
         }
         
-        // Info
+        self.nameCell.expandDelegate = self
+        self.nameCell.imageSelectionDelegate = self
+        self.nameCell.selectionDelegate = self
         
-        if let aboutCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .shineTextView, placeHolder: "Tell us about your dance organization") as? ShineTextViewCell{
+        self.nameCell.valueChanged = { [weak self] in
             
-            // Initialize the form if it is in edit mode
-            if let vm = self.viewModel, vm.mode == .edit {
-                aboutCell.displayedValue = vm.about ?? ""
-            }
-            
-            aboutCell.expandDelegate = self // Expanding cell delegate
-            aboutCell.selectionDelegate = self
-            aboutCell.getIndexPath = {
-                return self.getIndexPathOfCell(aboutCell)
-            }
-            
-            aboutCell.valueChanged = {
-                self.viewModel?.about = aboutCell.textView.text
-            }
-            
-            self.cells.append(aboutCell)
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.name = strongSelf.nameCell.nameTextField.text!
         }
         
-        // Contact
+        self.cells.append(nameCell)
         
-        if let emailCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .shineTextField, placeHolder: "E-mail") as? ShineTextFieldCell{
-            
-            // Initialize if it is edit mode
-            if let vm = self.viewModel, vm.mode == .edit {
-                emailCell.displayedValue = vm.contactInfo.email
-            }
-            
-            emailCell.selectionDelegate = self
-            emailCell.getIndexPath = {
-                return self.getIndexPathOfCell(emailCell)
-            }
-            
-            emailCell.valueChanged = {
-                self.viewModel?.contactInfo.email = emailCell.textField.text!
-            }
-            emailCell.changeKeyboardType(.emailAddress)
-            self.cells.append(emailCell)
+        
+        // Info        
+        let orgAboutCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .shineTextView, placeHolder: "Tell us about your dance organization") as! ShineTextViewCell
+        self.aboutCell = orgAboutCell
+        
+        // Initialize the form if it is in edit mode
+        if let vm = self.viewModel, vm.mode == .edit {
+            aboutCell.displayedValue = vm.about ?? ""
         }
         
-        if let phoneCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .shineTextField, placeHolder: "Phone") as? ShineTextFieldCell{
+        aboutCell.expandDelegate = self // Expanding cell delegate
+        aboutCell.selectionDelegate = self
+        aboutCell.getIndexPath = {[weak self] in
             
-            // Initialize if it is edit mode
-            if let vm = self.viewModel, vm.mode == .edit {
-                phoneCell.displayedValue = vm.contactInfo.phone
-            }
-            phoneCell.selectionDelegate = self
-            phoneCell.getIndexPath = {
-                return self.getIndexPathOfCell(phoneCell)
-            }
-            
-            phoneCell.changeKeyboardType(.phonePad)
-            phoneCell.valueChanged = {
-                self.viewModel?.contactInfo.phone = phoneCell.textField.text!
-            }
+            guard let strongSelf = self else { return nil }
 
-            self.cells.append(phoneCell)
+            return strongSelf.getIndexPathOfCell(strongSelf.aboutCell)
         }
         
-        if let linkCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .shineTextField, placeHolder: "Url") as? ShineTextFieldCell{
+        aboutCell.valueChanged = {[weak self] in
             
-            // Initialize if it is edit mode
-            if let vm = self.viewModel, vm.mode == .edit {
-                linkCell.displayedValue = vm.contactInfo.website
-            }
-            
-            linkCell.selectionDelegate = self
-            linkCell.getIndexPath = {
-                return self.getIndexPathOfCell(linkCell)
-            }
-            
-            linkCell.valueChanged = {
-                self.viewModel?.contactInfo.website = linkCell.textField.text!
-            }
-            
-            linkCell.changeKeyboardType(.URL)
-            self.cells.append(linkCell)
+            guard let strongSelf = self else { return }
+
+            strongSelf.viewModel?.about = strongSelf.aboutCell.textView.text
         }
         
-        if let facebookUrlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .shineTextField, placeHolder: "Facebook") as? ShineTextFieldCell{
-            
-            // Initialize if it is edit mode
-            if let vm = self.viewModel, vm.mode == .edit {
-                facebookUrlCell.displayedValue = vm.contactInfo.facebookUrl
-            }
-            
-            facebookUrlCell.selectionDelegate = self
-            facebookUrlCell.getIndexPath = {
-                return self.getIndexPathOfCell(facebookUrlCell)
-            }
-            
-            facebookUrlCell.valueChanged = {
-                self.viewModel?.contactInfo.facebookUrl = facebookUrlCell.textField.text!
-            }
-            
-            facebookUrlCell.changeKeyboardType(.URL)
-            
-            self.cells.append(facebookUrlCell)
+        self.cells.append(aboutCell)
+        
+//
+        // Contact
+        let orgEmailCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .shineTextField, placeHolder: "E-mail") as! ShineTextFieldCell
+        self.emailCell = orgEmailCell
+        
+        // Initialize if it is edit mode
+        if let vm = self.viewModel, vm.mode == .edit {
+            emailCell.displayedValue = vm.contactInfo.email
         }
         
-        
-        if let instagramUrlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .shineTextField, placeHolder: "Instagram") as? ShineTextFieldCell{
+        emailCell.selectionDelegate = self
+        emailCell.getIndexPath = {[weak self] in
             
-            // Initialize if it is edit mode
-            if let vm = self.viewModel, vm.mode == .edit {
-                instagramUrlCell.displayedValue = vm.contactInfo.instagramUrl
-            }
-            
-            instagramUrlCell.selectionDelegate = self
-            instagramUrlCell.getIndexPath = {
-                return self.getIndexPathOfCell(instagramUrlCell)
-            }
-            
-            instagramUrlCell.valueChanged = {
-                self.viewModel?.contactInfo.instagramUrl = instagramUrlCell.textField.text!
-            }
-            
-            instagramUrlCell.changeKeyboardType(.URL)
-            
-            self.cells.append(instagramUrlCell)
+            guard let strongSelf = self else { return nil }
+
+            return strongSelf.getIndexPathOfCell(strongSelf.emailCell)
         }
+        
+        emailCell.valueChanged = {[weak self] in
+            
+            guard let strongSelf = self else { return }
+
+            strongSelf.viewModel?.contactInfo.email = strongSelf.emailCell.textField.text!
+        }
+        
+        emailCell.changeKeyboardType(.emailAddress)
+        self.cells.append(emailCell)
+        
+        // Phone
+        let orgPhoneCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .shineTextField, placeHolder: "Phone") as! ShineTextFieldCell
+        self.phoneCell = orgPhoneCell
+        // Initialize if it is edit mode
+        if let vm = self.viewModel, vm.mode == .edit {
+            phoneCell.displayedValue = vm.contactInfo.phone
+        }
+        phoneCell.selectionDelegate = self
+        phoneCell.getIndexPath = {[weak self] in
+            
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.phoneCell)
+        }
+        
+        phoneCell.changeKeyboardType(.phonePad)
+        phoneCell.valueChanged = {[weak self] in
+            
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.contactInfo.phone = strongSelf.phoneCell.textField.text!
+        }
+
+        self.cells.append(phoneCell)
+        
+        // URL
+        let orgLinkCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .shineTextField, placeHolder: "Url") as! ShineTextFieldCell
+        self.linkCell = orgLinkCell
+        
+        // Initialize if it is edit mode
+        if let vm = self.viewModel, vm.mode == .edit {
+            linkCell.displayedValue = vm.contactInfo.website
+        }
+        
+        linkCell.selectionDelegate = self
+        linkCell.getIndexPath = {[weak self] in
+            
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.linkCell)
+        }
+        
+        linkCell.valueChanged = {[weak self] in
+            
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.contactInfo.website = strongSelf.linkCell.textField.text!
+        }
+        
+        linkCell.changeKeyboardType(.URL)
+        self.cells.append(linkCell)
+        
+        // Facebook
+        let orgFacebookUrlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .shineTextField, placeHolder: "Facebook") as! ShineTextFieldCell
+        self.facebookUrlCell = orgFacebookUrlCell
+        
+        // Initialize if it is edit mode
+        if let vm = self.viewModel, vm.mode == .edit {
+            facebookUrlCell.displayedValue = vm.contactInfo.facebookUrl
+        }
+        
+        facebookUrlCell.selectionDelegate = self
+        facebookUrlCell.getIndexPath = {[weak self] in
+            
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.facebookUrlCell)
+        }
+        
+        facebookUrlCell.valueChanged = {[weak self] in
+            
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.contactInfo.facebookUrl = strongSelf.facebookUrlCell.textField.text!
+        }
+        
+        facebookUrlCell.changeKeyboardType(.URL)
+        
+        self.cells.append(facebookUrlCell)
+        
+        
+        // Instagram
+        let orgInstagramUrlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .shineTextField, placeHolder: "Instagram") as! ShineTextFieldCell
+        self.instagramUrlCell = orgInstagramUrlCell
+        
+        // Initialize if it is edit mode
+        if let vm = self.viewModel, vm.mode == .edit {
+            instagramUrlCell.displayedValue = vm.contactInfo.instagramUrl
+        }
+        
+        instagramUrlCell.selectionDelegate = self
+        instagramUrlCell.getIndexPath = {[weak self] in
+            
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.instagramUrlCell)
+        }
+        
+        instagramUrlCell.valueChanged = {[weak self] in
+            
+            guard let strongSelf = self else { return }
+
+            strongSelf.viewModel?.contactInfo.instagramUrl = strongSelf.instagramUrlCell.textField.text!
+        }
+        
+        instagramUrlCell.changeKeyboardType(.URL)
+        
+        self.cells.append(instagramUrlCell)
+        
         
         // Dance sepcific information
         var danceSection = FormSectionItem(cells: [BaseFormCell](), title: "Dance", sectionIndex: 3)
         
-        if let hasClassForKidsCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .switchType, placeHolder: "Classes for kids") as? ShineSwitchCell{
+        let orgHasClassForKidsCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .switchType, placeHolder: "Classes for kids") as! ShineSwitchCell
+        self.hasClassForKidsCell = orgHasClassForKidsCell
+        
+        // Initialize if it is edit mode
+        if let vm = self.viewModel, vm.mode == .edit {
+            hasClassForKidsCell.displayedValue = vm.hasClassForKids
+        }
+        
+        hasClassForKidsCell.selectionDelegate = self
+        hasClassForKidsCell.getIndexPath = {[weak self] in
             
-            // Initialize if it is edit mode
-            if let vm = self.viewModel, vm.mode == .edit {
-                hasClassForKidsCell.displayedValue = vm.hasClassForKids
-            }
+            guard let strongSelf = self else { return nil }
+
+            return strongSelf.getIndexPathOfCell(strongSelf.hasClassForKidsCell)
+        }
+        
+        hasClassForKidsCell.valueChanged = {[weak self] in
             
-            hasClassForKidsCell.selectionDelegate = self
-            hasClassForKidsCell.getIndexPath = {
-                return self.getIndexPathOfCell(hasClassForKidsCell)
-            }
-            
-            hasClassForKidsCell.valueChanged = {
-                self.viewModel?.hasClassForKids = hasClassForKidsCell.isOn
-                
-            }
-            
-            self.cells.append(hasClassForKidsCell)
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.hasClassForKids = strongSelf.hasClassForKidsCell.isOn
             
         }
         
-        if let hasPrivateClassCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .switchType, placeHolder: "Private Class") as? ShineSwitchCell{
+        self.cells.append(hasClassForKidsCell)
             
-            // Initialize if it is edit mode
-            if let vm = self.viewModel, vm.mode == .edit {
-                hasPrivateClassCell.displayedValue = vm.hasPrivateClass
-            }
+
+        
+
+        let orgHasPrivateClassCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .switchType, placeHolder: "Private Class") as! ShineSwitchCell
+        self.hasPrivateClassCell = orgHasPrivateClassCell
+        
+        // Initialize if it is edit mode
+        if let vm = self.viewModel, vm.mode == .edit {
+            hasPrivateClassCell.displayedValue = vm.hasPrivateClass
+        }
+        
+        hasPrivateClassCell.selectionDelegate = self
+        hasPrivateClassCell.getIndexPath = {[weak self] in
             
-            hasPrivateClassCell.selectionDelegate = self
-            hasPrivateClassCell.getIndexPath = {
-                return self.getIndexPathOfCell(hasPrivateClassCell)
-            }
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.hasPrivateClassCell)
+        }
+        
+        hasPrivateClassCell.valueChanged = {[weak self] in
             
-            hasPrivateClassCell.valueChanged = {
-                self.viewModel?.hasPrivateClass = hasPrivateClassCell.isOn
-                
-            }
-            
-            self.cells.append(hasPrivateClassCell)
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.hasPrivateClass = strongSelf.hasPrivateClassCell.isOn
             
         }
         
-        if let hasWeddingPackageCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .switchType, placeHolder: "Wedding package/classes") as? ShineSwitchCell{
+        self.cells.append(hasPrivateClassCell)
             
-            // Initialize if it is edit mode
-            if let vm = self.viewModel, vm.mode == .edit {
-                hasWeddingPackageCell.displayedValue = vm.hasWeddingPackage
-            }
+        
+
+        let orgHasWeddingPackageCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceOrganization, type: .switchType, placeHolder: "Wedding package/classes") as! ShineSwitchCell
+        self.hasWeddingPackageCell = orgHasWeddingPackageCell
+        
+        // Initialize if it is edit mode
+        if let vm = self.viewModel, vm.mode == .edit {
+            hasWeddingPackageCell.displayedValue = vm.hasWeddingPackage
+        }
+        
+        hasWeddingPackageCell.selectionDelegate = self
+        hasWeddingPackageCell.getIndexPath = {[weak self] in
             
-            hasWeddingPackageCell.selectionDelegate = self
-            hasWeddingPackageCell.getIndexPath = {
-                return self.getIndexPathOfCell(hasWeddingPackageCell)
-            }
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.hasWeddingPackageCell)
+        }
+        
+        hasWeddingPackageCell.valueChanged = {[weak self] in
             
-            hasWeddingPackageCell.valueChanged = {
-                self.viewModel?.hasWeddingPackage = hasWeddingPackageCell.isOn
-                
-            }
+            guard let strongSelf = self else { return }
             
-            self.cells.append(hasWeddingPackageCell)
-            
+            strongSelf.viewModel?.hasWeddingPackage = strongSelf.hasWeddingPackageCell.isOn
             
         }
+        
+        self.cells.append(hasWeddingPackageCell)
+            
+            
+        
     }
     
     
@@ -377,6 +442,7 @@ class EditCreateOrganizationViewController: UIViewController, UINavigationContro
         
         // Hide empty unused cells
         self.tableView.tableFooterView = UIView()
+        self.tableView.allowsSelection = false
         
         //self.tableView?.estimatedRowHeight = 100 // Delegate method overwrites this
         self.tableView?.rowHeight = UITableViewAutomaticDimension
@@ -407,6 +473,14 @@ class EditCreateOrganizationViewController: UIViewController, UINavigationContro
     func createOrganizationProfile() {
         print("create ORganization")
         self.viewModel?.create()
+    }
+    
+    deinit{
+        self.cells.removeAll()
+        self.tableView.delegate = nil
+        self.tableView.dataSource = nil
+        
+        print("EditCreateOrganizationVC")
     }
 
 }

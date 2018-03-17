@@ -80,6 +80,11 @@ class NameTitleWithImageCell: BaseFormCell {
         self.expandDelegate?.updateCellHeight(cell: self, height: 150, indexPath: nil)
     }
     
+    deinit {
+        self.valueChanged = nil
+        self.getIndexPath = nil
+        print("~NameWithImageCell()")
+    }
 }
 
 extension NameTitleWithImageCell : UITextFieldDelegate {

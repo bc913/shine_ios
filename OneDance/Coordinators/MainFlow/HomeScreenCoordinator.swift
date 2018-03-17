@@ -461,12 +461,15 @@ extension OrganizationCoordinator : OrganizationViewModelCoordinatorDelegate {
 //MARK:==========================
 
 class EventCoordinator : BaseChildCoordinator {
+    
     var mode : ShineMode
+    var viewModel : EventViewModel
     
     var locationPickerCoordinator : LocationSelectionCoordinator?
     
     init(host: UINavigationController, id: String, mode: ShineMode = .viewOnly) {
         self.mode = mode
+        self.viewModel = EventViewModel(mode: self.mode, id: id)
         //self.viewModel = EventViewModel(mode: self.mode, id: id)
         super.init(host:host, id: id)
     }
@@ -494,9 +497,9 @@ extension EventCoordinator : Coordinator {
     func startCreateEditEvent(){
         
         let vc = EditCreateEventViewController(nibName: "EditCreateEventViewController", bundle: nil)
-        let viewModel = EventViewModel(mode: self.mode, id: self.id)
+        //let viewModel = EventViewModel(mode: self.mode, id: self.id)
         viewModel.coordinatorDelegate = self
-        vc.viewModel = viewModel
+        vc.viewModel = self.viewModel
         
         let navigationController = UINavigationController(rootViewController: vc)
         self.hostNavigationController.topViewController?.present(navigationController, animated:true)

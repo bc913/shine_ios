@@ -42,10 +42,10 @@ class MainFlowCoordinator: Coordinator {
         timelineNavigationVC.tabBarItem = timelineTabrBarItem
         
         // Map - Search
-        let mapSearchViewController = MapViewController(nibName: "MapViewController", bundle: nil)
-        let mapSearchNavigationController = UINavigationController(rootViewController: mapSearchViewController)
-        let mapSearchTabBarItem = UITabBarItem(title: "Map", image: UIImage(named: "converter-tabbar.png"), tag: 2)
-        mapSearchNavigationController.tabBarItem = mapSearchTabBarItem
+//        let mapSearchViewController = MapViewController(nibName: "MapViewController", bundle: nil)
+//        let mapSearchNavigationController = UINavigationController(rootViewController: mapSearchViewController)
+//        let mapSearchTabBarItem = UITabBarItem(title: "Map", image: UIImage(named: "converter-tabbar.png"), tag: 2)
+//        mapSearchNavigationController.tabBarItem = mapSearchTabBarItem
         
         // Profile
         let profileNavigationVC = UINavigationController()
@@ -56,7 +56,7 @@ class MainFlowCoordinator: Coordinator {
         let profileTabrBarItem = UITabBarItem(title: "Profile", image: UIImage(named: "converter-tabbar.png"), tag: 3)
         profileNavigationVC.tabBarItem = profileTabrBarItem
         
-        homeViewController.viewControllers = [timelineNavigationVC, mapSearchNavigationController, profileNavigationVC]
+        homeViewController.viewControllers = [timelineNavigationVC, /*mapSearchNavigationController,*/ profileNavigationVC]
         self.window.rootViewController = homeViewController
         
         

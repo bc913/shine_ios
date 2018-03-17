@@ -34,6 +34,8 @@ class EditCreatePostViewController: UIViewController, UINavigationControllerDele
     var nameWithImageCellHeight : CGFloat = 66.0
     
     var cells = [BaseFormCell]()
+    weak var photoCell : NameTitleWithImageCell!
+    weak var textCell : ShineTextViewCell!
     
     override func loadView() {
         super.loadView()
@@ -124,49 +126,52 @@ class EditCreatePostViewController: UIViewController, UINavigationControllerDele
     private func constructCells(){
         
         // title with image cell
-        if let nameWithImageCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .nameTitleWithImage, placeHolder: nil) as? NameTitleWithImageCell {
-            
-            // Initialize the form if it is in edit mode
+        let nameWithImageCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .nameTitleWithImage, placeHolder: nil) as! NameTitleWithImageCell
+        self.photoCell = nameWithImageCell
+        
+        // Initialize the form if it is in edit mode
 //            if let vm = self.viewModel, vm.mode == .edit {
 //                nameWithImageCell.displayedValue = vm.title
 //            }
-            
-            nameWithImageCell.expandDelegate = self
-            nameWithImageCell.imageSelectionDelegate = self
-            nameWithImageCell.selectionDelegate = self
-            
-            nameWithImageCell.nameTextField.text = "Photo"
-            nameWithImageCell.nameTextField.isEnabled = false
-            
+        
+        photoCell.expandDelegate = self
+        photoCell.imageSelectionDelegate = self
+        photoCell.selectionDelegate = self
+        
+        photoCell.nameTextField.text = "Photo"
+        photoCell.nameTextField.isEnabled = false
+        
 //            nameWithImageCell.valueChanged = {
 //                self.viewModel?.title = nameWithImageCell.nameTextField.text!
 //            }
-            
-            self.cells.append(nameWithImageCell)
-        }
+        
+        self.cells.append(photoCell)
+        
         
         // Text
-        if let textCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextView, placeHolder: "Tell us about your event details") as? ShineTextViewCell{
-            
-            // Initialize the form if it is in edit mode
-            if let vm = self.viewModel, vm.mode == .edit {
-                textCell.displayedValue = vm.text
-            }
-            
-            textCell.expandDelegate = self // Expanding cell delegate
-            textCell.selectionDelegate = self
-            textCell.getIndexPath = {
-                return self.getIndexPathOfCell(textCell)
-            }
-            
-            textCell.valueChanged = {
-                self.viewModel?.text = textCell.textView.text
-            }
-            
-            self.cells.append(textCell)
-            
+        let postTextCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextView, placeHolder: "Tell us about your event details") as! ShineTextViewCell
+        self.textCell = postTextCell
+        
+        // Initialize the form if it is in edit mode
+        if let vm = self.viewModel, vm.mode == .edit {
+            textCell.displayedValue = vm.text
         }
         
+        textCell.expandDelegate = self // Expanding cell delegate
+        textCell.selectionDelegate = self
+        textCell.getIndexPath = {[weak self] in
+            
+            guard let strongSelf = self else { return nil }
+            return strongSelf.getIndexPathOfCell(strongSelf.textCell)
+        }
+        
+        textCell.valueChanged = {[weak self] in
+            
+            guard let strongSelf = self else { return }
+            strongSelf.viewModel?.text = strongSelf.textCell.textView.text
+        }
+        
+        self.cells.append(textCell)
     }
     
     /// Return the index of a given cell in the cells list.
