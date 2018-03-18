@@ -520,7 +520,9 @@ extension EventCoordinator : EventViewModelCoordinatorDelegate{
 extension EventCoordinator : LocationSelectionParentCoordinatorType{
     func updateViewModelWithSelectedLocation(_ location: Location) {
         //
-        print("Event coordinator update VM with location")
+        print("Event coordinator update VM with location: \(location.city)")
+        self.locationPickerCoordinator?.hostNavigationController.visibleViewController?.dismiss(animated: true, completion: nil)
+        self.locationPickerCoordinator = nil
     }
 }
 
@@ -666,7 +668,7 @@ extension LocationSelectionCoordinator : LocationSelectionViewModelCoordinatorDe
     
     func viewModelDidSelectLocation(_ location: Location) {
         self.parentCoordinator.updateViewModelWithSelectedLocation(location)
-        self.hostNavigationController.visibleViewController?.dismiss(animated: true, completion: nil)
+        
     }
     
     func viewModelDidCancelSelection(){

@@ -23,7 +23,7 @@ protocol EventViewModelCoordinatorDelegate : class {
 typealias EventVMCoordinatorDelegate = EventViewModelCoordinatorDelegate & ChildViewModelCoordinatorDelegate
 
 
-protocol EventViewModelType : class {
+protocol EventViewModelType : class, LocationableViewModel {
     
     weak var viewDelegate : EventViewModelViewDelegate? { get set }
     weak var coordinatorDelegate : EventVMCoordinatorDelegate? { get set }
@@ -350,6 +350,17 @@ class EventViewModel : EventViewModelType {
         
         // Fee policy
         self.model?.fee = self.feePolicy?.maptoModel()
+    }
+    
+    func updateLocation(_ location: Location) {
+        var liteLocation = LocationLite()
+        
+        liteLocation.latitude = location.latitude
+        liteLocation.longitude = location.longitude
+        liteLocation.name = location.name
+        
+        self.location = nil
+        self.location = LocationItem(locationLiteModel: liteLocation)
     }
     
     

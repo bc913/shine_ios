@@ -69,5 +69,9 @@ protocol PageableViewModel {
     
 }
 
+protocol LocationableViewModel {
+    func updateLocation(_ location: Location)
+}
+
 
 

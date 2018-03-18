@@ -61,6 +61,13 @@ class LocationSelectionViewController: UIViewController {
     @objc func cancel(){
         self.viewModel?.cancel()
     }
+    
+    deinit {
+        self.resultsViewController = nil
+        self.searchController = nil
+        self.viewModel = nil
+        print("~Location view controller()")
+    }
 }
 
 extension LocationSelectionViewController : LocationSelectionViewModelViewDelegate{}
@@ -119,12 +126,12 @@ extension LocationSelectionViewController: GMSAutocompleteResultsViewControllerD
         
         if addressComponents != nil {
             for comp in addressComponents! {
-                if comp.type == "locality" || comp.type == "administrative_area_level_1" {
+                if city.isEmpty && (comp.type == "locality" || comp.type == "administrative_area_level_1") {
                     city = comp.name
                     continue
                 }
                 
-                if comp.type == "country" {
+                if country.isEmpty && comp.type == "country" {
                     country = comp.name
                     continue
                 }
