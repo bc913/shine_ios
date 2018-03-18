@@ -287,7 +287,7 @@ extension TimeLineViewController : FeedCellDelegate {
         
         guard let tappedIndexPath = tableView.indexPath(for: cell) else { return }
         
-        if let feed = self.viewModel?.itemAtIndex(tappedIndexPath.row) {
+        if let feed = self.viewModel?.itemAtIndex(tappedIndexPath.row), feed.likeCounter > 0 {
             self.viewModel?.requestList(of: .like, source: .post, id: feed.id)
         }
     }

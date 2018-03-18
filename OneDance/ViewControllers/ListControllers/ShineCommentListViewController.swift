@@ -169,8 +169,8 @@ extension ShineCommentListViewController : CommentListViewModelViewDelegate{
     }
 }
 
-extension ShineCommentListViewController : CommentCellDelegate {
-    func commentOwnerTapped(_ cell: UITableViewCell) {
+extension ShineCommentListViewController : CellOwnerDelegate {
+    func ownerNameTapped(_ cell: UITableViewCell) {
         
         guard let tappedIndexPath = tableView.indexPath(for: cell) else { return }
         

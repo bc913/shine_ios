@@ -52,6 +52,9 @@ class UserViewController: UIViewController {
         }
     }
     
+    // Photo manager
+    var photoManager = PhotoManager.instance()
+    
     // MARK: - METHODS
     fileprivate func refreshDisplay(){
         guard self.isLoaded else {
@@ -77,7 +80,7 @@ class UserViewController: UIViewController {
                 self.editProfileImageView.isHidden = true
                 self.updateDanceTypesLabel.isHidden = true
             }
-            
+            self.setProfilePhoto()
             
         } else {
             
@@ -220,6 +223,17 @@ class UserViewController: UIViewController {
         label.attributedText = attributedText
     }
     
+    private func setProfilePhoto(){
+        
+        if let image = self.photoManager.cachedImage(for: self.viewModel?.profilePhotoUrl ?? "") {
+           self.profileImageView.image = image
+        } else {
+            photoManager.retrieveImage(for: self.viewModel?.profilePhotoUrl ?? ""){ image in
+                self.profileImageView.image = image
+            }
+        }
+    }
+    
     
     
     override func viewDidLoad() {
@@ -232,6 +246,7 @@ class UserViewController: UIViewController {
         self.configureMainInfoContainer()
         self.configureFollowContainer()
         self.configureDanceTypesCollection()
+        self.setProfilePhoto()
         
         self.isLoaded = true
         self.refreshDisplay()

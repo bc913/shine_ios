@@ -26,8 +26,6 @@ class BaseFeedCell: UITableViewCell {
     override var designatedHeight: CGFloat {
         return 276.0
     }
-    
-    var item : Feed = Feed()
 }
 
 protocol FeedableCell {
@@ -44,13 +42,13 @@ class FeedCell: BaseFeedCell {
         didSet{
             if oldValue == false && isLikedPost {
                 self.likeImageView.image = UIImage(named: "like_red")
-                self.setLikeCommentCounter(likeCounter: self.item.likeCounter + 1, commentCounter: self.item.commentCounter)
+                //self.setLikeCommentCounter(likeCounter: self.item.likeCounter + 1, commentCounter: self.item.commentCounter)
                 return
             }
             
             if oldValue == true && !isLikedPost {
                 self.likeImageView.image = UIImage(named: "like_empty")
-                self.setLikeCommentCounter(likeCounter: self.item.likeCounter - 1, commentCounter: self.item.commentCounter)
+                //self.setLikeCommentCounter(likeCounter: self.item.likeCounter - 1, commentCounter: self.item.commentCounter)
                 return
             }
         }
@@ -141,12 +139,7 @@ class FeedCell: BaseFeedCell {
     @objc
     private func likeCounterTapped(tapGestureRecognizer: UIGestureRecognizer){
         if (tapGestureRecognizer.view) != nil{
-            
-            print("likeCounter = \(self.item.likeCounter)")
-            if self.item.likeCounter > 0 {
-                self.delegate?.viewLikeListTapped(self)
-            }
-            
+            self.delegate?.viewLikeListTapped(self)
         }
         
     }
@@ -172,7 +165,6 @@ class FeedCell: BaseFeedCell {
     @objc
     private func commentTapped(tapGestureRecognizer: UIGestureRecognizer){
         if (tapGestureRecognizer.view) != nil{
-            print("CommentCounter = \(self.item.commentCounter)")
             self.delegate?.addCommentTapped(self)
         }
         

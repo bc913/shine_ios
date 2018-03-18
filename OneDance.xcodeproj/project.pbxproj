@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		384EF35702B5A30A4E22515E /* Pods_OneDance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345ED0A6396B3EDAB646CA05 /* Pods_OneDance.framework */; };
+		6501285D205E079C005F9AF8 /* UserTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6501285C205E079C005F9AF8 /* UserTableCell.swift */; };
+		6501285F205E0CDD005F9AF8 /* UserListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6501285E205E0CDD005F9AF8 /* UserListViewModel.swift */; };
+		65012862205E0D33005F9AF8 /* UserListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65012861205E0D33005F9AF8 /* UserListModel.swift */; };
+		65012865205E11D0005F9AF8 /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65012864205E11D0005F9AF8 /* PostModel.swift */; };
+		65012867205E121A005F9AF8 /* FeedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65012866205E121A005F9AF8 /* FeedModel.swift */; };
 		6502E9EC2027B7AF00333BD4 /* PickerFormCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6502E9EB2027B7AF00333BD4 /* PickerFormCell.swift */; };
 		6503EC301F075CA900D56AB5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6503EC2F1F075CA900D56AB5 /* AppDelegate.swift */; };
 		6503EC381F075CA900D56AB5 /* OneDance.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6503EC361F075CA900D56AB5 /* OneDance.xcdatamodeld */; };
@@ -109,7 +114,7 @@
 		654E01FD1FC120DA0095C4D1 /* DateFormCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 654E01FB1FC120DA0095C4D1 /* DateFormCell.xib */; };
 		654E02001FC139060095C4D1 /* DatePickerFormCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654E01FE1FC139060095C4D1 /* DatePickerFormCell.swift */; };
 		654E02011FC139060095C4D1 /* DatePickerFormCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 654E01FF1FC139060095C4D1 /* DatePickerFormCell.xib */; };
-		654E0E4B204E4589006512B8 /* ShineListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654E0E4A204E4589006512B8 /* ShineListViewController.swift */; };
+		654E0E4B204E4589006512B8 /* ShineUserListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654E0E4A204E4589006512B8 /* ShineUserListViewController.swift */; };
 		654FE85D2022D5FF002D1D23 /* DatePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654FE85B2022D5FF002D1D23 /* DatePickerCell.swift */; };
 		654FE85E2022D5FF002D1D23 /* DatePickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 654FE85C2022D5FF002D1D23 /* DatePickerCell.xib */; };
 		6551DF5B204909FE00B3FC58 /* BasicCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6551DF5A204909FE00B3FC58 /* BasicCollectionCell.swift */; };
@@ -171,6 +176,11 @@
 /* Begin PBXFileReference section */
 		0DA616EC3EE906D67D64372F /* Pods-OneDance.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneDance.release.xcconfig"; path = "Pods/Target Support Files/Pods-OneDance/Pods-OneDance.release.xcconfig"; sourceTree = "<group>"; };
 		345ED0A6396B3EDAB646CA05 /* Pods_OneDance.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OneDance.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6501285C205E079C005F9AF8 /* UserTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserTableCell.swift; path = ViewControllers/TableCells/List/UserTableCell.swift; sourceTree = "<group>"; };
+		6501285E205E0CDD005F9AF8 /* UserListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserListViewModel.swift; path = ViewModels/List/UserListViewModel.swift; sourceTree = "<group>"; };
+		65012861205E0D33005F9AF8 /* UserListModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserListModel.swift; path = Models/List/UserListModel.swift; sourceTree = "<group>"; };
+		65012864205E11D0005F9AF8 /* PostModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PostModel.swift; path = Models/Feed/PostModel.swift; sourceTree = "<group>"; };
+		65012866205E121A005F9AF8 /* FeedModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FeedModel.swift; path = Models/Feed/FeedModel.swift; sourceTree = "<group>"; };
 		6502E9EB2027B7AF00333BD4 /* PickerFormCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PickerFormCell.swift; path = ViewControllers/TableCells/Form/PickerFormCell.swift; sourceTree = "<group>"; };
 		6503EC2C1F075CA800D56AB5 /* OneDance.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OneDance.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6503EC2F1F075CA900D56AB5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -278,7 +288,7 @@
 		654E01FB1FC120DA0095C4D1 /* DateFormCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DateFormCell.xib; path = ViewControllers/TableCells/Form/DateFormCell.xib; sourceTree = "<group>"; };
 		654E01FE1FC139060095C4D1 /* DatePickerFormCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DatePickerFormCell.swift; path = ViewControllers/TableCells/Form/DatePickerFormCell.swift; sourceTree = "<group>"; };
 		654E01FF1FC139060095C4D1 /* DatePickerFormCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DatePickerFormCell.xib; path = ViewControllers/TableCells/Form/DatePickerFormCell.xib; sourceTree = "<group>"; };
-		654E0E4A204E4589006512B8 /* ShineListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShineListViewController.swift; path = ViewControllers/ListControllers/ShineListViewController.swift; sourceTree = "<group>"; };
+		654E0E4A204E4589006512B8 /* ShineUserListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShineUserListViewController.swift; path = ViewControllers/ListControllers/ShineUserListViewController.swift; sourceTree = "<group>"; };
 		654FE85B2022D5FF002D1D23 /* DatePickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DatePickerCell.swift; path = ViewControllers/TableCells/Form/DatePickerCell.swift; sourceTree = "<group>"; };
 		654FE85C2022D5FF002D1D23 /* DatePickerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DatePickerCell.xib; path = ViewControllers/TableCells/Form/DatePickerCell.xib; sourceTree = "<group>"; };
 		6551DF5A204909FE00B3FC58 /* BasicCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BasicCollectionCell.swift; path = ViewControllers/CollectionCells/BasicCollectionCell.swift; sourceTree = "<group>"; };
@@ -353,6 +363,23 @@
 				65FC6D401F132BBD00B33C09 /* ODUserManager.swift */,
 			);
 			name = Core;
+			sourceTree = "<group>";
+		};
+		65012860205E0D1C005F9AF8 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				65012861205E0D33005F9AF8 /* UserListModel.swift */,
+			);
+			name = List;
+			sourceTree = "<group>";
+		};
+		65012863205E11AB005F9AF8 /* Feed */ = {
+			isa = PBXGroup;
+			children = (
+				65012864205E11D0005F9AF8 /* PostModel.swift */,
+				65012866205E121A005F9AF8 /* FeedModel.swift */,
+			);
+			name = Feed;
 			sourceTree = "<group>";
 		};
 		6503EC231F075CA800D56AB5 = {
@@ -636,6 +663,7 @@
 		65439CED1FFA092600EDE435 /* List */ = {
 			isa = PBXGroup;
 			children = (
+				6501285C205E079C005F9AF8 /* UserTableCell.swift */,
 			);
 			name = List;
 			sourceTree = "<group>";
@@ -785,7 +813,7 @@
 		654E0E49204E31FB006512B8 /* ListControllers */ = {
 			isa = PBXGroup;
 			children = (
-				654E0E4A204E4589006512B8 /* ShineListViewController.swift */,
+				654E0E4A204E4589006512B8 /* ShineUserListViewController.swift */,
 				654259E020524C53006DB4A4 /* CommentListViewController.swift */,
 				654792CD2053621D00A844EC /* ShineCommentListViewController.swift */,
 				654792CE2053621D00A844EC /* ShineCommentListViewController.xib */,
@@ -796,6 +824,7 @@
 		654E0E4C204E4C9E006512B8 /* List */ = {
 			isa = PBXGroup;
 			children = (
+				6501285E205E0CDD005F9AF8 /* UserListViewModel.swift */,
 			);
 			name = List;
 			sourceTree = "<group>";
@@ -871,6 +900,8 @@
 		65FC55E41F6794B600E02503 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				65012863205E11AB005F9AF8 /* Feed */,
+				65012860205E0D1C005F9AF8 /* List */,
 				650E2E461FD0F6690061C301 /* Core */,
 				6549871A1F8F0F31002DFB0C /* DanceTypesModel.swift */,
 			);
@@ -1134,6 +1165,7 @@
 				656834D51F8C8A7600ADCBA2 /* EmailLoginCoordinator.swift in Sources */,
 				65439CE61FF9FA6100EDE435 /* DecodeOperation.swift in Sources */,
 				6542711F2058CBC9009F3640 /* LocationMapViewController.swift in Sources */,
+				6501285F205E0CDD005F9AF8 /* UserListViewModel.swift in Sources */,
 				65FC55E11F67921C00E02503 /* Coordinator.swift in Sources */,
 				65439CE81FF9FA9600EDE435 /* ImageRequest.swift in Sources */,
 				6548EE681FB8CFE70076EA4B /* TextFieldCell.swift in Sources */,
@@ -1152,6 +1184,7 @@
 				650415E01FF03A4900D19A89 /* EditCreateOrganizationViewController.swift in Sources */,
 				654271222058D4A0009F3640 /* UIViewController+Helper.swift in Sources */,
 				6548EE6C1FB8D00E0076EA4B /* SwitchCell.swift in Sources */,
+				6501285D205E079C005F9AF8 /* UserTableCell.swift in Sources */,
 				65FD06F11F1D719F00932E5F /* LocationSearchTableViewController.swift in Sources */,
 				652A3D061FD50F0900376CB6 /* User.swift in Sources */,
 				65100F1E20295A36006CEEA4 /* ShineSwitchCell.swift in Sources */,
@@ -1168,6 +1201,7 @@
 				65FC55E31F67933000E02503 /* AppCoordinator.swift in Sources */,
 				650AF5A71F89846B00DE46E1 /* CommandInterface.swift in Sources */,
 				654938B61F98578D00B6D60C /* PersistanceManager.swift in Sources */,
+				65012865205E11D0005F9AF8 /* PostModel.swift in Sources */,
 				6551DF5D2049168A00B3FC58 /* BasicView.swift in Sources */,
 				650CB27C1F68DF020093F2FC /* MainAuthViewController.swift in Sources */,
 				65FC6D411F132BBD00B33C09 /* ODUserManager.swift in Sources */,
@@ -1189,6 +1223,7 @@
 				652A3CFE1FD4F44A00376CB6 /* JSON.swift in Sources */,
 				6561CED71FDE4022008EC9A3 /* Common.swift in Sources */,
 				652A3D041FD50E5600376CB6 /* EventBase.swift in Sources */,
+				65012862205E0D33005F9AF8 /* UserListModel.swift in Sources */,
 				65BC8BEF1F8166D700F5AF94 /* EmailSignUpViewController.swift in Sources */,
 				65439CEB1FF9FCD300EDE435 /* DanceType.swift in Sources */,
 				654E01F01FBFEDDC0095C4D1 /* SwitchFormCell.swift in Sources */,
@@ -1208,6 +1243,7 @@
 				654873862041C31C00CAC92A /* FeedWithMediaCell.swift in Sources */,
 				65640E051F9C43E5006C2E21 /* ProfileImageSelectionViewModel.swift in Sources */,
 				654259DF20524479006DB4A4 /* CommentTableCell.swift in Sources */,
+				65012867205E121A005F9AF8 /* FeedModel.swift in Sources */,
 				654271142058B610009F3640 /* LocationViewModels.swift in Sources */,
 				656834D11F8C6B5F00ADCBA2 /* EmailLoginViewModelInterface.swift in Sources */,
 				65BC8BF81F819F6800F5AF94 /* SignUpViewModelInterface.swift in Sources */,
@@ -1216,7 +1252,7 @@
 				6509345D1FEA2023001AB8EB /* UserViewModel.swift in Sources */,
 				65C045291F6E37B9003824E0 /* MainAuthenticationCoordinator.swift in Sources */,
 				650CB2821F68EBF20093F2FC /* MainAuthViewModelInterface.swift in Sources */,
-				654E0E4B204E4589006512B8 /* ShineListViewController.swift in Sources */,
+				654E0E4B204E4589006512B8 /* ShineUserListViewController.swift in Sources */,
 				650C6B021FF34AA50008597C /* MainFlowCoordinator.swift in Sources */,
 				654672741FA030A1002DDC40 /* ProfileInfoSetupViewController.swift in Sources */,
 				6549871D1F8F1747002DFB0C /* DanceTypesViewModel.swift in Sources */,

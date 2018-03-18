@@ -8,13 +8,10 @@
 
 import UIKit
 
-protocol CommentCellDelegate : class {
-    func commentOwnerTapped(_ cell: UITableViewCell)
-}
 
 class CommentTableCell : UITableViewCell {
     
-    weak var delegate : CommentCellDelegate?
+    weak var delegate : CellOwnerDelegate?
     
     /// Profile image
     private let profileImageView = UIImageView(image:UIImage(named: "profile"))
@@ -42,7 +39,7 @@ class CommentTableCell : UITableViewCell {
     @objc
     func usernameTapped(tapGestureRecognizer: UIGestureRecognizer){
         if (tapGestureRecognizer.view) != nil{
-            self.delegate?.commentOwnerTapped(self)
+            self.delegate?.ownerNameTapped(self)
         }
     }
     

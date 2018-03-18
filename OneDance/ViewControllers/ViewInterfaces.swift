@@ -7,8 +7,13 @@
 //
 
 import Foundation
+import UIKit
 
 // Cells
+
+protocol CellOwnerDelegate : class {
+    func ownerNameTapped(_ cell: UITableViewCell)
+}
 
 protocol RefreshableCell {
     var refreshHandler : ((Void) -> (Void))? { get set }

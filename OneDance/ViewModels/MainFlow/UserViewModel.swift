@@ -92,6 +92,7 @@ protocol UserViewModelType : class {
     var id : String { get set }
     var username : String { get set }
     var fullname : String { get set }
+    var profilePhotoUrl : String? { get set }
     
     var email : String { get set }
     var postsCounter : Int? { get set }
@@ -157,6 +158,9 @@ class UserViewModel : UserViewModelType{
     var followingCounter : Int?
     
     // TODO :Image
+    var profilePhotoUrl : String?
+    
+    
     var bio : String? {
         didSet{
             self.updatedUserModel?.bio = bio
@@ -208,6 +212,9 @@ class UserViewModel : UserViewModelType{
         
         self.bio = self.model?.bio
         self.websiteUrl = self.model?.websiteUrl
+        
+        // Profile photo
+        self.profilePhotoUrl = self.model?.profilePhoto?.thumbnail?.url?.absoluteString ?? ""
         
         // Favorite dances
         // Dance types
