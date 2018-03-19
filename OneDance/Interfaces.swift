@@ -69,8 +69,12 @@ protocol PageableViewModel {
     
 }
 
-protocol LocationableViewModel {
+protocol LocationableViewModel : class {
     func updateLocation(_ location: Location)
+}
+
+protocol DanceTypeableViewModel : class {
+    func updateDanceTypes(_ dances: [IDanceType])
 }
 
 

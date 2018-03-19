@@ -110,10 +110,14 @@ extension UserProfileCoordinator : DanceTypeSelectionParentCoordinatorType{
     func updateViewModelWithSelectedDanceTypes(dances: [IDanceType]) {
         
         
-        if let vc = self.hostNavigationController.topViewController as? UserViewController, let vm = vc.viewModel as? Refreshable{
-            vm.refresh()
+        if let vc = self.hostNavigationController.topViewController as? UserViewController, let vm = vc.viewModel{
+            vm.updateDanceTypes(dances)
         }
         
+        self.danceTypesSelectionCoordinator = nil
+    }
+    
+    func cancelDanceSelection() {
         self.danceTypesSelectionCoordinator = nil
     }
 }
@@ -126,6 +130,7 @@ extension UserProfileCoordinator : DanceTypeSelectionParentCoordinatorType{
 protocol DanceTypeSelectionParentCoordinatorType : class{
     
     func updateViewModelWithSelectedDanceTypes(dances: [IDanceType])
+    func cancelDanceSelection()
     
 }
 
@@ -158,12 +163,24 @@ extension DanceTypesSelectionCoordinator : Coordinator {
 extension DanceTypesSelectionCoordinator : DanceTypesViewModelCoordinatorDelegate{
     
     func userDidFinishDanceTypesSelection(viewModel: DanceTypesViewModelType) {
-        self.parentCoordinator.updateViewModelWithSelectedDanceTypes(dances: [DanceType]())
-        self.hostNavigationController.visibleViewController?.dismiss(animated: true, completion: nil)
+        
+        if viewModel.selectedItems != nil{
+            self.hostNavigationController.visibleViewController?.dismiss(animated: true, completion: nil)
+            self.parentCoordinator.updateViewModelWithSelectedDanceTypes(dances: viewModel.selectedItems!)
+        } else {
+            userDidCancelDanceTypeSelection()
+        }
+        
+        
     }
     
     func danceTypesViewModelDidSelect(data: IDanceType, _ viewModel: DanceTypesViewModelType) {
         //
+    }
+    
+    func userDidCancelDanceTypeSelection() {
+        self.hostNavigationController.visibleViewController?.dismiss(animated: true, completion: nil)
+        self.parentCoordinator.cancelDanceSelection()
     }
     
 }

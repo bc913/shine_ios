@@ -8,6 +8,38 @@
 
 import Foundation
 
+protocol DanceTypesViewModelCoordinatorDelegate : class {
+    func danceTypesViewModelDidSelect(data: IDanceType, _ viewModel:DanceTypesViewModelType)
+    func userDidFinishDanceTypesSelection(viewModel: DanceTypesViewModelType)
+    func userDidCancelDanceTypeSelection()
+}
+
+protocol DanceTypesViewModelViewDelegate : class {
+    func itemsDidChange(viewModel: DanceTypesViewModelType)
+    func notifyUser(_ viewModel: DanceTypesViewModelType, _ title: String, _ message: String)
+}
+
+protocol DanceTypesViewModelType : class {
+    var coordinatorDelegate : DanceTypesViewModelCoordinatorDelegate? { get set }
+    var viewDelegate : DanceTypesViewModelViewDelegate? { get set }
+    
+    var model : DanceTypesModelType? { get set }
+    
+    var numberOfItems: Int { get }
+    func itemAtIndex(_ index: Int) -> IDanceType?
+    func useItemAtIndex(_ index: Int)
+    
+    var errorMessage : String { get }
+    
+    var selectedItems : [IDanceType]? { get set }
+    
+    func submit()
+    func cancelSelection()
+    func doneSelecting()
+    
+}
+
+
 class DanceTypesViewModel: DanceTypesViewModelType {
     
     weak var coordinatorDelegate: DanceTypesViewModelCoordinatorDelegate?
@@ -90,19 +122,9 @@ class DanceTypesViewModel: DanceTypesViewModelType {
         print("DanceTypesVM :: Submit")
         print("self.selectedItems : \(String(describing: self.selectedItems))")
         
-        let modelCompletionHandler = { (error: NSError?) in
-            //Make sure we are on the main thread
-            DispatchQueue.main.async {
-                print("Am I back on the main thread: \(Thread.isMainThread)")
-                guard let error = error else {
-                    self.coordinatorDelegate?.userDidFinishDanceTypesSelection(viewModel: self)
-                    return
-                }
-                self.errorMessage = error.localizedDescription
-            }
-        }
         
-        ShineNetworkService.API.User.update(danceTypes: self.selectedItems!, mainThreadCompletionHandler: modelCompletionHandler)
+        
+        self.coordinatorDelegate?.userDidFinishDanceTypesSelection(viewModel: self)
         
     }
     

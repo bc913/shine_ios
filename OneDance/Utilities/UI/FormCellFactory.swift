@@ -43,6 +43,8 @@ enum FormCellType{
     
     case shineTextField
     case shineTextView
+    
+    case danceTypes
 }
 
 enum FormPurpose {
@@ -197,6 +199,17 @@ struct FormItemCellFactory {
                 cell.placeHolder = Helper.createPlaceHolderText(purpose: purpose, type: type)
             }
             return cell
+        case .danceTypes:
+            nibName = nil
+            identifier = ShineDanceTypesCell.identifier
+            tableView.register(ShineDanceTypesCell.self, forCellReuseIdentifier: identifier!)
+            let cell = ShineDanceTypesCell(style: .default, reuseIdentifier: identifier)
+            if placeHolder != nil {
+                cell.placeHolder = placeHolder
+            } else {
+                cell.placeHolder = Helper.createPlaceHolderText(purpose: purpose, type: type)
+            }
+            return cell
             
         default:
             
@@ -240,6 +253,8 @@ struct FormItemCellFactory {
                 placeHolder = "Description"
             case .phoneNumber:
                 placeHolder = "Phone"
+            case .danceTypes:
+                placeHolder = NSLocalizedString("Dances", comment: "")
             default:
                 placeHolder = "Name"
             }

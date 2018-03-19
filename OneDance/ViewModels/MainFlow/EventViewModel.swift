@@ -10,20 +10,20 @@ import Foundation
 
 
 protocol EventViewModelViewDelegate : class {
-    
-    func editCreateDidSucceed(viewModel: EventViewModelType)
-    func editCreateDidCancelled(viewModel: EventViewModelType)
+    func viewModelDidUpdateLocation(viewModel: EventViewModelType)
+    func viewModelDidUpdateDanceTypes(viewModel: EventViewModelType)
     
 }
 
 protocol EventViewModelCoordinatorDelegate : class {
     func viewModelDidRequestLocation()
+    func viewModelDidRequestDanceTypeSelection()
 }
 
 typealias EventVMCoordinatorDelegate = EventViewModelCoordinatorDelegate & ChildViewModelCoordinatorDelegate
 
 
-protocol EventViewModelType : class, LocationableViewModel {
+protocol EventViewModelType : class, LocationableViewModel, DanceTypeableViewModel {
     
     weak var viewDelegate : EventViewModelViewDelegate? { get set }
     weak var coordinatorDelegate : EventVMCoordinatorDelegate? { get set }
@@ -81,7 +81,12 @@ protocol EventViewModelType : class, LocationableViewModel {
     func cancel()
     func goBack()
     
+    // Location operation
     func requestLocation()
+    
+    // Request update for dance types
+    func requestUpdateForDanceTypes()
+    func updateDanceTypes(_ selectedDances: [IDanceType])
     
     
 }
@@ -288,9 +293,9 @@ class EventViewModel : EventViewModelType {
         
         // Location contact
         //TODO: Remove this code
-        self.location = LocationItem()
-        self.location?.id = "647fe149-815c-4a4b-92dd-2eaa307f5ce4"
-        self.location?.name = "name"
+//        self.location = LocationItem()
+//        self.location?.id = "647fe149-815c-4a4b-92dd-2eaa307f5ce4"
+//        self.location?.name = "name"
         
         self.model?.location = self.location?.mapToLiteModel()
         self.model?.contact = self.contactPerson?.mapToModel()
@@ -361,6 +366,7 @@ class EventViewModel : EventViewModelType {
         
         self.location = nil
         self.location = LocationItem(locationLiteModel: liteLocation)
+        self.viewDelegate?.viewModelDidUpdateLocation(viewModel: self)
     }
     
     
@@ -491,4 +497,35 @@ class EventViewModel : EventViewModelType {
         self.coordinatorDelegate?.viewModelDidRequestLocation()
     }
     
+    func requestUpdateForDanceTypes() {
+        self.coordinatorDelegate?.viewModelDidRequestDanceTypeSelection()
+    }
+    
+}
+
+extension EventViewModel : DanceTypeableViewModel{
+    
+    func updateDanceTypes(_ dances: [IDanceType]) {
+        
+        if !dances.isEmpty {
+            
+            if self.danceTypes == nil {
+                self.danceTypes = [DanceTypeItem]()
+                self.danceTypes?.reserveCapacity(dances.count)
+            } else {
+                self.danceTypes!.removeAll()
+            }
+            
+            for dance in dances {
+                if let danceObj = dance as? DanceType {
+                    self.danceTypes?.append(DanceTypeItem(danceTypeModel: danceObj))
+                }
+            }
+        } else {
+            self.danceTypes = nil
+        }
+        
+        self.viewDelegate?.viewModelDidUpdateDanceTypes(viewModel: self)
+        
+    }
 }

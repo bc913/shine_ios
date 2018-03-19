@@ -29,6 +29,7 @@ protocol SelectableCell : class {
 protocol CellSelectionDelegate : class {
     func cellSelectionChanged(_ cell: BaseFormCell, state: SelectionState, indexPath: IndexPath?)
     func cellSelectedForLocation()
+    func cellSelectedForDanceTypes()
 }
 
 protocol ExpandingCellDelegate : class {
@@ -117,6 +118,10 @@ extension BaseFormCell : SelectableCell {
     
     func notifyForLocation(){
         self.selectionDelegate?.cellSelectedForLocation()
+    }
+    
+    func notifyForDanceTypes(){
+        self.selectionDelegate?.cellSelectedForDanceTypes()
     }
 }
 

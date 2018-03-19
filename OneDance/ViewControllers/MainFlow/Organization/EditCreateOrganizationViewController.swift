@@ -571,6 +571,10 @@ extension EditCreateOrganizationViewController : CellSelectionDelegate{
     func cellSelectedForLocation(){
         assertionFailure("cellSelectedForLocation is not implemented for organization view controller")
     }
+    
+    func cellSelectedForDanceTypes(){
+        assertionFailure("cellSelectedForDanceTypes is not implementd for organization view controller")
+    }
 }
 
 extension EditCreateOrganizationViewController : UIImagePickerControllerDelegate {

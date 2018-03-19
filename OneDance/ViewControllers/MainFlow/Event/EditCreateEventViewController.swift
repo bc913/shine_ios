@@ -29,6 +29,10 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
     
     fileprivate var isLoaded : Bool = false
     
+    // Dance types collection view
+    fileprivate let sectionInsets = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
+    fileprivate let itemsPerRow: CGFloat = 1
+    
     // ACtive selection
     var activeIndex : IndexPath? {
         willSet{
@@ -67,6 +71,7 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
     weak var endDateCell : ShineDatePickerCell!
     weak var aboutCell : ShineTextViewCell!
     weak var locationCell : ShineLocationCell!
+    weak var danceTypesCell : ShineDanceTypesCell!
     
     weak var urlCell : ShineTextFieldCell!
     
@@ -217,7 +222,20 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
         
         cells.append(locationCell)
             
+        // Dance types
+        let eventDanceTypesCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .danceTypes, placeHolder: nil) as! ShineDanceTypesCell
         
+        self.danceTypesCell = eventDanceTypesCell
+        
+        if self.viewModel != nil, self.viewModel!.mode == .edit && self.viewModel!.danceTypes != nil, self.viewModel!.danceTypes!.count > 0 {
+            self.danceTypesCell.displayedValue = "\(self.viewModel!.danceTypes!.count) selected"
+            self.danceTypesCell.expanded = true
+        }
+        
+        danceTypesCell.expandDelegate = self
+        danceTypesCell.selectionDelegate = self
+        
+        self.cells.append(danceTypesCell)
         
         // URL
         let eventUrlCell = FormItemCellFactory.create(tableView: self.tableView, purpose: .createDanceEvent, type: .shineTextField, placeHolder: "Url") as! ShineTextFieldCell
@@ -775,6 +793,13 @@ class EditCreateEventViewController: UIViewController, UINavigationControllerDel
         print("create Event")
         self.viewModel?.cancel()
     }
+    
+    deinit {
+        self.cells.removeAll()
+        self.tableView.delegate = nil
+        self.tableView.dataSource = nil
+        print("EditCreate eventcontroller deinit")
+    }
 
 }
 
@@ -871,6 +896,15 @@ extension EditCreateEventViewController : UITableViewDelegate {
         return 100.0
     }
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        guard let danceTypesCell = cell as? ShineDanceTypesCell else { return }
+        
+        danceTypesCell.collectionView.dataSource = self
+        danceTypesCell.collectionView.delegate = self
+        danceTypesCell.collectionView.reloadData()
+    }
+    
 }
 
 fileprivate extension EditCreateEventViewController {
@@ -933,16 +967,88 @@ extension EditCreateEventViewController : CellSelectionDelegate{
     func cellSelectedForLocation(){
         self.viewModel?.requestLocation()
     }
+    
+    func cellSelectedForDanceTypes(){
+        self.viewModel?.requestUpdateForDanceTypes()
+    }
 }
 
 // MARK: EventViewModelViewDelegate
 extension EditCreateEventViewController : EventViewModelViewDelegate {
     
-    func editCreateDidSucceed(viewModel: EventViewModelType){
-        self.dismiss(animated: true, completion: nil)
+    func viewModelDidUpdateLocation(viewModel: EventViewModelType) {
+        //
+        if let row = self.cells.index(where: { ($0 as? ShineLocationCell) != nil }) {
+            
+            let locationCell = self.cells[row] as! ShineLocationCell
+            locationCell.displayedValue = viewModel.location?.name ?? ""
+            
+        }
+
     }
     
-    func editCreateDidCancelled(viewModel: EventViewModelType){
-        self.dismiss(animated: true, completion: nil)
+    func viewModelDidUpdateDanceTypes(viewModel: EventViewModelType) {
+        
+        if let row = self.cells.index(where: { ($0 as? ShineDanceTypesCell) != nil }) {
+            
+            let danceTypesCell = self.cells[row] as! ShineDanceTypesCell
+            danceTypesCell.displayedValue = viewModel.danceTypes != nil && viewModel.danceTypes!.count > 0 ? "\(viewModel.danceTypes!.count) selected" : "Not selected"
+            
+            danceTypesCell.collectionView.reloadData()
+            
+        }
+    }
+
+}
+
+// Collectionview delegate
+extension EditCreateEventViewController : UICollectionViewDataSource {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        if self.viewModel != nil && self.viewModel!.danceTypes != nil && !self.viewModel!.danceTypes!.isEmpty {
+            return self.viewModel!.danceTypes!.count
+        }
+        
+        return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BasicCollectionCell.identifier, for: indexPath) as! BasicCollectionCell
+        
+        let item = self.viewModel?.danceTypes?[indexPath.row]
+        
+        cell.configure(text: item?.name ?? "")
+        
+        return cell
+    }
+    
+}
+
+extension EditCreateEventViewController : UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return sectionInsets.left
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 1.0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let paddingSpace = sectionInsets.top + sectionInsets.bottom + collectionView.contentInset.top + collectionView.contentInset.bottom + 4
+        let availableHeight = collectionView.frame.height - paddingSpace
+        let heightPerItem = availableHeight / itemsPerRow
+        return CGSize(width: heightPerItem, height: heightPerItem)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return sectionInsets
     }
 }
+

@@ -49,6 +49,10 @@ extension InitialProfileSetupCoordinator : DanceTypesViewModelCoordinatorDelegat
     func userDidFinishDanceTypesSelection(viewModel: DanceTypesViewModelType) {
         self.showProfileImageSelector()
     }
+    
+    func userDidCancelDanceTypeSelection(){
+        //
+    }
 }
 
 extension InitialProfileSetupCoordinator : ProfileImageSelectionVMCoordinatorDelegate {

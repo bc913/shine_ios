@@ -773,28 +773,29 @@ struct ShineNetworkService {
                             // Debug
                             Helper.debugResponse(methodName: "updateDanceTypes()", response: response)
                             
-                            // Check status code
                             let httpStatusCode = response.response?.statusCode
+                            var error : NSError? = nil
                             
-                            // Error
-                            var error : NSError? = ErrorFactory.createWith(httpStatusCode: httpStatusCode!)
-                            
-                            // If error exists, the message can be parsed from response
-                            if error != nil {
-                                if response.result.isSuccess, let jsonData = response.result.value, let jsonDict = jsonData as? [String:Any] {
-                                    if let errorMessage = jsonDict["message"] as? String{
-                                        error = ErrorFactory.create(.User, .User, .User, description: errorMessage)
-                                        print("Error 3")
-                                    }
-                                }
+                            // Status code
+                            if httpStatusCode != nil, 200 ... 299 ~= httpStatusCode!  {
+                                print("success remove like from Post")
+                                mainThreadCompletionHandler(nil)
+                                return
                             }
                             
+                            // No response is expected
+//                            if httpStatusCode != nil {
+//                                error = ErrorFactory.createWith(httpStatusCode:httpStatusCode!)
+//                                
+//                            } else {
+//                                
+//                                error = ErrorFactory.create(ShineErrorType.Network, ShineErrorDomain.Network, ShineErrorCode.None, description: "Something is terribly wrong")
+//                            }
                             
-                            // Success
-                            // NO RESPONSE DATA IS EXPECTED FROM THIS API CALL
-                            mainThreadCompletionHandler(error)
+                            mainThreadCompletionHandler(nil)
                             
                             print("#############################################################")
+                            return
                             
                     }
                 )
@@ -1002,9 +1003,6 @@ struct ShineNetworkService {
                         completionHandler: { response in
                             // Debug
                             Helper.debugResponse(methodName: "updateMyProfile()", response: response)
-                            
-                            // Check status code
-                            let httpStatusCode = response.response?.statusCode
                             
                             // Error
                             var error : NSError? = nil

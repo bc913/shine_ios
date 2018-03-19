@@ -79,7 +79,7 @@ protocol UserViewModelViewDelegate : class {
 
 typealias UserVMCoordinatorDelegate = UserViewModelCoordinatorDelegate & ChildViewModelCoordinatorDelegate
 
-protocol UserViewModelType : class {
+protocol UserViewModelType : class, DanceTypeableViewModel {
     
     weak var coordinatorDelegate : UserVMCoordinatorDelegate? { get set }
     weak var viewDelegate : UserViewModelViewDelegate? { get set }
@@ -358,5 +358,24 @@ extension UserViewModel: Refreshable{
     
     func refresh() {
         self.fetchModelData()
+    }
+}
+
+extension UserViewModel : DanceTypeableViewModel{
+    func updateDanceTypes(_ dances: [IDanceType]){
+        
+        let modelCompletionHandler = { (error: NSError?) in
+            //Make sure we are on the main thread
+            DispatchQueue.main.async {
+                print("Am I back on the main thread: \(Thread.isMainThread)")
+                guard let error = error else {
+                    self.refresh()
+                    return
+                }
+                //self.errorMessage = error.localizedDescription
+            }
+        }
+        
+        ShineNetworkService.API.User.update(danceTypes: dances, mainThreadCompletionHandler: modelCompletionHandler)
     }
 }

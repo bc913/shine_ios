@@ -358,6 +358,10 @@ extension EditUserProfileViewController : CellSelectionDelegate{
     func cellSelectedForLocation(){
         //self.viewModel?.requestLocation()
     }
+    
+    func cellSelectedForDanceTypes(){
+        assertionFailure("cellSelectedForDanceTypes is not implementd for EditUserProfileViewController")
+    }
 }
 
 fileprivate extension EditUserProfileViewController {

@@ -466,6 +466,7 @@ class EventCoordinator : BaseChildCoordinator {
     var viewModel : EventViewModel
     
     var locationPickerCoordinator : LocationSelectionCoordinator?
+    var danceTypesSelectionCoordinator : DanceTypesSelectionCoordinator?
     
     init(host: UINavigationController, id: String, mode: ShineMode = .viewOnly) {
         self.mode = mode
@@ -515,14 +516,38 @@ extension EventCoordinator : EventViewModelCoordinatorDelegate{
         self.locationPickerCoordinator?.start()
 
     }
+    
+    func viewModelDidRequestDanceTypeSelection(){
+        //self.danceTypesSelectionCoordinator?.ownerCoordinatorRequestDanceTypesSelection()
+        
+        danceTypesSelectionCoordinator = DanceTypesSelectionCoordinator(host: self.hostNavigationController, id: self.id, owner: self)
+        self.danceTypesSelectionCoordinator?.start()
+    }
 }
 
 extension EventCoordinator : LocationSelectionParentCoordinatorType{
     func updateViewModelWithSelectedLocation(_ location: Location) {
         //
         print("Event coordinator update VM with location: \(location.city)")
-        self.locationPickerCoordinator?.hostNavigationController.visibleViewController?.dismiss(animated: true, completion: nil)
+        
+        if self.viewModel is LocationableViewModel {
+            self.viewModel.updateLocation(location)
+        }
+        
         self.locationPickerCoordinator = nil
+    }
+}
+
+extension EventCoordinator : DanceTypeSelectionParentCoordinatorType{
+    func updateViewModelWithSelectedDanceTypes(dances: [IDanceType]) {
+        
+        
+        self.viewModel.updateDanceTypes(dances)        
+        self.danceTypesSelectionCoordinator = nil
+    }
+    
+    func cancelDanceSelection(){
+        self.danceTypesSelectionCoordinator = nil
     }
 }
 
@@ -667,6 +692,7 @@ extension LocationSelectionCoordinator : Coordinator {
 extension LocationSelectionCoordinator : LocationSelectionViewModelCoordinatorDelegate {
     
     func viewModelDidSelectLocation(_ location: Location) {
+        self.hostNavigationController.visibleViewController?.dismiss(animated: true, completion: nil)
         self.parentCoordinator.updateViewModelWithSelectedLocation(location)
         
     }

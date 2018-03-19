@@ -291,6 +291,10 @@ extension EditCreatePostViewController : CellSelectionDelegate{
     func cellSelectedForLocation(){
         //self.viewModel?.requestLocation()
     }
+    
+    func cellSelectedForDanceTypes(){
+        assertionFailure("cellSelectedForDanceTypes is not implementd for EditCreatePostViewController")
+    }
 }
 
 fileprivate extension EditCreatePostViewController {
