@@ -68,6 +68,7 @@ class ShineDanceTypesCell: BaseFormCell {
     /// The selected date
     weak var collectionView : UICollectionView!
     weak var flowLayout : UICollectionViewFlowLayout!
+    let collectionViewHeight : CGFloat = 96.0
     
     /// Callback for the date picker
     @objc func datePicked() {
@@ -104,6 +105,7 @@ class ShineDanceTypesCell: BaseFormCell {
         self.collectionView.collectionViewLayout = self.flowLayout
         self.collectionView.allowsSelection = false
         self.collectionView.register(BasicCollectionCell.self, forCellWithReuseIdentifier: BasicCollectionCell.identifier)
+        self.collectionView.backgroundColor = UIColor.white
         self.flowLayout.scrollDirection = .horizontal
         
         // Add a seperator between the date text display, and the datePicker. Lighter grey than a normal seperator.
@@ -184,7 +186,7 @@ class ShineDanceTypesCell: BaseFormCell {
                 toItem: nil,
                 attribute: NSLayoutAttribute.notAnAttribute,
                 multiplier: 1.0,
-                constant: 64.0
+                constant: self.collectionViewHeight
             )
         ])
         
@@ -385,7 +387,7 @@ class ShineDanceTypesCell: BaseFormCell {
     
     override var designatedHeight: CGFloat {
         
-        let expandedHeight = unexpandedHeight + 64.0
+        let expandedHeight = unexpandedHeight + self.collectionViewHeight
         //return self.selectionState == .selected ? expandedHeight : unexpandedHeight
         
         return expandedHeight

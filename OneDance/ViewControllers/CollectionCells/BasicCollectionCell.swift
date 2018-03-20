@@ -119,9 +119,9 @@ class BasicCollectionCell: UICollectionViewCell {
         
     }
     
-    private func setLabel(text: String){
+    private func setLabel(text: String, size: CGFloat){
         
-        let attributedText = NSAttributedString(string: text, attributes: [NSFontAttributeName: UIFont(name: "ChalkboardSE-Regular", size: 14) ?? UIFont.boldSystemFont(ofSize: 14),
+        let attributedText = NSAttributedString(string: text, attributes: [NSFontAttributeName: UIFont(name: "ChalkboardSE-Regular", size: 14) ?? UIFont.boldSystemFont(ofSize: size),
                                                                            NSForegroundColorAttributeName: UIColor.white])
         
         self.label.attributedText = attributedText
@@ -131,8 +131,8 @@ class BasicCollectionCell: UICollectionViewCell {
         
     }
     
-    public func configure(text: String){
-        self.setLabel(text: text)
+    public func configure(text: String, size: CGFloat = 14.0){
+        self.setLabel(text: text, size: size)
         
     }
     

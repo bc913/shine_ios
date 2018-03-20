@@ -248,8 +248,8 @@ extension EventLite : JSONDecodable {
         return [
             "id" : self.id,
             "title": self.title,
-            "start": self.startDate.timeIntervalSince1970 * 1000,
-            "end" : self.endDate.timeIntervalSince1970 * 1000,
+            "start": Int(((self.startDate.timeIntervalSince1970) * 1000).rounded()),
+            "end" : Int(((self.endDate.timeIntervalSince1970) * 1000).rounded()),
             "location" : loc?.jsonData ?? [String:Any](),
             "photo" : eventPhoto ?? [String:Any](),
             "danceTypes" : (dances == nil || dances!.isEmpty) ? [[String:Any]]() : dances!,

@@ -97,6 +97,9 @@
 		6548EE6C1FB8D00E0076EA4B /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6548EE6A1FB8D00E0076EA4B /* SwitchCell.swift */; };
 		6548EE6D1FB8D00E0076EA4B /* SwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6548EE6B1FB8D00E0076EA4B /* SwitchCell.xib */; };
 		6548EE6F1FB918C30076EA4B /* FormCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6548EE6E1FB918C30076EA4B /* FormCellFactory.swift */; };
+		6549260220608E6E00207A5B /* EventTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6549260020608E6E00207A5B /* EventTableCell.swift */; };
+		6549260320608E6E00207A5B /* EventTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6549260120608E6E00207A5B /* EventTableCell.xib */; };
+		654926052060AC3A00207A5B /* OrganizationTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654926042060AC3A00207A5B /* OrganizationTableCell.swift */; };
 		654938B61F98578D00B6D60C /* PersistanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654938B51F98578D00B6D60C /* PersistanceManager.swift */; };
 		6549871B1F8F0F31002DFB0C /* DanceTypesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6549871A1F8F0F31002DFB0C /* DanceTypesModel.swift */; };
 		6549871D1F8F1747002DFB0C /* DanceTypesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6549871C1F8F1747002DFB0C /* DanceTypesViewModel.swift */; };
@@ -271,6 +274,9 @@
 		6548EE6A1FB8D00E0076EA4B /* SwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwitchCell.swift; path = ViewControllers/TableCells/Base/SwitchCell.swift; sourceTree = "<group>"; };
 		6548EE6B1FB8D00E0076EA4B /* SwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SwitchCell.xib; path = ViewControllers/TableCells/Base/SwitchCell.xib; sourceTree = "<group>"; };
 		6548EE6E1FB918C30076EA4B /* FormCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FormCellFactory.swift; path = Utilities/UI/FormCellFactory.swift; sourceTree = "<group>"; };
+		6549260020608E6E00207A5B /* EventTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EventTableCell.swift; path = ViewControllers/TableCells/List/EventTableCell.swift; sourceTree = "<group>"; };
+		6549260120608E6E00207A5B /* EventTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EventTableCell.xib; path = ViewControllers/TableCells/List/EventTableCell.xib; sourceTree = "<group>"; };
+		654926042060AC3A00207A5B /* OrganizationTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OrganizationTableCell.swift; path = ViewControllers/TableCells/List/OrganizationTableCell.swift; sourceTree = "<group>"; };
 		654938B51F98578D00B6D60C /* PersistanceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PersistanceManager.swift; path = Persistance/PersistanceManager.swift; sourceTree = "<group>"; };
 		6549871A1F8F0F31002DFB0C /* DanceTypesModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceTypesModel.swift; path = Models/DanceTypesModel.swift; sourceTree = "<group>"; };
 		6549871C1F8F1747002DFB0C /* DanceTypesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceTypesViewModel.swift; path = ViewModels/DanceTypesViewModel.swift; sourceTree = "<group>"; };
@@ -663,6 +669,9 @@
 			isa = PBXGroup;
 			children = (
 				6501285C205E079C005F9AF8 /* UserTableCell.swift */,
+				6549260020608E6E00207A5B /* EventTableCell.swift */,
+				6549260120608E6E00207A5B /* EventTableCell.xib */,
+				654926042060AC3A00207A5B /* OrganizationTableCell.swift */,
 			);
 			name = List;
 			sourceTree = "<group>";
@@ -1048,6 +1057,7 @@
 				650415E11FF03A4900D19A89 /* EditCreateOrganizationViewController.xib in Resources */,
 				654E01F51FC0B4EE0095C4D1 /* LocationFormCell.xib in Resources */,
 				6588B009201E69110046C7A0 /* NameTitleWithImageCell.xib in Resources */,
+				6549260320608E6E00207A5B /* EventTableCell.xib in Resources */,
 				654672751FA030A1002DDC40 /* ProfileInfoSetupViewController.xib in Resources */,
 				654E01F11FBFEDDC0095C4D1 /* SwitchFormCell.xib in Resources */,
 				6546A0461FBBC65500B23685 /* NameTitleFormCell.xib in Resources */,
@@ -1191,6 +1201,7 @@
 				6555751720479C320045CE8E /* UserViewController.swift in Sources */,
 				650E16D9203D05DE001F90B0 /* ShineLocationCell.swift in Sources */,
 				654479151FC7507200FE3B58 /* ShineError.swift in Sources */,
+				654926052060AC3A00207A5B /* OrganizationTableCell.swift in Sources */,
 				65427D2B1F905BA100407C5D /* InitialProfileSetupCoordinator.swift in Sources */,
 				656834D31F8C7F8300ADCBA2 /* EmailLoginViewModel.swift in Sources */,
 				654B1D241F942A1900B13925 /* DanceTypesViewController.swift in Sources */,
@@ -1244,6 +1255,7 @@
 				65640E051F9C43E5006C2E21 /* ProfileImageSelectionViewModel.swift in Sources */,
 				654259DF20524479006DB4A4 /* CommentTableCell.swift in Sources */,
 				65012867205E121A005F9AF8 /* FeedModel.swift in Sources */,
+				6549260220608E6E00207A5B /* EventTableCell.swift in Sources */,
 				654271142058B610009F3640 /* LocationViewModels.swift in Sources */,
 				656834D11F8C6B5F00ADCBA2 /* EmailLoginViewModelInterface.swift in Sources */,
 				65BC8BF81F819F6800F5AF94 /* SignUpViewModelInterface.swift in Sources */,

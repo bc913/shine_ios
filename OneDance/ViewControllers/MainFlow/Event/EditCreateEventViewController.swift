@@ -1022,7 +1022,7 @@ extension EditCreateEventViewController : UICollectionViewDataSource {
         
         let item = self.viewModel?.danceTypes?[indexPath.row]
         
-        cell.configure(text: item?.name ?? "")
+        cell.configure(text: item?.name ?? "", size: 10.0)
         
         return cell
     }
