@@ -53,6 +53,11 @@ protocol EventListModelType {
     var count : Int { get }
 }
 
+protocol OrganizationListModelType {
+    var items : [OrganizationLite] { get set }
+    var count : Int { get }
+}
+
 
 // ========
 // ViewModel

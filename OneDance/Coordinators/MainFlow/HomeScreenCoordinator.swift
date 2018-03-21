@@ -589,6 +589,8 @@ extension ListCoordinator : Coordinator{
             startPostComments()
         } else if self.type == .event {
             startEventList()
+        } else if self.type == .organization {
+            startOrganizationList()
         }
     }
     
@@ -633,9 +635,13 @@ extension ListCoordinator : Coordinator{
     }
     
     private func startOrganizationList(){
+        // OrganizationList does not have a source
+        
         let vc = OrganizationListViewController(nibName: nil, bundle: nil)
+        let vm = OrganizationListViewModel(source: self.source, sourceId: self.id)
+        vm.coordinatorDelegate = self
         
-        
+        vc.viewModel = vm
         self.hostNavigationController.pushViewController(vc, animated: true)
     }
 }
@@ -645,6 +651,8 @@ extension ListCoordinator : UserListViewModelCoordinatorDelegate {}
 extension ListCoordinator : CommentListViewModelCoordinatorDelegate {}
 
 extension ListCoordinator : EventListViewModelCoordinatorDelegate{}
+
+extension ListCoordinator : OrganizationListViewModelCoordinatorDelegate{}
 
 //===============================================================================================
 //MARK: PostCoordinator

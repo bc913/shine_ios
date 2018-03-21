@@ -10,11 +10,20 @@ import UIKit
 
 class OrganizationTableCell: UITableViewCell {
 
-    weak var ownerDelegate : CellOwnerDelegate?
+//    weak var ownerDelegate : CellOwnerDelegate?
+    
+    public func configure(item: OrganizationLite){
+        
+        self.setFullNameAndFollowers(fullname: item.name ?? "", followers: item.followerCounter ?? 0)
+        
+        // TODO: Implement dance types for the organization
+        self.setDanceTypesLabel(dances: [DanceType]())
+        
+    }
     
     /// Profile image
     private let profileImageView = UIImageView(image:UIImage(named: "profile"))
-    public func setUserThumbnailImage(image: UIImage){
+    public func setOrganizationThumbnailImage(_ image: UIImage){
         self.profileImageView.image = image
     }
     
@@ -28,23 +37,26 @@ class OrganizationTableCell: UITableViewCell {
         
         let attributedText = NSMutableAttributedString(string: fullname.isEmpty ? "Organization\n" : fullname+"\n", attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 14)])
         
-        attributedText.append(NSAttributedString(string: "\(String(followers)) followers", attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12), NSForegroundColorAttributeName: UIColor(red: 155/255, green: 161/255, blue: 171/255, alpha: 1)]))
+        if followers > 0 {
+            attributedText.append(NSAttributedString(string: "\(String(followers)) followers", attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12), NSForegroundColorAttributeName: UIColor(red: 155/255, green: 161/255, blue: 171/255, alpha: 1)]))
+            
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineSpacing = 4
+            
+            attributedText.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, attributedText.string.characters.count))
+        }
         
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = 4
-        
-        attributedText.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, attributedText.string.characters.count))
         
         self.fullNameAndFollowerLabel.attributedText = attributedText
         
     }
     
-    @objc
-    func ownerTapped(tapGestureRecognizer: UIGestureRecognizer){
-        if (tapGestureRecognizer.view) != nil{
-            self.ownerDelegate?.ownerNameTapped(self)
-        }
-    }
+//    @objc
+//    func ownerTapped(tapGestureRecognizer: UIGestureRecognizer){
+//        if (tapGestureRecognizer.view) != nil{
+//            self.ownerDelegate?.ownerNameTapped(self)
+//        }
+//    }
     
     /// Dance types label
     private let danceTypesLabel : UILabel = UILabel()
@@ -52,6 +64,12 @@ class OrganizationTableCell: UITableViewCell {
     public func setDanceTypesLabel(dances: [DanceType]){
         
         var typesString : String = ""
+        
+        if dances.isEmpty {
+            self.danceTypesLabel.text = typesString
+            return
+        }
+        
         var index : Int = 0
         
         for dance in dances {
@@ -67,6 +85,8 @@ class OrganizationTableCell: UITableViewCell {
             typesString += "..."
         }
         
+        self.danceTypesLabel.text = typesString
+        
     }
     
     private func setupViews(){
@@ -78,18 +98,21 @@ class OrganizationTableCell: UITableViewCell {
             view.translatesAutoresizingMaskIntoConstraints = false
         }
         
-        // Thumbnail
-        self.profileImageView.contentMode = .scaleAspectFit
-        let imageTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(ownerTapped(tapGestureRecognizer:)))
-        self.profileImageView.isUserInteractionEnabled = true
-        self.profileImageView.addGestureRecognizer(imageTapRecognizer)
+        self.danceTypesLabel.text = ""
+        self.setFullNameAndFollowers(fullname: "", followers: 0)
         
-        
-        // Username
-        self.fullNameAndFollowerLabel.numberOfLines = 2
-        let ownerTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(ownerTapped(tapGestureRecognizer:)))
-        self.fullNameAndFollowerLabel.isUserInteractionEnabled = true
-        self.fullNameAndFollowerLabel.addGestureRecognizer(ownerTapRecognizer)
+//        // Thumbnail
+//        self.profileImageView.contentMode = .scaleAspectFit
+//        let imageTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(ownerTapped(tapGestureRecognizer:)))
+//        self.profileImageView.isUserInteractionEnabled = true
+//        self.profileImageView.addGestureRecognizer(imageTapRecognizer)
+//        
+//        
+//        // Username
+//        self.fullNameAndFollowerLabel.numberOfLines = 2
+//        let ownerTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(ownerTapped(tapGestureRecognizer:)))
+//        self.fullNameAndFollowerLabel.isUserInteractionEnabled = true
+//        self.fullNameAndFollowerLabel.addGestureRecognizer(ownerTapRecognizer)
         
         
         

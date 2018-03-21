@@ -110,7 +110,7 @@ class EventListViewController: UIViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
-        self.tableView.allowsSelection = false //this disables didSelectRowAt
+        self.tableView.allowsSelection = true //this disables didSelectRowAt
         self.tableView.register(EventTableCell.nib, forCellReuseIdentifier: EventTableCell.identifier)
         
         
