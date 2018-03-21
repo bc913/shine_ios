@@ -1,22 +1,15 @@
 //
-//  ShineListViewController.swift
+//  EventListViewController.swift
 //  OneDance
 //
-//  Created by Burak Can on 3/5/18.
+//  Created by Burak Can on 3/20/18.
 //  Copyright © 2018 Burak Can. All rights reserved.
 //
 
 import UIKit
 
-class ShineUserListViewController: UIViewController {
-    
-//    var type : ListType
-//    
-//    init(type: ListType) {
-//        self.type = type
-//        super.init(nibName: nil, bundle: nil)
-//    }
-    
+class EventListViewController: UIViewController {
+
     // Photo manager
     var photoManager = PhotoManager.instance()
     
@@ -24,7 +17,7 @@ class ShineUserListViewController: UIViewController {
     // Refresh
     let refreshControl = UIRefreshControl()
     
-    var viewModel : PageableUserListViewModel?{
+    var viewModel : PageableEventListViewModelType?{
         willSet{
             viewModel?.viewDelegate = nil
         }
@@ -58,7 +51,7 @@ class ShineUserListViewController: UIViewController {
         }
         return indexPath.row == viewModel.count
     }
-
+    
     
     override func loadView() {
         
@@ -118,7 +111,7 @@ class ShineUserListViewController: UIViewController {
         self.tableView.dataSource = self
         
         self.tableView.allowsSelection = false //this disables didSelectRowAt
-        self.tableView.register(UserTableCell.self, forCellReuseIdentifier: UserTableCell.identifier)
+        self.tableView.register(EventTableCell.nib, forCellReuseIdentifier: EventTableCell.identifier)
         
         
         // In order to work with self sizing cells, thecontent view's item should have constraints to top and bottom
@@ -127,7 +120,7 @@ class ShineUserListViewController: UIViewController {
         
         
         // Eger, self sizing yoksa yukaridaki kullanmak zorunda degilsin
-        self.tableView.rowHeight = 64.0
+        self.tableView.rowHeight = EventTableCell.cellHeight
         
         // refresh control
         if #available(iOS 10.0, *){
@@ -144,7 +137,7 @@ class ShineUserListViewController: UIViewController {
         self.navigationItem.hidesBackButton = true
         let newBackButton = UIBarButtonItem(image: UIImage(named:"back_white"), style: .plain, target: self, action: #selector(goBack(sender:)))
         self.navigationItem.leftBarButtonItem = newBackButton
-    
+        
     }
     
     @objc
@@ -154,26 +147,17 @@ class ShineUserListViewController: UIViewController {
 
 }
 
-extension ShineUserListViewController : UserListViewModelViewDelegate{
-    func viewModelDidFinishUpdate(viewModel: UserListViewModelType) {
+extension EventListViewController : EventListViewModelViewDelegate {
+    
+    func viewModelDidFinishUpdate(viewModel: EventListViewModelType) {
         
         self.refreshControl.endRefreshing() // to stop loading animation
         self.tableView.reloadData()
     }
 }
 
-extension ShineUserListViewController : CellOwnerDelegate {
-    func ownerNameTapped(_ cell: UITableViewCell) {
-        guard let tappedIndexPath = tableView.indexPath(for: cell) else { return }
-        
-        if let user = self.viewModel?.itemAtIndex(tappedIndexPath.row) {
-            self.viewModel?.requestUserProfile(id: user.userId)
-        }
-    }
-}
-
 // UITableViewDataSource
-extension ShineUserListViewController : UITableViewDataSource {
+extension EventListViewController : UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -189,20 +173,19 @@ extension ShineUserListViewController : UITableViewDataSource {
             return LoadingTableCell(style: .default, reuseIdentifier: LoadingTableCell.identifier)
         }else {
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: UserTableCell.identifier, for: indexPath) as! UserTableCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: EventTableCell.identifier, for: indexPath) as! EventTableCell
             
-            if let userItem = self.viewModel?.itemAtIndex(indexPath.row) {
+            if let eventItem = self.viewModel?.itemAtIndex(indexPath.row) {
                 
-                cell.ownerDelegate = self
-                cell.setFullAndUserNameLabels(fullname: userItem.fullName, username: userItem.userName)
+                cell.configure(item: eventItem)
                 
                 
                 // Image
-                if let image = self.photoManager.cachedImage(for: userItem.profilePhoto?.thumbnail?.url?.absoluteString ?? "") {
-                    cell.setUserThumbnailImage(image: image)
+                if let image = self.photoManager.cachedImage(for: eventItem.photo?.standard?.url?.absoluteString ?? "") {
+                    cell.setEventImage(image)
                 } else {
-                    photoManager.retrieveImage(for: userItem.profilePhoto?.thumbnail?.url?.absoluteString ?? ""){ image in
-                        cell.setUserThumbnailImage(image: image)
+                    photoManager.retrieveImage(for: eventItem.photo?.standard?.url?.absoluteString ?? ""){ image in
+                        cell.setEventImage(image)
                     }
                 }
             }
@@ -213,7 +196,7 @@ extension ShineUserListViewController : UITableViewDataSource {
 }
 
 // UITableViewDelegate
-extension ShineUserListViewController : UITableViewDelegate {
+extension EventListViewController : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard self.isLoadingIndexPath(indexPath) else { return }
@@ -221,6 +204,13 @@ extension ShineUserListViewController : UITableViewDelegate {
         print("willDisplay")
         self.fetchNextPage()
         
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if let vm = self.viewModel, let item = vm.itemAtIndex(indexPath.row) {
+            vm.requestEventDetail(id: item.id)
+        }
     }
     
 }

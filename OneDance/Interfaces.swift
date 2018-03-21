@@ -48,6 +48,11 @@ protocol CommentListModelType {
     var count : Int { get }
 }
 
+protocol EventListModelType {
+    var items : [EventLiteType] { get set }
+    var count : Int { get }
+}
+
 
 // ========
 // ViewModel

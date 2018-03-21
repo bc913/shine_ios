@@ -8,124 +8,6 @@
 
 import Foundation
 
-// Model
-protocol PostCommentType {
-    var id : String { get set }
-    var commenter : UserLiteType? { get set }
-    var text : String { get set }
-    var commentDate : Date { get set }
-}
-
-struct PostComment : PostCommentType {
-    
-    var id : String
-    var commenter : UserLiteType?
-    var text : String
-    var commentDate : Date
-    
-    
-    init() {
-        self.id = ""
-        self.commenter = UserLite()
-        self.text = ""
-        self.commentDate = Date()
-    }
-    
-    init(commentId: String, commenter: UserLiteType, text: String, commentDate: Date) {
-        self.id = commentId
-        self.commenter = commenter
-        self.text = text
-        self.commentDate = commentDate
-    }
-}
-
-extension PostComment{
-    
-    init?(json: [String:Any]) {
-        
-        guard let commentId = json["id"] as? String, let commentOwner = json["commenter"] as? [String:Any] else {
-            
-            assertionFailure("Comment with no id")
-            return nil
-        }
-        
-        self.id = commentId
-        
-        if let commentText = json["text"] as? String {
-            self.text = commentText
-        } else {
-            self.text = ""
-        }
-        
-        self.commenter = UserLite(json: commentOwner)
-
-        
-        if let date = json["commentDate"] as? Int{
-            self.commentDate = Date(timeIntervalSince1970: TimeInterval(date / 1000))
-        } else {
-            self.commentDate = Date()
-        }
-        
-    }
-    
-}
-
-extension PostComment : JSONDecodable {
-    
-    var jsonData : [String:Any] {
-        
-        
-        let commenterUser = self.commenter as? JSONDecodable
-        
-        return [
-            "id" : self.id,
-            "commenter" : commenterUser?.jsonData ?? [String:Any](),
-            "text": self.text,
-            "commentDate":Int(((self.commentDate.timeIntervalSince1970) * 1000).rounded())
-        ]
-    }
-}
-
-
-
-
-protocol PageableCommentListModelType : PageableModel, CommentListModelType { }
-
-struct CommentListModel : PageableCommentListModelType{
-    
-    var items : [PostCommentType] = [PostComment]()
-    var nextPageKey : String = ""
-    
-    init() {
-        
-    }
-    
-    init?(json:[String:Any]) {
-        
-        if let comments = json["postComments"] as? [[String:Any]], !comments.isEmpty{
-            for comment in comments {
-                if let commentObj = PostComment(json: comment) {
-                    self.items.append(commentObj)
-                }
-                
-            }
-        } else {
-            return nil
-        }
-        
-        if let key = json["nextPageKey"] as? String {
-            self.nextPageKey = key
-        }
-        
-    }
-    
-    var count : Int {
-        get{
-            return self.items.isEmpty ? 0 : self.items.count
-        }
-    }
-}
-
 // ============
 // Viewmodel
 // ============
@@ -140,10 +22,6 @@ protocol CommentListViewModelCoordinatorDelegate : class{
 }
 
 typealias CommentListVMCoordinatorDelegate = CommentListViewModelCoordinatorDelegate & ChildViewModelCoordinatorDelegate
-
-
-
-
 
 protocol CommentListViewModelType {
     

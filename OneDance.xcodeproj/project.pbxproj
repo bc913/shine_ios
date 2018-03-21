@@ -23,6 +23,16 @@
 		650415DC1FF038B700D19A89 /* EditCreateEventViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 650415DA1FF038B700D19A89 /* EditCreateEventViewController.xib */; };
 		650415E01FF03A4900D19A89 /* EditCreateOrganizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650415DE1FF03A4900D19A89 /* EditCreateOrganizationViewController.swift */; };
 		650415E11FF03A4900D19A89 /* EditCreateOrganizationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 650415DF1FF03A4900D19A89 /* EditCreateOrganizationViewController.xib */; };
+		65062DBF2061DEED00423439 /* CommentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65062DBE2061DEED00423439 /* CommentModel.swift */; };
+		65062DC12061DF2800423439 /* CommentListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65062DC02061DF2800423439 /* CommentListModel.swift */; };
+		65062DC32061DFE500423439 /* EventListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65062DC22061DFE500423439 /* EventListModel.swift */; };
+		65062DC52061E26600423439 /* EventListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65062DC42061E26600423439 /* EventListViewModel.swift */; };
+		65062DD32062053C00423439 /* EventListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65062DD22062053C00423439 /* EventListViewController.swift */; };
+		65062DD5206205B700423439 /* OrganizationListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65062DD4206205B700423439 /* OrganizationListViewController.swift */; };
+		65062DD82062061600423439 /* OrganizationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65062DD62062061600423439 /* OrganizationDetailViewController.swift */; };
+		65062DD92062061600423439 /* OrganizationDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65062DD72062061600423439 /* OrganizationDetailViewController.xib */; };
+		65062DDC2062064000423439 /* EventDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65062DDA2062064000423439 /* EventDetailViewController.swift */; };
+		65062DDD2062064000423439 /* EventDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65062DDB2062064000423439 /* EventDetailViewController.xib */; };
 		65063E8F204BA6CE00D8721B /* ProfileTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65063E8E204BA6CE00D8721B /* ProfileTabCoordinator.swift */; };
 		65063E91204BC8F800D8721B /* EditUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65063E90204BC8F800D8721B /* EditUserProfileViewController.swift */; };
 		650905DF1FDF8B00004E272D /* Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650905DE1FDF8B00004E272D /* Authentication.swift */; };
@@ -200,6 +210,16 @@
 		650415DA1FF038B700D19A89 /* EditCreateEventViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditCreateEventViewController.xib; path = ViewControllers/MainFlow/Event/EditCreateEventViewController.xib; sourceTree = "<group>"; };
 		650415DE1FF03A4900D19A89 /* EditCreateOrganizationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditCreateOrganizationViewController.swift; path = ViewControllers/MainFlow/Organization/EditCreateOrganizationViewController.swift; sourceTree = "<group>"; };
 		650415DF1FF03A4900D19A89 /* EditCreateOrganizationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditCreateOrganizationViewController.xib; path = ViewControllers/MainFlow/Organization/EditCreateOrganizationViewController.xib; sourceTree = "<group>"; };
+		65062DBE2061DEED00423439 /* CommentModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentModel.swift; path = Models/Feed/CommentModel.swift; sourceTree = "<group>"; };
+		65062DC02061DF2800423439 /* CommentListModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommentListModel.swift; path = Models/List/CommentListModel.swift; sourceTree = "<group>"; };
+		65062DC22061DFE500423439 /* EventListModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EventListModel.swift; path = Models/List/EventListModel.swift; sourceTree = "<group>"; };
+		65062DC42061E26600423439 /* EventListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EventListViewModel.swift; path = ViewModels/List/EventListViewModel.swift; sourceTree = "<group>"; };
+		65062DD22062053C00423439 /* EventListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EventListViewController.swift; path = ViewControllers/ListControllers/EventListViewController.swift; sourceTree = "<group>"; };
+		65062DD4206205B700423439 /* OrganizationListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OrganizationListViewController.swift; path = ViewControllers/ListControllers/OrganizationListViewController.swift; sourceTree = "<group>"; };
+		65062DD62062061600423439 /* OrganizationDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OrganizationDetailViewController.swift; path = ViewControllers/MainFlow/Organization/OrganizationDetailViewController.swift; sourceTree = "<group>"; };
+		65062DD72062061600423439 /* OrganizationDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = OrganizationDetailViewController.xib; path = ViewControllers/MainFlow/Organization/OrganizationDetailViewController.xib; sourceTree = "<group>"; };
+		65062DDA2062064000423439 /* EventDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EventDetailViewController.swift; path = ViewControllers/MainFlow/Event/EventDetailViewController.swift; sourceTree = "<group>"; };
+		65062DDB2062064000423439 /* EventDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EventDetailViewController.xib; path = ViewControllers/MainFlow/Event/EventDetailViewController.xib; sourceTree = "<group>"; };
 		65063E8E204BA6CE00D8721B /* ProfileTabCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileTabCoordinator.swift; path = Coordinators/MainFlow/ProfileTabCoordinator.swift; sourceTree = "<group>"; };
 		65063E90204BC8F800D8721B /* EditUserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditUserProfileViewController.swift; path = ViewControllers/MainFlow/User/EditUserProfileViewController.swift; sourceTree = "<group>"; };
 		650905DE1FDF8B00004E272D /* Authentication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Authentication.swift; path = Models/Core/Authentication.swift; sourceTree = "<group>"; };
@@ -375,6 +395,8 @@
 			isa = PBXGroup;
 			children = (
 				65012861205E0D33005F9AF8 /* UserListModel.swift */,
+				65062DC02061DF2800423439 /* CommentListModel.swift */,
+				65062DC22061DFE500423439 /* EventListModel.swift */,
 			);
 			name = List;
 			sourceTree = "<group>";
@@ -384,6 +406,7 @@
 			children = (
 				65012864205E11D0005F9AF8 /* PostModel.swift */,
 				65012866205E121A005F9AF8 /* FeedModel.swift */,
+				65062DBE2061DEED00423439 /* CommentModel.swift */,
 			);
 			name = Feed;
 			sourceTree = "<group>";
@@ -453,6 +476,8 @@
 			children = (
 				650415D91FF038B700D19A89 /* EditCreateEventViewController.swift */,
 				650415DA1FF038B700D19A89 /* EditCreateEventViewController.xib */,
+				65062DDA2062064000423439 /* EventDetailViewController.swift */,
+				65062DDB2062064000423439 /* EventDetailViewController.xib */,
 			);
 			name = Event;
 			sourceTree = "<group>";
@@ -462,6 +487,8 @@
 			children = (
 				650415DE1FF03A4900D19A89 /* EditCreateOrganizationViewController.swift */,
 				650415DF1FF03A4900D19A89 /* EditCreateOrganizationViewController.xib */,
+				65062DD62062061600423439 /* OrganizationDetailViewController.swift */,
+				65062DD72062061600423439 /* OrganizationDetailViewController.xib */,
 			);
 			name = Organization;
 			sourceTree = "<group>";
@@ -826,6 +853,8 @@
 				654259E020524C53006DB4A4 /* CommentListViewController.swift */,
 				654792CD2053621D00A844EC /* ShineCommentListViewController.swift */,
 				654792CE2053621D00A844EC /* ShineCommentListViewController.xib */,
+				65062DD22062053C00423439 /* EventListViewController.swift */,
+				65062DD4206205B700423439 /* OrganizationListViewController.swift */,
 			);
 			name = ListControllers;
 			sourceTree = "<group>";
@@ -834,6 +863,7 @@
 			isa = PBXGroup;
 			children = (
 				6501285E205E0CDD005F9AF8 /* UserListViewModel.swift */,
+				65062DC42061E26600423439 /* EventListViewModel.swift */,
 			);
 			name = List;
 			sourceTree = "<group>";
@@ -1048,6 +1078,7 @@
 				6525BD421FC1E57400249AFC /* TextViewFormCell.xib in Resources */,
 				654271202058CBC9009F3640 /* LocationMapViewController.xib in Resources */,
 				654FE85E2022D5FF002D1D23 /* DatePickerCell.xib in Resources */,
+				65062DD92062061600423439 /* OrganizationDetailViewController.xib in Resources */,
 				6548EE691FB8CFE70076EA4B /* TextFieldCell.xib in Resources */,
 				650CB27D1F68DF020093F2FC /* MainAuthViewController.xib in Resources */,
 				6564BE2F1F85D3F4005AF655 /* LoginViewController.xib in Resources */,
@@ -1061,6 +1092,7 @@
 				654672751FA030A1002DDC40 /* ProfileInfoSetupViewController.xib in Resources */,
 				654E01F11FBFEDDC0095C4D1 /* SwitchFormCell.xib in Resources */,
 				6546A0461FBBC65500B23685 /* NameTitleFormCell.xib in Resources */,
+				65062DDD2062064000423439 /* EventDetailViewController.xib in Resources */,
 				654B1D251F942A1900B13925 /* DanceTypesViewController.xib in Resources */,
 				654271182058C185009F3640 /* LocationSelectionViewController.xib in Resources */,
 				6503EC3A1F075CA900D56AB5 /* Assets.xcassets in Resources */,
@@ -1172,6 +1204,7 @@
 				65FD06F41F1D726C00932E5F /* LocationSearchTableViewCell.swift in Sources */,
 				6546A0451FBBC65500B23685 /* NameTitleFormCell.swift in Sources */,
 				6525BD411FC1E57400249AFC /* TextViewFormCell.swift in Sources */,
+				65062DDC2062064000423439 /* EventDetailViewController.swift in Sources */,
 				656834D51F8C8A7600ADCBA2 /* EmailLoginCoordinator.swift in Sources */,
 				65439CE61FF9FA6100EDE435 /* DecodeOperation.swift in Sources */,
 				6542711F2058CBC9009F3640 /* LocationMapViewController.swift in Sources */,
@@ -1184,6 +1217,7 @@
 				6564BE2E1F85D3F4005AF655 /* LoginViewController.swift in Sources */,
 				654E01F41FC0B4EE0095C4D1 /* LocationFormCell.swift in Sources */,
 				654259E120524C53006DB4A4 /* CommentListViewController.swift in Sources */,
+				65062DD82062061600423439 /* OrganizationDetailViewController.swift in Sources */,
 				650415DB1FF038B700D19A89 /* EditCreateEventViewController.swift in Sources */,
 				6525BD3D1FC1DD3800249AFC /* TextFieldFormCell.swift in Sources */,
 				65439CE31FF9E2D800EDE435 /* PhotosManager.swift in Sources */,
@@ -1204,6 +1238,7 @@
 				654926052060AC3A00207A5B /* OrganizationTableCell.swift in Sources */,
 				65427D2B1F905BA100407C5D /* InitialProfileSetupCoordinator.swift in Sources */,
 				656834D31F8C7F8300ADCBA2 /* EmailLoginViewModel.swift in Sources */,
+				65062DC32061DFE500423439 /* EventListModel.swift in Sources */,
 				654B1D241F942A1900B13925 /* DanceTypesViewController.swift in Sources */,
 				65640E081F9CF123006C2E21 /* ProfileImageSelectionViewController.swift in Sources */,
 				6509F252204C93B9001AD9FB /* DanceTypeSelectionViewController.swift in Sources */,
@@ -1212,6 +1247,7 @@
 				650AF5A71F89846B00DE46E1 /* CommandInterface.swift in Sources */,
 				651555EE205F4C87001429D2 /* ShineDanceTypesCell.swift in Sources */,
 				654938B61F98578D00B6D60C /* PersistanceManager.swift in Sources */,
+				65062DBF2061DEED00423439 /* CommentModel.swift in Sources */,
 				65012865205E11D0005F9AF8 /* PostModel.swift in Sources */,
 				6551DF5D2049168A00B3FC58 /* BasicView.swift in Sources */,
 				650CB27C1F68DF020093F2FC /* MainAuthViewController.swift in Sources */,
@@ -1221,6 +1257,7 @@
 				655CE7551FA17423005B0774 /* ProfileInfoSetupViewModel.swift in Sources */,
 				650AF5A41F89836200DE46E1 /* ShineNetworkService.swift in Sources */,
 				6558EB4520263EB500D184D2 /* ShineDatePickerCell.swift in Sources */,
+				65062DC52061E26600423439 /* EventListViewModel.swift in Sources */,
 				6542711B2058C4CD009F3640 /* LocationWithResultsViewController.swift in Sources */,
 				6548EE5B1FB8BA170076EA4B /* OrganizationProfileViewModel.swift in Sources */,
 				6548738A2042140900CAC92A /* PostViewModel.swift in Sources */,
@@ -1246,6 +1283,7 @@
 				6503EC301F075CA900D56AB5 /* AppDelegate.swift in Sources */,
 				654E02001FC139060095C4D1 /* DatePickerFormCell.swift in Sources */,
 				6561CED51FDE38FD008EC9A3 /* Helper.swift in Sources */,
+				65062DD32062053C00423439 /* EventListViewController.swift in Sources */,
 				6502E9EC2027B7AF00333BD4 /* PickerFormCell.swift in Sources */,
 				65063E91204BC8F800D8721B /* EditUserProfileViewController.swift in Sources */,
 				652A3D001FD50DC000376CB6 /* Location.swift in Sources */,
@@ -1256,6 +1294,7 @@
 				654259DF20524479006DB4A4 /* CommentTableCell.swift in Sources */,
 				65012867205E121A005F9AF8 /* FeedModel.swift in Sources */,
 				6549260220608E6E00207A5B /* EventTableCell.swift in Sources */,
+				65062DC12061DF2800423439 /* CommentListModel.swift in Sources */,
 				654271142058B610009F3640 /* LocationViewModels.swift in Sources */,
 				656834D11F8C6B5F00ADCBA2 /* EmailLoginViewModelInterface.swift in Sources */,
 				65BC8BF81F819F6800F5AF94 /* SignUpViewModelInterface.swift in Sources */,
@@ -1270,6 +1309,7 @@
 				6549871D1F8F1747002DFB0C /* DanceTypesViewModel.swift in Sources */,
 				654FE85D2022D5FF002D1D23 /* DatePickerCell.swift in Sources */,
 				6588B008201E69110046C7A0 /* NameTitleWithImageCell.swift in Sources */,
+				65062DD5206205B700423439 /* OrganizationListViewController.swift in Sources */,
 				6569B1FC203FA76A00D7B4B4 /* LoadingTableCell.swift in Sources */,
 				650C6B071FF35F500008597C /* TimeLineViewController.swift in Sources */,
 				654672711FA02A7A002DDC40 /* ProfileInfoSetupViewModelInterface.swift in Sources */,

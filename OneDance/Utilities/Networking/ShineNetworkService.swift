@@ -50,6 +50,14 @@ struct ShineNetworkService {
             static let changeProfilePhotoUrl : String = baseUrl + "/me" + "/profile" + "/photo"
             
             static let updateMyProfileUrl : String = baseUrl + "/me/profile"
+            
+            struct DJ {
+                static let baseUrl : String = Constants.baseUrl + "/djs"
+            }
+            
+            struct Instructor {
+                static let baseUrl : String = Constants.baseUrl + "/instructors"
+            }
         }
         
         
@@ -69,6 +77,7 @@ struct ShineNetworkService {
             static let base : String = Constants.baseUrl + "events"
             
             static let createUrl : String = base
+            
             static func getChangePhotoUrl(id: String) -> String {
                 
                 let url : String = Event.base + "/\(id)" + "/photo"
@@ -79,6 +88,28 @@ struct ShineNetworkService {
             static func getEventAttendersUrl(eventId: String) -> String {
                 
                 let url : String = Event.base + "/\(eventId)" + "/attenders"
+                return url
+            }
+            
+            static func getOrganizationEventsUrl(organizationID: String) -> String {
+                
+                let url : String = Organization.baseUrl + "/\(organizationID)" + "/events"
+                return url
+                
+            }
+            
+            static func getUserEventsUrl(userId: String) -> String {
+                let url : String = User.baseUrl + "/\(userId)" + "/events"
+                return url
+            }
+            
+            static func getDJsEventsUrl(djId: String) -> String {
+                let url : String = User.DJ.baseUrl + "/\(djId)" + "/events"
+                return url
+            }
+            
+            static func getInstructorEventsUrl(instructorId: String) -> String {
+                let url : String = User.Instructor.baseUrl + "/\(instructorId)" + "/events"
                 return url
             }
         }
@@ -1693,6 +1724,90 @@ struct ShineNetworkService {
                 )
                 
             }//getUserList
+            
+            /// To get the user list for like, follower, following
+            static func getEventList(source: ListSource, sourceId: String, nextPageKey: String, mainThreadCompletionHandler: @escaping (_ error: NSError?, _ userListModel: PageableEventListModelType?) -> ()){
+                
+                let headers: HTTPHeaders = [
+                    "Content-Type": "application/json",
+                    "USER-ID": PersistanceManager.User.userId!
+                ]
+                
+                let parameters : Parameters = [
+                    "n" : nextPageKey
+                ]
+                
+                var url : String = ""
+                
+                if source == .organization {
+                    url = Constants.Event.getOrganizationEventsUrl(organizationID: sourceId)
+                } else if source == .user {
+                    url = Constants.Event.getUserEventsUrl(userId: sourceId)
+                } else if source == .djUser {
+                    url = Constants.Event.getDJsEventsUrl(djId: sourceId)
+                } else if source == .instructorUser {
+                    url = Constants.Event.getInstructorEventsUrl(instructorId: sourceId)
+                } else {
+                    fatalError("ShinenetworkService::getEventList() is not implemented for this source")
+                }
+                
+                
+                let queue = DispatchQueue(label: "com.bc913.http-response-queue", qos: .background, attributes: [.concurrent])
+                Alamofire.request(url, method: .get, parameters: nextPageKey.isEmpty ? nil : parameters, encoding: URLEncoding.queryString, headers: headers)
+                    .responseJSON(
+                        queue: queue,
+                        completionHandler: { response in
+                            // Debug
+                            Helper.debugResponse(methodName: "getEventsList()", response: response)
+                            
+                            // Check status code
+                            let httpStatusCode = response.response?.statusCode
+                            
+                            // Error
+                            var error : NSError? = nil
+                            guard response.result.isSuccess else {
+                                
+                                error = ErrorFactory.createForAlamofireResponse(with: httpStatusCode!)
+                                print("Error 1")
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                            }
+                            
+                            // serialized json response
+                            guard let jsonData = response.result.value, let jsonDict = jsonData as? [String:Any] else{
+                                error = ErrorFactory.createForResponseDataSerialization(with: httpStatusCode!)
+                                print("Error 2")
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                            }
+                            
+                            if let errorMessage = jsonDict["message"] as? String {
+                                error = ErrorFactory.create(.User, .User, .User, description: errorMessage)
+                                print("Error 3")
+                                mainThreadCompletionHandler(error, nil)
+                                return
+                                
+                            }
+                            
+                            let listModel = EventListModel(json: jsonDict)
+                            print("EventListModel = \(String(describing: listModel?.count))")
+                            
+                            if listModel == nil {
+                                error = ErrorFactory.createForResponseDataSerialization(with: nil)
+                                print("Json data is not parsed successfully for the user profile model")
+                                print("Error 4")
+                                
+                            }
+                            
+                            //
+                            // To update anything on the main thread, just jump back on like so.
+                            mainThreadCompletionHandler(error, listModel)
+                            print("#############################################################")
+                            
+                    }
+                )
+                
+            }//getEventList
 
         }// Common
         

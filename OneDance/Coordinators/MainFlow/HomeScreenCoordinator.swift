@@ -12,6 +12,9 @@ import UIKit
 enum ListSource {
     
     case user
+    case djUser
+    case instructorUser
+    
     case organization
     case post
     case event
@@ -28,6 +31,9 @@ enum ListType{
     
     case follower
     case following
+    
+    case event
+    case organization
 }
 
 enum ShineType{
@@ -401,6 +407,10 @@ extension OrganizationCoordinator : Coordinator {
         vc.viewModel = viewModel
         self.hostNavigationController.push(viewController: vc, animated: true)
         */
+        
+        let vc = OrganizationDetailViewController(nibName: "OrganizationDetailViewController", bundle: nil)
+        
+        self.hostNavigationController.pushViewController(vc, animated: true)
     }
     
     func startCreateEditOrganization(){
@@ -492,7 +502,9 @@ extension EventCoordinator : Coordinator {
     }
     
     func startViewEventDetail() {
+        let vc = EventDetailViewController(nibName: "EventDetailViewController", bundle: nil)
         
+        self.hostNavigationController.pushViewController(vc, animated: true)
     }
     
     func startCreateEditEvent(){
@@ -575,7 +587,9 @@ extension ListCoordinator : Coordinator{
             startUserList()
         } else if self.type == .comment && self.source == .post {
             startPostComments()
-        }       
+        } else if self.type == .event {
+            startEventList()
+        }
     }
     
     private func startPostComments(){
@@ -608,12 +622,29 @@ extension ListCoordinator : Coordinator{
         vc.viewModel = viewModel
         self.hostNavigationController.pushViewController(vc, animated: true)
     }
+    
+    private func startEventList(){
+        let vc = EventListViewController(nibName: nil, bundle: nil)
+        let viewModel = EventListViewModel(source: self.source, sourceId: self.id)
+        viewModel.coordinatorDelegate = self
+        
+        vc.viewModel = viewModel
+        self.hostNavigationController.pushViewController(vc, animated: true)
+    }
+    
+    private func startOrganizationList(){
+        let vc = OrganizationListViewController(nibName: nil, bundle: nil)
+        
+        
+        self.hostNavigationController.pushViewController(vc, animated: true)
+    }
 }
 
 extension ListCoordinator : UserListViewModelCoordinatorDelegate {}
 
 extension ListCoordinator : CommentListViewModelCoordinatorDelegate {}
 
+extension ListCoordinator : EventListViewModelCoordinatorDelegate{}
 
 //===============================================================================================
 //MARK: PostCoordinator
