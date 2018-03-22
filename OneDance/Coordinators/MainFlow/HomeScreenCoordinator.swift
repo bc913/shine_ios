@@ -123,12 +123,6 @@ protocol ChildCoordinatorDelegate : class {
 /// Base class definitions for all child coordinators under container coordinator.
 /// Every child coordinator should inherit this.
 
-protocol BaseChildCoordinatorType : class {
-    weak var delegate : ChildCoordinatorDelegate? { get set }
-    var id : String { get set }
-    var hostNavigationController : UINavigationController { get set }
-}
-
 class BaseChildCoordinator {
     
     weak var delegate : ChildCoordinatorDelegate? // Container coordinator
@@ -200,7 +194,7 @@ extension BaseChildCoordinator : ChildViewModelCoordinatorDelegate {
 
 class BaseContainerCoordinator {
     
-    var childCoordinators = [String: BaseChildCoordinator]()
+    //var childCoordinators = [String: BaseChildCoordinator]()
     var containerNavigationController: UINavigationController
     
     var coordinatorStack : Stack<BaseChildCoordinator> = Stack<BaseChildCoordinator>()

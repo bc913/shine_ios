@@ -22,7 +22,7 @@ protocol MainAuthViewModelCoordinatorDelegate : class {
 protocol MainAuthViewModelType : class {
     
     // Properties
-    var coordinatorDelegate : MainAuthViewModelCoordinatorDelegate? { get set }
+    var coordinatorDelegate : MainAuthVMCoordinatorDelegate? { get set }
     
     func skipAuth()
     func presentFacebookSignupScreen()

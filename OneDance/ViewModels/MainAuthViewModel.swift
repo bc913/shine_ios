@@ -8,26 +8,27 @@
 
 import Foundation
 
+typealias MainAuthVMCoordinatorDelegate = MainAuthViewModelCoordinatorDelegate & AuthChildViewModelCoordinatorDelegate
 
 class MainAuthViewModel : MainAuthViewModelType {
     
-    weak var coordinatorDelegate : MainAuthViewModelCoordinatorDelegate?
+    weak var coordinatorDelegate : MainAuthVMCoordinatorDelegate?
     
     
     func skipAuth() {
-        coordinatorDelegate?.mainAuthViewModelDidSelectSkip(viewModel: self)
+        self.coordinatorDelegate?.viewModelDidSelectSkip()
     }
     
     public func presentEmailSignupScreen() {
-        coordinatorDelegate?.mainAuthViewModelDidSelectRegister(authType: AuthType.Email)
+        self.coordinatorDelegate?.viewModelDidSelectEmailSignup()
     }
     
     public func presentLoginScreen() {
-        coordinatorDelegate?.mainAuthViewModelDidSelectLogin(viewModel: self)
+       self.coordinatorDelegate?.viewModelDidSelectLogin()
     }
     
     public func presentFacebookSignupScreen() {
-        coordinatorDelegate?.mainAuthViewModelDidSelectRegister(authType: AuthType.Facebook)
+        //
     }
     
     // properties

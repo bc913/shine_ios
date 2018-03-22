@@ -32,7 +32,7 @@ class SignUpCoordinator : Coordinator{
         if self.authType == .Email {
             let vc = EmailSignUpViewController(nibName: "EmailSignUpViewController", bundle: nil)
             let viewModel = EmailSignUpViewModel()
-            viewModel.coordinatorDelegate = self
+            //viewModel.coordinatorDelegate = self
             vc.viewModel = viewModel
             if let navigationController = window.rootViewController as? UINavigationController {
                 navigationController.pushViewController(vc, animated: true)

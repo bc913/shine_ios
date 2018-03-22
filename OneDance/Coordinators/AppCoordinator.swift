@@ -52,10 +52,12 @@ extension AppCoordinator : MainAuthCoordinatorDelegate {
     
     func mainAuthCoordinatorDidFinish(authenticationCoordinator: MainAuthenticationCoordinator) {
         print("AppCoordinator :: mainAuthCoordinatorDidFinish")
+        childCoordinators[AUTHENTICATION_KEY] = nil
         self.showHomeScreen()
     }
     
     func mainAuthCoordinatorDidSelectSkip(authenticationCoordinator: MainAuthenticationCoordinator) {
+        childCoordinators[AUTHENTICATION_KEY] = nil
         self.showHomeScreen()
     }
     
