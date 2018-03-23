@@ -113,6 +113,7 @@
 		6549260320608E6E00207A5B /* EventTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6549260120608E6E00207A5B /* EventTableCell.xib */; };
 		654926052060AC3A00207A5B /* OrganizationTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654926042060AC3A00207A5B /* OrganizationTableCell.swift */; };
 		654938B61F98578D00B6D60C /* PersistanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654938B51F98578D00B6D60C /* PersistanceManager.swift */; };
+		6549534320649475006FF0D3 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6549534220649475006FF0D3 /* LoginViewModel.swift */; };
 		6549871B1F8F0F31002DFB0C /* DanceTypesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6549871A1F8F0F31002DFB0C /* DanceTypesModel.swift */; };
 		6549871D1F8F1747002DFB0C /* DanceTypesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6549871C1F8F1747002DFB0C /* DanceTypesViewModel.swift */; };
 		6549E7841F8B2DF7000C475E /* danceTypes.json in Resources */ = {isa = PBXBuildFile; fileRef = 6549E7831F8B2DF7000C475E /* danceTypes.json */; };
@@ -302,6 +303,7 @@
 		6549260120608E6E00207A5B /* EventTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EventTableCell.xib; path = ViewControllers/TableCells/List/EventTableCell.xib; sourceTree = "<group>"; };
 		654926042060AC3A00207A5B /* OrganizationTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OrganizationTableCell.swift; path = ViewControllers/TableCells/List/OrganizationTableCell.swift; sourceTree = "<group>"; };
 		654938B51F98578D00B6D60C /* PersistanceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PersistanceManager.swift; path = Persistance/PersistanceManager.swift; sourceTree = "<group>"; };
+		6549534220649475006FF0D3 /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewModel.swift; path = ViewModels/Authentication/LoginViewModel.swift; sourceTree = "<group>"; };
 		6549871A1F8F0F31002DFB0C /* DanceTypesModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceTypesModel.swift; path = Models/DanceTypesModel.swift; sourceTree = "<group>"; };
 		6549871C1F8F1747002DFB0C /* DanceTypesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceTypesViewModel.swift; path = ViewModels/DanceTypesViewModel.swift; sourceTree = "<group>"; };
 		6549E7831F8B2DF7000C475E /* danceTypes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = danceTypes.json; path = Resources/danceTypes.json; sourceTree = "<group>"; };
@@ -514,6 +516,7 @@
 				652F007C1F6B83F80085C5F5 /* MainAuthViewModel.swift */,
 				65BC8BF91F81D74600F5AF94 /* SignUpViewModel.swift */,
 				656834D21F8C7F8300ADCBA2 /* EmailLoginViewModel.swift */,
+				6549534220649475006FF0D3 /* LoginViewModel.swift */,
 			);
 			name = Authentication;
 			sourceTree = "<group>";
@@ -1209,6 +1212,7 @@
 				654CAAA41FBD3FC000190EF1 /* BaseFormCell.swift in Sources */,
 				65FD06F41F1D726C00932E5F /* LocationSearchTableViewCell.swift in Sources */,
 				6546A0451FBBC65500B23685 /* NameTitleFormCell.swift in Sources */,
+				6549534320649475006FF0D3 /* LoginViewModel.swift in Sources */,
 				6525BD411FC1E57400249AFC /* TextViewFormCell.swift in Sources */,
 				65062DDC2062064000423439 /* EventDetailViewController.swift in Sources */,
 				656834D51F8C8A7600ADCBA2 /* EmailLoginCoordinator.swift in Sources */,

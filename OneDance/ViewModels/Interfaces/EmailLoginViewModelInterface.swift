@@ -8,28 +8,4 @@
 
 import Foundation
 
-protocol EmailLoginViewModelCoordinatorDelegate : class {
-    func userDidLogin(viewModel: EmailLoginViewModelType)
-}
 
-protocol EmailLoginViewModelViewDelegate : class {
-    func canSubmitStatusDidChange(_ viewModel: EmailLoginViewModelType, status: Bool)
-    func notifyUser(_ viewModel: EmailLoginViewModelType, _ title: String, _ message: String)
-}
-
-
-protocol EmailLoginViewModelType : class {
-    
-    // Delegates
-    var coordinatorDelegate : EmailLoginViewModelCoordinatorDelegate? { get set }
-    var viewDelegate : EmailLoginViewModelViewDelegate? { get set }
-    
-    var email : String? { get set }
-    var username : String? { get set }
-    var password : String { get set }
-    
-    var canSubmit : Bool { get }
-    var errorMessage : String { get }
-    
-    func submit()
-}

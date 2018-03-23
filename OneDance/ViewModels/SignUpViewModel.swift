@@ -22,7 +22,7 @@ protocol EmailSignUpViewModelViewDelegate : class {
     func notifyUser(_ viewModel: EmailSignUpViewModelType, _ title: String, _ message: String)
 }
 
-protocol EmailSignUpViewModelType : class {
+protocol EmailSignUpViewModelType : class, NavigationalViewModel {
     
     var coordinatorDelegate : EmailSignUpVMCoordinatorDelegate? { get set }
     var viewDelegate : EmailSignUpViewModelViewDelegate? { get set }
@@ -166,5 +166,11 @@ class EmailSignUpViewModel: EmailSignUpViewModelType {
         ShineNetworkService.API.User.createAccountWithEmail(model:regModel, mainThreadCompletionHandler: modelCompletionHandler)
         
         
+    }
+}
+
+extension EmailSignUpViewModel {
+    func goBack() {
+        self.coordinatorDelegate?.viewModelDidSelectGoBack()
     }
 }

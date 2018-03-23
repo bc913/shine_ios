@@ -41,6 +41,7 @@ class EmailSignUpViewController: UIViewController {
         
         self.isLoaded = true
         self.configureCreateAccountButton()
+        self.configureNavigationBar()
         
         // Signal slots
         
@@ -150,15 +151,24 @@ class EmailSignUpViewController: UIViewController {
     
     private func configureNavigationBar(){
         // Make navigation bar transparent
-        if let navigationBar = self.navigationController?.navigationBar {
-            navigationBar.setBackgroundImage(UIImage(), for: .default)
-            navigationBar.shadowImage = UIImage()
-            navigationBar.isTranslucent = true
-            self.navigationController?.view.backgroundColor = .clear
-        }       
+//        if let navigationBar = self.navigationController?.navigationBar {
+//            navigationBar.setBackgroundImage(UIImage(), for: .default)
+//            navigationBar.shadowImage = UIImage()
+//            navigationBar.isTranslucent = true
+//            self.navigationController?.view.backgroundColor = .clear
+//        }
+        
+        // Customize navigation for back
+        self.navigationItem.hidesBackButton = true
+        let newBackButton = UIBarButtonItem(image: UIImage(named:"back_white"), style: .plain, target: self, action: #selector(goBack(sender:)))
+        self.navigationItem.leftBarButtonItem = newBackButton
         
     }
     
+    @objc
+    func goBack(sender: UIBarButtonItem){
+        self.viewModel?.goBack()
+    }
 
     
 }

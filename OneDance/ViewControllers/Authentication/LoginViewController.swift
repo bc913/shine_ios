@@ -20,7 +20,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var submitLoginButton: UIButton!
     
     
-    var viewModel : EmailLoginViewModelType?{
+    var viewModel : LoginViewModelType?{
         willSet{
             self.viewModel?.viewDelegate = nil
         }
@@ -39,6 +39,7 @@ class LoginViewController: UIViewController {
         self.isLoaded = true
         self.configureSubmitLoginButton()
         self.configureLoginControlType()
+        self.configureNavigationBar()
         
         self.emailTextField.addTarget(self, action: #selector(emailFieldDidChange(_:)), for: UIControlEvents.editingChanged)
         self.passwordTextField.addTarget(self, action: #selector(passwordFieldDidChange(_:)), for: UIControlEvents.editingChanged)
@@ -148,6 +149,16 @@ class LoginViewController: UIViewController {
 //            navigationBar.isTranslucent = true
 //        }
         
+        // Customize navigation for back
+        self.navigationItem.hidesBackButton = true
+        let newBackButton = UIBarButtonItem(image: UIImage(named:"back_white"), style: .plain, target: self, action: #selector(goBack(sender:)))
+        self.navigationItem.leftBarButtonItem = newBackButton
+        
+    }
+    
+    @objc
+    func goBack(sender: UIBarButtonItem){
+        self.viewModel?.goBack()
     }
     
     private func configureLoginControlType() {
@@ -171,14 +182,14 @@ fileprivate enum LoginType {
     case email
 }
 
-extension LoginViewController : EmailLoginViewModelViewDelegate {
+extension LoginViewController : LoginViewModelViewDelegate {
     
-    func canSubmitStatusDidChange(_ viewModel: EmailLoginViewModelType, status: Bool) {
+    func canSubmitStatusDidChange(_ viewModel: LoginViewModelType, status: Bool) {
         self.submitLoginButton.isEnabled = status
     }
     
     
-    func notifyUser(_ viewModel: EmailLoginViewModelType, _ title: String, _ message: String) {
+    func notifyUser(_ viewModel: LoginViewModelType, _ title: String, _ message: String) {
         // create the alert
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         

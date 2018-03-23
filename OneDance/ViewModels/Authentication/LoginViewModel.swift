@@ -1,28 +1,29 @@
 //
-//  EmailLoginViewModel.swift
+//  LoginViewModel.swift
 //  OneDance
 //
-//  Created by Burak Can on 10/10/17.
-//  Copyright © 2017 Burak Can. All rights reserved.
+//  Created by Burak Can on 3/22/18.
+//  Copyright © 2018 Burak Can. All rights reserved.
 //
 
 import Foundation
 
-protocol EmailLoginViewModelCoordinatorDelegate : class {
-    func userDidLogin(viewModel: EmailLoginViewModelType)
+protocol LoginViewModelCoordinatorDelegate : class {
+    func userDidLogin(viewModel: LoginViewModelType)
 }
 
-protocol EmailLoginViewModelViewDelegate : class {
-    func canSubmitStatusDidChange(_ viewModel: EmailLoginViewModelType, status: Bool)
-    func notifyUser(_ viewModel: EmailLoginViewModelType, _ title: String, _ message: String)
+protocol LoginViewModelViewDelegate : class {
+    func canSubmitStatusDidChange(_ viewModel: LoginViewModelType, status: Bool)
+    func notifyUser(_ viewModel: LoginViewModelType, _ title: String, _ message: String)
 }
 
+typealias LoginVMCoordinatorDelegate = LoginViewModelCoordinatorDelegate & AuthChildViewModelCoordinatorDelegate
 
-protocol EmailLoginViewModelType : class {
+protocol LoginViewModelType : class, NavigationalViewModel {
     
     // Delegates
-    var coordinatorDelegate : EmailLoginViewModelCoordinatorDelegate? { get set }
-    var viewDelegate : EmailLoginViewModelViewDelegate? { get set }
+    weak var coordinatorDelegate : LoginVMCoordinatorDelegate? { get set }
+    weak var viewDelegate : LoginViewModelViewDelegate? { get set }
     
     var email : String? { get set }
     var username : String? { get set }
@@ -32,12 +33,13 @@ protocol EmailLoginViewModelType : class {
     var errorMessage : String { get }
     
     func submit()
+    
 }
 
-class EmailLoginViewModel : EmailLoginViewModelType {
+class LoginViewModel : LoginViewModelType {
     
-    weak var coordinatorDelegate: EmailLoginViewModelCoordinatorDelegate?
-    weak var viewDelegate: EmailLoginViewModelViewDelegate?
+    weak var coordinatorDelegate: LoginVMCoordinatorDelegate?
+    weak var viewDelegate: LoginViewModelViewDelegate?
     
     /// Email
     var email: String? = "" {
@@ -105,7 +107,7 @@ class EmailLoginViewModel : EmailLoginViewModelType {
     
     func submit() {
         
-        print("EmailLogin :: submit()")        
+        print("EmailLogin :: submit()")
         
         let modelCompletionHandler = { (error: NSError?) in
             //Make sure we are on the main thread
@@ -114,7 +116,7 @@ class EmailLoginViewModel : EmailLoginViewModelType {
                 guard let error = error else {
                     print("Persistance userId: \(String(describing: PersistanceManager.User.userId))")
                     print("Persistance secretId: \(String(describing: PersistanceManager.User.secretId))")
-                    self.coordinatorDelegate?.userDidLogin(viewModel: self)
+                    self.coordinatorDelegate?.viewModelDidCompleteLogin()
                     return
                 }
                 self.errorMessage = error.localizedDescription
@@ -128,4 +130,10 @@ class EmailLoginViewModel : EmailLoginViewModelType {
     }
     
     
+}
+
+extension LoginViewModel {
+    func goBack() {
+        self.coordinatorDelegate?.viewModelDidSelectGoBack()
+    }
 }

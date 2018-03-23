@@ -52,6 +52,132 @@ extension MainAuthenticationCoordinator : AuthContainerDelegate {
 }
 
 //===============================================================================================
+//MARK: Authentication Container
+//===============================================================================================
+
+protocol AuthChildCoordinatorDelegate : class {
+    
+    func childCoordinatorDidRequestGoBack(sender: AuthBaseChildCoordinator)
+    func childCoordinatorDidRequestLogin(sender: AuthBaseChildCoordinator)
+    func childCoordinatorDidRequestEmailSignup(sender: AuthBaseChildCoordinator)
+    func childCoordinatorDidRequestSkip(sender: AuthBaseChildCoordinator)
+    
+    func childCoordinatorDidCompleteEmailSignup(sender: AuthBaseChildCoordinator)
+    func childCoordinatorDidCompleteLogin(sender: AuthBaseChildCoordinator)
+    
+}
+
+protocol AuthContainerDelegate : class {
+    func onAuthCompleted()
+}
+
+class AuthenticationContainerCoordinator {
+    
+    weak var delegate : AuthContainerDelegate?
+    
+    var containerNavigationController: UINavigationController
+    
+    var coordinatorStack : Stack<AuthBaseChildCoordinator> = Stack<AuthBaseChildCoordinator>()
+    var childCoordinators = [String:AuthBaseChildCoordinator]()
+    
+    init(containerNavController: UINavigationController) {
+        self.containerNavigationController = containerNavController
+    }
+    
+    deinit {
+        print("~AuthenticationContainerCoordinator()")
+        self.removeAllViews()
+        self.cleanCoordinatorStack()
+        
+    }
+}
+
+extension AuthenticationContainerCoordinator {
+    
+    var activeCoordinator : AuthBaseChildCoordinator? {
+        return self.coordinatorStack.top
+    }
+}
+
+extension AuthenticationContainerCoordinator : Coordinator {
+    func start() {
+        
+        let rootCoordinator = AuthRootCoordinator(host: self.containerNavigationController)
+        rootCoordinator.delegate = self
+        //self.coordinatorStack.push(rootCoordinator)
+        self.childCoordinators["ROOT"] = rootCoordinator
+        rootCoordinator.start()
+    }
+}
+
+extension AuthenticationContainerCoordinator : AuthChildCoordinatorDelegate {
+    
+    func childCoordinatorDidRequestGoBack(sender: AuthBaseChildCoordinator) {
+        self.containerNavigationController.popViewController(animated: true)
+        if sender is ShineLoginCoordinator {
+            childCoordinators["LOGIN"] = nil
+        } else if sender is ShineEmailSignUpCoordinator{
+            childCoordinators["SIGNUP"] = nil
+        }
+        //self.coordinatorStack.pop()
+    }
+    
+    func childCoordinatorDidRequestLogin(sender: AuthBaseChildCoordinator) {
+        let loginCoordinator = ShineLoginCoordinator(host: self.containerNavigationController)
+        loginCoordinator.delegate = self
+        //self.coordinatorStack.push(loginCoordinator)
+        childCoordinators["LOGIN"] = loginCoordinator
+        loginCoordinator.start()
+    }
+    
+    func childCoordinatorDidRequestEmailSignup(sender: AuthBaseChildCoordinator) {
+        let signupCoordinator = ShineEmailSignUpCoordinator(host: self.containerNavigationController)
+        signupCoordinator.delegate = self
+        //self.coordinatorStack.push(signupCoordinator)
+        childCoordinators["SIGNUP"] = signupCoordinator
+        signupCoordinator.start()
+    }
+    
+    func childCoordinatorDidRequestSkip(sender: AuthBaseChildCoordinator) {
+        
+    }
+    
+    func childCoordinatorDidCompleteEmailSignup(sender: AuthBaseChildCoordinator) {
+        
+        removeAllViews()
+        cleanCoordinatorStack()
+        self.childCoordinators["ROOT"] = nil
+        self.delegate?.onAuthCompleted()
+    }
+    
+    func childCoordinatorDidCompleteLogin(sender: AuthBaseChildCoordinator) {
+        removeAllViews()
+        cleanCoordinatorStack()
+        self.childCoordinators["ROOT"] = nil
+        self.delegate?.onAuthCompleted()
+    }
+    
+    func removeAllViews(){
+        self.containerNavigationController.viewControllers.removeAll()
+    }
+    
+    func cleanCoordinatorStack(){
+        let totalCoordinators = self.coordinatorStack.count
+        
+        if totalCoordinators < 1 {
+            return
+        }
+        
+        for _ in 1 ... totalCoordinators {
+            self.coordinatorStack.pop()
+        }
+        
+    }
+}
+
+
+
+//===============================================================================================
 //MARK: Auth Base child coordinator
 //===============================================================================================
 
@@ -63,6 +189,7 @@ protocol AuthChildViewModelCoordinatorDelegate : class {
     func viewModelDidSelectSkip()
     
     func viewModelDidCompleteEmailSignup()
+    func viewModelDidCompleteLogin()
 }
 
 class AuthBaseChildCoordinator {
@@ -71,6 +198,11 @@ class AuthBaseChildCoordinator {
     
     init(host: UINavigationController) {
         self.hostNavigationController = host
+    }
+    
+    deinit {
+        
+        print("~AuthBaseChildCoordinator()")
     }
     
 }
@@ -92,101 +224,14 @@ extension AuthBaseChildCoordinator : AuthChildViewModelCoordinatorDelegate {
         self.delegate?.childCoordinatorDidRequestSkip(sender: self)
     }
     
+    
+    
     func viewModelDidCompleteEmailSignup() {
         self.delegate?.childCoordinatorDidCompleteEmailSignup(sender: self)
     }
-}
-
-//===============================================================================================
-//MARK: Authentication Container
-//===============================================================================================
-
-protocol AuthChildCoordinatorDelegate : class {
     
-    func childCoordinatorDidRequestGoBack(sender: AuthBaseChildCoordinator)
-    func childCoordinatorDidRequestLogin(sender: AuthBaseChildCoordinator)
-    func childCoordinatorDidRequestEmailSignup(sender: AuthBaseChildCoordinator)
-    func childCoordinatorDidRequestSkip(sender: AuthBaseChildCoordinator)
-    
-    func childCoordinatorDidCompleteEmailSignup(sender: AuthBaseChildCoordinator)
-    
-}
-
-protocol AuthContainerDelegate : class {
-    func onAuthCompleted()
-}
-
-class AuthenticationContainerCoordinator {
-    
-    weak var delegate : AuthContainerDelegate?
-    
-    var containerNavigationController: UINavigationController
-    
-    var coordinatorStack : Stack<AuthBaseChildCoordinator> = Stack<AuthBaseChildCoordinator>()
-    
-    init(containerNavController: UINavigationController) {
-        self.containerNavigationController = containerNavController
-    }
-}
-
-extension AuthenticationContainerCoordinator {
-    
-    var activeCoordinator : AuthBaseChildCoordinator? {
-        return self.coordinatorStack.top
-    }
-}
-
-extension AuthenticationContainerCoordinator : Coordinator {
-    func start() {
-        
-        let rootCoordinator = AuthRootCoordinator(host: self.containerNavigationController)
-        rootCoordinator.delegate = self
-        self.coordinatorStack.push(rootCoordinator)
-        rootCoordinator.start()
-    }
-}
-
-extension AuthenticationContainerCoordinator : AuthChildCoordinatorDelegate {
-    
-    func childCoordinatorDidRequestGoBack(sender: AuthBaseChildCoordinator) {
-        self.containerNavigationController.popViewController(animated: true)
-        self.coordinatorStack.pop()
-    }
-    
-    func childCoordinatorDidRequestLogin(sender: AuthBaseChildCoordinator) {
-        
-    }
-    
-    func childCoordinatorDidRequestEmailSignup(sender: AuthBaseChildCoordinator) {
-        let signupCoordinator = ShineEmailSignUpCoordinator(host: self.containerNavigationController)
-        signupCoordinator.delegate = self
-        self.coordinatorStack.push(signupCoordinator)
-        signupCoordinator.start()
-    }
-    
-    func childCoordinatorDidRequestSkip(sender: AuthBaseChildCoordinator) {
-        
-    }
-    
-    func childCoordinatorDidCompleteEmailSignup(sender: AuthBaseChildCoordinator) {
-        
-        removeAllViews()
-        cleanCoordinatorStack()
-        
-        self.delegate?.onAuthCompleted()
-    }
-    
-    private func removeAllViews(){
-        self.containerNavigationController.viewControllers.removeAll()
-    }
-    
-    private func cleanCoordinatorStack(){
-        let totalCoordinators = self.coordinatorStack.count
-        
-        for _ in 1 ... totalCoordinators {
-            self.coordinatorStack.pop()
-        }
-
+    func viewModelDidCompleteLogin() {
+        self.delegate?.childCoordinatorDidCompleteLogin(sender: self)
     }
 }
 
@@ -260,67 +305,27 @@ extension ShineEmailSignUpCoordinator : EmailSignUpViewModelCoordinatorDelegate{
 //MARK: Login Coordinator
 //===============================================================================================
 
-
-
-extension MainAuthenticationCoordinator : MainAuthViewModelCoordinatorDelegate {
-    
-    func mainAuthViewModelDidSelectRegister(authType: AuthType){
-        print("\(authType) is selected...")
-        
-        // Implement child cooridnators
-        
-        let signUpCoordinator = SignUpCoordinator(window: self.window, type: authType)
-        self.childCoordinators[authType.rawValue] = signUpCoordinator
-        signUpCoordinator.delegate = self
-        signUpCoordinator.start()
-        
-    }
-    
-    
-    func mainAuthViewModelDidSelectLogin(viewModel: MainAuthViewModelType){
-        
-        let emailLoginCoordinator = EmailLoginCoordinator(window: self.window)
-        self.childCoordinators["EMAIL_LOGIN"] = emailLoginCoordinator
-        emailLoginCoordinator.delegate = self
-        emailLoginCoordinator.start()
-        
-    }
-    
-    func mainAuthViewModelDidSelectSkip(viewModel: MainAuthViewModelType){
-        self.delegate?.mainAuthCoordinatorDidSelectSkip(authenticationCoordinator: self)
-    }
-}
-
-extension MainAuthenticationCoordinator : SignUpCoordinatorDelegate{
-    func signUpCoordinatorDidFinishSignUp(signUpCoordinator:SignUpCoordinator){
-        print("signUpCoordinatorDidFinishSignUp()")
-        self.childCoordinators[signUpCoordinator.authType.rawValue] = nil
-        
-        // Onboarding and initial setup
-        self.presentInitialProfileSetup()
-    }
+class ShineLoginCoordinator : AuthBaseChildCoordinator {
     
 }
 
-extension MainAuthenticationCoordinator : EmailLoginCoordinatorDelegate{
-    func emailLoginCoordinatorDidFinishLogin(emailLoginCoordinator: EmailLoginCoordinator) {
-        print("emailLoginCoordinatorDidFinishLogin")
-        self.childCoordinators["EMAIL_LOGIN"] = nil
-        
-        // Onboarding and initial setup
-        self.delegate?.mainAuthCoordinatorDidFinish(authenticationCoordinator: self)
+extension ShineLoginCoordinator : Coordinator {
+    func start() {
+        let vc = LoginViewController(nibName: "LoginViewController", bundle: nil)
+        let viewModel = LoginViewModel()
+        viewModel.coordinatorDelegate = self
+        vc.viewModel = viewModel
+        self.hostNavigationController.pushViewController(vc, animated: true)
     }
 }
 
-extension MainAuthenticationCoordinator : InitialProfileSetupCoordinatorDelegate {
-    func presentInitialProfileSetup(){
-        let initialProfileSetupCoordinator = InitialProfileSetupCoordinator(window: self.window)
-        self.childCoordinators["INITIAL_SETUP"] = initialProfileSetupCoordinator
-        initialProfileSetupCoordinator.delegate = self
-        initialProfileSetupCoordinator.start()
-    }
-    
-    func initialProfileSetupDidFinish(initialProfileSetupCoordinator: InitialProfileSetupCoordinator) {
-        self.delegate?.mainAuthCoordinatorDidFinish(authenticationCoordinator: self)
+extension ShineLoginCoordinator : LoginViewModelCoordinatorDelegate{
+    func userDidLogin(viewModel: LoginViewModelType) {
+        
     }
 }
+
+//===============================================================================================
+//MARK: Facebook Coordinator
+//===============================================================================================
+
