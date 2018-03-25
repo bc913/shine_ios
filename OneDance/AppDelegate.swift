@@ -39,6 +39,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          
          */
         
+        // Tabbar colors
+        UITabBar.appearance().tintColor = UIColor(red: 44.0/255.0, green: 43.0/255.0, blue: 64.0/255.0, alpha: 1)
+        
         // Device
         if !PersistanceManager.User.isLoggedIn {
             ShineNetworkService.API.User.addDevice()

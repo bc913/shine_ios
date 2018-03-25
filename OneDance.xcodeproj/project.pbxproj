@@ -82,6 +82,8 @@
 		65427D281F90508300407C5D /* DanceTypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65427D261F90508300407C5D /* DanceTypeTableViewCell.swift */; };
 		65427D291F90508300407C5D /* DanceTypeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65427D271F90508300407C5D /* DanceTypeTableViewCell.xib */; };
 		65427D2B1F905BA100407C5D /* InitialProfileSetupCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65427D2A1F905BA100407C5D /* InitialProfileSetupCoordinator.swift */; };
+		654304D12066D0A400731F94 /* SearchExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654304CF2066D0A400731F94 /* SearchExploreViewController.swift */; };
+		654304D22066D0A400731F94 /* SearchExploreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 654304D02066D0A400731F94 /* SearchExploreViewController.xib */; };
 		65439CE31FF9E2D800EDE435 /* PhotosManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65439CE21FF9E2D800EDE435 /* PhotosManager.swift */; };
 		65439CE61FF9FA6100EDE435 /* DecodeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65439CE51FF9FA6100EDE435 /* DecodeOperation.swift */; };
 		65439CE81FF9FA9600EDE435 /* ImageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65439CE71FF9FA9600EDE435 /* ImageRequest.swift */; };
@@ -272,6 +274,8 @@
 		65427D261F90508300407C5D /* DanceTypeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DanceTypeTableViewCell.swift; path = ViewControllers/TableCells/DanceTypeTableViewCell.swift; sourceTree = "<group>"; };
 		65427D271F90508300407C5D /* DanceTypeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DanceTypeTableViewCell.xib; path = ViewControllers/TableCells/DanceTypeTableViewCell.xib; sourceTree = "<group>"; };
 		65427D2A1F905BA100407C5D /* InitialProfileSetupCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InitialProfileSetupCoordinator.swift; path = Coordinators/InitialProfileSetupCoordinator.swift; sourceTree = "<group>"; };
+		654304CF2066D0A400731F94 /* SearchExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchExploreViewController.swift; path = ViewControllers/Search/SearchExploreViewController.swift; sourceTree = "<group>"; };
+		654304D02066D0A400731F94 /* SearchExploreViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SearchExploreViewController.xib; path = ViewControllers/Search/SearchExploreViewController.xib; sourceTree = "<group>"; };
 		65439CE21FF9E2D800EDE435 /* PhotosManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotosManager.swift; path = Utilities/Media/PhotosManager.swift; sourceTree = "<group>"; };
 		65439CE51FF9FA6100EDE435 /* DecodeOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DecodeOperation.swift; path = Utilities/Media/Decoding/DecodeOperation.swift; sourceTree = "<group>"; };
 		65439CE71FF9FA9600EDE435 /* ImageRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageRequest.swift; path = Utilities/Media/Decoding/ImageRequest.swift; sourceTree = "<group>"; };
@@ -622,6 +626,7 @@
 		65134F171F1B17EB0017C930 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				65492A4B2065E1E00016A037 /* Search */,
 				654E0E49204E31FB006512B8 /* ListControllers */,
 				6551DF59204907C300B3FC58 /* CollectionCells */,
 				6548738E2043BF2300CAC92A /* CustomViews */,
@@ -812,6 +817,15 @@
 				6548EE6B1FB8D00E0076EA4B /* SwitchCell.xib */,
 			);
 			name = Base;
+			sourceTree = "<group>";
+		};
+		65492A4B2065E1E00016A037 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				654304CF2066D0A400731F94 /* SearchExploreViewController.swift */,
+				654304D02066D0A400731F94 /* SearchExploreViewController.xib */,
+			);
+			name = Search;
 			sourceTree = "<group>";
 		};
 		654938B41F98574C00B6D60C /* Persistance */ = {
@@ -1089,6 +1103,7 @@
 				654FE85E2022D5FF002D1D23 /* DatePickerCell.xib in Resources */,
 				65062DD92062061600423439 /* OrganizationDetailViewController.xib in Resources */,
 				6548EE691FB8CFE70076EA4B /* TextFieldCell.xib in Resources */,
+				654304D22066D0A400731F94 /* SearchExploreViewController.xib in Resources */,
 				650CB27D1F68DF020093F2FC /* MainAuthViewController.xib in Resources */,
 				6564BE2F1F85D3F4005AF655 /* LoginViewController.xib in Resources */,
 				65427D291F90508300407C5D /* DanceTypeTableViewCell.xib in Resources */,
@@ -1287,6 +1302,7 @@
 				65BC8BEF1F8166D700F5AF94 /* EmailSignUpViewController.swift in Sources */,
 				65439CEB1FF9FCD300EDE435 /* DanceType.swift in Sources */,
 				654E01F01FBFEDDC0095C4D1 /* SwitchFormCell.swift in Sources */,
+				654304D12066D0A400731F94 /* SearchExploreViewController.swift in Sources */,
 				65439CEC1FF9FCD300EDE435 /* Media.swift in Sources */,
 				654BB8CD1F8DA8950044A555 /* UITextField+Configure.swift in Sources */,
 				654E01FC1FC120DA0095C4D1 /* DateFormCell.swift in Sources */,
